@@ -1,7 +1,7 @@
 {
-  "name": "cl-live-reports",
+  "name": "gym-manager",
   "version": "1.0.0",
-  "description": "To display the live test results using react.js,node.js,websockets",
+  "description": "To develop a gym manager software which can be used across gyms to manage their users.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

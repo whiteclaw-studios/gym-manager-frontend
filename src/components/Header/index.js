@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
 import { CL_BLUE } from '../../constants';
-import logo from '../../images/logo.png';
 const Wrap = styled('div')`
   background: #ffffff;
   display: flex;
@@ -43,10 +42,7 @@ export default class Header extends React.Component {
   render() {
     return (
       <Wrap>
-        <LogoWrap>
-          <LogoImg src={logo} />
-        </LogoWrap>
-        <Title>LIVE TEST EXECUTION RESULTS</Title>
+        <Title>GYM MANAGER</Title>
       </Wrap>
     );
   }
