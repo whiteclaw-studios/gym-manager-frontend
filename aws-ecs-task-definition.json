@@ -9,15 +9,12 @@
           "logDriver": "awslogs",
           "secretOptions": null,
           "options": {
-            "awslogs-group": "/ecs/wcs-gym-manager-task-definition",
+            "awslogs-group": "/ecs/gym-manager-td",
             "awslogs-region": "ap-south-1",
             "awslogs-stream-prefix": "ecs"
           }
         },
-        "entryPoint": [
-          "sh",
-          "-c"
-        ],
+        "entryPoint": null,
         "portMappings": [
           {
             "hostPort": 80,
@@ -25,11 +22,9 @@
             "containerPort": 80
           }
         ],
-        "command": [
-          "/bin/sh -c \"echo '<html> <head> <title>Amazon ECS Sample App</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>Amazon ECS Sample App</h1> <h2>Congratulations!</h2> <p>Your application is now running on a container in Amazon ECS.</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
-        ],
+        "command": null,
         "linuxParameters": null,
-        "cpu": 256,
+        "cpu": 0,
         "environment": [],
         "resourceRequirements": null,
         "ulimits": null,
@@ -39,10 +34,10 @@
         "secrets": null,
         "dockerSecurityOptions": null,
         "memory": null,
-        "memoryReservation": 512,
+        "memoryReservation": null,
         "volumesFrom": [],
         "stopTimeout": null,
-        "image": "httpd:2.4",
+        "image": "480541645121.dkr.ecr.ap-south-1.amazonaws.com/gym-manager-images:d4a44742e79fa8674560f713ab17e4834235fb00",
         "startTimeout": null,
         "firelensConfiguration": null,
         "dependsOn": null,
@@ -50,7 +45,7 @@
         "interactive": null,
         "healthCheck": null,
         "essential": true,
-        "links": [],
+        "links": null,
         "hostname": null,
         "extraHosts": null,
         "pseudoTerminal": null,
@@ -64,13 +59,13 @@
     ],
     "placementConstraints": [],
     "memory": "512",
-    "taskRoleArn": null,
+    "taskRoleArn": "arn:aws:iam::480541645121:role/ecsTaskExecutionRole",
     "compatibilities": [
       "EC2",
       "FARGATE"
     ],
-    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:480541645121:task-definition/wcs-gym-manager-task-definition:1",
-    "family": "wcs-gym-manager-task-definition",
+    "taskDefinitionArn": "arn:aws:ecs:ap-south-1:480541645121:task-definition/gym-manager-td:3",
+    "family": "gym-manager-td",
     "requiresAttributes": [
       {
         "targetId": null,
@@ -88,13 +83,25 @@
         "targetId": null,
         "targetType": null,
         "value": null,
+        "name": "com.amazonaws.ecs.capability.ecr-auth"
+      },
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
         "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
       },
       {
         "targetId": null,
         "targetType": null,
         "value": null,
-        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
+        "name": "com.amazonaws.ecs.capability.task-iam-role"
+      },
+      {
+        "targetId": null,
+        "targetType": null,
+        "value": null,
+        "name": "ecs.capability.execution-role-ecr-pull"
       },
       {
         "targetId": null,
@@ -115,7 +122,7 @@
     ],
     "networkMode": "awsvpc",
     "cpu": "256",
-    "revision": 1,
+    "revision": 3,
     "status": "ACTIVE",
     "inferenceAccelerators": null,
     "proxyConfiguration": null,
