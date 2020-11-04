@@ -1,7 +1,7 @@
 {
-  "name": "ally-okr-assessment",
+  "name": "cl-live-reports",
   "version": "1.0.0",
-  "description": "To implement a okr assessment",
+  "description": "To display the live test results using react.js,node.js,websockets",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Rajeshkumaran/ally-okr-assessment.git"
+    "url": "git+https://github.com/amohanavelu/react.git"
   },
   "author": "Rajesh K",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Rajeshkumaran/ally-okr-assessment.git/issues"
+    "url": "https://github.com/amohanavelu/react.git/issues"
   },
-  "homepage": "https://github.com/Rajeshkumaran/ally-okr-assessment.git#readme",
+  "homepage": "https://github.com/amohanavelu/react.git.git#readme",
   "dependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
