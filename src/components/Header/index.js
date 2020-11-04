@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
 import { CL_BLUE } from '../../constants';
+import { MontserratBold } from '../../utils/fonts';
 const Wrap = styled('div')`
   background: #ffffff;
   display: flex;
@@ -36,7 +37,7 @@ const Title = styled('h5')`
   text-align: center;
   padding: 3rem;
   color: ${CL_BLUE};
-  font-family: 'Montserrat';
+  font-family: ${MontserratBold};
 `;
 export default class Header extends React.Component {
   render() {

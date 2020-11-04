@@ -1,0 +1,13 @@
+{
+    "short_name": "Gym Manager",
+    "name": "Gym Manager",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "lang": "en",
+    "icons": [{
+      "src": "/apple-touch-icon-144x144-precomposed.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }]
+  }
