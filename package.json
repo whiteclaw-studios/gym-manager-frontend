@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/amohanavelu/react.git"
+    "url": "git+https://github.com/whiteclaw-studios/gym-manager-frontend.git"
   },
   "author": "Rajesh K",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/amohanavelu/react.git/issues"
+    "url": "https://github.com/whiteclaw-studios/gym-manager-frontend.git/issues"
   },
-  "homepage": "https://github.com/amohanavelu/react.git.git#readme",
+  "homepage": "https://github.com/whiteclaw-studios/gym-manager-frontend.git.git#readme",
   "dependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.4",
