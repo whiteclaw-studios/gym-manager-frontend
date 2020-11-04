@@ -43,7 +43,7 @@ export default class Header extends React.Component {
   render() {
     return (
       <Wrap>
-        <Title>GYM MANAGER</Title>
+        <Title>GYM MANAGER HEADER</Title>
       </Wrap>
     );
   }
