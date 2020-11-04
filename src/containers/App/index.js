@@ -32,7 +32,7 @@ class App extends React.Component {
       addBtn.addEventListener('click', (e) => {
         // hide our user interface that shows our A2HS button
         // addBtn.style.display = 'none';
-        console.log('e fired ', e);
+        console.log('e fired', e);
         // Show the prompt
         deferredPrompt.prompt();
         // Wait for the user to respond to the prompt
