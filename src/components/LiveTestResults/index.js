@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { BG_COLOR } from '../../constants';
+import { BG_COLOR, TEST_CASE_FAILED, TEST_CASE_PASSED } from '../../constants';
 import successIcon from '../../images/tick.png';
 import failureIcon from '../../images/wrong.png';
 import inProgressIcon from '../../images/progress.png';
@@ -53,44 +53,29 @@ const NoTestExecution = styled('div')`
   margin: 2.4rem;
   text-align: center;
 `;
+const Results = styled('div')`
+  max-height: 55rem;
+  overflow: auto;
+`;
 export default class LiveTestResults extends React.Component {
   renderIcon = (status) => {
     switch (status) {
-      case 'success':
+      case TEST_CASE_PASSED:
         return <Icon src={successIcon} />;
-      case 'failure':
+      case TEST_CASE_FAILED:
         return <Icon src={failureIcon} />;
       default:
         return <Icon src={inProgressIcon} />;
     }
   };
   constructTestResults = () => {
-    const {
-      data = [
-        {
-          testName: 'validate auth ',
-          status: 'success',
-        },
-        {
-          testName: 'validate auth api2 ',
-          status: 'success',
-        },
-        {
-          testName: 'validate auth api3',
-          status: 'failure',
-        },
-        {
-          testName: 'validate auth api4',
-          status: 'running',
-        },
-      ],
-    } = this.props;
+    const { testCases = [] } = this.props;
 
-    return data.map((item) => {
-      const { testName, status } = item;
+    return testCases.map((item) => {
+      const { testCase, status } = item;
       return (
-        <ItemRow key={testName}>
-          <Item className="test-name">{testName}</Item>
+        <ItemRow key={testCase}>
+          <Item className="test-name">{testCase}</Item>
           <Item
             className={css`
               width: 3.2rem;
@@ -103,26 +88,7 @@ export default class LiveTestResults extends React.Component {
     });
   };
   render() {
-    const {
-      data = [
-        {
-          testName: 'validate auth ',
-          status: 'success',
-        },
-        {
-          testName: 'validate auth api2 ',
-          status: 'success',
-        },
-        {
-          testName: 'validate auth api3',
-          status: 'failed',
-        },
-        {
-          testName: 'validate auth api4',
-          status: 'running',
-        },
-      ],
-    } = this.props;
+    const { testCases = [] } = this.props;
     return (
       <Wrap>
         <Content>
@@ -138,11 +104,13 @@ export default class LiveTestResults extends React.Component {
               <Item>Status</Item>
             </HeadingWrap>
           </HistoryWrap>
-          {data.length > 0 ? (
-            this.constructTestResults()
-          ) : (
-            <NoTestExecution>Nothing is running</NoTestExecution>
-          )}
+          <Results>
+            {testCases.length > 0 ? (
+              this.constructTestResults()
+            ) : (
+              <NoTestExecution>No results found</NoTestExecution>
+            )}
+          </Results>
         </Content>
       </Wrap>
     );

@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import '../../../globalStyles';
 import { connect } from 'react-redux';
-import { BG_COLOR, SOCKET_CLIENT_URL } from '../../constants';
-import socketIOClient from 'socket.io-client';
+import { BG_COLOR } from '../../constants';
 
 const Wrap = styled('div')`
   background: ${BG_COLOR};
@@ -18,19 +17,8 @@ const Wrap = styled('div')`
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: '',
-    };
   }
-  componentDidMount() {
-    const socket = socketIOClient(SOCKET_CLIENT_URL);
-    socket.on('FromAPI', (data) => {
-      // console.log('data received', data);
-      this.setState({
-        data,
-      });
-    });
-  }
+
   render() {
     const { route = {} } = this.props;
     return (

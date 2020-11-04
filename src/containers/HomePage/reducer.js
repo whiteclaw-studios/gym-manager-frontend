@@ -1,40 +1,48 @@
-import { findCategories, formatOkrData } from "../../utils/helpers";
 import {
-  TOGGLE_LOADED_DATA_STATE,
-  TOGGLE_ERROR_STATE,
-  LOAD_OKRS,
-} from "./constants";
+  TEST_CASE_FAILED,
+  TEST_CASE_PASSED,
+  TOTAL_TEST_CASES,
+} from '../../constants';
+import { ADD_TEST_CASE } from './constants';
 
 export const initialState = {
-  isDataLoaded: false,
-  isErrorLoadingData: false,
-  okrData: [],
+  testCases: [],
 };
 const reducer = (preloadedState = null) => (
   state = preloadedState || initialState,
   action,
 ) => {
   switch (action.type) {
-    case LOAD_OKRS: {
+    case ADD_TEST_CASE: {
       const payload = action.payload;
-      const formattedOkrs = formatOkrData(payload);
-      const categories = findCategories(payload);
+      const newtestCases = [...state.testCases, payload];
+      const passedTestCases = newtestCases.filter(
+        (tc) => tc.status === TEST_CASE_PASSED,
+      );
+      const failedTestCases = newtestCases.filter(
+        (tc) => tc.status === TEST_CASE_FAILED,
+      );
+      const testCasesOverview = [
+        {
+          name: 'Total test cases',
+          value: newtestCases.length,
+          id: TOTAL_TEST_CASES,
+        },
+        {
+          name: 'Passed test cases',
+          value: passedTestCases.length,
+          id: TEST_CASE_PASSED,
+        },
+        {
+          name: 'Failed test cases',
+          value: failedTestCases.length,
+          id: TEST_CASE_FAILED,
+        },
+      ];
       return {
         ...state,
-        okrData: formattedOkrs,
-        categories,
-      };
-    }
-    case TOGGLE_LOADED_DATA_STATE: {
-      return {
-        ...state,
-        isDataLoaded: action.payload,
-      };
-    }
-    case TOGGLE_ERROR_STATE: {
-      return {
-        ...state,
-        isErrorLoadingData: action.payload,
+        testCases: newtestCases,
+        testCasesOverview,
       };
     }
     default: {

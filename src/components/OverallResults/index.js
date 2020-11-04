@@ -1,6 +1,11 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { CL_GREEN, CL_RED } from '../../constants';
+import {
+  CL_GREEN,
+  CL_RED,
+  TEST_CASE_FAILED,
+  TEST_CASE_PASSED,
+} from '../../constants';
 const Wrap = styled('div')`
   margin: 2.4rem;
   padding-top: 4.6rem;
@@ -30,33 +35,17 @@ const Item = styled('li')`
 
   ${(props) => {
     switch (props.id) {
-      case 'success':
+      case TEST_CASE_PASSED:
         return `color:${CL_GREEN}`;
-      case 'failure':
+      case TEST_CASE_FAILED:
         return `color:${CL_RED}`;
     }
   }}
 `;
-const data = [
-  {
-    name: 'Total Executed cases',
-    value: 40,
-    id: 'totalCases',
-  },
-  {
-    name: 'Success cases',
-    value: 25,
-    id: 'success',
-  },
-  {
-    name: 'Failed cases',
-    value: 15,
-    id: 'failure',
-  },
-];
-function OverallResults() {
+
+function OverallResults({ testCasesOverview = [] }) {
   const constructData = () => {
-    return data.map((item) => {
+    return testCasesOverview.map((item) => {
       const { name, value, id = '' } = item;
       return (
         <ItemRow key={id}>
