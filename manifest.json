@@ -5,9 +5,7 @@
     "display": "standalone",
     "orientation": "portrait",
     "lang": "en",
-    "icons": [{
-      "src": "/apple-touch-icon-144x144-precomposed.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    }]
-  }
+	"background_color": "#3E4EB8",
+	"theme_color": "#2F3BA2"
+    
+}

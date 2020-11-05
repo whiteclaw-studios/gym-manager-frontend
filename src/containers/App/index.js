@@ -17,41 +17,65 @@ const Wrap = styled('div')`
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.deferredPrompt = null;
+    this.state = {
+      showInstallUI: false,
+    };
   }
-  componentDidMount() {
-    let deferredPrompt = null;
-    const addBtn = document.querySelector('.add-button');
-    window.addEventListener('beforeinstallprompt', (e) => {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
-      deferredPrompt = e;
-      // Update UI to notify the user they can add to home screen
-      addBtn.style.display = 'block';
-
-      addBtn.addEventListener('click', (e) => {
-        // hide our user interface that shows our A2HS button
-        // addBtn.style.display = 'none';
-        console.log('e fired', e);
-        // Show the prompt
-        deferredPrompt.prompt();
-        // Wait for the user to respond to the prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the A2HS prompt');
-          } else {
-            console.log('User dismissed the A2HS prompt');
-          }
-          deferredPrompt = null;
-        });
+  showInstallPromotion = () => {
+    this.setState({
+      showInstallUI: true,
+    });
+  };
+  beforeInstallPrompt = (e) => {
+    e.preventDefault();
+    // Stash the event so it can be triggered later.
+    this.deferredPrompt = e;
+    console.log('beforeInstallPrompt fired', this.deferredPrompt);
+    // Update UI notify the user they can install the PWA
+    this.showInstallPromotion();
+  };
+  appInstalled = (evt) => {
+    console.log('app install successfully');
+  };
+  promptUserToInstall = () => {
+    if (!this.deferredPrompt) {
+      this.setState({
+        showInstallUI: false,
+      });
+      return;
+    }
+    this.deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    this.deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt');
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+      this.setState({
+        showInstallUI: false,
       });
     });
+  };
+  componentDidMount() {
+    console.log('App componentDidMount');
+    window.addEventListener('beforeinstallprompt', this.beforeInstallPrompt);
+    window.addEventListener('appinstalled', this.appInstalled);
   }
+  closeInstallUI = () => {
+    this.setState({
+      showInstallUI: false,
+    });
+  };
   render() {
     const { route = {} } = this.props;
+    const { showInstallUI } = this.state;
     return (
       <Wrap>
-        <button className="add-button">Add to home screen</button>
+        {showInstallUI && (
+          <button onClick={this.promptUserToInstall}>Add to home screen</button>
+        )}
         {renderRoutes(route.routes, {
           ...this.props,
         })}

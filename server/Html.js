@@ -37,7 +37,16 @@ function Html({ store, url }) {
     <script>${initialState}</script>
     <div id="root">${root}</div>
     <script src="/bundle.js"></script>
-
+    <script>
+      if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+              .then((reg) => {
+                console.log('Service worker registered.', reg);
+              });
+          });
+      }
+   </script>
     </body>
   </html>
     `;
