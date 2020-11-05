@@ -26,6 +26,7 @@ class HomePage extends React.Component {
     return (
       <Container>
         <Header {...this.props} />
+        <p>Test deployment</p>
       </Container>
     );
   }
