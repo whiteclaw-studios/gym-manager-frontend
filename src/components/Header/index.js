@@ -44,6 +44,7 @@ export default class Header extends React.Component {
     return (
       <Wrap>
         <Title>GYM MANAGER HEADER</Title>
+        <p>Test deployment</p>
       </Wrap>
     );
   }
