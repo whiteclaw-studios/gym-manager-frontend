@@ -1,9 +1,28 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Webpack App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="favicon.ico"></head>
-  <body>
-  <script src="bundle.js"></script></body>
-</html>
+<!doctype html>
+  <html>
+    <head>
+      <title>Gym manager</title>
+      <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, height=device-height, viewport-fit=cover"
+    />
+    <link rel='manifest' href='/manifest.json'>
+    <meta name='mobile-web-app-capable' content='yes'>
+    </head>
+    <body>
+    <script>window.__INITIAL_STATE__ = {"homePage":{}}</script>
+    <div id="root"><style data-emotion-css="1evps01">html{font-size:62.5%;height:100%;}*{margin:0px;padding:0px;box-sizing:border-box;font-family:'Lato',sans-serif;}body{font-size:10px;font-family:'Montserrat','Helvetica Neue',Helvetica,Arial,sans-serif;overflow-x:hidden;-webkit-tap-highlight-color:rgba(255,255,255,0);margin-top:0px !important;height:100%;}img{border:0;}#root{background:#F6F7FB;min-height:100%;min-width:100%;}a{-webkit-text-decoration:none;text-decoration:none;}li{list-style-type:none;}input:focus,textarea:focus,button:focus,a:focus,article:focus{outline:none !important;border:none;}</style><style data-emotion-css="snug9f">.css-snug9f{background:#F6F7FB;height:100%;margin-top:6.4rem;}@media (max-width:992px){.css-snug9f{margin-top:4rem;}}</style><div class="css-snug9f"><style data-emotion-css="1ago99h">.css-1ago99h{width:100%;}</style><div class="css-1ago99h"><style data-emotion-css="1j57i3a">.css-1j57i3a{background:#ffffff;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;height:6.4rem;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;position:fixed;color:#000;top:0;width:100%;z-index:1;box-shadow:0px 1px 4px #a9a9a9;}@media (max-width:992px){.css-1j57i3a{height:4rem;}}</style><div class="css-1j57i3a"><style data-emotion-css="9prfmk">.css-9prfmk{font-size:2rem;text-align:center;padding:3rem;color:#0192F4;font-family:'Montserrat-Bold',Helvetica Neue,sans-serif;}</style><h5 class="css-9prfmk">GYM MANAGER HEADER</h5></div></div></div></div>
+    <script src="/bundle.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+              .then((reg) => {
+                console.log('Service worker registered.', reg);
+              });
+          });
+      }
+   </script>
+    </body>
+  </html>
+    
