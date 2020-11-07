@@ -58,7 +58,6 @@ class App extends React.Component {
     });
   };
   componentDidMount() {
-    console.log('App componentDidMount');
     window.addEventListener('beforeinstallprompt', this.beforeInstallPrompt);
     window.addEventListener('appinstalled', this.appInstalled);
   }
@@ -70,7 +69,6 @@ class App extends React.Component {
   render() {
     const { route = {}, toasterConf } = this.props;
     const { showInstallUI } = this.state;
-    console.log('App props', this.props);
     return (
       <Wrap>
         {showInstallUI && (

@@ -46,7 +46,6 @@ class ToasterManager extends React.PureComponent {
         component: this.constructToaster(config, timestamp),
       });
     }
-    console.log('ToasterManager', this.props, showToaster, this.toasterQueue);
 
     return (
       <React.Fragment>

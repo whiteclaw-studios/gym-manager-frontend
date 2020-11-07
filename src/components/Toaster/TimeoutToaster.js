@@ -28,7 +28,6 @@ class TimeoutToaster extends React.PureComponent {
   };
   render() {
     const { timeout, timeoutHandler, ...rest } = this.props;
-    console.log('---timeouttaoster props', rest);
     return (
       <Toaster {...rest} closeHandler={this.closeHandler}>
         {this.props.children || null}

@@ -54,7 +54,6 @@ class AnimateToaster extends React.PureComponent {
       timeout,
       ...rest
     } = this.props;
-    console.log('------>>>> Inside animateToaster', this.props);
     const timeoutVal = animationDuration + (timeout || 2000);
     const mount = mountingStyle || mountDefault;
     const unmount = unmountingStyle || unmountDefault;

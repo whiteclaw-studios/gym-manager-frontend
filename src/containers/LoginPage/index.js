@@ -105,7 +105,6 @@ class LoginPage extends React.Component {
 
   render() {
     const { loginPage } = this.props;
-    console.log('this.props', loginPage, this.state);
     const { username, password } = this.state;
     return (
       <Container>
