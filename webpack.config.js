@@ -74,7 +74,7 @@ module.exports = {
         to: './',
       },
       {
-        from: './__redirects',
+        from: './_redirects',
         to: './',
       },
     ]),
