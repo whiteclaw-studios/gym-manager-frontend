@@ -8,6 +8,8 @@ import Input from '../../components/Input';
 import { DARK_BLUE, WHITE } from '../../constants';
 import Button from '../../components/Button';
 import LinkTag from '../../components/LinkTag';
+import { loginWithPassword } from './actions';
+import { validateLoginInputs } from '../../utils/helpers';
 const Container = styled('div')`
   width: 100%;
   display: flex;
@@ -74,6 +76,24 @@ class LoginPage extends React.Component {
   onInputChange = (data) => {
     this.setState(data);
   };
+
+  onLogin = () => {
+    const { username, password } = this.state;
+    const { isValid, output } = validateLoginInputs(this.state, [
+      'username',
+      'password',
+    ]);
+    if (isValid) {
+      this.props.dispatch(
+        loginWithPassword({
+          userName: username.value,
+          password: password.value,
+        }),
+      );
+    } else {
+      this.setState(output);
+    }
+  };
   componentDidMount() {
     const root = document.getElementById('root');
     root.classList.add('stop-scroll');
@@ -86,6 +106,7 @@ class LoginPage extends React.Component {
   render() {
     const { loginPage } = this.props;
     const { username, password } = this.state;
+    console.log('this.state', this.state);
     return (
       <Container>
         <LoginWrap>
@@ -96,6 +117,8 @@ class LoginPage extends React.Component {
               state={username}
               placeholder="User name"
               onValueChange={this.onInputChange}
+              showError={username.error}
+              errorText="Invalid username"
             />
           </UsernameWrap>
           <PasswordWrap>
@@ -105,10 +128,12 @@ class LoginPage extends React.Component {
               placeholder="Password"
               onValueChange={this.onInputChange}
               type="password"
+              showError={password.error}
+              errorText="Invalid password"
             />
           </PasswordWrap>
           <ButtonWrap>
-            <Button>-></Button>
+            <Button onClick={this.onLogin}>-></Button>
           </ButtonWrap>
           <LinkTag href="/">Forgot Password?</LinkTag>
         </LoginWrap>

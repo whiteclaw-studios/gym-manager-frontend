@@ -73,6 +73,10 @@ module.exports = {
         from: './service-worker.js',
         to: './',
       },
+      {
+        from: './__redirects',
+        to: './',
+      },
     ]),
   ],
 };

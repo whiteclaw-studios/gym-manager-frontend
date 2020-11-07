@@ -15,7 +15,6 @@ const StyledInput = styled('input')`
   width: 100%;
   font-size: 1.4rem;
   font-family: ${MontserratRegular};
-  padding: 0 0.8rem;
   background: none;
   border-bottom: 1px solid ${DARK_BLUE};
   &:focus {
@@ -28,7 +27,7 @@ const StyledInput = styled('input')`
 const ErrorSpan = styled('span')`
   color: red;
   font-size: 1.1rem;
-  margin-top: 1.2rem;
+  margin-top: 1.4rem;
   font-family: ${MontserratRegular};
 `;
 const Section1 = styled('div')`

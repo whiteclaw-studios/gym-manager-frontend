@@ -4,6 +4,7 @@ const validations = {
     email: regex.EMAIL,
     password: regex.PASSWORD,
     mobile: regex.MOBILE,
+    username: regex.USER_NAME,
   },
 
   check: (state) => {
