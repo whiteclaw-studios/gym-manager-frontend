@@ -8,6 +8,7 @@ import { BG_COLOR } from '../../constants';
 import Header from '../../components/Header';
 import ToasterManager from '../../components/ToasterManager';
 import { selectLoginState, selectToasterConf } from '../../selectors/';
+import SplashScreen from '../../components/SplashScreen';
 const Wrap = styled('div')`
   background: ${BG_COLOR};
   height: 100%;
@@ -81,17 +82,21 @@ class App extends React.Component {
     });
   };
   render() {
-    const { route = {}, toasterConf } = this.props;
+    const { route = {}, toasterConf, isLoggedIn } = this.props;
     const { showInstallUI } = this.state;
     return (
       <Wrap>
         {showInstallUI && (
           <button onClick={this.promptUserToInstall}>Add to home screen</button>
         )}
-        <Header />
-        {renderRoutes(route.routes, {
-          ...this.props,
-        })}
+        <Header show={false} />
+        {!isLoggedIn ? (
+          <SplashScreen />
+        ) : (
+          renderRoutes(route.routes, {
+            ...this.props,
+          })
+        )}
         <ToasterManager {...toasterConf} />
       </Wrap>
     );

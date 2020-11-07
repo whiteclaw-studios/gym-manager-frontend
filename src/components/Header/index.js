@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
+import PropTypes from 'prop-types';
 import { BLUE } from '../../constants';
 import { MontserratBold } from '../../utils/fonts';
 const Wrap = styled('div')`
@@ -41,10 +42,16 @@ const Title = styled('h5')`
 `;
 export default class Header extends React.Component {
   render() {
+    const { show = true } = this.props;
     return (
-      <Wrap>
-        <Title>FIT BOSS</Title>
-      </Wrap>
+      show && (
+        <Wrap>
+          <Title>FIT BOSS</Title>
+        </Wrap>
+      )
     );
   }
 }
+Header.propTypes = {
+  show: PropTypes.bool,
+};
