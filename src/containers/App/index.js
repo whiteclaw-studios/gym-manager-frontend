@@ -1,12 +1,17 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import '../../../globalStyles';
 import { connect } from 'react-redux';
 import { BG_COLOR } from '../../constants';
 import Header from '../../components/Header';
-
+import ToasterManager from '../../components/ToasterManager';
+import { selectToasterConf } from '../../selectors/';
+const Wrap = styled('div')`
+  background: ${BG_COLOR};
+  height: 100%;
+`;
 const ChildrenWrap = styled('div')``;
 class App extends React.Component {
   constructor(props) {
@@ -63,29 +68,27 @@ class App extends React.Component {
     });
   };
   render() {
-    const { route = {} } = this.props;
+    const { route = {}, toasterConf } = this.props;
     const { showInstallUI } = this.state;
+    console.log('App props', this.props);
     return (
-      <div
-        className={css`
-          background: ${BG_COLOR};
-          height: 100%;
-        `}
-      >
+      <Wrap>
         {showInstallUI && (
           <button onClick={this.promptUserToInstall}>Add to home screen</button>
         )}
-        {/* <Header />g */}
+        <Header />
         {renderRoutes(route.routes, {
           ...this.props,
         })}
-      </div>
+        <ToasterManager {...toasterConf} />
+      </Wrap>
     );
   }
 }
 const mapStateToProps = (state) => {
   return {
     ...state,
+    toasterConf: selectToasterConf(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {

@@ -1,0 +1,1 @@
+export const DISPLAY_TOASTER = 'app/DISPLAY_TOASTER';

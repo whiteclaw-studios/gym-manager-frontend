@@ -1,5 +1,4 @@
-import axios from "axios";
-import { get } from "./helpers";
+import axios from 'axios';
 const axiosWrapper = (options) => {
   let configs = options;
   return axios.request({ ...configs });
