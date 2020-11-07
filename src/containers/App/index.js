@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import '../../../globalStyles';
@@ -7,10 +7,6 @@ import { connect } from 'react-redux';
 import { BG_COLOR } from '../../constants';
 import Header from '../../components/Header';
 
-const Wrap = styled('div')`
-  background: ${BG_COLOR};
-  height: 100%;
-`;
 const ChildrenWrap = styled('div')``;
 class App extends React.Component {
   constructor(props) {
@@ -70,17 +66,20 @@ class App extends React.Component {
     const { route = {} } = this.props;
     const { showInstallUI } = this.state;
     return (
-      <Wrap>
+      <div
+        className={css`
+          background: ${BG_COLOR};
+          height: 100%;
+        `}
+      >
         {showInstallUI && (
           <button onClick={this.promptUserToInstall}>Add to home screen</button>
         )}
-        <Header />
-        <ChildrenWrap>
-          {renderRoutes(route.routes, {
-            ...this.props,
-          })}
-        </ChildrenWrap>
-      </Wrap>
+        {/* <Header />g */}
+        {renderRoutes(route.routes, {
+          ...this.props,
+        })}
+      </div>
     );
   }
 }

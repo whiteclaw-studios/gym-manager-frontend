@@ -15,7 +15,7 @@ const Container = styled('div')`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 6rem 0 3rem;
+  margin: 6rem 0 3rem !important;
   @media (max-width: 992px) {
     padding: 2rem;
   }

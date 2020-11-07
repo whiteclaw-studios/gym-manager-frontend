@@ -10,7 +10,7 @@ const routes = [
     key: APP_KEY,
     routes: [
       {
-        path: '/',
+        path: '/dashboard',
         exact: true,
         component: HomePage,
         key: HOME_PAGE_KEY,

@@ -7,6 +7,10 @@ export function* loginWithPasswordSaga(params = {}) {
     const { userName, password } = params;
     const encodedPassword = btoa(password);
     console.log(encodedPassword);
+    // const response = yield call(axiosRequest, {
+    //   method: 'GET',
+    //   url: 'http://fitboss-backend.herokuapp.com/actuator/health',
+    // });
     const response = yield call(axiosRequest, {
       method: 'POST',
       url: apiUrls.LOGIN_URL,

@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from 'react-emotion';
 import PropTypes from 'prop-types';
-import Header from '../../components/Header';
 import { connect } from 'react-redux';
 import { selectHomePageState } from '../../selectors';
 
-const Container = styled('div')`
+const Wrapper = styled('div')`
   width: 100%;
 `;
-const ContentWrap = styled('div')`
+const ContentWrap = styled('h1')`
   display: flex;
   width: 100%;
   @media (max-width: 992px) {
@@ -24,9 +23,9 @@ class HomePage extends React.Component {
   render() {
     const { homePage } = this.props;
     return (
-      <Container>
-        <Header {...this.props} />
-      </Container>
+      <Wrapper>
+        <ContentWrap>I am homepage</ContentWrap>
+      </Wrapper>
     );
   }
 }
