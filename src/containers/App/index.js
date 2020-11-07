@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { BG_COLOR } from '../../constants';
 import Header from '../../components/Header';
 import ToasterManager from '../../components/ToasterManager';
-import { selectToasterConf } from '../../selectors/';
+import { selectLoginState, selectToasterConf } from '../../selectors/';
 const Wrap = styled('div')`
   background: ${BG_COLOR};
   height: 100%;
@@ -60,6 +60,20 @@ class App extends React.Component {
   componentDidMount() {
     window.addEventListener('beforeinstallprompt', this.beforeInstallPrompt);
     window.addEventListener('appinstalled', this.appInstalled);
+
+    const { isLoggedIn } = this.props;
+    if (!isLoggedIn) {
+      // if not loggedin redirect to login
+      this.props.history.push('/login');
+    }
+  }
+  componentDidUpdate(prevProps) {
+    const { isLoggedIn: isLoggedInPrevProp } = prevProps;
+    const { isLoggedIn } = this.props;
+    // going back to previous page once logged in
+    if (isLoggedInPrevProp !== isLoggedIn && isLoggedIn) {
+      this.props.history.goBack();
+    }
   }
   closeInstallUI = () => {
     this.setState({
@@ -86,6 +100,7 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
   return {
     ...state,
+    isLoggedIn: selectLoginState(state),
     toasterConf: selectToasterConf(state),
   };
 };

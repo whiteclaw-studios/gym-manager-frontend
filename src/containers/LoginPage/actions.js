@@ -6,9 +6,3 @@ export function loginWithPassword(payload) {
     ...payload,
   };
 }
-export function loginResponse(payload) {
-  return {
-    type: LOGIN_RESPONSE,
-    payload,
-  };
-}

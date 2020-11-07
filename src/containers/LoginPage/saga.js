@@ -2,9 +2,8 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { LOGIN_WITH_PASSWORD } from './constants';
 import axiosRequest from '../../utils/requestWrapper';
 import { apiUrls } from '../../constants';
-import { loginResponse } from './actions';
 import { responseParser } from '../../utils/responseParser';
-import { displayToaster } from '../App/actions';
+import { displayToaster, loginResponse } from '../App/actions';
 export function* loginWithPasswordSaga(params = {}) {
   try {
     const { userName, password } = params;

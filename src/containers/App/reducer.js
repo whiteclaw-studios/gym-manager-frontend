@@ -1,9 +1,12 @@
-import { DISPLAY_TOASTER } from './constants';
+import { DISPLAY_TOASTER, LOGIN_RESPONSE } from './constants';
 
 export const initialState = {
   toasterConf: {
     showToaster: false,
     config: '',
+  },
+  adminInfo: {
+    isLoggedIn: false,
   },
 };
 
@@ -19,6 +22,15 @@ const reducer = (preloadedState = null) => (
           config: action.payload,
           showToaster: true,
           timestamp: action.timestamp,
+        },
+      };
+    }
+    case LOGIN_RESPONSE: {
+      return {
+        ...state,
+        adminInfo: {
+          ...state.adminInfo,
+          ...action.payload,
         },
       };
     }
