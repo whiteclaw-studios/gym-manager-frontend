@@ -45,4 +45,7 @@ html {
     outline: none !important;
     border:none;
   }
+  .stop-scroll {
+    overflow:hidden;
+  }
 `;

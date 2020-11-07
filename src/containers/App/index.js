@@ -5,15 +5,13 @@ import { renderRoutes } from 'react-router-config';
 import '../../../globalStyles';
 import { connect } from 'react-redux';
 import { BG_COLOR } from '../../constants';
+import Header from '../../components/Header';
 
 const Wrap = styled('div')`
   background: ${BG_COLOR};
   height: 100%;
-  margin-top: 6.4rem;
-  @media (max-width: 992px) {
-    margin-top: 4rem;
-  }
 `;
+const ChildrenWrap = styled('div')``;
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -76,9 +74,12 @@ class App extends React.Component {
         {showInstallUI && (
           <button onClick={this.promptUserToInstall}>Add to home screen</button>
         )}
-        {renderRoutes(route.routes, {
-          ...this.props,
-        })}
+        <Header />
+        <ChildrenWrap>
+          {renderRoutes(route.routes, {
+            ...this.props,
+          })}
+        </ChildrenWrap>
       </Wrap>
     );
   }

@@ -1,10 +1,7 @@
 export const ROUTER_STORE_KEY = 'router';
-export const CL_BLUE = '#0192F4';
-export const CL_GREEN = '#12CB99';
-export const CL_RED = '#F31E34';
-export const BG_COLOR = '#F6F7FB';
-export const SOCKET_CLIENT_URL = 'http://localhost:3000';
-export const TEST_CASE_PASSED = 'passed';
-export const TEST_CASE_FAILED = 'failed';
-export const TEST_CASE_INPROGRESS = 'in-progress';
-export const TOTAL_TEST_CASES = 'totalTestcases';
+export const BLUE = '#0192F4';
+export const GREEN = '#2ecc71';
+export const RED = '#F31E34';
+export const BG_COLOR = '#f2f2f2';
+export const DARK_BLUE = '#0e0e0e';
+export const WHITE = '#fff';

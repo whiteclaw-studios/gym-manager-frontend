@@ -26,7 +26,6 @@ class HomePage extends React.Component {
     return (
       <Container>
         <Header {...this.props} />
-        <p>Test deployment</p>
       </Container>
     );
   }
@@ -42,6 +41,5 @@ const mapDispatchToProps = (dispatch) => {
 };
 HomePage.propTypes = {
   route: PropTypes.object,
-  testCases: PropTypes.array,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

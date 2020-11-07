@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { CL_BLUE } from '../../constants';
+import { BLUE } from '../../constants';
 import { MontserratBold } from '../../utils/fonts';
 const Wrap = styled('div')`
   background: #ffffff;
@@ -36,14 +36,14 @@ const Title = styled('h5')`
   font-size: 2rem;
   text-align: center;
   padding: 3rem;
-  color: ${CL_BLUE};
+  color: ${BLUE};
   font-family: ${MontserratBold};
 `;
 export default class Header extends React.Component {
   render() {
     return (
       <Wrap>
-        <Title>GYM MANAGER HEADER</Title>
+        <Title>FIT BOSS</Title>
       </Wrap>
     );
   }

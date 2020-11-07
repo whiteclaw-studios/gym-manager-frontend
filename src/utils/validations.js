@@ -1,8 +1,9 @@
-import * as regex from "./regex";
+import * as regex from './regex';
 const validations = {
   configs: {
-    name: regex.NAME,
-    points: regex.POINTS,
+    email: regex.EMAIL,
+    password: regex.PASSWORD,
+    mobile: regex.MOBILE,
   },
 
   check: (state) => {
