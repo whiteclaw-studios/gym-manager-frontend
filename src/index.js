@@ -26,7 +26,7 @@ delete window.__INITIAL_STATE__;
 const history = createBrowserHistory();
 // const store = configureStore(preloadedState, history);
 const composeEnhancers =
-  process.env.NODE_ENV !== 'production' && typeof window === 'object'
+  process.env.NODE_ENV !== 'prod' && typeof window === 'object'
     ? composeWithDevTools({ shouldHotReload: true, trace: true }) // Change this to false if app re-renders on `replaceReducer`
     : compose;
 

@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "bundle": "webpack -d",
     "clean": "rm -rf public/*",
-    "start": "npm run clean && npm run bundle && NODE_ENV=production babel-node  server",
-    "build": "npm run clean && npm run bundle && NODE_ENV=production babel-node  server/buildHtml",
+    "start": "npm run clean && npm run bundle && NODE_ENV=prod babel-node  server",
+    "build": "npm run clean && npm run bundle && NODE_ENV=prod babel-node  server/buildHtml",
     "dev-bundle": "webpack -wd",
     "start:dev": "nodemon --exec NODE_ENV=development babel-node server"
   },
