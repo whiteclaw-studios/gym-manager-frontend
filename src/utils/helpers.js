@@ -34,3 +34,50 @@ export const validateLoginInputs = (state, keys) => {
     output,
   };
 };
+export function throttle(func, wait, options = {}) {
+  let context;
+  let args;
+  let result;
+  let timeout = null;
+  let previous = 0;
+  const later = () => {
+    previous = options.leading === false ? 0 : Date.now();
+    timeout = null;
+    result = func.apply(context, args);
+    if (!timeout) {
+      context = null;
+      args = null;
+    }
+  };
+  return (...otherArgs) => {
+    const now = Date.now();
+    if (!previous && options.leading === false) previous = now;
+    const remaining = wait - (now - previous);
+    context = this;
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      previous = now;
+      result = func.apply(context, otherArgs);
+      if (!timeout) {
+        context = null;
+        /* eslint-disable no-param-reassign */
+        otherArgs = null;
+      }
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remaining);
+    }
+    return result;
+  };
+}
+export const debounce = (func, delay = 0) => {
+  let debounceTimer;
+  return function () {
+    const context = this;
+    const args = arguments;
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => func.apply(context, args), delay);
+  };
+};

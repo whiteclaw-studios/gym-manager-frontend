@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectHomePageState } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo';
+import Search from '../../components/Search';
 
 const Wrapper = styled('div')`
   width: 100%;
@@ -34,6 +35,7 @@ class HomePage extends React.Component {
     const { homePage } = this.props;
     return (
       <Wrapper>
+        <Search />
         <MembersInfo />
       </Wrapper>
     );
