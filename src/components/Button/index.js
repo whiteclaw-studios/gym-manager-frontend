@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import styled, { css, cx } from 'react-emotion';
-import { DISABLED_BUTTON, GREEN, WHITE } from '../../constants';
+import {
+  DISABLED_BUTTON,
+  GREEN,
+  SECONDARY_BLACK,
+  WHITE,
+} from '../../constants';
 import { MontserratBold } from '../../utils/fonts';
 const Wrap = styled('button')`
   outline: none;
@@ -17,10 +22,17 @@ const Wrap = styled('button')`
     cursor: default;
   }
 `;
+const BlackButton = styled(Button)`
+  background: ${SECONDARY_BLACK};
+  color: ${WHITE};
+  box-shadow: 8px 8px 12px 0 #e2e2e2;
+  border: none;
+`;
 function Button({
   className,
   children,
   disabled = false,
+  hoveredCss = '',
   onClick = () => {},
   ...otherProps
 }) {
@@ -35,6 +47,7 @@ function Button({
               background: ${WHITE};
               color: ${GREEN};
               border: 1px solid ${GREEN};
+              ${hoveredCss};
             `
           : '',
         disabled &&
@@ -53,4 +66,29 @@ function Button({
     </Wrap>
   );
 }
+export const SecondaryButton = (props) => (
+  <BlackButton
+    {...props}
+    hoveredCss={css`
+      background: ${WHITE};
+      border: 1px solid ${SECONDARY_BLACK};
+      color: ${SECONDARY_BLACK};
+    `}
+  />
+);
+export const InvertSecondaryButton = (props) => (
+  <BlackButton
+    {...props}
+    className={css`
+      background: ${WHITE};
+      border: 1px solid ${SECONDARY_BLACK};
+      color: ${SECONDARY_BLACK};
+    `}
+    hoveredCss={css`
+      background: ${SECONDARY_BLACK};
+      color: ${WHITE};
+      border: none;
+    `}
+  />
+);
 export default Button;

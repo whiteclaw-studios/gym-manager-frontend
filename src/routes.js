@@ -1,9 +1,11 @@
+import RegisterNewMember from './components/RegisterNewMember';
 import App from './containers/App';
 import HomePage from './containers/HomePage';
 import LoginPage from './containers/LoginPage';
 const APP_KEY = 'APP_KEY';
 const HOME_PAGE_KEY = 'HOME_PAGE_KEY';
 const LOGIN_PAGE_KEY = 'LOGIN_PAGE_KEY';
+const REGISTER_MEMBER_KEY = 'REGISTER_MEMBER_KEY';
 const routes = [
   {
     component: App,
@@ -20,6 +22,12 @@ const routes = [
         exact: true,
         component: LoginPage,
         key: LOGIN_PAGE_KEY,
+      },
+      {
+        path: '/register-member',
+        exact: true,
+        component: RegisterNewMember,
+        key: REGISTER_MEMBER_KEY,
       },
     ],
   },
