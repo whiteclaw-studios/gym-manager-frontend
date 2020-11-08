@@ -15,6 +15,7 @@ export function* loginWithPasswordSaga(params = {}) {
         userName,
         password: encodedPassword,
       },
+      ignoreToken: true,
     });
 
     const parsedResponse = responseParser(response);

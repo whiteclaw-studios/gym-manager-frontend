@@ -25,6 +25,7 @@ class App extends React.Component {
     this.deferredPrompt = null;
     this.state = {
       showInstallUI: false,
+      showHeader: false,
     };
   }
   showInstallPromotion = () => {
@@ -67,11 +68,6 @@ class App extends React.Component {
     window.addEventListener('beforeinstallprompt', this.beforeInstallPrompt);
     window.addEventListener('appinstalled', this.appInstalled);
     this.props.dispatch(getAdminInfo());
-    const { isLoggedIn } = this.props;
-    if (!isLoggedIn) {
-      // if not loggedin redirect to login
-      this.props.history.push('/login');
-    }
   }
   componentDidUpdate(prevProps) {
     const {
@@ -81,39 +77,39 @@ class App extends React.Component {
     const { isLoggedIn, infoLoaded } = this.props;
     // going back to previous page once logged in
 
-    if (infoLoadedPrevProp !== infoLoaded && infoLoaded) {
-      console.log(
-        'debugger ',
-        infoLoadedPrevProp !== infoLoaded,
-        infoLoaded,
-        isLoggedIn,
-      );
-      if (isLoggedInPrevProp !== isLoggedIn && isLoggedIn) {
-        this.props.history.goBack();
-      } else if (!isLoggedIn) {
-        this.props.history.push('/login');
-      }
-    }
+    // if (infoLoadedPrevProp !== infoLoaded && infoLoaded) {
+    //   if (isLoggedInPrevProp !== isLoggedIn && isLoggedIn) {
+    //     this.props.history.goBack();
+    //   } else if (!isLoggedIn) {
+    //     this.props.history.push('/login');
+    //   }
+    // }
   }
   closeInstallUI = () => {
     this.setState({
       showInstallUI: false,
     });
   };
+  showHeaderHandle = () => {
+    this.setState({
+      showHeader: true,
+    });
+  };
   render() {
     const { route = {}, toasterConf, isLoggedIn, infoLoaded } = this.props;
-    const { showInstallUI } = this.state;
+    const { showInstallUI, showHeader } = this.state;
     return (
       <Wrap>
         {showInstallUI && (
           <button onClick={this.promptUserToInstall}>Add to home screen</button>
         )}
-        <Header show={false} />
-        {!infoLoaded ? (
+        <Header show={this.state.showHeader} />
+        {!infoLoaded && false ? (
           <SplashScreen />
         ) : (
           renderRoutes(route.routes, {
             ...this.props,
+            showHeaderHandle: this.showHeaderHandle,
           })
         )}
         <ToasterManager {...toasterConf} />

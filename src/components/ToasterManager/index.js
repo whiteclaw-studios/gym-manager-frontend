@@ -60,7 +60,7 @@ class ToasterManager extends React.PureComponent {
 }
 
 ToasterManager.propTypes = {
-  config: PropTypes.object,
+  config: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   showToaster: PropTypes.bool,
   timestamp: PropTypes.number,
 };

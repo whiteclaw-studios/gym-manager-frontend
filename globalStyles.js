@@ -16,7 +16,7 @@ html {
   
   body {
     font-size: 10px;
-    font-family:'Montserrat','Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family:'OpensansRegular','Helvetica Neue', Helvetica, Arial, sans-serif;
     overflow-x:hidden ;
     -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
     margin-top: 0px !important;

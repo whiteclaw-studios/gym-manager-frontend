@@ -10,11 +10,21 @@
 }
 @font-face {
 	font-family: 'MontserratRegular';
-	src: url('../fonts/Montserrat-Light.ttf') format('ttf');
+	src: url('../fonts/Montserrat-Regular.ttf') format('ttf');
 	font-display: swap;
 }
 @font-face {
-	font-family: 'IBMPlexSans';
-	src: url('../fonts/IBMPlexSans-Regular.ttf') format('ttf');
+	font-family: 'OpensansRegular';
+	src: url('../fonts/OpenSans-Regular.ttf') format('ttf');
+	font-display: swap;
+}
+@font-face {
+	font-family: 'OpensansSemibold';
+	src: url('../fonts/OpenSans-SemiBold.ttf') format('ttf');
+	font-display: swap;
+}
+@font-face {
+	font-family: 'OpensansBold';
+	src: url('../fonts/OpenSans-Bold.ttf') format('ttf');
 	font-display: swap;
 }
