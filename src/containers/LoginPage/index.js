@@ -134,7 +134,14 @@ class LoginPage extends React.Component {
           <ButtonWrap>
             <Button onClick={this.onLogin}>-></Button>
           </ButtonWrap>
-          <LinkTag href="/">Forgot Password?</LinkTag>
+          <LinkTag
+            onClick={(e) => {
+              e.preventDefault();
+              this.props.history.push('/forgot-password');
+            }}
+          >
+            Forgot Password?
+          </LinkTag>
         </LoginWrap>
       </Container>
     );
