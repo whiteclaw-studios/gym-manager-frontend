@@ -81,3 +81,6 @@ export const debounce = (func, delay = 0) => {
     debounceTimer = setTimeout(() => func.apply(context, args), delay);
   };
 };
+export const isClientSide = () => {
+  return typeof window === 'object';
+};

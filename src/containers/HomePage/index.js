@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { selectHomePageState } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo';
 import Search from '../../components/Search';
+import Modal from '../../components/Modal/';
 
 const Wrapper = styled('div')`
   width: 100%;
@@ -28,6 +29,9 @@ const ContentWrap = styled('h1')`
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      close: true,
+    };
     this.props.showHeaderHandle(); // to show the header
   }
 
@@ -37,6 +41,12 @@ class HomePage extends React.Component {
       <Wrapper>
         <Search />
         <MembersInfo />
+        <Modal
+          show={this.state.close}
+          close={() => this.setState({ close: false })}
+        >
+          Hello
+        </Modal>
       </Wrapper>
     );
   }
