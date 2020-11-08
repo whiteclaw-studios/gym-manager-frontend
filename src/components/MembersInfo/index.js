@@ -75,17 +75,16 @@ const Info = styled('div')`
 const Plan = styled(Item)`
   @media (max-width: 992px) {
     opacity: 0.7;
+    margin-top: 0.5rem;
   }
   @media (max-width: 360px) {
-    max-width: 4rem;
+    max-width: 7.5rem;
   }
 `;
 const Due = styled(Item)`
   @media (max-width: 992px) {
     opacity: 0.7;
-  }
-  @media (max-width: 360px) {
-    max-width: 5rem;
+    margin-top: 0.5rem;
   }
 `;
 const Paid = styled(Button)`
@@ -194,7 +193,9 @@ export default class MembersInfo extends React.Component {
               className={css`
                 display: flex;
                 flex: 1;
-                margin-top: 0.5rem;
+                @media (max-width: 992px) {
+                  flex-direction: column;
+                }
               `}
             >
               <Plan>{plan}</Plan>
