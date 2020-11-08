@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { selectHomePageState } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo';
 import Search from '../../components/Search';
-import Modal from '../../components/Modal/';
+import PaymentPopup from '../../components/PaymentPopup';
 
 const Wrapper = styled('div')`
   width: 100%;
@@ -31,22 +31,39 @@ class HomePage extends React.Component {
     super(props);
     this.state = {
       close: true,
+      paymentPopupInfo: {
+        open: false,
+      },
     };
     this.props.showHeaderHandle(); // to show the header
   }
-
+  onClosePaymentPopup = () => {
+    this.setState({
+      paymentPopupInfo: {
+        ...this.state.paymentPopupInfo,
+        open: false,
+      },
+    });
+  };
+  onOpenPaymentPopup = () => {
+    this.setState({
+      paymentPopupInfo: {
+        ...this.state.paymentPopupInfo,
+        open: true,
+      },
+    });
+  };
   render() {
+    console.log('state', this.state);
     const { homePage } = this.props;
     return (
       <Wrapper>
         <Search />
         <MembersInfo />
-        <Modal
-          show={this.state.close}
-          close={() => this.setState({ close: false })}
-        >
-          Hello
-        </Modal>
+        <PaymentPopup
+          {...this.state.paymentPopupInfo}
+          onClose={this.onClosePaymentPopup}
+        />
       </Wrapper>
     );
   }

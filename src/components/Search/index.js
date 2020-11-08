@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { BG_COLOR, TITLE_COLOR } from '../../constants';
+import { BG_COLOR, SECONDARY_BLACK } from '../../constants';
 import { MontserratRegular } from '../../utils/fonts';
 import { debounce } from '../../utils/helpers';
 const Wrap = styled('div')`
@@ -11,11 +11,11 @@ const SearchBar = styled('input')`
   width: 100%;
   border: none;
   background: ${BG_COLOR};
-  border-bottom: 1px solid ${TITLE_COLOR};
+  border-bottom: 1px solid ${SECONDARY_BLACK};
   padding: 1rem;
   font-family: ${MontserratRegular};
   &:focus {
-    border-bottom: 1px solid ${TITLE_COLOR};
+    border-bottom: 1px solid ${SECONDARY_BLACK};
   }
 `;
 export default class Search extends React.Component {

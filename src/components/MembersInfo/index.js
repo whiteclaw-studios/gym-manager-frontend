@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { GREY, TITLE_COLOR, WHITE } from '../../constants';
+import { GREY, SECONDARY_BLACK, WHITE } from '../../constants';
 import { MontserratRegular, OpensansBold } from '../../utils/fonts';
 import Button from '../Button';
 const Wrap = styled('div')`
@@ -13,7 +13,7 @@ const Wrap = styled('div')`
 const Title = styled('p')`
   margin: 1.6rem 0;
   font-size: 2rem;
-  color: ${TITLE_COLOR};
+  color: ${SECONDARY_BLACK};
   font-family: ${OpensansBold};
   @media (max-width: 992px) {
     font-size: 1.6rem;
@@ -32,7 +32,7 @@ const HeadingRow = styled(Row)`
 const Item = styled('li')`
   flex: 1;
   font-size: 1.4rem;
-  color: ${TITLE_COLOR};
+  color: ${SECONDARY_BLACK};
   max-width: 17rem;
   white-space: nowrap;
   overflow: hidden;
@@ -44,7 +44,7 @@ const Item = styled('li')`
 `;
 
 const HeadingItem = styled(Item)`
-  color: ${TITLE_COLOR};
+  color: ${SECONDARY_BLACK};
   opacity: 0.7;
 `;
 const MembersWrap = styled('div')``;

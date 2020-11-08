@@ -1,5 +1,5 @@
 import { injectGlobal } from 'emotion';
-import { BG_COLOR } from './src/constants';
+import { BG_COLOR, GREEN } from './src/constants';
 injectGlobal`
 html {
   font-size: 62.5%;
@@ -48,4 +48,18 @@ html {
   .stop-scroll {
     overflow:hidden;
   }
+
+  input[type="checkbox"] {
+    outline: 0;
+    visibility: hidden;
+    width: 1.25rem;
+    margin: 0;
+    display: block;
+    float: left;
+    font-size: inherit;
+  }
+}
+
+
+
 `;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled, { css, cx } from 'react-emotion';
-import { GREEN, WHITE } from '../../constants';
+import { DISABLED_BUTTON, GREEN, WHITE } from '../../constants';
 import { MontserratBold } from '../../utils/fonts';
 const Wrap = styled('button')`
   outline: none;
@@ -9,7 +9,6 @@ const Wrap = styled('button')`
   border: 1px solid ${GREEN};
   padding: 1.2rem;
   color: ${WHITE};
-  border-radius: 1rem;
   font-size: 1.4rem;
   font-family: ${MontserratBold};
   cursor: pointer;
@@ -18,7 +17,13 @@ const Wrap = styled('button')`
     cursor: default;
   }
 `;
-function Button({ className, children, ...otherProps }) {
+function Button({
+  className,
+  children,
+  disabled = false,
+  onClick = () => {},
+  ...otherProps
+}) {
   const [hoveredState, setHoverState] = useState(false);
 
   return (
@@ -32,9 +37,16 @@ function Button({ className, children, ...otherProps }) {
               border: 1px solid ${GREEN};
             `
           : '',
+        disabled &&
+          css`
+            background: ${DISABLED_BUTTON};
+            border: none;
+            cursor: none;
+          `,
       )}
-      onMouseOver={() => setHoverState(true)}
-      onMouseLeave={() => setHoverState(false)}
+      onMouseOver={disabled ? () => {} : () => setHoverState(true)}
+      onMouseLeave={disabled ? () => {} : () => setHoverState(false)}
+      onClick={disabled ? () => {} : onClick}
       {...otherProps}
     >
       {children}
