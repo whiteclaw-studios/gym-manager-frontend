@@ -1,4 +1,4 @@
-import { DISPLAY_TOASTER, LOGIN_RESPONSE } from './constants';
+import { DISPLAY_TOASTER, LOAD_ADMIN_INFO, LOGIN_RESPONSE } from './constants';
 
 export const initialState = {
   toasterConf: {
@@ -7,6 +7,7 @@ export const initialState = {
   },
   adminInfo: {
     isLoggedIn: false,
+    infoLoaded: false, // used to show page loader
   },
 };
 
@@ -26,6 +27,15 @@ const reducer = (preloadedState = null) => (
       };
     }
     case LOGIN_RESPONSE: {
+      return {
+        ...state,
+        adminInfo: {
+          ...state.adminInfo,
+          ...action.payload,
+        },
+      };
+    }
+    case LOAD_ADMIN_INFO: {
       return {
         ...state,
         adminInfo: {

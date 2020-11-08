@@ -7,8 +7,13 @@ import { connect } from 'react-redux';
 import { BG_COLOR } from '../../constants';
 import Header from '../../components/Header';
 import ToasterManager from '../../components/ToasterManager';
-import { selectLoginState, selectToasterConf } from '../../selectors/';
+import {
+  selectInfoLoadedState,
+  selectLoginState,
+  selectToasterConf,
+} from '../../selectors/';
 import SplashScreen from '../../components/SplashScreen';
+import { getAdminInfo } from './actions';
 const Wrap = styled('div')`
   background: ${BG_COLOR};
   height: 100%;
@@ -61,7 +66,7 @@ class App extends React.Component {
   componentDidMount() {
     window.addEventListener('beforeinstallprompt', this.beforeInstallPrompt);
     window.addEventListener('appinstalled', this.appInstalled);
-
+    this.props.dispatch(getAdminInfo());
     const { isLoggedIn } = this.props;
     if (!isLoggedIn) {
       // if not loggedin redirect to login
@@ -69,11 +74,25 @@ class App extends React.Component {
     }
   }
   componentDidUpdate(prevProps) {
-    const { isLoggedIn: isLoggedInPrevProp } = prevProps;
-    const { isLoggedIn } = this.props;
+    const {
+      isLoggedIn: isLoggedInPrevProp,
+      infoLoaded: infoLoadedPrevProp,
+    } = prevProps;
+    const { isLoggedIn, infoLoaded } = this.props;
     // going back to previous page once logged in
-    if (isLoggedInPrevProp !== isLoggedIn && isLoggedIn) {
-      this.props.history.goBack();
+
+    if (infoLoadedPrevProp !== infoLoaded && infoLoaded) {
+      console.log(
+        'debugger ',
+        infoLoadedPrevProp !== infoLoaded,
+        infoLoaded,
+        isLoggedIn,
+      );
+      if (isLoggedInPrevProp !== isLoggedIn && isLoggedIn) {
+        this.props.history.goBack();
+      } else if (!isLoggedIn) {
+        this.props.history.push('/login');
+      }
     }
   }
   closeInstallUI = () => {
@@ -82,7 +101,7 @@ class App extends React.Component {
     });
   };
   render() {
-    const { route = {}, toasterConf, isLoggedIn } = this.props;
+    const { route = {}, toasterConf, isLoggedIn, infoLoaded } = this.props;
     const { showInstallUI } = this.state;
     return (
       <Wrap>
@@ -90,7 +109,7 @@ class App extends React.Component {
           <button onClick={this.promptUserToInstall}>Add to home screen</button>
         )}
         <Header show={false} />
-        {!isLoggedIn ? (
+        {!infoLoaded ? (
           <SplashScreen />
         ) : (
           renderRoutes(route.routes, {
@@ -107,6 +126,7 @@ const mapStateToProps = (state) => {
     ...state,
     isLoggedIn: selectLoginState(state),
     toasterConf: selectToasterConf(state),
+    infoLoaded: selectInfoLoadedState(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {

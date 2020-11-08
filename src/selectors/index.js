@@ -5,10 +5,13 @@ const selectLoginPageState = (state) => get(state, 'loginPage', null) || {};
 const selectToasterConf = (state) => get(state, 'app.toasterConf', {});
 const selectLoginState = (state) =>
   get(state, 'app.adminInfo.isLoggedIn', false);
+const selectInfoLoadedState = (state) =>
+  get(state, 'app.adminInfo.infoLoaded', false);
 export {
   selectAppState,
   selectHomePageState,
   selectLoginPageState,
   selectToasterConf,
   selectLoginState,
+  selectInfoLoadedState,
 };
