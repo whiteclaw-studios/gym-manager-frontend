@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import downarrow from '../../images/downarrow.png';
 import { css } from 'emotion';
-import { ALLY_GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
+import { GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
 import styled from 'react-emotion';
 const Wrap = styled('div')`
   position: relative;
@@ -77,7 +77,7 @@ export default class DropDown extends React.Component {
             activeItem === index &&
             css`
               background: #ffffff;
-              color: ${ALLY_GREEN};
+              color: ${GREEN};
             `
           }
           onClick={() => {
