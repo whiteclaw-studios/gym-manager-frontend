@@ -10,6 +10,7 @@ import Button from '../../components/Button';
 import LinkTag from '../../components/LinkTag';
 import { loginWithPassword } from './actions';
 import { validateLoginInputs } from '../../utils/helpers';
+import { getAdminInfo } from '../App/actions';
 const Container = styled('div')`
   width: 100%;
   display: flex;
@@ -41,14 +42,14 @@ const UsernameWrap = styled('div')`
   margin-bottom: 2.4rem;
   width: 40rem;
   @media (max-width: 420px) {
-    width: 25rem;
+    width: 23rem;
   }
 `;
 const PasswordWrap = styled('div')`
   margin-bottom: 2.4rem;
   width: 40rem;
   @media (max-width: 420px) {
-    width: 25rem;
+    width: 23rem;
   }
 `;
 const ButtonWrap = styled('div')`
@@ -88,6 +89,7 @@ class LoginPage extends React.Component {
         loginWithPassword({
           userName: username.value,
           password: password.value,
+          successCallback: () => this.props.dispatch(getAdminInfo()),
         }),
       );
     } else {

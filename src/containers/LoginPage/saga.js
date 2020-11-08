@@ -6,7 +6,7 @@ import { responseParser } from '../../utils/responseParser';
 import { displayToaster, loginResponse } from '../App/actions';
 export function* loginWithPasswordSaga(params = {}) {
   try {
-    const { userName, password } = params;
+    const { userName, password, successCallback = () => {} } = params;
     const encodedPassword = btoa(password);
     const response = yield call(axiosRequest, {
       method: 'POST',
@@ -31,6 +31,7 @@ export function* loginWithPasswordSaga(params = {}) {
           timeout: 2000,
         }),
       );
+      if (successCallback) successCallback();
     } else {
       const { errorMessage = 'NA' } = parsedResponse;
       yield put(

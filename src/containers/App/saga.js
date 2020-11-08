@@ -8,7 +8,7 @@ function* getAdminInfoSaga(params = {}) {
   try {
     const response = yield call(axiosWrapper, {
       method: 'GET',
-      url: apiUrls.LOGIN_URL,
+      url: apiUrls.ADMIN_INFO_URL,
     });
 
     const parsedResponse = responseParser(response);
