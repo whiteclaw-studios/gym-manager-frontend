@@ -39,7 +39,7 @@ const Label = styled('label')`
   opacity: 0.6;
 `;
 const InputWrap = styled('div')`
-  margin: 0.5rem 0;
+  margin: 0.8rem 0;
 `;
 const NameInput = styled(Input)`
   width: 20rem;
@@ -51,17 +51,20 @@ const AgeInput = styled(Input)`
 const MobileInput = styled(Input)`
   width: 20rem;
 `;
-
+const EmailInput = styled(Input)``;
 const Controls = styled('div')`
   display: flex;
   margin: 2.4rem 0 0;
+  justify-content: center;
 `;
 const Register = styled(SecondaryButton)`
-  margin-left: 1.2rem;
+  margin-left: 2.4rem;
   font-size: 1.4rem;
+  max-width: 10rem;
 `;
 const Cancel = styled(InvertSecondaryButton)`
   font-size: 1.4rem;
+  max-width: 10rem;
 `;
 export default class RegisterNewMember extends React.Component {
   constructor(props) {
@@ -72,24 +75,49 @@ export default class RegisterNewMember extends React.Component {
         value: '',
         dirty: false,
         error: false,
-        type: 'username',
+        type: 'firstname',
       },
       age: {
         value: '',
         dirty: false,
         error: false,
-        type: 'number',
+        type: 'age',
       },
       mobile: {
         value: '',
         dirty: false,
         error: false,
-        type: 'number',
+        type: 'mobile',
+      },
+      email: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'email',
+      },
+      plan: {
+        selectedItemIndex: -1,
+      },
+      gender: {
+        selectedItemIndex: -1,
+      },
+      branch: {
+        selectedItemIndex: -1,
       },
     };
   }
+  onValueChange = (data) => {
+    this.setState(data);
+  };
+  onSelectDropdown = (index, name) => {
+    this.setState({
+      [name]: {
+        selectedItemIndex: index,
+      },
+    });
+  };
   render() {
-    const { name, age } = this.state;
+    const { name, age, email, mobile, plan, gender, branch } = this.state;
     return (
       <Wrap>
         <Content>
@@ -98,29 +126,75 @@ export default class RegisterNewMember extends React.Component {
             <Column>
               <InputWrap>
                 <Label>Name</Label>
-                <NameInput state={name} name="name" />
+                <NameInput
+                  state={name}
+                  name="name"
+                  onValueChange={this.onValueChange}
+                  showError={name.error}
+                  errorText="Invalid name"
+                />
               </InputWrap>
               <InputWrap>
                 <Label>Branch</Label>
-                <DropDown listItems={['Thiruvottiyur', 'tambaram']} />
+                <DropDown
+                  name="branch"
+                  listItems={['Thiruvottiyur', 'tambaram']}
+                  placeholder=""
+                  activeItem={branch.selectedItemIndex}
+                  onSelect={this.onSelectDropdown}
+                />
               </InputWrap>
               <InputWrap>
                 <Label>Gender</Label>
-                <DropDown listItems={['Male', 'Female', 'Others']} />
+                <DropDown
+                  name="gender"
+                  listItems={['Male', 'Female', 'Others']}
+                  placeholder=""
+                  activeItem={gender.selectedItemIndex}
+                  onSelect={this.onSelectDropdown}
+                />
+              </InputWrap>
+              <InputWrap>
+                <Label>Email</Label>
+                <EmailInput
+                  state={email}
+                  name="email"
+                  onValueChange={this.onValueChange}
+                  showError={email.error}
+                  errorText="Invalid email"
+                />
               </InputWrap>
             </Column>
             <Column>
               <InputWrap>
                 <Label>Age</Label>
-                <AgeInput state={age} name="age" />
+                <AgeInput
+                  state={age}
+                  name="age"
+                  onValueChange={this.onValueChange}
+                  showError={age.error}
+                  errorText="Invalid age"
+                />
               </InputWrap>
               <InputWrap>
                 <Label>Mobile</Label>
-                <MobileInput state={age} name="age" />
+                <MobileInput
+                  state={mobile}
+                  name="mobile"
+                  onValueChange={this.onValueChange}
+                  showError={mobile.error}
+                  errorText="Invalid mobile number"
+                />
               </InputWrap>
               <InputWrap>
                 <Label>Plan</Label>
-                <DropDown listItems={['$200/month', '$500/year']} />
+                <DropDown
+                  name="plan"
+                  listItems={['$200/month', '$500/year']}
+                  placeholder=""
+                  activeItem={plan.selectedItemIndex}
+                  onSelect={this.onSelectDropdown}
+                />
               </InputWrap>
             </Column>
           </Row>

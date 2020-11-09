@@ -37,6 +37,7 @@ const Arrow = styled('img')`
   width: 100%;
   height: 100%;
   cursor: pointer;
+  flex: 1;
 `;
 const OptionsWrap = styled('ul')`
   position: absolute;
@@ -55,7 +56,9 @@ const ItemWrap = styled('li')`
     cursor: pointer;
   }
 `;
-
+const Data = styled('div')`
+  flex: 2;
+`;
 export default class DropDown extends React.Component {
   constructor(props) {
     super(props);
@@ -69,7 +72,7 @@ export default class DropDown extends React.Component {
     });
   };
   showOptions = () => {
-    const { activeItem, onSelect, listItems } = this.props;
+    const { activeItem, onSelect, listItems, name } = this.props;
     return listItems.map((item, index) => {
       return (
         <ItemWrap
@@ -84,7 +87,7 @@ export default class DropDown extends React.Component {
             this.setState({
               expand: false,
             });
-            onSelect(index);
+            onSelect(index, name);
           }}
         >
           {item}
@@ -112,7 +115,13 @@ export default class DropDown extends React.Component {
           }
           onClick={this.onExpand}
         >
-          {activeItem < 0 ? placeholder : <Item>{listItems[activeItem]}</Item>}
+          <Data>
+            {activeItem < 0 ? (
+              placeholder
+            ) : (
+              <Item>{listItems[activeItem]}</Item>
+            )}
+          </Data>
           <ArrowWrap>
             <Arrow src={downarrow} onClick={this.onExpand} />
           </ArrowWrap>

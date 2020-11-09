@@ -76,14 +76,17 @@ export const SecondaryButton = (props) => (
     `}
   />
 );
-export const InvertSecondaryButton = (props) => (
+export const InvertSecondaryButton = ({ className, ...props }) => (
   <BlackButton
     {...props}
-    className={css`
-      background: ${WHITE};
-      border: 1px solid ${SECONDARY_BLACK};
-      color: ${SECONDARY_BLACK};
-    `}
+    className={cx(
+      className,
+      css`
+        background: ${WHITE};
+        border: 1px solid ${SECONDARY_BLACK};
+        color: ${SECONDARY_BLACK};
+      `,
+    )}
     hoveredCss={css`
       background: ${SECONDARY_BLACK};
       color: ${WHITE};

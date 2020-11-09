@@ -5,6 +5,8 @@ const validations = {
     password: regex.PASSWORD,
     mobile: regex.MOBILE,
     username: regex.USER_NAME,
+    age: regex.AGE,
+    firstname: regex.FIRST_NAME,
   },
 
   check: (state) => {
