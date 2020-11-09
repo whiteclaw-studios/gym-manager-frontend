@@ -1559,7 +1559,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../../selectors/": [
+  "../../selectors": [
     {
       "id": "./src/selectors/index.js",
       "name": "./src/selectors/index.js",

@@ -8,15 +8,62 @@ const Wrap = styled('div')`
   justify-content: center;
   align-items: center;
   font-size: 2rem;
+  flex-direction: column;
+  padding: 2.4rem;
+  position: absolute;
 `;
 const Title = styled('h4')`
   font-size: 1.6rem;
   color: ${GREEN};
 `;
+const LoaderWrap = styled('div')`
+  color: #ffffff;
+  position: relative;
+  .loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .loader > span {
+    background: ${GREEN};
+    border-radius: 50%;
+    margin: 5rem 0.5rem;
+    animation: bouncingLoader 0.6s infinite alternate;
+  }
+  .loader > span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .loader > span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  @keyframes bouncingLoader {
+    from {
+      width: 0.1rem;
+      height: 0.1rem;
+      opacity: 1;
+      transform: translate3d(0);
+    }
+    to {
+      width: 1rem;
+      height: 1rem;
+      opacity: 0.1;
+      transform: translate3d(0, -1rem, 0);
+    }
+  }
+`;
 function SplashScreen() {
   return (
     <Wrap>
-      <Title>Fitboss...</Title>
+      <Title>Fitboss</Title>
+      <LoaderWrap id="bounce-loader">
+        <div className="loader">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </LoaderWrap>
     </Wrap>
   );
 }

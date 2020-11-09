@@ -81,16 +81,16 @@ class App extends React.Component {
   componentDidUpdate(prevProps) {
     const {
       isLoggedIn: isLoggedInPrevProp,
-      infoLoaded: infoLoadedPrevProp,
+      isAdminInfoLoaded: infoLoadedPrevProp,
     } = prevProps;
-    const { isLoggedIn, infoLoaded } = this.props;
+    const { isLoggedIn, isAdminInfoLoaded } = this.props;
     // going back to previous page once logged in
 
-    if (infoLoadedPrevProp !== infoLoaded && infoLoaded) {
+    if (infoLoadedPrevProp !== isAdminInfoLoaded && isAdminInfoLoaded) {
       console.log(
         'debugger',
         infoLoadedPrevProp,
-        infoLoaded,
+        isAdminInfoLoaded,
         isLoggedInPrevProp,
         isLoggedIn,
       );
@@ -118,7 +118,7 @@ class App extends React.Component {
     });
   };
   render() {
-    const { route = {}, toasterConf, isLoggedIn, infoLoaded } = this.props;
+    const { route = {}, toasterConf, isAdminInfoLoaded } = this.props;
     const { showInstallUI, showHeader, mountToasterManager } = this.state;
     return (
       <Wrap>
@@ -126,7 +126,7 @@ class App extends React.Component {
           <button onClick={this.promptUserToInstall}>Add to home screen</button>
         )}
         <Header show={this.state.showHeader} />
-        {!infoLoaded && false ? (
+        {!isAdminInfoLoaded ? (
           <SplashScreen />
         ) : (
           renderRoutes(route.routes, {
@@ -145,7 +145,7 @@ const mapStateToProps = (state) => {
     ...state,
     isLoggedIn: selectLoginState(state),
     toasterConf: selectToasterConf(state),
-    infoLoaded: selectInfoLoadedState(state),
+    isAdminInfoLoaded: selectInfoLoadedState(state),
     branchDetails: selectBranchDetails(state),
   };
 };
