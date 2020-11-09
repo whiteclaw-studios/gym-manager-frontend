@@ -28,6 +28,7 @@ class App extends React.Component {
     this.state = {
       showInstallUI: false,
       showHeader: false,
+      mountToasterManager: false,
     };
   }
   showInstallPromotion = () => {
@@ -66,11 +67,17 @@ class App extends React.Component {
       });
     });
   };
+  mountToasterManager = () =>
+    this.setState({
+      mountToasterManager: true,
+    });
   componentDidMount() {
     window.addEventListener('beforeinstallprompt', this.beforeInstallPrompt);
     window.addEventListener('appinstalled', this.appInstalled);
     this.props.dispatch(getAdminInfo());
+    this.mountToasterManager();
   }
+
   componentDidUpdate(prevProps) {
     const {
       isLoggedIn: isLoggedInPrevProp,
@@ -107,7 +114,7 @@ class App extends React.Component {
   };
   render() {
     const { route = {}, toasterConf, isLoggedIn, infoLoaded } = this.props;
-    const { showInstallUI, showHeader } = this.state;
+    const { showInstallUI, showHeader, mountToasterManager } = this.state;
     return (
       <Wrap>
         {showInstallUI && (
@@ -122,9 +129,7 @@ class App extends React.Component {
             showHeaderHandle: this.showHeaderHandle,
           })
         )}
-        <div>
-          <ToasterManager {...toasterConf} />
-        </div>
+        {mountToasterManager && <ToasterManager {...toasterConf} />}
       </Wrap>
     );
   }
