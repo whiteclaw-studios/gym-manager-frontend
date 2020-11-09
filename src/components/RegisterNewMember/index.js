@@ -5,6 +5,7 @@ import { WHITE } from '../../constants';
 import Button, { InvertSecondaryButton, SecondaryButton } from '../Button';
 import DropDown from '../Dropdown';
 import Input from '../Input';
+import UploadImage from '../UploadImage';
 const Wrap = styled('div')`
   width: 100%;
   margin-top: 6.4rem;
@@ -61,7 +62,7 @@ const Controls = styled('div')`
   margin: 2.4rem 0 0;
   justify-content: center;
 `;
-const Register = styled(SecondaryButton)`
+const Register = styled(Button)`
   margin-left: 2.4rem;
   font-size: 1.4rem;
   max-width: 10rem;
@@ -108,6 +109,7 @@ export default class RegisterNewMember extends React.Component {
       branch: {
         selectedItemIndex: -1,
       },
+      images: [],
     };
   }
   onValueChange = (data) => {
@@ -124,8 +126,39 @@ export default class RegisterNewMember extends React.Component {
     const { branchDetails } = this.props;
     return branchDetails.map((branch) => branch.branchName);
   };
+  readFile = async (file) =>
+    new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => resolve(reader.result));
+      reader.readAsArrayBuffer(file);
+    });
+
+  chooseImage = async ({ srcs, files }) => {
+    let newImageData = [];
+    for (let i = 0, len = srcs.length; i < len; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      const bufferData = await this.readFile(files[i]);
+      newImageData.push({
+        src: srcs[i],
+        imageFile: files[i],
+        bufferData,
+      });
+    }
+    this.setState({
+      images: newImageData,
+    });
+  };
   render() {
-    const { name, age, email, mobile, plan, gender, branch } = this.state;
+    const {
+      name,
+      age,
+      email,
+      mobile,
+      plan,
+      gender,
+      branch,
+      images,
+    } = this.state;
     return (
       <Wrap>
         <Content>
@@ -206,6 +239,7 @@ export default class RegisterNewMember extends React.Component {
               </InputWrap>
             </Column>
           </Row>
+          <UploadImage images={images} chooseImage={this.chooseImage} />
           <Controls>
             <Cancel>Cancel</Cancel>
             <Register>Register</Register>

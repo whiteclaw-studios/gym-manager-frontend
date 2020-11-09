@@ -9,6 +9,13 @@ export const DISABLED_BUTTON = '#575757';
 export const WHITE = '#fff';
 export const SECONDARY_BLACK = '#0e0e0e';
 export const BASE_URL = 'https://fitboss-backend.herokuapp.com/api/v1';
+export const ALLOW_IMAGES_TYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/jpg',
+  'image/webp',
+  'image/bmp',
+];
 export const apiUrls = {
   LOGIN_URL: `${BASE_URL}/auth`,
   ADMIN_INFO_URL: `${BASE_URL}/admin_details`,
