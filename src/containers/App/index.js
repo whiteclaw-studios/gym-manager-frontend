@@ -112,6 +112,11 @@ class App extends React.Component {
       showHeader: true,
     });
   };
+  hideHeader = () => {
+    this.setState({
+      showHeader: false,
+    });
+  };
   render() {
     const { route = {}, toasterConf, isLoggedIn, infoLoaded } = this.props;
     const { showInstallUI, showHeader, mountToasterManager } = this.state;
@@ -127,6 +132,7 @@ class App extends React.Component {
           renderRoutes(route.routes, {
             ...this.props,
             showHeaderHandle: this.showHeaderHandle,
+            hideHeader: this.hideHeader,
           })
         )}
         {mountToasterManager && <ToasterManager {...toasterConf} />}

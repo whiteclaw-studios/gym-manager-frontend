@@ -102,12 +102,17 @@ class LoginPage extends React.Component {
   componentDidMount() {
     const root = document.getElementById('root');
     root.classList.add('stop-scroll');
+    this.props.hideHeader();
   }
   componentWillUnmount() {
     const root = document.getElementById('root');
     root.classList.remove('stop-scroll');
   }
-
+  onEnter = (e) => {
+    if (e.key === 'Enter') {
+      this.onLogin();
+    }
+  };
   render() {
     const { loginPage } = this.props;
     const { username, password } = this.state;
@@ -134,6 +139,7 @@ class LoginPage extends React.Component {
               type="password"
               showError={password.error}
               errorText="Invalid password"
+              onKeyDown={this.onEnter}
             />
           </PasswordWrap>
           <ButtonWrap>
