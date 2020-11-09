@@ -4,6 +4,7 @@ import axiosRequest from '../../utils/requestWrapper';
 import { apiUrls } from '../../constants';
 import { responseParser } from '../../utils/responseParser';
 import { displayToaster, loginResponse } from '../App/actions';
+import { setCookie } from '../../utils/helpers';
 export function* loginWithPasswordSaga(params = {}) {
   try {
     const { userName, password, successCallback = () => {} } = params;
@@ -20,6 +21,9 @@ export function* loginWithPasswordSaga(params = {}) {
 
     const parsedResponse = responseParser(response);
     if (!parsedResponse.isError) {
+      const { data } = parsedResponse;
+      const { token } = data || {};
+      setCookie('VJS', token, { days: 10 });
       yield put(
         loginResponse({
           isLoggedIn: true,

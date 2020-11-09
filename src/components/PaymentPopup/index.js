@@ -60,7 +60,6 @@ const Amount = styled('p')`
   margin-left: 1.2rem;
 `;
 function PaymentPopup({ memberName, open, onClose = () => {} } = {}) {
-  console.log('props', open, onClose);
   return (
     <ModalNew show={open} close={onClose}>
       <Wrap>

@@ -12,4 +12,5 @@ export const BASE_URL = 'https://fitboss-backend.herokuapp.com/api/v1';
 export const apiUrls = {
   LOGIN_URL: `${BASE_URL}/auth`,
   ADMIN_INFO_URL: `${BASE_URL}/admin_details`,
+  BRANCH_DETAILS_URL: `${BASE_URL}/branch_details`,
 };

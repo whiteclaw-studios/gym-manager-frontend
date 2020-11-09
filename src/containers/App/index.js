@@ -14,6 +14,7 @@ import {
 } from '../../selectors/';
 import SplashScreen from '../../components/SplashScreen';
 import { getAdminInfo } from './actions';
+import { LOGIN_ROUTE } from '../../routes';
 const Wrap = styled('div')`
   background: ${BG_COLOR};
   height: 100%;
@@ -77,13 +78,21 @@ class App extends React.Component {
     const { isLoggedIn, infoLoaded } = this.props;
     // going back to previous page once logged in
 
-    // if (infoLoadedPrevProp !== infoLoaded && infoLoaded) {
-    //   if (isLoggedInPrevProp !== isLoggedIn && isLoggedIn) {
-    //     this.props.history.goBack();
-    //   } else if (!isLoggedIn) {
-    //     this.props.history.push('/login');
-    //   }
-    // }
+    if (infoLoadedPrevProp !== infoLoaded && infoLoaded) {
+      console.log(
+        'debugger',
+        infoLoadedPrevProp,
+        infoLoaded,
+        isLoggedInPrevProp,
+        isLoggedIn,
+      );
+      if (isLoggedInPrevProp !== isLoggedIn && isLoggedIn) {
+        const currentUrl = this.props.history.location.pathname;
+        if (currentUrl === LOGIN_ROUTE) this.props.history.goBack();
+      } else if (!isLoggedIn) {
+        this.props.history.push('/login');
+      }
+    }
   }
   closeInstallUI = () => {
     this.setState({

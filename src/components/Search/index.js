@@ -25,7 +25,6 @@ export default class Search extends React.Component {
     if (!this.debouncedFn) {
       this.debouncedFn = debounce(() => {
         let searchString = event.target.value;
-        console.log('value', searchString);
         // fetchSearchData(searchString);
       }, 1000);
     }

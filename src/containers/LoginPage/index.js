@@ -89,7 +89,10 @@ class LoginPage extends React.Component {
         loginWithPassword({
           userName: username.value,
           password: password.value,
-          successCallback: () => this.props.dispatch(getAdminInfo()),
+          successCallback: () => {
+            this.props.dispatch(getAdminInfo());
+            this.props.history.push('/dashboard');
+          },
         }),
       );
     } else {

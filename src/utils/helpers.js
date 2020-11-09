@@ -6,6 +6,24 @@ export const get = (from, selector, defaultVal) => {
     .reduce((prev, cur) => prev && prev[cur], from);
   return value === undefined || value === null ? defaultVal : value;
 };
+export const setCookie = (name, value, { days = 30, secure = false } = {}) => {
+  try {
+    let date;
+    let expires;
+    if (days) {
+      date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = `expires=${date.toGMTString()}`;
+    } else {
+      expires = 'expires=Fri, 30 Dec 9999 23:59:59 GMT';
+    }
+    document.cookie = `${name}=${value};${expires};path=/;${
+      secure ? 'secure' : ''
+    }`;
+  } catch (error) {
+    // none
+  }
+};
 export const getCookie = (name, cookie) => {
   let value = '';
   try {
@@ -15,7 +33,6 @@ export const getCookie = (name, cookie) => {
   } catch (error) {
     value = '';
   }
-  // console.log('cookie', name, value);
   return value;
 };
 export const validateLoginInputs = (state, keys) => {
