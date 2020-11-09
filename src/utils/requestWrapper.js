@@ -7,6 +7,7 @@ const axiosWrapper = (options) => {
   configs.headers['Content-Type'] = 'application/json';
   if (!ignoreToken) {
     const token = getCookie('VJS');
+    console.log('token', options, token);
     configs.headers.Authorization = token;
   }
   return axios.request({ ...configs });
