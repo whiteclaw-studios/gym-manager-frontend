@@ -1,5 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { ReactLoadablePlugin } = require('react-loadable/webpack');
+
 const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 module.exports = {
@@ -78,5 +80,8 @@ module.exports = {
         to: './',
       },
     ]),
+    new ReactLoadablePlugin({
+      filename: path.resolve(process.cwd(), 'public/react-loadable.json'),
+    }),
   ],
 };

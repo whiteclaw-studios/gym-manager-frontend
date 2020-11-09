@@ -84,6 +84,7 @@ export default class DropDown extends React.Component {
     return listItems.map((item, index) => {
       return (
         <ItemWrap
+          key={item}
           className={
             activeItem === index &&
             css`

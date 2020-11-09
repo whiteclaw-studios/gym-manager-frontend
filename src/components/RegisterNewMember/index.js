@@ -3,7 +3,7 @@ import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 import { WHITE } from '../../constants';
 import Button, { InvertSecondaryButton, SecondaryButton } from '../Button';
-import DropDown from '../Dropdown';
+import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
 import UploadImage from '../UploadImage';
 const Wrap = styled('div')`
