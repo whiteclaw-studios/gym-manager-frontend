@@ -29,6 +29,9 @@ const Title = styled('div')`
 `;
 const Row = styled('div')`
   display: flex;
+  @media (max-width: 992px) {
+    flex-direction: column;
+  }
 `;
 const Column = styled('div')`
   display: flex;
