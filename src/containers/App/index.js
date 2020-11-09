@@ -122,7 +122,9 @@ class App extends React.Component {
             showHeaderHandle: this.showHeaderHandle,
           })
         )}
-        <ToasterManager {...toasterConf} />
+        <div>
+          <ToasterManager {...toasterConf} />
+        </div>
       </Wrap>
     );
   }
