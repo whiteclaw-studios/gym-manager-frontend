@@ -13,4 +13,5 @@ export const apiUrls = {
   LOGIN_URL: `${BASE_URL}/auth`,
   ADMIN_INFO_URL: `${BASE_URL}/admin_details`,
   BRANCH_DETAILS_URL: `${BASE_URL}/branch_details`,
+  ENQUIRIES_URL: `${BASE_URL}/enquiries`,
 };

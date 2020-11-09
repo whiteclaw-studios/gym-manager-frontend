@@ -7,6 +7,7 @@ const selectLoginState = (state) =>
   get(state, 'app.adminInfo.isLoggedIn', false);
 const selectInfoLoadedState = (state) =>
   get(state, 'app.adminInfo.infoLoaded', false);
+const selectBranchDetails = (state) => get(state, 'app.branchDetails.data', []);
 export {
   selectAppState,
   selectHomePageState,
@@ -14,4 +15,5 @@ export {
   selectToasterConf,
   selectLoginState,
   selectInfoLoadedState,
+  selectBranchDetails,
 };

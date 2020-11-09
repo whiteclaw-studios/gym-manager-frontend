@@ -8,6 +8,7 @@ import { BG_COLOR } from '../../constants';
 import Header from '../../components/Header';
 import ToasterManager from '../../components/ToasterManager';
 import {
+  selectBranchDetails,
   selectInfoLoadedState,
   selectLoginState,
   selectToasterConf,
@@ -132,6 +133,7 @@ const mapStateToProps = (state) => {
     isLoggedIn: selectLoginState(state),
     toasterConf: selectToasterConf(state),
     infoLoaded: selectInfoLoadedState(state),
+    branchDetails: selectBranchDetails(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {

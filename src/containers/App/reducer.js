@@ -1,4 +1,9 @@
-import { DISPLAY_TOASTER, LOAD_ADMIN_INFO, LOGIN_RESPONSE } from './constants';
+import {
+  DISPLAY_TOASTER,
+  LOAD_ADMIN_INFO,
+  LOAD_BRANCH_DETAILS,
+  LOGIN_RESPONSE,
+} from './constants';
 
 export const initialState = {
   toasterConf: {
@@ -41,6 +46,15 @@ const reducer = (preloadedState = null) => (
         adminInfo: {
           ...state.adminInfo,
           ...action.payload,
+        },
+      };
+    }
+    case LOAD_BRANCH_DETAILS: {
+      return {
+        ...state,
+        branchDetails: {
+          data: [...action.payload],
+          isLoaded: true,
         },
       };
     }

@@ -2,6 +2,7 @@ import {
   DISPLAY_TOASTER,
   GET_ADMIN_INFO,
   LOAD_ADMIN_INFO,
+  LOAD_BRANCH_DETAILS,
   LOGIN_RESPONSE,
 } from './constants';
 
@@ -26,6 +27,12 @@ export function getAdminInfo() {
 export function loadAdminInfo(payload) {
   return {
     type: LOAD_ADMIN_INFO,
+    payload,
+  };
+}
+export function loadBranchDetails(payload) {
+  return {
+    type: LOAD_BRANCH_DETAILS,
     payload,
   };
 }

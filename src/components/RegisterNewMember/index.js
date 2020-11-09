@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
+import PropTypes from 'prop-types';
 import { WHITE } from '../../constants';
 import Button, { InvertSecondaryButton, SecondaryButton } from '../Button';
 import DropDown from '../Dropdown';
@@ -44,17 +45,17 @@ const Label = styled('label')`
 const InputWrap = styled('div')`
   margin: 0.8rem 0;
 `;
-const NameInput = styled(Input)`
-  width: 20rem;
+const CommonInput = styled(Input)`
+  width: 35rem;
+  @media (max-width: 992px) {
+    width: 25rem;
+  }
 `;
-const AgeInput = styled(Input)`
-  width: 20rem;
-`;
+const NameInput = styled(CommonInput)``;
+const AgeInput = styled(CommonInput)``;
 
-const MobileInput = styled(Input)`
-  width: 20rem;
-`;
-const EmailInput = styled(Input)``;
+const MobileInput = styled(CommonInput)``;
+const EmailInput = styled(CommonInput)``;
 const Controls = styled('div')`
   display: flex;
   margin: 2.4rem 0 0;
@@ -119,6 +120,10 @@ export default class RegisterNewMember extends React.Component {
       },
     });
   };
+  getBranchNames = () => {
+    const { branchDetails } = this.props;
+    return branchDetails.map((branch) => branch.branchName);
+  };
   render() {
     const { name, age, email, mobile, plan, gender, branch } = this.state;
     return (
@@ -141,7 +146,7 @@ export default class RegisterNewMember extends React.Component {
                 <Label>Branch</Label>
                 <DropDown
                   name="branch"
-                  listItems={['Thiruvottiyur', 'tambaram']}
+                  listItems={this.getBranchNames()}
                   placeholder=""
                   activeItem={branch.selectedItemIndex}
                   onSelect={this.onSelectDropdown}
@@ -210,3 +215,6 @@ export default class RegisterNewMember extends React.Component {
     );
   }
 }
+RegisterNewMember.propTypes = {
+  branchDetails: PropTypes.array,
+};
