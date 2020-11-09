@@ -33,6 +33,7 @@ class HomePage extends React.Component {
       close: true,
       paymentPopupInfo: {
         open: false,
+        memberInfo: {},
       },
     };
     this.props.showHeaderHandle(); // to show the header
@@ -40,15 +41,15 @@ class HomePage extends React.Component {
   onClosePaymentPopup = () => {
     this.setState({
       paymentPopupInfo: {
-        ...this.state.paymentPopupInfo,
         open: false,
+        memberInfo: {},
       },
     });
   };
-  onOpenPaymentPopup = () => {
+  openPaymentPopup = (memberInfo) => {
     this.setState({
       paymentPopupInfo: {
-        ...this.state.paymentPopupInfo,
+        memberInfo,
         open: true,
       },
     });
@@ -59,7 +60,7 @@ class HomePage extends React.Component {
     return (
       <Wrapper>
         <Search />
-        <MembersInfo />
+        <MembersInfo openPaymentPopup={this.openPaymentPopup} />
         <PaymentPopup
           {...this.state.paymentPopupInfo}
           onClose={this.onClosePaymentPopup}

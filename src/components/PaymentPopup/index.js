@@ -59,12 +59,13 @@ const Amount = styled('p')`
   margin-bottom: 2.4rem;
   margin-left: 1.2rem;
 `;
-function PaymentPopup({ memberName, open, onClose = () => {} } = {}) {
+function PaymentPopup({ memberInfo = {}, open, onClose = () => {} } = {}) {
+  const { name } = memberInfo;
   return (
     <ModalNew show={open} close={onClose}>
       <Wrap>
         <Heading>Fees payment</Heading>
-        <MemberName>Rajesh</MemberName>
+        <MemberName>{name}</MemberName>
         <DatesWrap>
           <DateWrap>
             <Checkbox />
