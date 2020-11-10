@@ -22,3 +22,4 @@ export const apiUrls = {
   BRANCH_DETAILS_URL: `${BASE_URL}/branch_details`,
   ENQUIRIES_URL: `${BASE_URL}/enquiries`,
 };
+export const SPRITE_IMAGE = '';

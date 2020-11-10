@@ -61,6 +61,9 @@ const Controls = styled('div')`
   display: flex;
   margin: 2.4rem 0 0;
   justify-content: center;
+  @media (max-width: 992px) {
+    margin: 3.4rem 0 0;
+  }
 `;
 const Register = styled(Button)`
   margin-left: 2.4rem;
@@ -237,9 +240,9 @@ export default class RegisterNewMember extends React.Component {
                   onSelect={this.onSelectDropdown}
                 />
               </InputWrap>
+              <UploadImage images={images} chooseImage={this.chooseImage} />
             </Column>
           </Row>
-          <UploadImage images={images} chooseImage={this.chooseImage} />
           <Controls>
             <Cancel>Cancel</Cancel>
             <Register>Register</Register>

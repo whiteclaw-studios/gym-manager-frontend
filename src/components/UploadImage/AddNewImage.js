@@ -2,38 +2,35 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { ALLOW_IMAGES_TYPES } from '../../constants';
+import { UploadIcon } from '../SpriteIcon';
 const Wrap = styled('div')`
-  width: 9rem;
-  height: 9rem;
-  background: #f6eff6;
   border-radius: 4px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
   padding: 4px;
   cursor: default;
+
+  height: 3.4rem;
+  align-items: center;
+  position: relative;
   @media (min-width: 993px) {
     cursor: pointer;
   }
-  text-align: center;
-
-  position: relative;
 `;
 const FileUpload = styled('input')`
-  width: 76px;
-  height: 76px;
   position: absolute;
   top: 0;
   left: 0;
   opacity: 0;
+  width: 100%;
+  height: 100%;
   cursor: default;
   @media (min-width: 993px) {
     cursor: pointer;
   }
 `;
-const FileUploadIcon = styled('span')`
+const FileUploadText = styled('span')`
   width: 76px;
-  height: 76px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,7 +57,8 @@ function AddNewImage({ chooseImage = () => {} } = {}) {
   };
   return (
     <Wrap>
-      <FileUploadIcon>Upload photo</FileUploadIcon>
+      <UploadIcon></UploadIcon>
+      <FileUploadText>Upload photo</FileUploadText>
       <FileUpload
         type="file"
         id="myFile"

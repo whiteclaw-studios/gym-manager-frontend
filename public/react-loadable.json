@@ -1339,6 +1339,14 @@
       "publicPath": "bundle.js"
     }
   ],
+  "../SpriteIcon": [
+    {
+      "id": "./src/components/SpriteIcon/index.js",
+      "name": "./src/components/SpriteIcon/index.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
   "../Toaster/AnimateToaster": [
     {
       "id": "./src/components/Toaster/AnimateToaster.js",
@@ -1523,6 +1531,14 @@
     {
       "id": "./src/fonts/OpenSans-SemiBold.ttf",
       "name": "./src/fonts/OpenSans-SemiBold.ttf",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
+  "../../images/spriteImage.png": [
+    {
+      "id": "./src/images/spriteImage.png",
+      "name": "./src/images/spriteImage.png",
       "file": "bundle.js",
       "publicPath": "bundle.js"
     }
