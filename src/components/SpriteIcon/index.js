@@ -26,4 +26,24 @@ export const UploadIcon = styled(SpriteIcon)`
   width: 16px;
   height: 15px;
 `;
+export const ProfileIcon = styled(SpriteIcon)`
+  background-position: -13px -57px;
+  width: 18px;
+  height: 18px;
+`;
+export const DashboardIcon = styled(SpriteIcon)`
+  background-position: -101px -13px;
+  width: 18px;
+  height: 18px;
+`;
+export const FeeIcon = styled(SpriteIcon)`
+  background-position: -14px -101px;
+  width: 16px;
+  height: 18px;
+`;
+export const EnquiryIcon = styled(SpriteIcon)`
+  background-position: -100px -57px;
+  width: 19px;
+  height: 18px;
+`;
 export default SpriteIcon;

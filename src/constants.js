@@ -8,6 +8,7 @@ export const DARK_BLUE = '#0e0e0e';
 export const DISABLED_BUTTON = '#575757';
 export const WHITE = '#fff';
 export const SECONDARY_BLACK = '#0e0e0e';
+export const LIGHT_GREEN = '#9DF29C';
 export const BASE_URL = 'https://fitboss-backend.herokuapp.com/api/v1';
 export const ALLOW_IMAGES_TYPES = [
   'image/png',

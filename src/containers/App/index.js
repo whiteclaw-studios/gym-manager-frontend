@@ -16,11 +16,14 @@ import {
 import SplashScreen from '../../components/SplashScreen';
 import { getAdminInfo } from './actions';
 import { LOGIN_ROUTE } from '../../routes';
+import NavBar from '../../components/NavBar';
 const Wrap = styled('div')`
   background: ${BG_COLOR};
   height: 100%;
 `;
-const ChildrenWrap = styled('div')``;
+const ChildrenWrap = styled('div')`
+  margin-left: 6.4rem;
+`;
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -29,6 +32,10 @@ class App extends React.Component {
       showInstallUI: false,
       showHeader: false,
       mountToasterManager: false,
+      mountNavBar: false,
+      navmenu: {
+        activeIndex: -1,
+      },
     };
   }
   showInstallPromotion = () => {
@@ -67,15 +74,16 @@ class App extends React.Component {
       });
     });
   };
-  mountToasterManager = () =>
+  mountElements = () =>
     this.setState({
       mountToasterManager: true,
+      mountNavBar: true,
     });
   componentDidMount() {
     window.addEventListener('beforeinstallprompt', this.beforeInstallPrompt);
     window.addEventListener('appinstalled', this.appInstalled);
     this.props.dispatch(getAdminInfo());
-    this.mountToasterManager();
+    this.mountElements();
   }
 
   componentDidUpdate(prevProps) {
@@ -117,9 +125,23 @@ class App extends React.Component {
       showHeader: false,
     });
   };
+  updateActiveNavIndex = (index) => {
+    console.log('index', index);
+    this.setState({
+      navmenu: {
+        activeIndex: index,
+      },
+    });
+  };
   render() {
     const { route = {}, toasterConf, isAdminInfoLoaded } = this.props;
-    const { showInstallUI, showHeader, mountToasterManager } = this.state;
+    const {
+      showInstallUI,
+      showHeader,
+      mountToasterManager,
+      mountNavBar,
+      navmenu = {},
+    } = this.state;
     return (
       <Wrap>
         {showInstallUI && (
@@ -129,11 +151,19 @@ class App extends React.Component {
         {!isAdminInfoLoaded ? (
           <SplashScreen />
         ) : (
-          renderRoutes(route.routes, {
-            ...this.props,
-            showHeaderHandle: this.showHeaderHandle,
-            hideHeader: this.hideHeader,
-          })
+          <ChildrenWrap>
+            {renderRoutes(route.routes, {
+              ...this.props,
+              showHeaderHandle: this.showHeaderHandle,
+              hideHeader: this.hideHeader,
+            })}
+          </ChildrenWrap>
+        )}
+        {mountNavBar && (
+          <NavBar
+            activeIndex={navmenu.activeIndex}
+            updateActiveNavIndex={this.updateActiveNavIndex}
+          />
         )}
         {mountToasterManager && <ToasterManager {...toasterConf} />}
       </Wrap>
