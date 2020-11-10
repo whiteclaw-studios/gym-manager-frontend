@@ -9,7 +9,15 @@ function* getAdminInfoSaga(params = {}) {
   try {
     const token = getCookie('VJS');
     // If token  is not present in cookie ,it means not logged in
-    if (!token) return;
+    if (!token) {
+      yield put(
+        loadAdminInfo({
+          isLoggedIn: false,
+          infoLoaded: true,
+        }),
+      );
+      return;
+    }
     const response = yield call(axiosWrapper, {
       method: 'GET',
       url: apiUrls.ADMIN_INFO_URL,
