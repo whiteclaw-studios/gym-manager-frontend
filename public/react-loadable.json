@@ -1259,6 +1259,14 @@
       "publicPath": "bundle.js"
     }
   ],
+  "../../components/EllipsisLoader": [
+    {
+      "id": "./src/components/EllipsisLoader/index.js",
+      "name": "./src/components/EllipsisLoader/index.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
   "./components/EnquiryForm": [
     {
       "id": "./src/components/EnquiryForm/index.js",

@@ -126,7 +126,11 @@ class App extends React.Component {
       this.setState({
         showNavBar: false,
       });
-    } else if (window.innerWidth > 992 && !showNavBar) {
+    } else if (
+      window.innerWidth > 992 &&
+      !showNavBar &&
+      this.props.history.location.pathname !== LOGIN_ROUTE
+    ) {
       this.setState({
         showNavBar: true,
       });

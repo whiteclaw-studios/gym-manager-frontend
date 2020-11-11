@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectLoginPageState } from '../../selectors';
 import styled from 'react-emotion';
-import Header from '../../components/Header';
 import Input from '../../components/Input';
-import { DARK_BLUE, WHITE } from '../../constants';
+import { DARK_BLUE, GREEN, WHITE } from '../../constants';
 import Button from '../../components/Button';
 import LinkTag from '../../components/LinkTag';
 import { loginWithPassword } from './actions';
 import { validateLoginInputs } from '../../utils/helpers';
 import { getAdminInfo } from '../App/actions';
+import { DASHBOARD_ROUTE } from '../../routes';
+import EllipsisLoader from '../../components/EllipsisLoader';
 const Container = styled('div')`
   width: 100%;
   display: flex;
@@ -56,6 +57,20 @@ const ButtonWrap = styled('div')`
   margin: 2.4rem 0;
   width: 100%;
 `;
+const LoaderWrap = styled('div')`
+  width: 40rem;
+  margin: 2.4rem 0;
+  text-align: center;
+  border: 1px solid ${GREEN};
+  > div {
+    width: 64px;
+    height: 44px;
+    top: -10px;
+  }
+  @media (max-width: 420px) {
+    width: 23rem;
+  }
+`;
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
@@ -72,10 +87,21 @@ class LoginPage extends React.Component {
         dirty: false,
         type: 'password',
       },
+      loaderState: false,
     };
   }
   onInputChange = (data) => {
     this.setState(data);
+  };
+  showLoader = () => {
+    this.setState({
+      loaderState: true,
+    });
+  };
+  hideLoader = () => {
+    this.setState({
+      loaderState: false,
+    });
   };
 
   onLogin = () => {
@@ -85,13 +111,15 @@ class LoginPage extends React.Component {
       'password',
     ]);
     if (isValid) {
+      this.showLoader();
       this.props.dispatch(
         loginWithPassword({
           userName: username.value,
           password: password.value,
           successCallback: () => {
             this.props.dispatch(getAdminInfo());
-            this.props.history.push('/dashboard');
+            this.props.history.push(DASHBOARD_ROUTE);
+            this.hideLoader();
           },
         }),
       );
@@ -116,46 +144,63 @@ class LoginPage extends React.Component {
       this.onLogin();
     }
   };
+  onNameEnter = (e) => {
+    const { password } = this.state;
+    if (e.key === 'Enter' && password.value && !password.error) {
+      this.onLogin();
+    }
+  };
   render() {
     const { loginPage } = this.props;
-    const { username, password } = this.state;
+    const { username, password, loaderState = false } = this.state;
     return (
       <Container>
         <LoginWrap>
-          <Title>Login</Title>
-          <UsernameWrap>
-            <Input
-              name="username"
-              state={username}
-              placeholder="User name"
-              onValueChange={this.onInputChange}
-              showError={username.error}
-              errorText="Invalid username"
-            />
-          </UsernameWrap>
-          <PasswordWrap>
-            <Input
-              name="password"
-              state={password}
-              placeholder="Password"
-              onValueChange={this.onInputChange}
-              type="password"
-              showError={password.error}
-              errorText="Invalid password"
-              onKeyDown={this.onEnter}
-            />
-          </PasswordWrap>
-          <ButtonWrap>
-            <Button onClick={this.onLogin}>-></Button>
-          </ButtonWrap>
-          <LinkTag
-            onClick={(e) => {
-              e.preventDefault();
-              this.props.history.push('/forgot-password');
-            }}
-          >
-            Forgot Password?
-          </LinkTag>
+          <React.Fragment>
+            <Title>Login</Title>
+            <UsernameWrap>
+              <Input
+                name="username"
+                state={username}
+                placeholder="User name"
+                onValueChange={this.onInputChange}
+                showError={username.error}
+                errorText="Invalid username"
+                onKeyDown={this.onNameEnter}
+              />
+            </UsernameWrap>
+            <PasswordWrap>
+              <Input
+                name="password"
+                state={password}
+                placeholder="Password"
+                onValueChange={this.onInputChange}
+                type="password"
+                showError={password.error}
+                errorText="Invalid password"
+                onKeyDown={this.onEnter}
+              />
+            </PasswordWrap>
+            {loaderState ? (
+              <LoaderWrap>
+                <EllipsisLoader />
+              </LoaderWrap>
+            ) : (
+              <ButtonWrap>
+                <Button onClick={loaderState ? () => {} : this.onLogin}>
+                  Login
+                </Button>
+              </ButtonWrap>
+            )}
+            <LinkTag
+              onClick={(e) => {
+                e.preventDefault();
+                this.props.history.push('/forgot-password');
+              }}
+            >
+              Forgot Password?
+            </LinkTag>
+          </React.Fragment>
         </LoginWrap>
       </Container>
     );
