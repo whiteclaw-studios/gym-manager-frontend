@@ -36,11 +36,13 @@ class App extends React.Component {
       mountToasterManager: false,
       mountNavBar: false,
       showNavBar: true,
+      expandNavbar: false,
       navmenu: {
         activeIndex: -1,
       },
     };
   }
+
   showInstallPromotion = () => {
     this.setState({
       showInstallUI: true,
@@ -87,6 +89,8 @@ class App extends React.Component {
     window.addEventListener('appinstalled', this.appInstalled);
     this.props.dispatch(getAdminInfo());
     this.mountElements();
+    this.hideHeaderInMobile();
+    window.addEventListener('resize', this.hideHeaderInMobile);
   }
 
   componentDidUpdate(prevProps) {
@@ -113,7 +117,18 @@ class App extends React.Component {
       }
     }
   }
-
+  hideHeaderInMobile = () => {
+    const { expandNavbar, showNavBar } = this.state;
+    if (window.innerWidth <= 992 && !expandNavbar && showNavBar) {
+      this.setState({
+        showNavBar: false,
+      });
+    } else if (window.innerWidth > 992 && !showNavBar) {
+      this.setState({
+        showNavBar: true,
+      });
+    }
+  };
   closeInstallUI = () => {
     this.setState({
       showInstallUI: false,
@@ -147,6 +162,16 @@ class App extends React.Component {
       showNavBar: false,
     });
   };
+  expandNavbar = () => {
+    this.setState({
+      expandNavbar: true,
+    });
+  };
+  shrinkNavbar = () => {
+    this.setState({
+      expandNavbar: false,
+    });
+  };
 
   render() {
     const { route = {}, toasterConf, isAdminInfoLoaded } = this.props;
@@ -163,7 +188,11 @@ class App extends React.Component {
         {showInstallUI && (
           <button onClick={this.promptUserToInstall}>Add to home screen</button>
         )}
-        <Header show={this.state.showHeader} />
+        <Header
+          show={this.state.showHeader}
+          expandNavbar={this.expandNavbar}
+          showNavBar={this.showNavBar}
+        />
         {!isAdminInfoLoaded ? (
           <SplashScreen />
         ) : (
@@ -182,6 +211,10 @@ class App extends React.Component {
             activeIndex={navmenu.activeIndex}
             updateActiveNavIndex={this.updateActiveNavIndex}
             history={this.props.history}
+            expandNavbar={this.expandNavbar}
+            shrinkNavbar={this.shrinkNavbar}
+            navbarState={this.state.expandNavbar}
+            hideNavBar={this.hideNavBar}
           />
         )}
         {mountToasterManager && <ToasterManager {...toasterConf} />}

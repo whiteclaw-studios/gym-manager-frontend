@@ -23,6 +23,14 @@ const Wrap = styled('div')`
 `;
 const LogoWrap = styled('div')`
   height: 5rem;
+  @media (max-width: 992px) {
+    display: none;
+  }
+`;
+const Close = styled('span')`
+  font-size: 1.2rem;
+  height: 40px;
+  margin-top: 12px;
 `;
 const MenusWrap = styled('div')`
   flex: 3;
@@ -72,15 +80,22 @@ const footerMenus = [
     url: '/dashboard',
   },
 ];
-function NavBar({ updateActiveNavIndex, activeIndex, history }) {
-  const [expand, toExpand] = useState(false);
+function NavBar({
+  updateActiveNavIndex,
+  activeIndex,
+  history,
+  navbarState,
+  expandNavbar,
+  shrinkNavbar,
+  hideNavBar,
+}) {
   const constructMenus = () => {
     return menus.map((item, index) => {
       const { menu, Icon, url } = item;
       return (
         <Item key={menu} onMouseOver={() => updateActiveNavIndex(index)}>
           <Icon />
-          {expand && (
+          {navbarState && (
             <Menu
               className={
                 index === activeIndex
@@ -103,7 +118,7 @@ function NavBar({ updateActiveNavIndex, activeIndex, history }) {
   return (
     <Wrap
       className={
-        expand
+        navbarState
           ? css`
               width: 20rem;
               align-items: unset;
@@ -114,11 +129,12 @@ function NavBar({ updateActiveNavIndex, activeIndex, history }) {
           : ''
       }
       onMouseOver={() => {
-        toExpand(true);
+        expandNavbar(true);
       }}
-      onMouseLeave={() => toExpand(false)}
+      onMouseLeave={() => shrinkNavbar()}
     >
       <LogoWrap>BeemaFit</LogoWrap>
+      <Close onClick={() => hideNavBar()}>X</Close>
       <MenusWrap>{constructMenus()}</MenusWrap>
       <Footer>
         {footerMenus.map((item, index) => {
@@ -130,7 +146,7 @@ function NavBar({ updateActiveNavIndex, activeIndex, history }) {
               onMouseOver={() => updateActiveNavIndex(menusLength + index)}
             >
               <Icon />
-              {expand && (
+              {navbarState && (
                 <Menu
                   className={
                     menusLength + index === activeIndex
