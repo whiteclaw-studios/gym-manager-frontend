@@ -103,10 +103,13 @@ class LoginPage extends React.Component {
     const root = document.getElementById('root');
     root.classList.add('stop-scroll');
     this.props.hideHeader();
+    this.props.hideNavBar();
   }
+
   componentWillUnmount() {
     const root = document.getElementById('root');
     root.classList.remove('stop-scroll');
+    this.props.showNavBar();
   }
   onEnter = (e) => {
     if (e.key === 'Enter') {

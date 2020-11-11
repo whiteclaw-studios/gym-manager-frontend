@@ -128,6 +128,13 @@ const mockMembers = [
     due: '2 Months',
   },
   {
+    name: 'Ram',
+    memberId: 7,
+    plan: '$20/month',
+    branch: 'Ponneri',
+    due: 'Today (1 Month)',
+  },
+  {
     name: 'Sanjana',
     memberId: 5,
     plan: '$20/month',

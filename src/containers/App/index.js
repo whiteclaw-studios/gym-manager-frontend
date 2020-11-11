@@ -17,6 +17,7 @@ import SplashScreen from '../../components/SplashScreen';
 import { getAdminInfo } from './actions';
 import { LOGIN_ROUTE } from '../../routes';
 import NavBar from '../../components/NavBar';
+import { get } from '../../utils/helpers';
 const Wrap = styled('div')`
   background: ${BG_COLOR};
   height: 100%;
@@ -24,6 +25,7 @@ const Wrap = styled('div')`
 const ChildrenWrap = styled('div')`
   margin-left: 6.4rem;
 `;
+const hideNavForRoutes = [LOGIN_ROUTE];
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -33,6 +35,7 @@ class App extends React.Component {
       showHeader: false,
       mountToasterManager: false,
       mountNavBar: false,
+      showNavBar: true,
       navmenu: {
         activeIndex: -1,
       },
@@ -110,6 +113,7 @@ class App extends React.Component {
       }
     }
   }
+
   closeInstallUI = () => {
     this.setState({
       showInstallUI: false,
@@ -133,6 +137,17 @@ class App extends React.Component {
       },
     });
   };
+  showNavBar = () => {
+    this.setState({
+      showNavBar: true,
+    });
+  };
+  hideNavBar = () => {
+    this.setState({
+      showNavBar: false,
+    });
+  };
+
   render() {
     const { route = {}, toasterConf, isAdminInfoLoaded } = this.props;
     const {
@@ -140,6 +155,7 @@ class App extends React.Component {
       showHeader,
       mountToasterManager,
       mountNavBar,
+      showNavBar,
       navmenu = {},
     } = this.state;
     return (
@@ -156,10 +172,12 @@ class App extends React.Component {
               ...this.props,
               showHeaderHandle: this.showHeaderHandle,
               hideHeader: this.hideHeader,
+              showNavBar: this.showNavBar,
+              hideNavBar: this.hideNavBar,
             })}
           </ChildrenWrap>
         )}
-        {mountNavBar && (
+        {mountNavBar && showNavBar && (
           <NavBar
             activeIndex={navmenu.activeIndex}
             updateActiveNavIndex={this.updateActiveNavIndex}

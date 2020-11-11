@@ -76,7 +76,7 @@ function NavBar({ updateActiveNavIndex, activeIndex }) {
     return menus.map((item, index) => {
       const { menu, Icon } = item;
       return (
-        <Item onMouseOver={() => updateActiveNavIndex(index)}>
+        <Item key={menu} onMouseOver={() => updateActiveNavIndex(index)}>
           <Icon />
           {expand && (
             <Menu
@@ -120,7 +120,10 @@ function NavBar({ updateActiveNavIndex, activeIndex }) {
           const { menu, Icon } = item;
           const menusLength = menus.length;
           return (
-            <Item onMouseOver={() => updateActiveNavIndex(menusLength + index)}>
+            <Item
+              key={menu}
+              onMouseOver={() => updateActiveNavIndex(menusLength + index)}
+            >
               <Icon />
               {expand && (
                 <Menu
