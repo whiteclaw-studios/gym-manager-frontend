@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled, { css } from 'react-emotion';
 import { GREEN, LIGHT_GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
+import { DASHBOARD_ROUTE } from '../../routes';
 import {
   DashboardIcon,
   EnquiryIcon,
@@ -46,35 +47,36 @@ const menus = [
   {
     menu: 'Dashboard',
     Icon: DashboardIcon,
+    url: '/dashboard',
   },
   {
     menu: 'Members Directory',
     Icon: ProfileIcon,
-  },
-  {
-    menu: 'Fees Details',
-    Icon: FeeIcon,
+    url: '/members-directory',
   },
   {
     menu: 'Enquiry Details',
     Icon: EnquiryIcon,
+    url: 'enquiry-form',
   },
 ];
 const footerMenus = [
   {
     menu: 'Support',
     Icon: EnquiryIcon,
+    url: '/dashboard',
   },
   {
     menu: 'Settings',
     Icon: FeeIcon,
+    url: '/dashboard',
   },
 ];
-function NavBar({ updateActiveNavIndex, activeIndex }) {
+function NavBar({ updateActiveNavIndex, activeIndex, history }) {
   const [expand, toExpand] = useState(false);
   const constructMenus = () => {
     return menus.map((item, index) => {
-      const { menu, Icon } = item;
+      const { menu, Icon, url } = item;
       return (
         <Item key={menu} onMouseOver={() => updateActiveNavIndex(index)}>
           <Icon />
@@ -87,6 +89,9 @@ function NavBar({ updateActiveNavIndex, activeIndex }) {
                     `
                   : ''
               }
+              onClick={() => {
+                history.push(url);
+              }}
             >
               {menu}
             </Menu>

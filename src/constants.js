@@ -10,6 +10,9 @@ export const WHITE = '#fff';
 export const SECONDARY_BLACK = '#0e0e0e';
 export const LIGHT_GREEN = '#9DF29C';
 export const BASE_URL = 'https://fitboss-backend.herokuapp.com/api/v1';
+export const FEES_LAYOUT = 'FEES_LAYOUT';
+export const MEMBERS_DIRECTORY_LAYOUT = 'MEMBERS_DIRECTORY_LAYOUT';
+export const ENQUIRY_DIRECTORY_LAYOUT = 'ENQUIRY_DIRECTORY_LAYOUT';
 export const ALLOW_IMAGES_TYPES = [
   'image/png',
   'image/jpeg',
@@ -23,4 +26,5 @@ export const apiUrls = {
   BRANCH_DETAILS_URL: `${BASE_URL}/branch_details`,
   ENQUIRIES_URL: `${BASE_URL}/enquiries`,
 };
+
 export const SPRITE_IMAGE = '';

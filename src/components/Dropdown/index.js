@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import downarrow from '../../images/downarrow.png';
 import { css } from 'emotion';
-import { GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
+import { GREEN, RED, SECONDARY_BLACK, WHITE } from '../../constants';
 import styled from 'react-emotion';
+import { MontserratRegular } from '../../utils/fonts';
 const Wrap = styled('div')`
   position: relative;
   outline: none;
@@ -59,6 +60,11 @@ const ItemWrap = styled('li')`
 const Data = styled('div')`
   flex: 2;
 `;
+const Error = styled('p')`
+  color: ${RED};
+  font-size: 1.1rem;
+  font-family: ${MontserratRegular};
+`;
 export default class DropDown extends React.Component {
   constructor(props) {
     super(props);
@@ -109,6 +115,8 @@ export default class DropDown extends React.Component {
       activeItem = -1,
       listItems = [],
       placeholder = 'Select',
+      showError = false,
+      errorText = 'Select something',
     } = this.props;
     const { expand } = this.state;
     return (
@@ -139,6 +147,7 @@ export default class DropDown extends React.Component {
             <Arrow src={downarrow} onClick={this.onExpand} />
           </ArrowWrap>
         </SelectedItem>
+        {<Error>{showError && errorText}</Error>}
         {expand && <OptionsWrap>{this.showOptions()}</OptionsWrap>}
       </Wrap>
     );

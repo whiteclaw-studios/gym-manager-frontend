@@ -181,6 +181,7 @@ class App extends React.Component {
           <NavBar
             activeIndex={navmenu.activeIndex}
             updateActiveNavIndex={this.updateActiveNavIndex}
+            history={this.props.history}
           />
         )}
         {mountToasterManager && <ToasterManager {...toasterConf} />}

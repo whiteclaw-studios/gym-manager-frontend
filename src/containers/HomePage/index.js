@@ -6,6 +6,7 @@ import { selectHomePageState } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo';
 import Search from '../../components/Search';
 import PaymentPopup from '../../components/PaymentPopup';
+import { FEES_LAYOUT } from '../../constants';
 
 const Wrapper = styled('div')`
   width: 100%;
@@ -59,8 +60,10 @@ class HomePage extends React.Component {
     const { homePage } = this.props;
     return (
       <Wrapper>
-        <Search />
-        <MembersInfo openPaymentPopup={this.openPaymentPopup} />
+        <MembersInfo
+          openPaymentPopup={this.openPaymentPopup}
+          type={FEES_LAYOUT}
+        />
         <PaymentPopup
           {...this.state.paymentPopupInfo}
           onClose={this.onClosePaymentPopup}

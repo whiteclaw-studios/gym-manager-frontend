@@ -1,6 +1,14 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { GREY, SECONDARY_BLACK, WHITE } from '../../constants';
+import {
+  FEES_LAYOUT,
+  GREY,
+  MEMBERS_DIRECTORY_LAYOUT,
+  ENQUIRY_DIRECTORY_LAYOUT,
+  RED,
+  SECONDARY_BLACK,
+  WHITE,
+} from '../../constants';
 import { MontserratRegular, OpensansBold } from '../../utils/fonts';
 import Button from '../Button';
 const Wrap = styled('div')`
@@ -89,13 +97,31 @@ const Due = styled(Item)`
 `;
 const Paid = styled(Button)`
   width: 6.5rem;
-  font-family: ${MontserratRegular};
+  font-family: ${OpensansBold};
   font-size: 1.3rem;
   color: ${WHITE};
   padding: 0.1rem;
   border-radius: 0px;
   @media (max-width: 992px) {
     width: 4.4rem;
+  }
+`;
+const Edit = styled(Button)`
+  width: 6.5rem;
+  font-size: 1.2rem;
+  color: ${WHITE};
+  @media (max-width: 760px) {
+    font-size: 1rem;
+  }
+`;
+const Delete = styled(Button)`
+  width: 6.5rem;
+  color: ${WHITE};
+  font-size: 1.2rem;
+  border: 1px solid ${RED};
+  background: ${RED};
+  @media (max-width: 760px) {
+    font-size: 1rem;
   }
 `;
 const mockMembers = [
@@ -150,6 +176,49 @@ const mockMembers = [
   },
 ];
 export default class MembersInfo extends React.Component {
+  constructControls = (data) => {
+    const { name, memberId, plan, branch, due } = data;
+    const { type, openPaymentPopup = () => {} } = this.props;
+    switch (type) {
+      case FEES_LAYOUT:
+        return (
+          <Item>
+            <Paid
+              onClick={() =>
+                openPaymentPopup({
+                  name,
+                  memberId,
+                  plan,
+                  branch,
+                  due,
+                })
+              }
+            >
+              Paid
+            </Paid>
+          </Item>
+        );
+      case MEMBERS_DIRECTORY_LAYOUT: {
+        return (
+          <Item
+            className={css`
+              justify-content: space-around;
+              display: flex;
+              @media (max-width: 760px) {
+                flex-direction: column;
+                align-items: flex-end;
+              }
+            `}
+          >
+            <Edit>Edit</Edit>
+            <Delete>Delete</Delete>
+          </Item>
+        );
+      }
+      default:
+        return null;
+    }
+  };
   constructLists = () => {
     const { membersList = [], openPaymentPopup = () => {} } = this.props;
     return mockMembers.map((member, index) => {
@@ -219,29 +288,28 @@ export default class MembersInfo extends React.Component {
             </div>
           </Info>
 
-          <Item>
-            <Paid
-              onClick={() =>
-                openPaymentPopup({
-                  name,
-                  memberId,
-                  plan,
-                  branch,
-                  due,
-                })
-              }
-            >
-              Paid
-            </Paid>
-          </Item>
+          {this.constructControls(member)}
         </MemberRow>
       );
     });
   };
+  constructTitleText = () => {
+    const { type } = this.props;
+    switch (type) {
+      case FEES_LAYOUT:
+        return 'Fees Due';
+      case MEMBERS_DIRECTORY_LAYOUT:
+        return 'Members Directory';
+      case ENQUIRY_DIRECTORY_LAYOUT:
+        return 'Enquiry Directory';
+      default:
+        return '';
+    }
+  };
   render() {
     return (
       <Wrap>
-        <Title>Fees Due</Title>
+        <Title>{this.constructTitleText()}</Title>
         <HeadingRow>
           <HeadingItem
             className={css`

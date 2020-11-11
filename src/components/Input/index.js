@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import validations from '../../utils/validations';
 import { MontserratRegular } from '../../utils/fonts';
-import { DARK_BLUE } from '../../constants';
+import { DARK_BLUE, RED } from '../../constants';
 const InputWrap = styled('div')`
   width: 100%;
   font-family: ${MontserratRegular};
@@ -25,7 +25,7 @@ const StyledInput = styled('input')`
   }
 `;
 const ErrorSpan = styled('span')`
-  color: red;
+  color: ${RED};
   font-size: 1.1rem;
   margin-top: 1.4rem;
   font-family: ${MontserratRegular};
