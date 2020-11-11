@@ -5,6 +5,7 @@ import { WHITE } from '../../constants';
 import Button, { InvertSecondaryButton } from '../Button';
 import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
+import { addEnquiry } from '../../containers/EnquiryDirectory/actions';
 const Wrap = styled('div')`
   width: 100%;
   margin-top: 6.4rem;
@@ -139,8 +140,18 @@ export default class EnquiryForm extends React.Component {
     const { branchDetails } = this.props;
     return branchDetails.map((branch) => branch.branchName);
   };
+  getBranchInfoUsingId = (index) => {
+    const { branchDetails } = this.props;
+    const reqBranch =
+      branchDetails.filter(
+        (branch) => branch.id === this.state.branch.selectedItemIndex,
+      ) || {};
+    return {
+      ...reqBranch,
+    };
+  };
   onAddEnquiry = () => {
-    const { branch } = this.state;
+    const { name, mobile, email, branch } = this.state;
     const { isError, state } = this.validateInputs();
     this.setState(state);
     if (branch.selectedItemIndex < 0) {
@@ -155,6 +166,15 @@ export default class EnquiryForm extends React.Component {
       if (branch.selectedItemIndex >= 0) {
         console.log('ready to submit', branch);
         // submit data
+        this.props.dispatch(
+          addEnquiry({
+            name: name.value,
+            mailId: email.value,
+            mobileNumber: mobile.value,
+            branchId: this.getBranchInfoUsingId(branch.selectedItemIndex)
+              .branchId,
+          }),
+        );
       }
     }
   };
