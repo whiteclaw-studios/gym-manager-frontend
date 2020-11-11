@@ -6,7 +6,13 @@ import { displayToaster } from '../App/actions';
 import { ADD_ENQUIRY } from './constants';
 function* addEnquirySaga(params = {}) {
   try {
-    const { name, branchId, email: mailId, mobile: mobileNumber } = params;
+    const {
+      name,
+      branchId,
+      email: mailId,
+      mobile: mobileNumber,
+      successCallback = () => {},
+    } = params;
     const response = yield call(axiosWrapper, {
       method: 'POST',
       url: apiUrls.ENQUIRIES_URL,
@@ -27,6 +33,7 @@ function* addEnquirySaga(params = {}) {
           timeout: 2000,
         }),
       );
+      successCallback();
     } else {
       console.error('Error in adding enquiry', parsedResponse);
     }

@@ -70,7 +70,7 @@ export default class Input extends React.Component {
           {showCustomElement && <CustomElement />}
         </Section1>
 
-        {showError && <ErrorSpan>{errorText}</ErrorSpan>}
+        {<ErrorSpan>{showError ? errorText : ''}</ErrorSpan>}
       </InputWrap>
     );
   }

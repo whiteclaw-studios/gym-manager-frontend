@@ -150,6 +150,32 @@ export default class EnquiryForm extends React.Component {
       ...reqBranch,
     };
   };
+  resetState = () => {
+    this.setState({
+      name: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'firstname',
+      },
+      mobile: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'mobile',
+      },
+      email: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'email',
+      },
+      branch: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+    });
+  };
   onAddEnquiry = () => {
     const { name, mobile, email, branch } = this.state;
     const { isError, state } = this.validateInputs();
@@ -173,6 +199,7 @@ export default class EnquiryForm extends React.Component {
             mobileNumber: mobile.value,
             branchId: this.getBranchInfoUsingId(branch.selectedItemIndex)
               .branchId,
+            successCallback: this.resetState,
           }),
         );
       }
