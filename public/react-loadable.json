@@ -1543,10 +1543,10 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../../images/spriteImage.png": [
+  "../../images/SpriteImage.png": [
     {
-      "id": "./src/images/spriteImage.png",
-      "name": "./src/images/spriteImage.png",
+      "id": "./src/images/SpriteImage.png",
+      "name": "./src/images/SpriteImage.png",
       "file": "bundle.js",
       "publicPath": "bundle.js"
     }
