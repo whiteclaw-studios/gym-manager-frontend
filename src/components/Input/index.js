@@ -27,8 +27,9 @@ const StyledInput = styled('input')`
 const ErrorSpan = styled('span')`
   color: ${RED};
   font-size: 1.1rem;
-  margin-top: 1.4rem;
   font-family: ${MontserratRegular};
+  min-height: 1.4rem;
+  display: inline-block;
 `;
 const Section1 = styled('div')`
   display: flex;
@@ -70,7 +71,7 @@ export default class Input extends React.Component {
           {showCustomElement && <CustomElement />}
         </Section1>
 
-        {<ErrorSpan>{showError ? errorText : ''}</ErrorSpan>}
+        {<ErrorSpan>{showError ? errorText : ' '}</ErrorSpan>}
       </InputWrap>
     );
   }

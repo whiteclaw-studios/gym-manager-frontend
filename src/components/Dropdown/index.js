@@ -64,6 +64,8 @@ const Error = styled('p')`
   color: ${RED};
   font-size: 1.1rem;
   font-family: ${MontserratRegular};
+  min-height: 1.4rem;
+  display: inline-block;
 `;
 export default class DropDown extends React.Component {
   constructor(props) {
@@ -147,7 +149,7 @@ export default class DropDown extends React.Component {
             <Arrow src={downarrow} onClick={this.onExpand} />
           </ArrowWrap>
         </SelectedItem>
-        {<Error>{showError && errorText}</Error>}
+        {<Error>{showError ? errorText : ' '}</Error>}
         {expand && <OptionsWrap>{this.showOptions()}</OptionsWrap>}
       </Wrap>
     );
