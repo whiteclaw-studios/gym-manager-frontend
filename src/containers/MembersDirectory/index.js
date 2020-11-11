@@ -31,6 +31,10 @@ const RegisterNewMember = styled(Button)`
   box-shadow: 0px 1px 4px #a9a9a9;
 `;
 class MembersDirectory extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props.showHeaderHandle();
+  }
   render() {
     return (
       <Wrapper>

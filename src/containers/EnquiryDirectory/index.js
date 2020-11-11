@@ -16,7 +16,6 @@ const Wrapper = styled('div')`
   padding-top: 2.4rem;
   @media (max-width: 992px) {
     margin-top: 4rem;
-    padding: 0 2.4rem;
     padding-top: 1.2rem;
   }
 `;
@@ -31,6 +30,10 @@ const RegisterNewMember = styled(Button)`
   box-shadow: 0px 1px 4px #a9a9a9;
 `;
 class EnquiryDirectory extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props.showHeaderHandle(); // to show the header
+  }
   render() {
     return (
       <Wrapper>

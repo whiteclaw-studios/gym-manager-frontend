@@ -31,6 +31,9 @@ const Close = styled('span')`
   font-size: 1.2rem;
   height: 40px;
   margin-top: 12px;
+  @media (min-width: 993px) {
+    display: none;
+  }
 `;
 const MenusWrap = styled('div')`
   flex: 3;
@@ -50,6 +53,15 @@ const Menu = styled('span')`
   font-size: 1.4rem;
   color: ${WHITE};
   margin-left: 1.2rem;
+  animation: fadeIn 0.2s ease-in-out;
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `;
 const menus = [
   {
@@ -65,7 +77,7 @@ const menus = [
   {
     menu: 'Enquiry Details',
     Icon: EnquiryIcon,
-    url: 'enquiry-form',
+    url: '/enquiry-directory',
   },
 ];
 const footerMenus = [
@@ -106,6 +118,7 @@ function NavBar({
               }
               onClick={() => {
                 history.push(url);
+                shrinkNavbar();
               }}
             >
               {menu}

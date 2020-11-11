@@ -244,7 +244,9 @@ export default class RegisterNewMember extends React.Component {
             </Column>
           </Row>
           <Controls>
-            <Cancel>Cancel</Cancel>
+            <Cancel onClick={() => this.props.history.push(DASHBOARD_ROUTE)}>
+              Cancel
+            </Cancel>
             <Register>Register</Register>
           </Controls>
         </Content>

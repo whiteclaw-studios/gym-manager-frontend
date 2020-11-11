@@ -24,6 +24,9 @@ const Wrap = styled('div')`
 `;
 const ChildrenWrap = styled('div')`
   margin-left: 6.4rem;
+  @media (max-width: 992px) {
+    margin-left: 0;
+  }
 `;
 const hideNavForRoutes = [LOGIN_ROUTE];
 class App extends React.Component {
@@ -89,7 +92,6 @@ class App extends React.Component {
     window.addEventListener('appinstalled', this.appInstalled);
     this.props.dispatch(getAdminInfo());
     this.mountElements();
-    this.hideHeaderInMobile();
     window.addEventListener('resize', this.hideHeaderInMobile);
   }
 
@@ -116,6 +118,7 @@ class App extends React.Component {
         this.props.history.push('/login');
       }
     }
+    this.hideHeaderInMobile();
   }
   hideHeaderInMobile = () => {
     const { expandNavbar, showNavBar } = this.state;
