@@ -220,8 +220,8 @@ export default class MembersInfo extends React.Component {
     }
   };
   constructLists = () => {
-    const { membersList = [], openPaymentPopup = () => {} } = this.props;
-    return mockMembers.map((member, index) => {
+    const { data = [] } = this.props;
+    return data.map((member, index) => {
       const {
         profilePic = 'https://i0.wp.com/www.kahanihindi.com/wp-content/uploads/2020/02/Whatsapp-DP-images-1.jpg?resize=450%2C400&ssl=1',
         name,

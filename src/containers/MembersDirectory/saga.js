@@ -1,9 +1,12 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { apiUrls } from '../../constants';
+import { selectMembersSource } from '../../selectors';
+import { searchLogic } from '../../utils/helpers';
 import axiosWrapper from '../../utils/requestWrapper';
 import { responseParser } from '../../utils/responseParser';
 import { displayToaster } from '../App/actions';
-import { ADD_NEW_MEMBER } from './constants';
+import { loadSearchData } from './actions';
+import { ADD_NEW_MEMBER, SEARCH_MEMBERS } from './constants';
 function* addNewMember(params = {}) {
   try {
     const {
@@ -48,8 +51,34 @@ function* addNewMember(params = {}) {
     console.error('Caught in addNewMember', err);
   }
 }
+function* searchMemberSaga(params = {}) {
+  try {
+    const { searchText = '' } = params;
+    console.log('searchText', params, searchText);
+    const state = yield select();
+    const membersData = selectMembersSource(state);
+    const filteredData = searchLogic({
+      searchText,
+      dataSource: membersData,
+    });
+
+    yield put(
+      loadSearchData({
+        isSearching: !!searchText,
+        data: filteredData,
+      }),
+    );
+  } catch (err) {
+    console.error('Caught in searchMemberSaga', err);
+  }
+}
 function* watchaddNewMember() {
   yield takeEvery(ADD_NEW_MEMBER, addNewMember);
 }
-
-export const membersDirectorySagas = [watchaddNewMember()];
+function* watchSearchMemberSaga() {
+  yield takeEvery(SEARCH_MEMBERS, searchMemberSaga);
+}
+export const membersDirectorySagas = [
+  watchaddNewMember(),
+  watchSearchMemberSaga(),
+];

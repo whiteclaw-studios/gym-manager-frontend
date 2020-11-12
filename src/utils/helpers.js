@@ -101,3 +101,11 @@ export const debounce = (func, delay = 0) => {
 export const isClientSide = () => {
   return typeof window === 'object';
 };
+export const searchLogic = ({ searchText = '', dataSource = [] }) => {
+  if (!dataSource.length) return [];
+  if (!searchText) return dataSource;
+  return dataSource.filter(
+    (member) =>
+      member.name.toLowerCase().indexOf(searchText.toLowerCase()) === 0,
+  );
+};

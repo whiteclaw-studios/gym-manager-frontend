@@ -13,6 +13,9 @@ export const BASE_URL = 'https://fitboss-backend.herokuapp.com/api/v1';
 export const FEES_LAYOUT = 'FEES_LAYOUT';
 export const MEMBERS_DIRECTORY_LAYOUT = 'MEMBERS_DIRECTORY_LAYOUT';
 export const ENQUIRY_DIRECTORY_LAYOUT = 'ENQUIRY_DIRECTORY_LAYOUT';
+export const paginationConfigs = {
+  perPage: 5,
+};
 export const ALLOW_IMAGES_TYPES = [
   'image/png',
   'image/jpeg',

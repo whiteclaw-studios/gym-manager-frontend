@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'react-emotion';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Button from '../../components/Button';
 import MembersInfo from '../../components/MembersInfo';
+import Pagination from '../../components/Pagination';
 import Search from '../../components/Search';
 import {
   MEMBERS_DIRECTORY_LAYOUT,
@@ -9,6 +12,11 @@ import {
   WHITE,
 } from '../../constants';
 import { REGISTER_MEMBER_ROUTE } from '../../routes';
+import {
+  selectDataSourceForMDPage,
+  selectPaginationInMDPage,
+} from '../../selectors';
+import { searchMembers, updatePage } from './actions';
 const Wrapper = styled('div')`
   width: 100%;
   margin-top: 6.4rem;
@@ -30,15 +38,37 @@ const RegisterNewMember = styled(Button)`
   margin-bottom: 1.2rem;
   box-shadow: 0px 1px 4px #a9a9a9;
 `;
+const PaginationWrap = styled('div')`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 2.4rem 0;
+`;
 class MembersDirectory extends React.Component {
   constructor(props) {
     super(props);
     this.props.showHeaderHandle();
   }
+  onSearch = (searchText) => {
+    console.log('searchText', searchText);
+
+    this.props.dispatch(searchMembers({ searchText }));
+  };
+  getPageData = () => {
+    const { membersData, paginationInfo } = this.props;
+    const { offset, limit } = paginationInfo;
+    return membersData.slice(offset, limit);
+  };
+  onPageSelect = (pageNo) => {
+    this.props.dispatch(updatePage({ pageNo }));
+  };
   render() {
+    const { membersData, paginationInfo } = this.props;
+    const { totalPages, activePage } = paginationInfo;
+    console.log('MemberPage', this.props);
     return (
       <Wrapper>
-        <Search />
+        <Search onSearch={this.onSearch} />
         <ButtonWrap>
           <RegisterNewMember
             onClick={() => this.props.history.push(REGISTER_MEMBER_ROUTE)}
@@ -46,9 +76,31 @@ class MembersDirectory extends React.Component {
             Register New Member
           </RegisterNewMember>
         </ButtonWrap>
-        <MembersInfo type={MEMBERS_DIRECTORY_LAYOUT} />
+        <MembersInfo
+          type={MEMBERS_DIRECTORY_LAYOUT}
+          data={this.getPageData()}
+        />
+        <PaginationWrap>
+          <Pagination
+            activePage={activePage}
+            totalPages={totalPages}
+            onSelect={this.onPageSelect}
+          />
+        </PaginationWrap>
       </Wrapper>
     );
   }
 }
-export default MembersDirectory;
+const mapStateToProps = (state) => {
+  return {
+    membersData: selectDataSourceForMDPage(state),
+    paginationInfo: selectPaginationInMDPage(state),
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return { dispatch };
+};
+MembersDirectory.propTypes = {
+  route: PropTypes.object,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(MembersDirectory);

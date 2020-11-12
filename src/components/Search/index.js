@@ -20,16 +20,20 @@ const SearchBar = styled('input')`
 `;
 export default class Search extends React.Component {
   onTyping = (event) => {
-    event.persist();
+    let searchString = event.target.value;
+    const { onSearch } = this.props;
+    if (onSearch) onSearch(searchString);
+    // event.persist();
 
-    if (!this.debouncedFn) {
-      this.debouncedFn = debounce(() => {
-        let searchString = event.target.value;
-        // fetchSearchData(searchString);
-      }, 1000);
-    }
+    // if (!this.debouncedFn) {
+    //   this.debouncedFn = debounce(() => {
+    //     let searchString = event.target.value;
+    //     const { onSearch } = this.props;
+    //     if (onSearch) onSearch(searchString);
+    //   }, 100);
+    // }
 
-    this.debouncedFn();
+    // this.debouncedFn();
   };
   render() {
     return (
