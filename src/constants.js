@@ -16,6 +16,8 @@ export const ENQUIRY_DIRECTORY_LAYOUT = 'ENQUIRY_DIRECTORY_LAYOUT';
 export const paginationConfigs = {
   perPage: 5,
 };
+export const GENDER = ['Male', 'Female', 'Others'];
+export const BLOOD_GROUP_DATA = ['O-', 'O+', 'AB-', 'AB+', 'B+'];
 export const ALLOW_IMAGES_TYPES = [
   'image/png',
   'image/jpeg',

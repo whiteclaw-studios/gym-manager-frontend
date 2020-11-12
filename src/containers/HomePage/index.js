@@ -63,6 +63,7 @@ class HomePage extends React.Component {
         <MembersInfo
           openPaymentPopup={this.openPaymentPopup}
           type={FEES_LAYOUT}
+          data={[]}
         />
         <PaymentPopup
           {...this.state.paymentPopupInfo}

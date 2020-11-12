@@ -1,7 +1,12 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
-import { WHITE } from '../../constants';
+import {
+  BLOOD_GROUP_DATA,
+  GENDER,
+  SECONDARY_BLACK,
+  WHITE,
+} from '../../constants';
 import Button, { InvertSecondaryButton, SecondaryButton } from '../Button';
 import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
@@ -55,12 +60,12 @@ const InputWrap = styled('div')`
   margin: 0.8rem 0;
 `;
 const CommonInput = styled(Input)`
-  width: 35rem;
-  @media (max-width: 992px) {
-    width: 25rem;
+  @media (min-width: 993px) {
+    width: 40rem;
   }
 `;
 const NameInput = styled(CommonInput)``;
+const FatherNameInput = styled(CommonInput)``;
 const AgeInput = styled(CommonInput)``;
 
 const MobileInput = styled(CommonInput)``;
@@ -82,6 +87,18 @@ const Cancel = styled(InvertSecondaryButton)`
   font-size: 1.4rem;
   max-width: 10rem;
 `;
+const Address = styled('textarea')`
+  resize: none;
+  border: 1px solid ${SECONDARY_BLACK};
+  padding: 1rem 0.5rem;
+  &:focus {
+    border: 1px solid ${SECONDARY_BLACK};
+  }
+  margin-top: 0.5rem;
+  @media (min-width: 993px) {
+    height: 10rem;
+  }
+`;
 export default class RegisterNewMember extends React.Component {
   constructor(props) {
     super(props);
@@ -93,6 +110,7 @@ export default class RegisterNewMember extends React.Component {
         error: false,
         type: 'firstname',
       },
+      fatherName: { value: '', dirty: false, error: false, type: 'firstname' },
       age: {
         value: '',
         dirty: false,
@@ -122,6 +140,14 @@ export default class RegisterNewMember extends React.Component {
       branch: {
         selectedItemIndex: -1,
         showError: false,
+      },
+      bloodGroup: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      address: {
+        value: '',
+        error: false,
       },
       images: [],
     };
@@ -179,7 +205,7 @@ export default class RegisterNewMember extends React.Component {
     });
   };
   validateInputs = () => {
-    const keys = ['name', 'email', 'mobile', 'age'];
+    const keys = ['name', 'email', 'mobile', 'age', 'fatherName', 'address'];
     let oldState = { ...this.state };
     let isError = false;
     keys.map((key) => {
@@ -201,12 +227,13 @@ export default class RegisterNewMember extends React.Component {
     };
   };
   validateDropdownData = () => {
-    const { branch, plan, gender } = this.state;
+    const { branch, plan, gender, bloodGroup } = this.state;
     let isError = false;
     if (
       branch.selectedItemIndex < 0 ||
       plan.selectedItemIndex < 0 ||
-      gender.selectedItemIndex < 0
+      gender.selectedItemIndex < 0 ||
+      bloodGroup.selectedItemIndex < 0
     ) {
       isError = true;
       this.setState({
@@ -221,6 +248,10 @@ export default class RegisterNewMember extends React.Component {
         gender: {
           ...gender,
           showError: gender.selectedItemIndex < 0,
+        },
+        bloodGroup: {
+          ...bloodGroup,
+          showError: bloodGroup.selectedItemIndex < 0,
         },
       });
     }
@@ -241,6 +272,7 @@ export default class RegisterNewMember extends React.Component {
         error: false,
         type: 'firstname',
       },
+      fatherName: { value: '', dirty: false, error: false, type: 'firstname' },
       age: {
         value: '',
         dirty: false,
@@ -271,7 +303,24 @@ export default class RegisterNewMember extends React.Component {
         selectedItemIndex: -1,
         showError: false,
       },
+      bloodGroup: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      address: {
+        value: '',
+        error: false,
+      },
       images: [],
+    });
+  };
+  typeAddress = (e) => {
+    const value = e.target.value;
+    this.setState({
+      address: {
+        value,
+        error: false,
+      },
     });
   };
   onRegister = () => {
@@ -281,13 +330,25 @@ export default class RegisterNewMember extends React.Component {
     if (isError || isError2) {
       return;
     }
-    const { name, mobile, email, age, branch, plan, gender } = this.state;
+    const {
+      name,
+      mobile,
+      email,
+      age,
+      branch,
+      plan,
+      gender,
+      bloodGroup,
+    } = this.state;
     this.props.dispatch(
       addNewMember({
         name: name.value,
         mobileNumber: mobile.value,
         mailId: email.value,
         age: age.value,
+        gender: GENDER[gender.selectedItemIndex],
+        plan: this.getPlanDetails[plan.selectedItemIndex],
+        bloodGroup: BLOOD_GROUP_DATA[bloodGroup.selectedItemIndex],
         branchId: this.getBranchInfoUsingId(branch.selectedItemIndex).id,
         successCallback: () => {
           this.resetState();
@@ -302,13 +363,16 @@ export default class RegisterNewMember extends React.Component {
   render() {
     const {
       name,
+      fatherName,
       age,
       email,
       mobile,
       plan,
       gender,
+      bloodGroup,
       branch,
       images,
+      address,
     } = this.state;
     console.log('Member', this.props, this.state, this.getPlanDetails());
     return (
@@ -328,6 +392,16 @@ export default class RegisterNewMember extends React.Component {
                 />
               </InputWrap>
               <InputWrap>
+                <Label>Father Name</Label>
+                <FatherNameInput
+                  state={fatherName}
+                  name="name"
+                  onValueChange={this.onValueChange}
+                  showError={name.error}
+                  errorText="Invalid Father's Name"
+                />
+              </InputWrap>
+              <InputWrap>
                 <Label>Branch</Label>
                 <DropDown
                   name="branch"
@@ -342,7 +416,7 @@ export default class RegisterNewMember extends React.Component {
                 <Label>Gender</Label>
                 <DropDown
                   name="gender"
-                  listItems={['Male', 'Female', 'Others']}
+                  listItems={GENDER}
                   placeholder="Select gender"
                   activeItem={gender.selectedItemIndex}
                   onSelect={this.onSelectDropdown}
@@ -358,6 +432,17 @@ export default class RegisterNewMember extends React.Component {
                   showError={email.error}
                   errorText="Invalid email"
                 />
+              </InputWrap>
+              <InputWrap
+                className={css`
+                  display: flex;
+                  flex-direction: column;
+              }
+              `}
+              >
+                <Label>Address</Label>
+                <Address onChange={this.typeAddress}>{address.value}</Address>
+                {address.error && <Error>Invalid address</Error>}
               </InputWrap>
             </Column>
             <Column>
@@ -390,6 +475,17 @@ export default class RegisterNewMember extends React.Component {
                   activeItem={plan.selectedItemIndex}
                   onSelect={this.onSelectDropdown}
                   showError={plan.showError}
+                />
+              </InputWrap>
+              <InputWrap>
+                <Label>Blood group</Label>
+                <DropDown
+                  name="bloodGroup"
+                  listItems={BLOOD_GROUP_DATA}
+                  placeholder="Select blood group"
+                  activeItem={bloodGroup.selectedItemIndex}
+                  onSelect={this.onSelectDropdown}
+                  showError={bloodGroup.showError}
                 />
               </InputWrap>
               <UploadImage images={images} chooseImage={this.chooseImage} />
