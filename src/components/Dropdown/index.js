@@ -24,6 +24,7 @@ const SelectedItem = styled('div')`
 `;
 const Item = styled('p')`
   font-size: 1.4rem;
+  font-family: ${MontserratRegular};
   flex: 1;
 `;
 const ArrowWrap = styled('div')`
@@ -49,8 +50,9 @@ const OptionsWrap = styled('ul')`
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.24);
 `;
 const ItemWrap = styled('li')`
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   padding: 1rem;
+  font-family: ${MontserratRegular};
   :hover {
     background: #e9e9e9;
     color: #000;
@@ -140,7 +142,7 @@ export default class DropDown extends React.Component {
         >
           <Data>
             {activeItem < 0 ? (
-              placeholder
+              <Item>{placeholder}</Item>
             ) : (
               <Item>{listItems[activeItem]}</Item>
             )}

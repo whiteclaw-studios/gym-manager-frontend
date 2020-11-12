@@ -2,6 +2,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import { ALLOW_IMAGES_TYPES } from '../../constants';
+import { MontserratLight } from '../../utils/fonts';
 import { UploadIcon } from '../SpriteIcon';
 const Wrap = styled('div')`
   border-radius: 4px;
@@ -34,6 +35,7 @@ const FileUploadText = styled('span')`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: ${MontserratLight};
 `;
 function AddNewImage({ chooseImage = () => {} } = {}) {
   const chooseImageHandle = (event) => {

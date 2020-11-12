@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import AddNewImage from './AddNewImage';
 import { GREEN, GREY, SECONDARY_BLACK } from '../../constants';
+import { MontserratLight } from '../../utils/fonts';
 const Wrap = styled('div')`
   display: flex;
   justify-content: center;
@@ -38,6 +39,7 @@ const Section2 = styled('span')`
   width: 100%;
   text-align: right;
   margin-right: 0.5rem;
+  font-family: ${MontserratLight};
 `;
 export default class UploadImage extends React.Component {
   render() {

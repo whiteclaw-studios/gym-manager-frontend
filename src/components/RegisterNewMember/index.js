@@ -7,6 +7,11 @@ import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
 import UploadImage from '../UploadImage';
 import { addNewMember } from '../../containers/MembersDirectory/actions';
+import {
+  MontserratLight,
+  OpensansBold,
+  OpensansRegular,
+} from '../../utils/fonts';
 const Wrap = styled('div')`
   width: 100%;
   margin-top: 6.4rem;
@@ -29,6 +34,7 @@ const Title = styled('div')`
   font-size: 1.6rem;
   text-align: center;
   margin-bottom: 2.4rem;
+  font-family: ${MontserratLight};
 `;
 const Row = styled('div')`
   display: flex;
@@ -43,6 +49,7 @@ const Column = styled('div')`
 `;
 const Label = styled('label')`
   opacity: 0.6;
+  font-family: ${MontserratLight};
 `;
 const InputWrap = styled('div')`
   margin: 0.8rem 0;
@@ -127,7 +134,23 @@ export default class RegisterNewMember extends React.Component {
       [name]: {
         selectedItemIndex: index,
       },
+      ...(name === 'branch' && {
+        plan: {
+          selectedItemIndex: -1,
+          showError: false,
+        },
+      }),
     });
+  };
+  getPlanDetails = () => {
+    const { branch } = this.state;
+    const branchIndex = branch.selectedItemIndex;
+    const { branchDetails } = this.props;
+    if (branchIndex >= 0)
+      return branchDetails[branchIndex].planDetails.map(
+        (plan) => plan.planName,
+      );
+    return [];
   };
   getBranchNames = () => {
     const { branchDetails } = this.props;
@@ -287,6 +310,7 @@ export default class RegisterNewMember extends React.Component {
       branch,
       images,
     } = this.state;
+    console.log('Member', this.props, this.state, this.getPlanDetails());
     return (
       <Wrap>
         <Content>
@@ -308,7 +332,7 @@ export default class RegisterNewMember extends React.Component {
                 <DropDown
                   name="branch"
                   listItems={this.getBranchNames()}
-                  placeholder=""
+                  placeholder="Select branch"
                   activeItem={branch.selectedItemIndex}
                   onSelect={this.onSelectDropdown}
                   showError={branch.showError}
@@ -319,7 +343,7 @@ export default class RegisterNewMember extends React.Component {
                 <DropDown
                   name="gender"
                   listItems={['Male', 'Female', 'Others']}
-                  placeholder=""
+                  placeholder="Select gender"
                   activeItem={gender.selectedItemIndex}
                   onSelect={this.onSelectDropdown}
                   showError={gender.showError}
@@ -361,8 +385,8 @@ export default class RegisterNewMember extends React.Component {
                 <Label>Plan</Label>
                 <DropDown
                   name="plan"
-                  listItems={['$200/month', '$500/year']}
-                  placeholder=""
+                  listItems={this.getPlanDetails()}
+                  placeholder="Select plan"
                   activeItem={plan.selectedItemIndex}
                   onSelect={this.onSelectDropdown}
                   showError={plan.showError}
