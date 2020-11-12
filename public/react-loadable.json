@@ -1443,6 +1443,12 @@
       "name": "./src/containers/LoginPage/constants.js",
       "file": "bundle.js",
       "publicPath": "bundle.js"
+    },
+    {
+      "id": "./src/containers/MembersDirectory/constants.js",
+      "name": "./src/containers/MembersDirectory/constants.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
     }
   ],
   "./containers/App": [
@@ -1541,10 +1547,26 @@
       "publicPath": "bundle.js"
     }
   ],
+  "../../containers/MembersDirectory/actions": [
+    {
+      "id": "./src/containers/MembersDirectory/actions.js",
+      "name": "./src/containers/MembersDirectory/actions.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
   "./containers/MembersDirectory": [
     {
       "id": "./src/containers/MembersDirectory/index.js",
       "name": "./src/containers/MembersDirectory/index.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
+  "../containers/MembersDirectory/saga": [
+    {
+      "id": "./src/containers/MembersDirectory/saga.js",
+      "name": "./src/containers/MembersDirectory/saga.js",
       "file": "bundle.js",
       "publicPath": "bundle.js"
     }

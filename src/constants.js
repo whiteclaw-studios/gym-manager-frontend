@@ -25,6 +25,7 @@ export const apiUrls = {
   ADMIN_INFO_URL: `${BASE_URL}/admin_details`,
   BRANCH_DETAILS_URL: `${BASE_URL}/branch_details`,
   ENQUIRIES_URL: `${BASE_URL}/enquiries`,
+  MEMBERS_URL: `${BASE_URL}/member_details`,
 };
 
 export const SPRITE_IMAGE = '';

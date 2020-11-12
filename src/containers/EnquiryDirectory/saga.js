@@ -9,8 +9,8 @@ function* addEnquirySaga(params = {}) {
     const {
       name,
       branchId,
-      email: mailId,
-      mobile: mobileNumber,
+      mailId,
+      mobileNumber,
       successCallback = () => {},
     } = params;
     const response = yield call(axiosWrapper, {

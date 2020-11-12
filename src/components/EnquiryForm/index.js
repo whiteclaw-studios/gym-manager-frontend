@@ -143,10 +143,7 @@ export default class EnquiryForm extends React.Component {
   };
   getBranchInfoUsingId = (index) => {
     const { branchDetails } = this.props;
-    const reqBranch =
-      branchDetails.filter(
-        (branch) => branch.id === this.state.branch.selectedItemIndex,
-      ) || {};
+    const reqBranch = branchDetails[index];
     return {
       ...reqBranch,
     };
@@ -191,15 +188,13 @@ export default class EnquiryForm extends React.Component {
     }
     if (!isError) {
       if (branch.selectedItemIndex >= 0) {
-        console.log('ready to submit', branch);
         // submit data
         this.props.dispatch(
           addEnquiry({
             name: name.value,
             mailId: email.value,
             mobileNumber: mobile.value,
-            branchId: this.getBranchInfoUsingId(branch.selectedItemIndex)
-              .branchId,
+            branchId: this.getBranchInfoUsingId(branch.selectedItemIndex).id,
             successCallback: this.resetState,
           }),
         );

@@ -6,6 +6,7 @@ import Button, { InvertSecondaryButton, SecondaryButton } from '../Button';
 import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
 import UploadImage from '../UploadImage';
+import { addNewMember } from '../../containers/MembersDirectory/actions';
 const Wrap = styled('div')`
   width: 100%;
   margin-top: 6.4rem;
@@ -105,12 +106,15 @@ export default class RegisterNewMember extends React.Component {
       },
       plan: {
         selectedItemIndex: -1,
+        showError: false,
       },
       gender: {
         selectedItemIndex: -1,
+        showError: false,
       },
       branch: {
         selectedItemIndex: -1,
+        showError: false,
       },
       images: [],
     };
@@ -151,6 +155,127 @@ export default class RegisterNewMember extends React.Component {
       images: newImageData,
     });
   };
+  validateInputs = () => {
+    const keys = ['name', 'email', 'mobile', 'age'];
+    let oldState = { ...this.state };
+    let isError = false;
+    keys.map((key) => {
+      if (!this.state[key].value) {
+        isError = true;
+        const keyData = oldState[key];
+        oldState = {
+          ...oldState,
+          [key]: {
+            ...keyData,
+            error: true,
+          },
+        };
+      }
+    });
+    return {
+      isError,
+      state: oldState,
+    };
+  };
+  validateDropdownData = () => {
+    const { branch, plan, gender } = this.state;
+    let isError = false;
+    if (
+      branch.selectedItemIndex < 0 ||
+      plan.selectedItemIndex < 0 ||
+      gender.selectedItemIndex < 0
+    ) {
+      isError = true;
+      this.setState({
+        branch: {
+          ...branch,
+          showError: branch.selectedItemIndex < 0,
+        },
+        plan: {
+          ...plan,
+          showError: plan.selectedItemIndex < 0,
+        },
+        gender: {
+          ...gender,
+          showError: gender.selectedItemIndex < 0,
+        },
+      });
+    }
+    return isError;
+  };
+  getBranchInfoUsingId = (index) => {
+    const { branchDetails } = this.props;
+    const reqBranch = branchDetails[index];
+    return {
+      ...reqBranch,
+    };
+  };
+  resetState = () => {
+    this.setState({
+      name: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'firstname',
+      },
+      age: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'age',
+      },
+      mobile: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'mobile',
+      },
+      email: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'email',
+      },
+      plan: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      gender: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      branch: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      images: [],
+    });
+  };
+  onRegister = () => {
+    const { isError, state } = this.validateInputs();
+    this.setState(state);
+    const isError2 = this.validateDropdownData();
+    if (isError || isError2) {
+      return;
+    }
+    const { name, mobile, email, age, branch, plan, gender } = this.state;
+    this.props.dispatch(
+      addNewMember({
+        name: name.value,
+        mobileNumber: mobile.value,
+        mailId: email.value,
+        age: age.value,
+        branchId: this.getBranchInfoUsingId(branch.selectedItemIndex).id,
+        successCallback: () => {
+          this.resetState();
+        },
+      }),
+    );
+
+    console.log('Ready to submit');
+
+    // ready to submit
+  };
   render() {
     const {
       name,
@@ -186,6 +311,7 @@ export default class RegisterNewMember extends React.Component {
                   placeholder=""
                   activeItem={branch.selectedItemIndex}
                   onSelect={this.onSelectDropdown}
+                  showError={branch.showError}
                 />
               </InputWrap>
               <InputWrap>
@@ -196,6 +322,7 @@ export default class RegisterNewMember extends React.Component {
                   placeholder=""
                   activeItem={gender.selectedItemIndex}
                   onSelect={this.onSelectDropdown}
+                  showError={gender.showError}
                 />
               </InputWrap>
               <InputWrap>
@@ -238,6 +365,7 @@ export default class RegisterNewMember extends React.Component {
                   placeholder=""
                   activeItem={plan.selectedItemIndex}
                   onSelect={this.onSelectDropdown}
+                  showError={plan.showError}
                 />
               </InputWrap>
               <UploadImage images={images} chooseImage={this.chooseImage} />
@@ -247,7 +375,7 @@ export default class RegisterNewMember extends React.Component {
             <Cancel onClick={() => this.props.history.push(DASHBOARD_ROUTE)}>
               Cancel
             </Cancel>
-            <Register>Register</Register>
+            <Register onClick={this.onRegister}>Register</Register>
           </Controls>
         </Content>
       </Wrap>
