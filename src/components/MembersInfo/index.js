@@ -124,57 +124,12 @@ const Delete = styled(Button)`
     font-size: 1rem;
   }
 `;
-const mockMembers = [
-  {
-    name: 'Rajesh',
-    memberId: 1,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Sai',
-    memberId: 2,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: '2 Months',
-  },
-  {
-    name: 'Raghul',
-    memberId: 3,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Muthu',
-    memberId: 4,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: '2 Months',
-  },
-  {
-    name: 'Ram',
-    memberId: 7,
-    plan: '$20/month',
-    branch: 'Ponneri',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Sanjana',
-    memberId: 5,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: '2 Months',
-  },
-  {
-    name: 'Arun',
-    memberId: 6,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-];
+const NoResults = styled('p')`
+  color: ${RED};
+  text-align: center;
+  font-size: 1.4rem;
+  font-family: ${OpensansBold};
+`;
 export default class MembersInfo extends React.Component {
   constructControls = (data) => {
     const { name, memberId, plan, branch, due } = data;
@@ -306,7 +261,21 @@ export default class MembersInfo extends React.Component {
         return '';
     }
   };
+  showNoResults = () => {
+    const { type } = this.props;
+    switch (type) {
+      case FEES_LAYOUT:
+        return <NoResults>No Fees due </NoResults>;
+      case MEMBERS_DIRECTORY_LAYOUT:
+        return <NoResults>Members not found </NoResults>;
+      case ENQUIRY_DIRECTORY_LAYOUT:
+        return <NoResults>Enquiry data not found </NoResults>;
+      default:
+        return '';
+    }
+  };
   render() {
+    const { data } = this.props;
     return (
       <Wrap>
         <Title>{this.constructTitleText()}</Title>
@@ -325,7 +294,9 @@ export default class MembersInfo extends React.Component {
           </Info>
           <HeadingItem></HeadingItem>
         </HeadingRow>
-        <MembersWrap>{this.constructLists()}</MembersWrap>
+        <MembersWrap>
+          {data.length > 0 ? this.constructLists() : this.showNoResults()}
+        </MembersWrap>
       </Wrap>
     );
   }

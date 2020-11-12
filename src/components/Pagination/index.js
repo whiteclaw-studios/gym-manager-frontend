@@ -6,11 +6,10 @@ const Wrap = styled('div')`
   text-align: center;
   overflow: auto;
   height: 100%;
-  width: 100%;
   display: flex;
 `;
 const Page = styled('span')`
-  padding: 1rem;
+  padding: 1rem 1.2rem;
   border: 1px solid ${GREEN};
   color: ${SECONDARY_BLACK};
   cursor: pointer;
