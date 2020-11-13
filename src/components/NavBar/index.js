@@ -22,10 +22,21 @@ const Wrap = styled('div')`
   align-items: center;
 `;
 const LogoWrap = styled('div')`
-  height: 5rem;
+  height: 1.5rem;
+  width: 5rem;
+  margin: 1rem 0;
+  ${(props) => props.expand && expandedCss}
   @media (max-width: 992px) {
     display: none;
   }
+`;
+const expandedCss = css`
+  height: 4rem;
+  width: 12rem;
+`;
+const LogoImg = styled('img')`
+  width: 100%;
+  height: 100%;
 `;
 const Close = styled('span')`
   font-size: 1.2rem;
@@ -37,6 +48,7 @@ const Close = styled('span')`
 `;
 const MenusWrap = styled('div')`
   flex: 3;
+  margin-top: 4rem;
 `;
 const Item = styled('li')`
   display: flex;
@@ -146,7 +158,9 @@ function NavBar({
       }}
       onMouseLeave={() => shrinkNavbar()}
     >
-      <LogoWrap>BeemaFit</LogoWrap>
+      <LogoWrap expand={navbarState}>
+        <LogoImg src="https://fitboss-clients-logos.s3.ap-south-1.amazonaws.com/bheema-fit-city.jpg?versionId=1ykWnyzStPVtL6qR3nF04d0khtZCOyfI" />
+      </LogoWrap>
       <Close onClick={() => hideNavBar()}>X</Close>
       <MenusWrap>{constructMenus()}</MenusWrap>
       <Footer>

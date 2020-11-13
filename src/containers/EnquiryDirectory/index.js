@@ -11,7 +11,6 @@ import {
 import { ENQUIRY_FORM_ROUTE } from '../../routes';
 const Wrapper = styled('div')`
   width: 100%;
-  margin-top: 6.4rem;
   padding: 0 6.4rem;
   padding-top: 2.4rem;
   @media (max-width: 992px) {

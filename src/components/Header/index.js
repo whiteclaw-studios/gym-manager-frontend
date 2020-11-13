@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { BLUE } from '../../constants';
 import { MontserratBold } from '../../utils/fonts';
 const Wrap = styled('div')`
-  background: #ffffff;
-  display: flex;
+  display: none;
+  background: #f2f2f2;
   height: 6.4rem;
   justify-content: center;
   align-items: center;
@@ -17,6 +17,8 @@ const Wrap = styled('div')`
   box-shadow: 0px 1px 4px #a9a9a9;
   @media (max-width: 992px) {
     height: 4rem;
+    display: flex;
+    background: #ffffff;
   }
 `;
 const LogoWrap = styled('div')`
@@ -61,7 +63,9 @@ export default class Header extends React.Component {
             {' '}
             ={' '}
           </HamburgerWrap>
-          <Title>FIT BOSS</Title>
+          <LogoWrap>
+            <LogoImg src="https://fitboss-clients-logos.s3.ap-south-1.amazonaws.com/bheema-fit-city.jpg?versionId=1ykWnyzStPVtL6qR3nF04d0khtZCOyfI" />
+          </LogoWrap>
         </Wrap>
       )
     );

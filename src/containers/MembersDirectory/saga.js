@@ -1,7 +1,7 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { apiUrls } from '../../constants';
 import { selectMembersSource } from '../../selectors';
-import { searchLogic } from '../../utils/helpers';
+import { getCookie, searchLogic } from '../../utils/helpers';
 import axiosWrapper from '../../utils/requestWrapper';
 import { responseParser } from '../../utils/responseParser';
 import { displayToaster } from '../App/actions';
@@ -77,36 +77,25 @@ function* searchMemberSaga(params = {}) {
     console.error('Caught in searchMemberSaga', err);
   }
 }
-async function readAllChunks(readableStream) {
-  const reader = readableStream.getReader();
-  const chunks = [];
 
-  let done, value;
-  while (!done) {
-    ({ value, done } = await reader.read());
-    if (done) {
-      console.log('Done recieving streams');
-
-      return chunks;
-    }
-    console.log('value', value);
-
-    chunks.push(value);
-  }
-}
 function* getMemberDetailsSaga() {
   try {
-    // var response = yield call(fetch, { url: apiUrls.MEMBERS_URL });
-    // console.log('response', response);
-    // const uintarry = yield readAllChunks(response.body);
-    // console.log('uintarry', uintarry);
-    // var enc = new TextDecoder('utf-8');
-    // console.log(enc.decode(uintarry));
-    // const parsedResponse = responseParser(response);
-    // console.log('parsedResponse', response);
-    if (!parsedResponse.isError) {
-    } else {
-      console.error('Error in getMemberDetailsSaga', parsedResponse);
+    const token = getCookie('VJS');
+    var response = yield call(fetch, apiUrls.MEMBERS_URL, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    console.log('response', response);
+    const reader = response.body
+      .pipeThrough(new TextDecoderStream())
+      .getReader();
+    while (true) {
+      const { value, done } = yield reader.read();
+      if (done) break;
+      console.log('Received', value);
     }
   } catch (err) {
     console.error('Caught in getMemberDetailsSaga', err);

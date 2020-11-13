@@ -207,6 +207,8 @@ const reducer = (preloadedState = null) => (
       };
     }
     case LOAD_MEMBER_DETAILS: {
+      const { payload } = action;
+
       return {
         ...state,
         membersInfo: {
