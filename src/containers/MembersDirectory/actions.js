@@ -1,5 +1,7 @@
 import {
   ADD_NEW_MEMBER,
+  GET_MEMBER_DETAILS,
+  LOAD_MEMBER_DETAILS,
   LOAD_SEARCH_DATA,
   SEARCH_MEMBERS,
   UPDATE_PAGE,
@@ -27,5 +29,16 @@ export function updatePage(payload) {
   return {
     type: UPDATE_PAGE,
     ...payload,
+  };
+}
+export function getMemberDetails() {
+  return {
+    type: GET_MEMBER_DETAILS,
+  };
+}
+export function loadMemberDetails(payload) {
+  return {
+    type: LOAD_MEMBER_DETAILS,
+    payload,
   };
 }

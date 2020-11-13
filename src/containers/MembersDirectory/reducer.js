@@ -1,5 +1,9 @@
 import { paginationConfigs } from '../../constants';
-import { LOAD_SEARCH_DATA, UPDATE_PAGE } from './constants';
+import {
+  LOAD_MEMBER_DETAILS,
+  LOAD_SEARCH_DATA,
+  UPDATE_PAGE,
+} from './constants';
 
 const mockMembers = [
   {
@@ -199,6 +203,15 @@ const reducer = (preloadedState = null) => (
           offset: newOffset,
           limit: newOffset + perPage,
           activePage: pageNo,
+        },
+      };
+    }
+    case LOAD_MEMBER_DETAILS: {
+      return {
+        ...state,
+        membersInfo: {
+          data: action.payload,
+          logicAppliedData: [],
         },
       };
     }

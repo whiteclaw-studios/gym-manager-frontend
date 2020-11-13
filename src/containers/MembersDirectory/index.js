@@ -16,7 +16,7 @@ import {
   selectDataSourceForMDPage,
   selectPaginationInMDPage,
 } from '../../selectors';
-import { searchMembers, updatePage } from './actions';
+import { getMemberDetails, searchMembers, updatePage } from './actions';
 const Wrapper = styled('div')`
   width: 100%;
   margin-top: 6.4rem;
@@ -62,6 +62,9 @@ class MembersDirectory extends React.Component {
   onPageSelect = (pageNo) => {
     this.props.dispatch(updatePage({ pageNo }));
   };
+  componentDidMount() {
+    this.props.dispatch(getMemberDetails());
+  }
   render() {
     const { membersData, paginationInfo } = this.props;
     const { totalPages, activePage } = paginationInfo;

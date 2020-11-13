@@ -599,12 +599,6 @@
       "name": "./src/containers/LoginPage/actions.js",
       "file": "bundle.js",
       "publicPath": "bundle.js"
-    },
-    {
-      "id": "./src/containers/MembersDirectory/actions.js",
-      "name": "./src/containers/MembersDirectory/actions.js",
-      "file": "bundle.js",
-      "publicPath": "bundle.js"
     }
   ],
   "connected-react-router": [
@@ -723,6 +717,14 @@
     {
       "id": "./node_modules/is-buffer/index.js",
       "name": "./node_modules/is-buffer/index.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
+  "isomorphic-fetch": [
+    {
+      "id": "./node_modules/isomorphic-fetch/fetch-npm-browserify.js",
+      "name": "./node_modules/isomorphic-fetch/fetch-npm-browserify.js",
       "file": "bundle.js",
       "publicPath": "bundle.js"
     }
@@ -1241,6 +1243,14 @@
       "publicPath": "bundle.js"
     }
   ],
+  "whatwg-fetch": [
+    {
+      "id": "./node_modules/whatwg-fetch/fetch.js",
+      "name": "./node_modules/whatwg-fetch/fetch.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
   "../Button": [
     {
       "id": "./src/components/Button/index.js",
@@ -1565,6 +1575,14 @@
     {
       "id": "./src/containers/LoginPage/saga.js",
       "name": "./src/containers/LoginPage/saga.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
+  "../../containers/MembersDirectory/actions": [
+    {
+      "id": "./src/containers/MembersDirectory/actions.js",
+      "name": "./src/containers/MembersDirectory/actions.js",
       "file": "bundle.js",
       "publicPath": "bundle.js"
     }

@@ -6,7 +6,12 @@ import axiosWrapper from '../../utils/requestWrapper';
 import { responseParser } from '../../utils/responseParser';
 import { displayToaster } from '../App/actions';
 import { loadSearchData } from './actions';
-import { ADD_NEW_MEMBER, SEARCH_MEMBERS } from './constants';
+import fetch from 'isomorphic-fetch';
+import {
+  ADD_NEW_MEMBER,
+  SEARCH_MEMBERS,
+  GET_MEMBER_DETAILS,
+} from './constants';
 function* addNewMember(params = {}) {
   try {
     const {
@@ -72,13 +77,52 @@ function* searchMemberSaga(params = {}) {
     console.error('Caught in searchMemberSaga', err);
   }
 }
+async function readAllChunks(readableStream) {
+  const reader = readableStream.getReader();
+  const chunks = [];
+
+  let done, value;
+  while (!done) {
+    ({ value, done } = await reader.read());
+    if (done) {
+      console.log('Done recieving streams');
+
+      return chunks;
+    }
+    console.log('value', value);
+
+    chunks.push(value);
+  }
+}
+function* getMemberDetailsSaga() {
+  try {
+    // var response = yield call(fetch, { url: apiUrls.MEMBERS_URL });
+    // console.log('response', response);
+    // const uintarry = yield readAllChunks(response.body);
+    // console.log('uintarry', uintarry);
+    // var enc = new TextDecoder('utf-8');
+    // console.log(enc.decode(uintarry));
+    // const parsedResponse = responseParser(response);
+    // console.log('parsedResponse', response);
+    if (!parsedResponse.isError) {
+    } else {
+      console.error('Error in getMemberDetailsSaga', parsedResponse);
+    }
+  } catch (err) {
+    console.error('Caught in getMemberDetailsSaga', err);
+  }
+}
 function* watchaddNewMember() {
   yield takeEvery(ADD_NEW_MEMBER, addNewMember);
 }
 function* watchSearchMemberSaga() {
   yield takeEvery(SEARCH_MEMBERS, searchMemberSaga);
 }
+function* watchGetMemberDetailsSaga() {
+  yield takeEvery(GET_MEMBER_DETAILS, getMemberDetailsSaga);
+}
 export const membersDirectorySagas = [
   watchaddNewMember(),
   watchSearchMemberSaga(),
+  watchGetMemberDetailsSaga(),
 ];

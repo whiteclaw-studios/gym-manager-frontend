@@ -17,12 +17,16 @@ const Wrap = styled('div')`
   background: ${WHITE};
   padding: 1.6rem;
   box-shadow: 0px 1px 4px #a9a9a9;
+  min-height: 20rem;
+  @media (max-width: 992px) {
+    min-height: 10rem;
+  }
 `;
 const Title = styled('p')`
   margin: 1.6rem 0;
   font-size: 2rem;
   color: ${SECONDARY_BLACK};
-  font-family: ${OpensansBold};
+  font-family: ${MontserratRegular};
   @media (max-width: 992px) {
     font-size: 1.6rem;
   }
@@ -128,7 +132,11 @@ const NoResults = styled('p')`
   color: ${RED};
   text-align: center;
   font-size: 1.4rem;
-  font-family: ${OpensansBold};
+  font-family: ${MontserratRegular};
+  min-height: 10rem;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 `;
 export default class MembersInfo extends React.Component {
   constructControls = (data) => {
