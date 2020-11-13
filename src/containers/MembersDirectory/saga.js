@@ -80,23 +80,23 @@ function* searchMemberSaga(params = {}) {
 
 function* getMemberDetailsSaga() {
   try {
-    const token = getCookie('VJS');
-    var response = yield call(fetch, apiUrls.MEMBERS_URL, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
-    console.log('response', response);
-    const reader = response.body
-      .pipeThrough(new TextDecoderStream())
-      .getReader();
-    while (true) {
-      const { value, done } = yield reader.read();
-      if (done) break;
-      console.log('Received', value);
-    }
+    // const token = getCookie('VJS');
+    // var response = yield call(fetch, apiUrls.MEMBERS_URL, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: token,
+    //     // 'Content-Type': 'application/x-www-form-urlencoded',
+    //   },
+    // });
+    // console.log('response', response);
+    // const reader = response.body
+    //   .pipeThrough(new TextDecoderStream())
+    //   .getReader();
+    // while (true) {
+    //   const { value, done } = yield reader.read();
+    //   if (done) break;
+    //   console.log('Received', value);
+    // }
   } catch (err) {
     console.error('Caught in getMemberDetailsSaga', err);
   }

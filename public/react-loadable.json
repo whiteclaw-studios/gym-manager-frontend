@@ -1321,6 +1321,22 @@
       "publicPath": "bundle.js"
     }
   ],
+  "./ItemRow": [
+    {
+      "id": "./src/components/MembersInfo/ItemRow.js",
+      "name": "./src/components/MembersInfo/ItemRow.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
+  "./commonStyles": [
+    {
+      "id": "./src/components/MembersInfo/commonStyles.js",
+      "name": "./src/components/MembersInfo/commonStyles.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
   "../../components/MembersInfo": [
     {
       "id": "./src/components/MembersInfo/index.js",

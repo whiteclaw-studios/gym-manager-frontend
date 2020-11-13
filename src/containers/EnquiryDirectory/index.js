@@ -44,7 +44,7 @@ class EnquiryDirectory extends React.Component {
             Add New Enquiry
           </RegisterNewMember>
         </ButtonWrap>
-        <MembersInfo type={ENQUIRY_DIRECTORY_LAYOUT} />
+        <MembersInfo data={[]} type={ENQUIRY_DIRECTORY_LAYOUT} />
       </Wrapper>
     );
   }
