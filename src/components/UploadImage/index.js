@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import AddNewImage from './AddNewImage';
-import { GREEN, GREY, SECONDARY_BLACK } from '../../constants';
+import { ALLOW_IMAGES_TYPES, GREEN, SECONDARY_BLACK } from '../../constants';
 import { MontserratLight } from '../../utils/fonts';
 const Wrap = styled('div')`
   display: flex;
@@ -20,6 +20,7 @@ const Container = styled('div')`
 const Section1 = styled('div')`
   display: flex;
   align-items: center;
+  flex: 1;
 `;
 const Preview = styled('div')`
   width: 3.5rem;
@@ -36,15 +37,45 @@ const Filename = styled('span')`
 `;
 const Section2 = styled('span')`
   color: ${GREEN};
-  width: 100%;
   text-align: right;
   margin-right: 0.5rem;
   font-family: ${MontserratLight};
 `;
+const Input = styled('input')`
+  position: absolute;
+  width: 3.7rem;
+  top: 0;
+  height: 100%;
+  right: 0;
+  opacity: 0;
+  cursor: pointer;
+  @media (max-width: 992px) {
+    cursor: default;
+  }
+`;
 export default class UploadImage extends React.Component {
+  chooseImageHandle = (event) => {
+    let files = [];
+    let srcs = [];
+    const { chooseImage } = this.props;
+    let isImageFile = true;
+    for (let i = 0; i < event.target.files.length; i += 1) {
+      const file = event.target.files[i];
+      const src = URL.createObjectURL(file);
+      const { type } = file;
+
+      if (!ALLOW_IMAGES_TYPES.includes(type)) isImageFile = false;
+
+      if (i < 1 && ALLOW_IMAGES_TYPES.includes(type)) {
+        files = [...files, file];
+        srcs = [...srcs, src];
+      }
+    }
+
+    if (chooseImage) chooseImage({ srcs, files });
+  };
   render() {
     const { images = [], chooseImage = () => {} } = this.props;
-    console.log('images', images);
     return (
       <Wrap>
         {images.length === 1 ? (
@@ -55,7 +86,18 @@ export default class UploadImage extends React.Component {
               </Preview>
               <Filename>{images[0].imageFile.name}</Filename>
             </Section1>
-            <Section2>Change</Section2>
+            <Section2>
+              <Input
+                type="file"
+                accept={ALLOW_IMAGES_TYPES}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  console.log('clicked');
+                  this.chooseImageHandle(e);
+                }}
+              />
+              <span>Change </span>
+            </Section2>
           </Container>
         ) : (
           <AddNewImage chooseImage={chooseImage} />

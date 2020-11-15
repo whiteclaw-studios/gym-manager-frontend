@@ -34,9 +34,9 @@ function* addNewMember(params = {}) {
       gender,
     };
     var formData = new FormData();
-    if (images.length > 0) formData.append('image', images[0].imageFile);
-    Object.keys(fieldKeys).map((key) => formData.append(key, fieldKeys[key]));
-
+    if (images.length > 0) formData.append('file', images[0].imageFile);
+    // Object.keys(fieldKeys).map((key) => formData.append(key, fieldKeys[key]));
+    formData.append('data', fieldKeys);
     const response = yield call(axiosWrapper, {
       method: 'POST',
       headers: { 'Content-type': 'multipart/form-data' },
