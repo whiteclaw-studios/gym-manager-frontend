@@ -53,6 +53,7 @@ const Edit = styled(Button)`
   color: ${WHITE};
   @media (max-width: 760px) {
     font-size: 1rem;
+    padding: 0.5rem;
   }
 `;
 const Delete = styled(Button)`
@@ -63,6 +64,7 @@ const Delete = styled(Button)`
   background: ${RED};
   @media (max-width: 760px) {
     font-size: 1rem;
+    padding: 0.5rem;
   }
 `;
 
@@ -74,6 +76,8 @@ function ItemRow({
   branch,
   due,
   type,
+  age,
+  gender,
   openPaymentPopup,
   index,
   isAllowExpand = true,
@@ -145,9 +149,6 @@ function ItemRow({
           `}
         >
           <span> {'>'} </span>
-          {/* <ProfilePicWrap>
-          <ProfilePic src={profilePic} />
-        </ProfilePicWrap> */}
         </Item>
         <Info>
           <Item>{name}</Item>
@@ -187,22 +188,31 @@ function ItemRow({
       </MemberRow>
       {expand && (
         <ExpandedView
-          profilePic="https://www.pngitem.com/pimgs/m/43-437594_and-oil-moustache-man-beard-free-png-hq.png"
+          profilePic={
+            profilePic ||
+            'https://www.pngitem.com/pimgs/m/43-437594_and-oil-moustache-man-beard-free-png-hq.png'
+          }
           fields={[
             {
-              Name: 'Rajesh',
+              Name: name,
             },
             {
-              Age: '23',
+              age,
             },
             {
-              Gender: 'Male',
+              gender,
             },
             {
               FatherName: 'Kumaran S',
             },
             {
-              MemberId: '10101',
+              memberId,
+            },
+            {
+              plan,
+            },
+            {
+              branch,
             },
           ]}
         />

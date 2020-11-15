@@ -7,6 +7,9 @@ const Wrap = styled('div')`
   overflow: auto;
   height: 100%;
   display: flex;
+  @media (max-width: 460px) {
+    max-width: 20rem;
+  }
 `;
 const Page = styled('span')`
   padding: 1rem 1.2rem;

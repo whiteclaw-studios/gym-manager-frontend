@@ -14,9 +14,11 @@ import {
 import { REGISTER_MEMBER_ROUTE } from '../../routes';
 import {
   selectDataSourceForMDPage,
+  selectMDPage,
   selectPaginationInMDPage,
 } from '../../selectors';
 import { getMemberDetails, searchMembers, updatePage } from './actions';
+import { get } from '../../utils/helpers';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -65,8 +67,14 @@ class MembersDirectory extends React.Component {
     this.props.dispatch(getMemberDetails());
   }
   render() {
-    const { membersData, paginationInfo } = this.props;
+    const {
+      paginationInfo,
+      pageData,
+      getBranchInfo = () => {},
+      getPlanInfo = () => {},
+    } = this.props;
     const { totalPages, activePage } = paginationInfo;
+    const { isLoading } = get(pageData, 'membersInfo', {});
     console.log('MemberPage', this.props);
     return (
       <Wrapper>
@@ -81,6 +89,9 @@ class MembersDirectory extends React.Component {
         <MembersInfo
           type={MEMBERS_DIRECTORY_LAYOUT}
           data={this.getPageData()}
+          isLoading={isLoading}
+          getBranchInfo={getBranchInfo}
+          getPlanInfo={getPlanInfo}
         />
         <PaginationWrap>
           <Pagination
@@ -95,6 +106,7 @@ class MembersDirectory extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
+    pageData: selectMDPage(state),
     membersData: selectDataSourceForMDPage(state),
     paginationInfo: selectPaginationInMDPage(state),
   };

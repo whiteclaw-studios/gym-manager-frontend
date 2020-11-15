@@ -727,14 +727,6 @@
       "publicPath": "bundle.js"
     }
   ],
-  "isomorphic-fetch": [
-    {
-      "id": "./node_modules/isomorphic-fetch/fetch-npm-browserify.js",
-      "name": "./node_modules/isomorphic-fetch/fetch-npm-browserify.js",
-      "file": "bundle.js",
-      "publicPath": "bundle.js"
-    }
-  ],
   "mini-create-react-context": [
     {
       "id": "./node_modules/mini-create-react-context/dist/esm/index.js",
@@ -1245,14 +1237,6 @@
     {
       "id": "./node_modules/webpack/buildin/harmony-module.js",
       "name": "./node_modules/webpack/buildin/harmony-module.js",
-      "file": "bundle.js",
-      "publicPath": "bundle.js"
-    }
-  ],
-  "whatwg-fetch": [
-    {
-      "id": "./node_modules/whatwg-fetch/fetch.js",
-      "name": "./node_modules/whatwg-fetch/fetch.js",
       "file": "bundle.js",
       "publicPath": "bundle.js"
     }

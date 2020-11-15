@@ -9,7 +9,9 @@ import {
   SECONDARY_BLACK,
   WHITE,
 } from '../../constants';
+import { getBranchInfo, getPlanInfo } from '../../selectors';
 import { MontserratRegular } from '../../utils/fonts';
+import EllipsisLoader from '../EllipsisLoader';
 import { Item, Row, Info } from './commonStyles';
 import ItemRow from './ItemRow';
 const Wrap = styled('div')`
@@ -44,8 +46,17 @@ const HeadingItem = styled(Item)`
   color: ${SECONDARY_BLACK};
   opacity: 0.7;
 `;
-const MembersWrap = styled('div')``;
-
+const MembersWrap = styled('div')`
+  max-height: 60rem;
+  overflow: auto;
+  @media (max-width: 992px) {
+    max-height: 30rem;
+  }
+`;
+const LoaderWrap = styled('div')`
+  width: 100%;
+  text-align: center;
+`;
 const NoResults = styled('p')`
   color: ${RED};
   text-align: center;
@@ -62,16 +73,37 @@ export default class MembersInfo extends React.Component {
       data = [],
       openPaymentPopup = () => {},
       type,
-      showDueColumn,
+      showDueColumn = false,
+      getBranchInfo,
+      getPlanInfo,
     } = this.props;
     return data.map((member, index) => {
+      const {
+        name,
+        membershipId: memberId,
+        planDetailsId: planId,
+        photoS3Key: profilePic,
+        branchId,
+        age,
+        gender,
+        mobileNumber: mobile,
+      } = member;
+      const branchInfo = getBranchInfo(branchId);
+      const planInfo = getPlanInfo(branchId, planId);
       return (
         <ItemRow
-          {...member}
           index={index}
           openPaymentPopup={openPaymentPopup}
           type={type}
           showDueColumn={showDueColumn}
+          name={name}
+          memberId={memberId}
+          plan={planInfo.planName}
+          profilePic={profilePic}
+          branch={branchInfo.branchName}
+          age={age}
+          gender={gender}
+          mobile={mobile}
         />
       );
     });
@@ -103,7 +135,7 @@ export default class MembersInfo extends React.Component {
     }
   };
   render() {
-    const { data, showDueColumn = false } = this.props;
+    const { data, showDueColumn = false, isLoading = false } = this.props;
     return (
       <Wrap>
         <Title>{this.constructTitleText()}</Title>
@@ -122,9 +154,15 @@ export default class MembersInfo extends React.Component {
           </Info>
           <HeadingItem></HeadingItem>
         </HeadingRow>
-        <MembersWrap>
-          {data.length > 0 ? this.constructLists() : this.showNoResults()}
-        </MembersWrap>
+        {isLoading ? (
+          <LoaderWrap>
+            <EllipsisLoader />
+          </LoaderWrap>
+        ) : (
+          <MembersWrap>
+            {data.length > 0 ? this.constructLists() : this.showNoResults()}
+          </MembersWrap>
+        )}
       </Wrap>
     );
   }

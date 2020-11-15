@@ -4,9 +4,8 @@ import { selectMembersSource } from '../../selectors';
 import { getCookie, searchLogic } from '../../utils/helpers';
 import axiosWrapper from '../../utils/requestWrapper';
 import { responseParser } from '../../utils/responseParser';
-import { displayToaster } from '../App/actions';
-import { loadSearchData } from './actions';
-import fetch from 'isomorphic-fetch';
+import { displayToaster, loadAdminInfo } from '../App/actions';
+import { loadMemberDetails, loadSearchData } from './actions';
 import {
   ADD_NEW_MEMBER,
   SEARCH_MEMBERS,
@@ -80,23 +79,33 @@ function* searchMemberSaga(params = {}) {
 
 function* getMemberDetailsSaga() {
   try {
-    // const token = getCookie('VJS');
-    // var response = yield call(fetch, apiUrls.MEMBERS_URL, {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: token,
-    //     // 'Content-Type': 'application/x-www-form-urlencoded',
-    //   },
-    // });
-    // console.log('response', response);
-    // const reader = response.body
-    //   .pipeThrough(new TextDecoderStream())
-    //   .getReader();
-    // while (true) {
-    //   const { value, done } = yield reader.read();
-    //   if (done) break;
-    //   console.log('Received', value);
-    // }
+    const token = getCookie('VJS');
+    // If token  is not present in cookie ,it means not logged in
+    if (!token) {
+      yield put(
+        loadAdminInfo({
+          isLoggedIn: false,
+          infoLoaded: true,
+        }),
+      );
+      return;
+    }
+    const response = yield call(axiosWrapper, {
+      method: 'GET',
+      url: apiUrls.MEMBERS_URL,
+    });
+    console.log('response', response);
+    const processResponse = responseParser(response);
+    console.log(processResponse);
+    if (!processResponse.isError) {
+      yield put(
+        loadMemberDetails({
+          membersList: response.data[0].payload,
+          isLoaded: true,
+          isLoading: false,
+        }),
+      );
+    }
   } catch (err) {
     console.error('Caught in getMemberDetailsSaga', err);
   }

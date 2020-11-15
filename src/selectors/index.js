@@ -21,6 +21,27 @@ const selectDataSourceForMDPage = (state) => {
   const mdPage = selectMDPage(state);
   return get(mdPage, 'membersInfo.logicAppliedData', []);
 };
+const getBranchInfo = (state) => (branchId) => {
+  const branchDetails = selectBranchDetails(state);
+  const reqdBranch = branchDetails.filter(
+    (branch) => branch.id === branchId,
+  ) || [{}];
+  return {
+    ...reqdBranch[0],
+  };
+};
+const getPlanInfo = (state) => (branchId, planId) => {
+  const branchDetails = selectBranchDetails(state);
+  const reqdBranch =
+    branchDetails.filter((branch) => branch.id === branchId) || [];
+  const { planDetails = [] } = reqdBranch[0] || {};
+  const reqPlanDetails = planDetails.filter((plan) => plan.id === planId) || [
+    {},
+  ];
+  return {
+    ...reqPlanDetails[0],
+  };
+};
 
 export {
   selectAppState,
@@ -34,4 +55,6 @@ export {
   selectMembersSource,
   selectDataSourceForMDPage,
   selectPaginationInMDPage,
+  getBranchInfo,
+  getPlanInfo,
 };

@@ -1,4 +1,5 @@
 import { paginationConfigs } from '../../constants';
+import { get, searchLogic } from '../../utils/helpers';
 import {
   LOAD_MEMBER_DETAILS,
   LOAD_SEARCH_DATA,
@@ -147,22 +148,26 @@ const mockMembers = [
     due: 'Today (1 Month)',
   },
 ];
+const { perPage } = paginationConfigs;
 export const initialState = {
   membersInfo: {
-    data: mockMembers,
-    logicAppliedData: mockMembers,
+    data: [],
+    logicAppliedData: [],
+    isLoading: true,
+    isLoaded: false,
   },
   pagination: {
     offset: 0,
     limit: paginationConfigs.perPage,
-    activePage: 1,
-    totalPages: Math.ceil(mockMembers.length / paginationConfigs.perPage),
+    activePage: 0,
+    totalPages: 0,
   },
   filtersInfo: {
     appliedFilters: [],
   },
   search: {
     isSearching: false,
+    searchText: '',
   },
 };
 
@@ -174,7 +179,6 @@ const reducer = (preloadedState = null) => (
     case LOAD_SEARCH_DATA: {
       const { payload } = action;
       const { isSearching, data } = payload;
-      console.log('inside reducer', data, paginationConfigs);
       return {
         ...state,
         membersInfo: {
@@ -183,9 +187,9 @@ const reducer = (preloadedState = null) => (
         },
         pagination: {
           offset: 0,
-          limit: paginationConfigs.perPage,
+          limit: perPage,
           activePage: 1,
-          totalPages: Math.ceil(data.length / paginationConfigs.perPage),
+          totalPages: Math.ceil(data.length / perPage),
         },
         search: {
           isSearching,
@@ -194,7 +198,6 @@ const reducer = (preloadedState = null) => (
     }
     case UPDATE_PAGE: {
       const { pageNo } = action;
-      const { perPage } = paginationConfigs;
       const newOffset = (pageNo - 1) * perPage;
       return {
         ...state,
@@ -208,12 +211,26 @@ const reducer = (preloadedState = null) => (
     }
     case LOAD_MEMBER_DETAILS: {
       const { payload } = action;
+      const { membersList = [], ...rest } = payload;
+      const searchText = get(state, 'search.searchText', '');
 
+      const filteredData = searchLogic({
+        searchText,
+        dataSource: membersList,
+      });
       return {
         ...state,
         membersInfo: {
-          data: action.payload,
-          logicAppliedData: [],
+          data: membersList,
+          logicAppliedData: filteredData,
+          ...rest,
+        },
+        pagination: {
+          ...state.pagination,
+          offset: 0,
+          limit: perPage,
+          activePage: 1,
+          totalPages: Math.ceil(membersList.length / perPage),
         },
       };
     }
