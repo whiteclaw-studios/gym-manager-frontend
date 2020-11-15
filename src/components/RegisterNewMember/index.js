@@ -339,6 +339,7 @@ export default class RegisterNewMember extends React.Component {
       plan,
       gender,
       bloodGroup,
+      images,
     } = this.state;
     this.props.dispatch(
       addNewMember({
@@ -350,6 +351,7 @@ export default class RegisterNewMember extends React.Component {
         plan: this.getPlanDetails[plan.selectedItemIndex],
         bloodGroup: BLOOD_GROUP_DATA[bloodGroup.selectedItemIndex],
         branchId: this.getBranchInfoUsingId(branch.selectedItemIndex).id,
+        images,
         successCallback: () => {
           this.resetState();
         },
@@ -395,9 +397,9 @@ export default class RegisterNewMember extends React.Component {
                 <Label>Father Name</Label>
                 <FatherNameInput
                   state={fatherName}
-                  name="name"
+                  name="fatherName"
                   onValueChange={this.onValueChange}
-                  showError={name.error}
+                  showError={fatherName.error}
                   errorText="Invalid Father's Name"
                 />
               </InputWrap>

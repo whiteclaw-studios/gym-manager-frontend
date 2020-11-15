@@ -54,6 +54,7 @@ const Field = styled('div')`
   margin: 1rem 0;
 `;
 const FieldLabel = styled('p')`
+  text-transform: capitalize;
   font-size: 1.4rem;
   font-family: ${MontserratBold};
   min-width: 15rem;

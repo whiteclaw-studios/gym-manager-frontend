@@ -64,7 +64,8 @@ class MembersDirectory extends React.Component {
     this.props.dispatch(updatePage({ pageNo }));
   };
   componentDidMount() {
-    this.props.dispatch(getMemberDetails());
+    const { isLoaded } = get(this.props, 'pageData.membersInfo', {});
+    if (!isLoaded) this.props.dispatch(getMemberDetails());
   }
   render() {
     const {

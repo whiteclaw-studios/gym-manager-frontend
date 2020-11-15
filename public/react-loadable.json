@@ -599,12 +599,6 @@
       "name": "./src/containers/LoginPage/actions.js",
       "file": "bundle.js",
       "publicPath": "bundle.js"
-    },
-    {
-      "id": "./src/containers/MembersDirectory/actions.js",
-      "name": "./src/containers/MembersDirectory/actions.js",
-      "file": "bundle.js",
-      "publicPath": "bundle.js"
     }
   ],
   "connected-react-router": [
@@ -1593,6 +1587,14 @@
       "publicPath": "bundle.js"
     }
   ],
+  "../../containers/MembersDirectory/actions": [
+    {
+      "id": "./src/containers/MembersDirectory/actions.js",
+      "name": "./src/containers/MembersDirectory/actions.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
   "./containers/MembersDirectory": [
     {
       "id": "./src/containers/MembersDirectory/index.js",
@@ -1705,7 +1707,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../../selectors": [
+  "../../selectors/": [
     {
       "id": "./src/selectors/index.js",
       "name": "./src/selectors/index.js",

@@ -21,21 +21,27 @@ function* addNewMember(params = {}) {
       planId,
       age,
       gender,
+      images,
       successCallback = () => {},
     } = params;
+    const fieldKeys = {
+      name,
+      mailId,
+      mobileNumber,
+      branchId,
+      planId,
+      age,
+      gender,
+    };
+    var formData = new FormData();
+    if (images.length > 0) formData.append('image', images[0].imageFile);
+    Object.keys(fieldKeys).map((key) => formData.append(key, fieldKeys[key]));
+
     const response = yield call(axiosWrapper, {
       method: 'POST',
+      headers: { 'Content-type': 'multipart/form-data' },
       url: apiUrls.MEMBERS_URL,
-      data: {
-        name,
-        mailId,
-        branchId,
-        mobileNumber,
-        branchId,
-        planId,
-        age,
-        gender,
-      },
+      data: formData,
     });
 
     const parsedResponse = responseParser(response);
