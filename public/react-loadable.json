@@ -1321,6 +1321,14 @@
       "publicPath": "bundle.js"
     }
   ],
+  "./ExpandedView": [
+    {
+      "id": "./src/components/MembersInfo/ExpandedView.js",
+      "name": "./src/components/MembersInfo/ExpandedView.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
   "./ItemRow": [
     {
       "id": "./src/components/MembersInfo/ItemRow.js",

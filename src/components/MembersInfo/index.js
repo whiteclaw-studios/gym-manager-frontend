@@ -58,7 +58,12 @@ const NoResults = styled('p')`
 `;
 export default class MembersInfo extends React.Component {
   constructLists = () => {
-    const { data = [], openPaymentPopup = () => {}, type } = this.props;
+    const {
+      data = [],
+      openPaymentPopup = () => {},
+      type,
+      showDueColumn,
+    } = this.props;
     return data.map((member, index) => {
       return (
         <ItemRow
@@ -66,6 +71,7 @@ export default class MembersInfo extends React.Component {
           index={index}
           openPaymentPopup={openPaymentPopup}
           type={type}
+          showDueColumn={showDueColumn}
         />
       );
     });
@@ -97,7 +103,7 @@ export default class MembersInfo extends React.Component {
     }
   };
   render() {
-    const { data } = this.props;
+    const { data, showDueColumn = false } = this.props;
     return (
       <Wrap>
         <Title>{this.constructTitleText()}</Title>
@@ -112,7 +118,7 @@ export default class MembersInfo extends React.Component {
             <HeadingItem>Member id</HeadingItem>
             <HeadingItem>Plan</HeadingItem>
             <HeadingItem>Branch</HeadingItem>
-            <HeadingItem>Due</HeadingItem>
+            {showDueColumn && <HeadingItem>Due</HeadingItem>}
           </Info>
           <HeadingItem></HeadingItem>
         </HeadingRow>

@@ -10,6 +10,7 @@ import {
 import { OpensansBold } from '../../utils/fonts';
 import Button from '../Button';
 import { Item, Row, Info } from './commonStyles';
+import ExpandedView from './ExpandedView';
 
 const MemberRow = styled(Row)`
   align-items: center;
@@ -18,14 +19,6 @@ const MemberRow = styled(Row)`
   @media (max-width: 992px) {
     align-items: flex-start;
   }
-`;
-const ProfilePicWrap = styled('div')`
-  width: 4rem;
-  height: 4rem;
-`;
-const ProfilePic = styled('img')`
-  width: 100%;
-  height: 100%;
 `;
 
 const Plan = styled(Item)`
@@ -72,10 +65,7 @@ const Delete = styled(Button)`
     font-size: 1rem;
   }
 `;
-const ExpandedView = styled('div')`
-  width: 100%;
-  height: 10rem;
-`;
+
 function ItemRow({
   memberId,
   name,
@@ -87,6 +77,7 @@ function ItemRow({
   openPaymentPopup,
   index,
   isAllowExpand = true,
+  showDueColumn,
 }) {
   const [expand, toggleState] = useState(false);
   const constructControls = (data) => {
@@ -149,6 +140,7 @@ function ItemRow({
             margin-right: 2rem;
             @media (max-width: 992px) {
               margin-right: 1rem;
+              max-width: 1rem;
             }
           `}
         >
@@ -187,13 +179,34 @@ function ItemRow({
             >
               {branch}
             </Item>
-            <Due>{due}</Due>
+            {showDueColumn && <Due>{due}</Due>}
           </div>
         </Info>
 
         {constructControls()}
       </MemberRow>
-      {expand && <ExpandedView>ExpandedView</ExpandedView>}
+      {expand && (
+        <ExpandedView
+          profilePic="https://www.pngitem.com/pimgs/m/43-437594_and-oil-moustache-man-beard-free-png-hq.png"
+          fields={[
+            {
+              Name: 'Rajesh',
+            },
+            {
+              Age: '23',
+            },
+            {
+              Gender: 'Male',
+            },
+            {
+              FatherName: 'Kumaran S',
+            },
+            {
+              MemberId: '10101',
+            },
+          ]}
+        />
+      )}
     </React.Fragment>
   );
 }
