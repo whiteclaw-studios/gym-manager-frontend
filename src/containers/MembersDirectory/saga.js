@@ -76,6 +76,7 @@ function* searchMemberSaga(params = {}) {
       loadSearchData({
         isSearching: !!searchText,
         data: filteredData,
+        searchText,
       }),
     );
   } catch (err) {

@@ -21,6 +21,19 @@ const selectDataSourceForMDPage = (state) => {
   const mdPage = selectMDPage(state);
   return get(mdPage, 'membersInfo.logicAppliedData', []);
 };
+const selectEDPage = (state) => get(state, 'enquiryDirectory', {});
+const selectEnquirySource = (state) => {
+  const edPage = selectEDPage(state);
+  return get(edPage, 'enquiryInfo.data', []);
+};
+const selectPaginationInEDPage = (state) => {
+  const edPage = selectEDPage(state);
+  return get(edPage, 'pagination', {});
+};
+const selectDataSourceForEDPage = (state) => {
+  const edPage = selectEDPage(state);
+  return get(edPage, 'enquiryInfo.logicAppliedData', []);
+};
 const getBranchInfo = (state) => (branchId) => {
   const branchDetails = selectBranchDetails(state);
   const reqdBranch = branchDetails.filter(
@@ -55,6 +68,10 @@ export {
   selectMembersSource,
   selectDataSourceForMDPage,
   selectPaginationInMDPage,
+  selectEDPage,
+  selectEnquirySource,
+  selectPaginationInEDPage,
+  selectDataSourceForEDPage,
   getBranchInfo,
   getPlanInfo,
 };

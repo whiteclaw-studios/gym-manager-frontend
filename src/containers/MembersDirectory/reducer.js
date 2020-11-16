@@ -178,7 +178,7 @@ const reducer = (preloadedState = null) => (
   switch (action.type) {
     case LOAD_SEARCH_DATA: {
       const { payload } = action;
-      const { isSearching, data } = payload;
+      const { isSearching, data, searchText } = payload;
       return {
         ...state,
         membersInfo: {
@@ -193,6 +193,7 @@ const reducer = (preloadedState = null) => (
         },
         search: {
           isSearching,
+          searchText,
         },
       };
     }

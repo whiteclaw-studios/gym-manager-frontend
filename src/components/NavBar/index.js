@@ -98,11 +98,6 @@ const footerMenus = [
     Icon: EnquiryIcon,
     url: '/dashboard',
   },
-  {
-    menu: 'Settings',
-    Icon: FeeIcon,
-    url: '/dashboard',
-  },
 ];
 function NavBar({
   updateActiveNavIndex,

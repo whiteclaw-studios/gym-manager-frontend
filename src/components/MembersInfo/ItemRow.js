@@ -82,6 +82,8 @@ function ItemRow({
   index,
   isAllowExpand = true,
   showDueColumn,
+  hideMemberId = false,
+  hidePlan = false,
 }) {
   const [expand, toggleState] = useState(false);
   const constructControls = (data) => {
@@ -152,15 +154,17 @@ function ItemRow({
         </Item>
         <Info>
           <Item>{name}</Item>
-          <Item
-            className={css`
-              @media (max-width: 992px) {
-                display: none;
-              }
-            `}
-          >
-            {memberId}
-          </Item>
+          {!hideMemberId && (
+            <Item
+              className={css`
+                @media (max-width: 992px) {
+                  display: none;
+                }
+              `}
+            >
+              {memberId}
+            </Item>
+          )}
           <div
             className={css`
               display: flex;
@@ -170,7 +174,7 @@ function ItemRow({
               }
             `}
           >
-            <Plan>{plan}</Plan>
+            {!hidePlan && <Plan>{plan}</Plan>}
             <Item
               className={css`
                 @media (max-width: 992px) {
@@ -184,7 +188,16 @@ function ItemRow({
           </div>
         </Info>
 
-        {constructControls()}
+        <div
+          className={css`
+            @media (min-width: 993px) {
+              min-height: 4rem;
+            }
+          `}
+        >
+          {' '}
+          {constructControls()}
+        </div>
       </MemberRow>
       {expand && (
         <ExpandedView

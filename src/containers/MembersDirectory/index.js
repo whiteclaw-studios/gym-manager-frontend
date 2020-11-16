@@ -93,6 +93,7 @@ class MembersDirectory extends React.Component {
           isLoading={isLoading}
           getBranchInfo={getBranchInfo}
           getPlanInfo={getPlanInfo}
+          isAllowExpand
         />
         <PaginationWrap>
           <Pagination

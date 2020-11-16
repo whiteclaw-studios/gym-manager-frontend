@@ -76,6 +76,9 @@ export default class MembersInfo extends React.Component {
       showDueColumn = false,
       getBranchInfo,
       getPlanInfo,
+      isAllowExpand = false,
+      hideMemberId = false,
+      hidePlan = false,
     } = this.props;
     return data.map((member, index) => {
       const {
@@ -104,6 +107,9 @@ export default class MembersInfo extends React.Component {
           age={age}
           gender={gender}
           mobile={mobile}
+          isAllowExpand={isAllowExpand}
+          hideMemberId={hideMemberId}
+          hidePlan={hidePlan}
         />
       );
     });
@@ -135,7 +141,13 @@ export default class MembersInfo extends React.Component {
     }
   };
   render() {
-    const { data, showDueColumn = false, isLoading = false } = this.props;
+    const {
+      data,
+      showDueColumn = false,
+      isLoading = false,
+      hideMemberId = false,
+      hidePlan = false,
+    } = this.props;
     return (
       <Wrap>
         <Title>{this.constructTitleText()}</Title>
@@ -147,8 +159,8 @@ export default class MembersInfo extends React.Component {
           ></HeadingItem>
           <Info>
             <HeadingItem>Name</HeadingItem>
-            <HeadingItem>Member id</HeadingItem>
-            <HeadingItem>Plan</HeadingItem>
+            {!hideMemberId && <HeadingItem>Member id</HeadingItem>}
+            {!hidePlan && <HeadingItem>Plan</HeadingItem>}
             <HeadingItem>Branch</HeadingItem>
             {showDueColumn && <HeadingItem>Due</HeadingItem>}
           </Info>
