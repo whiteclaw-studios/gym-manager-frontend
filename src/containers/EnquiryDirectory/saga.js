@@ -48,7 +48,6 @@ function* addEnquirySaga(params = {}) {
 function* searchEnquirySaga(params = {}) {
   try {
     const { searchText = '' } = params;
-    console.log('searchText', params, searchText);
     const state = yield select();
     const enquiryData = selectEnquirySource(state);
     const filteredData = searchLogic({
@@ -85,9 +84,7 @@ function* getEnquiryDetailsSaga() {
       method: 'GET',
       url: apiUrls.ENQUIRIES_URL,
     });
-    console.log('response', response);
     const processResponse = responseParser(response);
-    console.log(processResponse);
     if (!processResponse.isError) {
       yield put(
         loadEnquiryDetails({

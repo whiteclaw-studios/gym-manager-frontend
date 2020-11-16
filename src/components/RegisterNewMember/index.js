@@ -122,7 +122,6 @@ export default class RegisterNewMember extends React.Component {
       onRegister,
       onCancel,
     } = this.props;
-    console.log('address', this.props);
     return (
       <Wrap>
         <Content>

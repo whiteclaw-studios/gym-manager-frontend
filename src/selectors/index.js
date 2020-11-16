@@ -66,8 +66,11 @@ const selectAllowedBranchDetails = (state) => {
 };
 const selectFiltersInMDPage = (state) => {
   const mdPage = selectMDPage(state);
-  console.log('mdpage', mdPage);
   return get(mdPage, 'filters', {});
+};
+const selectFiltersInEDPage = (state) => {
+  const edPage = selectEDPage(state);
+  return get(edPage, 'filters', {});
 };
 export {
   selectAppState,
@@ -89,4 +92,5 @@ export {
   getPlanInfo,
   selectAllowedBranchDetails,
   selectFiltersInMDPage,
+  selectFiltersInEDPage,
 };

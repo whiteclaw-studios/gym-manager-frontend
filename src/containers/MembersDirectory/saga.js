@@ -72,7 +72,6 @@ function* addNewMember(params = {}) {
 function* searchMemberSaga(params = {}) {
   try {
     const { searchText = '' } = params;
-    console.log('searchText', params, searchText);
     const state = yield select();
     const membersData = selectMembersSource(state);
     const filteredData = searchLogic({
@@ -109,9 +108,7 @@ function* getMemberDetailsSaga() {
       method: 'GET',
       url: apiUrls.MEMBERS_URL,
     });
-    console.log('response', response);
     const processResponse = responseParser(response);
-    console.log(processResponse);
     if (!processResponse.isError) {
       yield put(
         loadMemberDetails({
@@ -132,7 +129,6 @@ function* deleteMemberSaga(params) {
       successCallback = () => {},
       failureCallback = () => {},
     } = params;
-    console.log('params', params);
     const response = yield call(axiosWrapper, {
       method: 'DELETE',
       url: `${apiUrls.MEMBERS_URL}/${memberUniqueId}`,

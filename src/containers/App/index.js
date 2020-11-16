@@ -107,13 +107,6 @@ class App extends React.Component {
     // going back to previous page once logged in
 
     if (infoLoadedPrevProp !== isAdminInfoLoaded && isAdminInfoLoaded) {
-      console.log(
-        'debugger',
-        infoLoadedPrevProp,
-        isAdminInfoLoaded,
-        isLoggedInPrevProp,
-        isLoggedIn,
-      );
       if (isLoggedInPrevProp !== isLoggedIn && isLoggedIn) {
         const currentUrl = this.props.history.location.pathname;
         if (currentUrl === LOGIN_ROUTE) this.props.history.goBack();

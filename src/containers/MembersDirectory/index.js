@@ -134,8 +134,6 @@ class MembersDirectory extends React.Component {
   }
 
   onSearch = (searchText) => {
-    console.log('searchText', searchText);
-
     this.props.dispatch(searchMembers({ searchText }));
   };
   getPageData = () => {
@@ -496,10 +494,6 @@ class MembersDirectory extends React.Component {
         },
       }),
     );
-
-    console.log('Ready to submit');
-
-    // ready to submit
   };
   componentDidMount() {
     const { isLoaded } = get(this.props, 'pageData.membersInfo', {});
@@ -535,7 +529,6 @@ class MembersDirectory extends React.Component {
       branch,
     } = this.state;
     const branchFilters = constructBranchFilters(branchDetails);
-    console.log('branchFilters', filters);
     return (
       <Wrapper>
         {!showEditScreen ? (
@@ -551,7 +544,6 @@ class MembersDirectory extends React.Component {
                     otherInfo={branchFilters}
                     activeItem={filters.branch.index}
                     onSelect={(index, name, otherInfo) => {
-                      console.log('index', name, otherInfo);
                       this.props.dispatch(
                         updateFilter({
                           ...otherInfo,

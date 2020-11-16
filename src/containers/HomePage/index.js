@@ -55,8 +55,6 @@ class HomePage extends React.Component {
     });
   };
   render() {
-    console.log('state', this.state);
-    const { homePage } = this.props;
     return (
       <Wrapper>
         <MembersInfo

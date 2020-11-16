@@ -16,9 +16,12 @@ import {
   selectDataSourceForEDPage,
   selectEDPage,
   selectPaginationInEDPage,
+  selectFiltersInEDPage,
 } from '../../selectors';
-import { getEnquiryDetails, searchEnquiry } from './actions';
-import { get } from '../../utils/helpers';
+import { getEnquiryDetails, searchEnquiry, updateFilter } from './actions';
+import { constructBranchFilters, get } from '../../utils/helpers';
+import { MontserratRegular } from '../../utils/fonts';
+import DropDown from '../../components/Dropdown';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -44,14 +47,22 @@ const PaginationWrap = styled('div')`
   justify-content: center;
   padding: 2.4rem 0;
 `;
+const FilterWrap = styled('div')``;
+const BranchFilter = styled('div')``;
+const Label = styled('p')`
+  font-size: 1.4rem;
+  margin: 0.5rem 0;
+  font-family: ${MontserratRegular};
+`;
+const BranchFilterDropdn = styled('div')`
+  max-width: 27rem;
+`;
 class EnquiryDirectory extends React.Component {
   constructor(props) {
     super(props);
     this.props.showHeaderHandle(); // to show the header
   }
   onSearch = (searchText) => {
-    console.log('searchText', searchText);
-
     this.props.dispatch(searchEnquiry({ searchText }));
   };
   getPageData = () => {
@@ -72,13 +83,37 @@ class EnquiryDirectory extends React.Component {
       pageData,
       getBranchInfo = () => {},
       getPlanInfo = () => {},
+      branchDetails,
+      filters,
     } = this.props;
     const { totalPages, activePage } = paginationInfo;
     const { isLoading } = get(pageData, 'enquiryInfo', {});
-    console.log('EnquiryPage', this.props);
+    const branchFilters = constructBranchFilters(branchDetails);
+
     return (
       <Wrapper>
         <Search onSearch={this.onSearch} />
+        <FilterWrap>
+          <BranchFilter>
+            <Label>Branch</Label>
+            <BranchFilterDropdn>
+              <DropDown
+                name="md-filters"
+                listItems={branchFilters.map((branch) => branch.branchName)}
+                otherInfo={branchFilters}
+                activeItem={filters.branch.index}
+                onSelect={(index, name, otherInfo) => {
+                  this.props.dispatch(
+                    updateFilter({
+                      ...otherInfo,
+                      index,
+                    }),
+                  );
+                }}
+              />
+            </BranchFilterDropdn>
+          </BranchFilter>
+        </FilterWrap>
         <ButtonWrap>
           <RegisterNewMember
             onClick={() => this.props.history.push(ENQUIRY_FORM_ROUTE)}
@@ -113,6 +148,7 @@ const mapStateToProps = (state) => {
     pageData: selectEDPage(state),
     enquiryData: selectDataSourceForEDPage(state),
     paginationInfo: selectPaginationInEDPage(state),
+    filters: selectFiltersInEDPage(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {

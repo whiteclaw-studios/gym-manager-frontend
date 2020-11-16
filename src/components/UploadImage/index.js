@@ -95,7 +95,6 @@ export default class UploadImage extends React.Component {
                 accept={ALLOW_IMAGES_TYPES}
                 onChange={(e) => {
                   e.stopPropagation();
-                  console.log('clicked');
                   this.chooseImageHandle(e);
                 }}
               />

@@ -4,6 +4,7 @@ import {
   LOAD_ENQUIRY_DETAILS,
   LOAD_SEARCH_DATA,
   SEARCH_ENQUIRY,
+  UPDATE_FILTER,
   UPDATE_PAGE,
 } from './constants';
 
@@ -40,6 +41,12 @@ export function getEnquiryDetails() {
 export function loadEnquiryDetails(payload) {
   return {
     type: LOAD_ENQUIRY_DETAILS,
+    payload,
+  };
+}
+export function updateFilter(payload) {
+  return {
+    type: UPDATE_FILTER,
     payload,
   };
 }

@@ -1,8 +1,9 @@
 import { paginationConfigs } from '../../constants';
-import { get, searchLogic } from '../../utils/helpers';
+import { get, applySearchAndFilterLogic } from '../../utils/helpers';
 import {
   LOAD_ENQUIRY_DETAILS,
   LOAD_SEARCH_DATA,
+  UPDATE_FILTER,
   UPDATE_PAGE,
 } from './constants';
 
@@ -20,8 +21,11 @@ export const initialState = {
     activePage: 0,
     totalPages: 0,
   },
-  filtersInfo: {
-    appliedFilters: [],
+  filters: {
+    branch: {
+      index: 0,
+      branchName: 'All',
+    },
   },
   search: {
     isSearching: false,
@@ -73,9 +77,10 @@ const reducer = (preloadedState = null) => (
       const { enquiryList = [], ...rest } = payload;
       const searchText = get(state, 'search.searchText', '');
 
-      const filteredData = searchLogic({
+      const filteredData = applySearchAndFilterLogic({
         searchText,
         dataSource: enquiryList,
+        filters: state.filters,
       });
       return {
         ...state,
@@ -90,6 +95,36 @@ const reducer = (preloadedState = null) => (
           limit: perPage,
           activePage: 1,
           totalPages: Math.ceil(enquiryList.length / perPage),
+        },
+      };
+    }
+    case UPDATE_FILTER: {
+      const { payload } = action;
+      const filtersInfo = {
+        branch: {
+          ...payload,
+        },
+      };
+      let enquiryList = get(state, 'enquiryInfo.data', []);
+      const searchText = get(state, 'search.searchText', '');
+      const filteredData = applySearchAndFilterLogic({
+        searchText,
+        dataSource: enquiryList,
+        filters: filtersInfo,
+      });
+      return {
+        ...state,
+        filters: filtersInfo,
+        enquiryInfo: {
+          ...state.enquiryInfo,
+          logicAppliedData: filteredData,
+        },
+        pagination: {
+          ...state.pagination,
+          offset: 0,
+          limit: perPage,
+          activePage: 1,
+          totalPages: Math.ceil(filteredData.length / perPage),
         },
       };
     }

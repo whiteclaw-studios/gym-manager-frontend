@@ -6,7 +6,7 @@ import Button, { InvertSecondaryButton } from '../Button';
 import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
 import { addEnquiry } from '../../containers/EnquiryDirectory/actions';
-import { DASHBOARD_ROUTE } from '../../routes';
+import { ENQUIRY_DIRECTORY_ROUTE } from '../../routes';
 const Wrap = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -255,7 +255,9 @@ export default class EnquiryForm extends React.Component {
             </Column>
           </Row>
           <Controls>
-            <Cancel onClick={() => this.props.history.push(DASHBOARD_ROUTE)}>
+            <Cancel
+              onClick={() => this.props.history.push(ENQUIRY_DIRECTORY_ROUTE)}
+            >
               Cancel
             </Cancel>
             <Add onClick={this.onAddEnquiry}>Add</Add>

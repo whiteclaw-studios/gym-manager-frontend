@@ -128,3 +128,14 @@ export const constructBranchFilters = (branchDetails) => {
   ];
   return branchInfo;
 };
+export const applySearchAndFilterLogic = ({
+  searchText,
+  filters,
+  dataSource,
+}) => {
+  const filteredData = searchLogic({
+    searchText,
+    dataSource,
+  });
+  return filterLogic({ dataSource: filteredData, filters });
+};

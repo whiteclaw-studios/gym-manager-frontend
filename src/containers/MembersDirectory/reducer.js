@@ -1,5 +1,5 @@
 import { paginationConfigs } from '../../constants';
-import { filterLogic, get, searchLogic } from '../../utils/helpers';
+import { get, applySearchAndFilterLogic } from '../../utils/helpers';
 import {
   INCLUDE_NEW_MEMBER_IN_LIST,
   LOAD_MEMBER_DETAILS,
@@ -9,148 +9,6 @@ import {
   UPDATE_PAGE,
 } from './constants';
 
-const mockMembers = [
-  {
-    name: 'Rajesh',
-    memberId: 1,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Sai',
-    memberId: 2,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: '2 Months',
-  },
-  {
-    name: 'Raghul',
-    memberId: 3,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Muthu',
-    memberId: 4,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: '2 Months',
-  },
-  {
-    name: 'Sai',
-    memberId: 2090,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: '2 Months',
-  },
-  {
-    name: 'Ram',
-    memberId: 7,
-    plan: '$20/month',
-    branch: 'Ponneri',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Sanjana',
-    memberId: 5,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: '2 Months',
-  },
-  {
-    name: 'Arun',
-    memberId: 6,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Sanjana',
-    memberId: 8,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: '2 Months',
-  },
-  {
-    name: 'Arun',
-    memberId: 9,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Sanjana',
-    memberId: 15,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: '2 Months',
-  },
-  {
-    name: 'Arun',
-    memberId: 116,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Sanjana',
-    memberId: 1215,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: '2 Months',
-  },
-  {
-    name: 'Arun',
-    memberId: 656,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Arun',
-    memberId: 43246,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Arun',
-    memberId: 2326,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Arun',
-    memberId: 766,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Arun',
-    memberId: 6234,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Arun',
-    memberId: 62,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-  {
-    name: 'Arun',
-    memberId: 687,
-    plan: '$20/month',
-    branch: 'Thiruvottiyur',
-    due: 'Today (1 Month)',
-  },
-];
 const { perPage } = paginationConfigs;
 export const initialState = {
   membersInfo: {
@@ -176,13 +34,7 @@ export const initialState = {
     searchText: '',
   },
 };
-const applySearchAndFilterLogic = ({ searchText, filters, dataSource }) => {
-  const filteredData = searchLogic({
-    searchText,
-    dataSource,
-  });
-  return filterLogic({ dataSource: filteredData, filters });
-};
+
 const reducer = (preloadedState = null) => (
   state = preloadedState || initialState,
   action,

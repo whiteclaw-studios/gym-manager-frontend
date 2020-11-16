@@ -7,7 +7,6 @@ const axiosWrapper = (options) => {
   configs.headers['Content-Type'] = 'application/json';
   if (!ignoreToken) {
     const token = getCookie('VJS');
-    console.log('token', options, token);
     configs.headers.Authorization = token;
   }
   return axios.request({ ...configs });
@@ -17,8 +16,6 @@ const resInterceptor = axios.interceptors.response.use(
     if (!response) {
       return response;
     }
-
-    console.log('Request success', response);
 
     return response;
   },
