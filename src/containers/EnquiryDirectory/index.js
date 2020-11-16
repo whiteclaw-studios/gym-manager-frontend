@@ -101,6 +101,7 @@ class EnquiryDirectory extends React.Component {
             activePage={activePage}
             totalPages={totalPages}
             onSelect={this.onPageSelect}
+            name="enquiryDirectory"
           />
         </PaginationWrap>
       </Wrapper>

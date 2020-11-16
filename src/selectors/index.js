@@ -55,6 +55,15 @@ const getPlanInfo = (state) => (branchId, planId) => {
     ...reqPlanDetails[0],
   };
 };
+const selectAllowedBranchDetails = (state) => {
+  const branchDetails = selectBranchDetails(state);
+  const reqdBranch = branchDetails.filter(
+    (branch) => branch.isWriteAllowed,
+  ) || [{}];
+  return {
+    ...reqdBranch[0],
+  };
+};
 
 export {
   selectAppState,
@@ -74,4 +83,5 @@ export {
   selectDataSourceForEDPage,
   getBranchInfo,
   getPlanInfo,
+  selectAllowedBranchDetails,
 };

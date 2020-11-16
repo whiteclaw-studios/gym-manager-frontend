@@ -23,9 +23,15 @@ const Page = styled('span')`
 `;
 export default class Pagination extends React.Component {
   constructPages = () => {
-    const { totalPages = 0, activePage = 0, onSelect = () => {} } = this.props;
+    const {
+      totalPages = 0,
+      activePage = 0,
+      onSelect = () => {},
+      name,
+    } = this.props;
     return Array.from(Array(totalPages).keys()).map((page, idx) => (
       <Page
+        key={`${name}-pageno-${page}`}
         className={
           idx + 1 === activePage
             ? css`

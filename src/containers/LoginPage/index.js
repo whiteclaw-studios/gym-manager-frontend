@@ -121,6 +121,9 @@ class LoginPage extends React.Component {
             this.props.history.push(DASHBOARD_ROUTE);
             this.hideLoader();
           },
+          failureCallback: () => {
+            this.hideLoader();
+          },
         }),
       );
     } else {

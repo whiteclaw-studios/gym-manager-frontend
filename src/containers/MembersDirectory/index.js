@@ -212,7 +212,6 @@ class MembersDirectory extends React.Component {
     let selectedGenderIndex = this.findGenderIdx(gender);
     let selectedBGIndex = this.findBloodGrpIdx(bloodGroup);
     for (let i = 0; i < branchDetails.length; i += 1) {
-      console.log('loop', branchDetails[i].id, branchId);
       if (branchDetails[i].id === branchId) {
         selectedBranchIndex = i;
         let { planDetails } = branchDetails[i];
@@ -494,6 +493,7 @@ class MembersDirectory extends React.Component {
       pageData,
       getBranchInfo = () => {},
       getPlanInfo = () => {},
+      allowedBranchInfo,
     } = this.props;
     const { totalPages, activePage } = paginationInfo;
     const { isLoading } = get(pageData, 'membersInfo', {});
@@ -539,12 +539,14 @@ class MembersDirectory extends React.Component {
               isAllowExpand
               onEditMember={this.onEdit}
               onDeleteMember={this.onDelete}
+              allowedBranchInfo={allowedBranchInfo}
             />
             <PaginationWrap>
               <Pagination
                 activePage={activePage}
                 totalPages={totalPages}
                 onSelect={this.onPageSelect}
+                name="membersDirectory"
               />
             </PaginationWrap>
             <DeleteConfirmation

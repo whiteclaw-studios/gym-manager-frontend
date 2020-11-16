@@ -62,13 +62,16 @@ const Delete = styled(Button)`
   font-size: 1.2rem;
   border: 1px solid ${RED};
   background: ${RED};
+  margin-left: 0.5rem;
   @media (max-width: 760px) {
     font-size: 1rem;
     padding: 0.5rem;
   }
   :hover {
-    border: 1px solid ${RED};
-    color: ${RED};
+    ${(props) =>
+      props.allowEdit &&
+      `return border: 1px solid ${RED};
+    color: ${RED};`}
   }
 `;
 
@@ -92,6 +95,7 @@ function ItemRow({
   showDueColumn,
   hideMemberId = false,
   hidePlan = false,
+  allowEdit = false,
   onEditMember = () => {},
   onDeleteMember = () => {},
 }) {
@@ -129,32 +133,43 @@ function ItemRow({
             `}
           >
             <Edit
-              onClick={(e) => {
-                e.stopPropagation();
-                onEditMember({
-                  memberId,
-                  name,
-                  profilePic,
-                  plan,
-                  branch,
-                  branchId,
-                  planId,
-                  due,
-                  type,
-                  age,
-                  gender,
-                  mailId,
-                  mobile,
-                });
-              }}
+              disabled={!allowEdit}
+              onClick={
+                allowEdit
+                  ? (e) => {
+                      e.stopPropagation();
+                      onEditMember({
+                        memberId,
+                        name,
+                        profilePic,
+                        plan,
+                        branch,
+                        branchId,
+                        planId,
+                        due,
+                        type,
+                        age,
+                        gender,
+                        mailId,
+                        mobile,
+                      });
+                    }
+                  : () => {}
+              }
             >
               Edit
             </Edit>
             <Delete
-              onClick={(e) => {
-                e.stopPropagation();
-                onDeleteMember({ name, memberId });
-              }}
+              disabled={!allowEdit}
+              allowEdit={allowEdit}
+              onClick={
+                allowEdit
+                  ? (e) => {
+                      e.stopPropagation();
+                      onDeleteMember({ name, memberId });
+                    }
+                  : () => {}
+              }
             >
               Delete
             </Delete>

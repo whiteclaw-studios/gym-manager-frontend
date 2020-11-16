@@ -122,7 +122,7 @@ export default class RegisterNewMember extends React.Component {
       onRegister,
       onCancel,
     } = this.props;
-    console.log('getBranchNames()', getBranchNames());
+    console.log('address', this.props);
     return (
       <Wrap>
         <Content>

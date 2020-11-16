@@ -7,7 +7,12 @@ import { displayToaster, loginResponse } from '../App/actions';
 import { setCookie } from '../../utils/helpers';
 export function* loginWithPasswordSaga(params = {}) {
   try {
-    const { userName, password, successCallback = () => {} } = params;
+    const {
+      userName,
+      password,
+      successCallback = () => {},
+      failureCallback = () => {},
+    } = params;
     const encodedPassword = btoa(password);
     const response = yield call(axiosRequest, {
       method: 'POST',
@@ -46,10 +51,12 @@ export function* loginWithPasswordSaga(params = {}) {
           timeout: 2000,
         }),
       );
+      if (failureCallback) failureCallback();
       console.error('Error in loginWithPasswordSaga', errorMessage);
     }
   } catch (err) {
     console.error('Caught in homeSaga', err);
+    if (failureCallback) failureCallback();
   }
 }
 

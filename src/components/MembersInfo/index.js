@@ -11,6 +11,7 @@ import {
 } from '../../constants';
 import { getBranchInfo, getPlanInfo } from '../../selectors';
 import { MontserratRegular } from '../../utils/fonts';
+import { get } from '../../utils/helpers';
 import EllipsisLoader from '../EllipsisLoader';
 import { Item, Row, Info } from './commonStyles';
 import ItemRow from './ItemRow';
@@ -81,6 +82,7 @@ export default class MembersInfo extends React.Component {
       hidePlan = false,
       onEditMember,
       onDeleteMember,
+      allowedBranchInfo,
     } = this.props;
     return data.map((member, index) => {
       const {
@@ -93,11 +95,14 @@ export default class MembersInfo extends React.Component {
         gender,
         mobileNumber: mobile,
         mailId,
+        id: uniqueId,
       } = member;
       const branchInfo = getBranchInfo(branchId);
       const planInfo = getPlanInfo(branchId, planId);
+      const allowEdit = get(allowedBranchInfo, 'id', '') === branchId;
       return (
         <ItemRow
+          key={uniqueId}
           index={index}
           openPaymentPopup={openPaymentPopup}
           type={type}
@@ -118,6 +123,7 @@ export default class MembersInfo extends React.Component {
           hidePlan={hidePlan}
           onEditMember={onEditMember}
           onDeleteMember={onDeleteMember}
+          allowEdit={allowEdit}
         />
       );
     });

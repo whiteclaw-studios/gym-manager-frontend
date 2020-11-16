@@ -14,6 +14,7 @@ import {
   selectToasterConf,
   getBranchInfo,
   getPlanInfo,
+  selectAllowedBranchDetails,
 } from '../../selectors/';
 import SplashScreen from '../../components/SplashScreen';
 import { getAdminInfo } from './actions';
@@ -189,6 +190,7 @@ class App extends React.Component {
       isAdminInfoLoaded,
       getBranchInfo,
       getPlanInfo,
+      allowedBranchInfo,
     } = this.props;
     const {
       showInstallUI,
@@ -221,6 +223,7 @@ class App extends React.Component {
               hideNavBar: this.hideNavBar,
               getBranchInfo,
               getPlanInfo,
+              allowedBranchInfo,
             })}
           </ChildrenWrap>
         )}
@@ -249,6 +252,7 @@ const mapStateToProps = (state) => {
     branchDetails: selectBranchDetails(state),
     getBranchInfo: getBranchInfo(state),
     getPlanInfo: getPlanInfo(state),
+    allowedBranchInfo: selectAllowedBranchDetails(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {
