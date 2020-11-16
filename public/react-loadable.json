@@ -1,20 +1,4 @@
 {
-  "./index": [
-    {
-      "id": "./src/components/Dropdown/index.js",
-      "name": "./src/components/Dropdown/index.js",
-      "file": "DropDown.bundle.js",
-      "publicPath": "DropDown.bundle.js"
-    }
-  ],
-  "../../images/downarrow.png": [
-    {
-      "id": "./src/images/downarrow.png",
-      "name": "./src/images/downarrow.png",
-      "file": "DropDown.bundle.js",
-      "publicPath": "DropDown.bundle.js"
-    }
-  ],
   "../../../globalStyles": [
     {
       "id": "./globalStyles.js",
@@ -1279,6 +1263,14 @@
       "publicPath": "bundle.js"
     }
   ],
+  "../../components/Dropdown": [
+    {
+      "id": "./src/components/Dropdown/index.js",
+      "name": "./src/components/Dropdown/index.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
   "../../components/EllipsisLoader": [
     {
       "id": "./src/components/EllipsisLoader/index.js",
@@ -1675,6 +1667,14 @@
     {
       "id": "./src/images/SpriteImage.png",
       "name": "./src/images/SpriteImage.png",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
+  "../../images/downarrow.png": [
+    {
+      "id": "./src/images/downarrow.png",
+      "name": "./src/images/downarrow.png",
       "file": "bundle.js",
       "publicPath": "bundle.js"
     }

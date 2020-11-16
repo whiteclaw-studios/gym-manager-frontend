@@ -6,6 +6,7 @@ import {
   LOAD_MEMBER_DETAILS,
   LOAD_SEARCH_DATA,
   REMOVE_MEMBER_IN_LIST,
+  UPDATE_FILTER,
   SEARCH_MEMBERS,
   UPDATE_PAGE,
 } from './constants';
@@ -60,6 +61,12 @@ export function deleteMember(payload) {
 export function removeMemberInList(payload) {
   return {
     type: REMOVE_MEMBER_IN_LIST,
+    payload,
+  };
+}
+export function updateFilter(payload) {
+  return {
+    type: UPDATE_FILTER,
     payload,
   };
 }

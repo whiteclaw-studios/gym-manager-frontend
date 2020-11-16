@@ -5,6 +5,7 @@ import { css } from 'emotion';
 import { GREEN, RED, SECONDARY_BLACK, WHITE } from '../../constants';
 import styled from 'react-emotion';
 import { MontserratRegular } from '../../utils/fonts';
+import { get } from '../../utils/helpers';
 const Wrap = styled('div')`
   position: relative;
   outline: none;
@@ -90,7 +91,13 @@ export default class DropDown extends React.Component {
     }
   };
   showOptions = () => {
-    const { activeItem, onSelect, listItems, name } = this.props;
+    const {
+      activeItem,
+      onSelect,
+      listItems,
+      name,
+      otherInfo = [],
+    } = this.props;
     return listItems.map((item, index) => {
       return (
         <ItemWrap
@@ -106,7 +113,7 @@ export default class DropDown extends React.Component {
             this.setState({
               expand: false,
             });
-            onSelect(index, name);
+            onSelect(index, name, get(otherInfo, `${[index]}`, {}));
           }}
         >
           {item}

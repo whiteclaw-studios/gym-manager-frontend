@@ -109,3 +109,22 @@ export const searchLogic = ({ searchText = '', dataSource = [] }) => {
       member.name.toLowerCase().indexOf(searchText.toLowerCase()) === 0,
   );
 };
+export const filterLogic = ({ filters, dataSource = [] }) => {
+  if (!filters) return dataSource;
+  if (!dataSource) return [];
+  const { branch } = filters;
+  if (branch.branchName === 'All') return dataSource;
+  return dataSource.filter((member) => member.branchId === branch.id);
+};
+export const constructBranchFilters = (branchDetails) => {
+  if (!branchDetails) return ['All'];
+  let branchInfo = [{ branchName: 'All' }];
+  branchInfo = [
+    ...branchInfo,
+    ...branchDetails.map((branch) => ({
+      branchName: branch.branchName,
+      id: branch.id,
+    })),
+  ];
+  return branchInfo;
+};

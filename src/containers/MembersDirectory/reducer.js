@@ -1,10 +1,11 @@
 import { paginationConfigs } from '../../constants';
-import { get, searchLogic } from '../../utils/helpers';
+import { filterLogic, get, searchLogic } from '../../utils/helpers';
 import {
   INCLUDE_NEW_MEMBER_IN_LIST,
   LOAD_MEMBER_DETAILS,
   LOAD_SEARCH_DATA,
   REMOVE_MEMBER_IN_LIST,
+  UPDATE_FILTER,
   UPDATE_PAGE,
 } from './constants';
 
@@ -164,15 +165,24 @@ export const initialState = {
     activePage: 0,
     totalPages: 0,
   },
-  filtersInfo: {
-    appliedFilters: [],
+  filters: {
+    branch: {
+      index: 0,
+      branchName: 'All',
+    },
   },
   search: {
     isSearching: false,
     searchText: '',
   },
 };
-
+const applySearchAndFilterLogic = ({ searchText, filters, dataSource }) => {
+  const filteredData = searchLogic({
+    searchText,
+    dataSource,
+  });
+  return filterLogic({ dataSource: filteredData, filters });
+};
 const reducer = (preloadedState = null) => (
   state = preloadedState || initialState,
   action,
@@ -217,9 +227,10 @@ const reducer = (preloadedState = null) => (
       const { membersList = [], ...rest } = payload;
       const searchText = get(state, 'search.searchText', '');
 
-      const filteredData = searchLogic({
+      const filteredData = applySearchAndFilterLogic({
         searchText,
         dataSource: membersList,
+        filters: state.filters,
       });
       return {
         ...state,
@@ -233,7 +244,7 @@ const reducer = (preloadedState = null) => (
           offset: 0,
           limit: perPage,
           activePage: 1,
-          totalPages: Math.ceil(membersList.length / perPage),
+          totalPages: Math.ceil(filteredData.length / perPage),
         },
       };
     }
@@ -242,9 +253,10 @@ const reducer = (preloadedState = null) => (
       let membersList = get(state, 'membersInfo.data', []);
       const searchText = get(state, 'search.searchText', '');
       membersList = [...membersList, payload];
-      const filteredData = searchLogic({
+      const filteredData = applySearchAndFilterLogic({
         searchText,
         dataSource: membersList,
+        filters: state.filters,
       });
       return {
         ...state,
@@ -258,7 +270,7 @@ const reducer = (preloadedState = null) => (
           offset: 0,
           limit: perPage,
           activePage: 1,
-          totalPages: Math.ceil(membersList.length / perPage),
+          totalPages: Math.ceil(filteredData.length / perPage),
         },
       };
     }
@@ -269,9 +281,10 @@ const reducer = (preloadedState = null) => (
       membersList = membersList.filter(
         (member) => member.id !== payload.memberUniqueId,
       );
-      const filteredData = searchLogic({
+      const filteredData = applySearchAndFilterLogic({
         searchText,
         dataSource: membersList,
+        filters: state.filters,
       });
       return {
         ...state,
@@ -285,7 +298,37 @@ const reducer = (preloadedState = null) => (
           offset: 0,
           limit: perPage,
           activePage: 1,
-          totalPages: Math.ceil(membersList.length / perPage),
+          totalPages: Math.ceil(filteredData.length / perPage),
+        },
+      };
+    }
+    case UPDATE_FILTER: {
+      const { payload } = action;
+      const filtersInfo = {
+        branch: {
+          ...payload,
+        },
+      };
+      let membersList = get(state, 'membersInfo.data', []);
+      const searchText = get(state, 'search.searchText', '');
+      const filteredData = applySearchAndFilterLogic({
+        searchText,
+        dataSource: membersList,
+        filters: filtersInfo,
+      });
+      return {
+        ...state,
+        filters: filtersInfo,
+        membersInfo: {
+          ...state.membersInfo,
+          logicAppliedData: filteredData,
+        },
+        pagination: {
+          ...state.pagination,
+          offset: 0,
+          limit: perPage,
+          activePage: 1,
+          totalPages: Math.ceil(filteredData.length / perPage),
         },
       };
     }

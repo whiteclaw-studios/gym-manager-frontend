@@ -42,7 +42,7 @@ const PaginationWrap = styled('div')`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin: 2.4rem 0;
+  padding: 2.4rem 0;
 `;
 class EnquiryDirectory extends React.Component {
   constructor(props) {

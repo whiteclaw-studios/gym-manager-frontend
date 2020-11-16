@@ -250,12 +250,12 @@ function ItemRow({
             }
           `}
         >
-          {' '}
           {constructControls()}
         </div>
       </MemberRow>
       {expand && (
         <ExpandedView
+          memberUniqueId={memberUniqueId}
           profilePic={
             profilePic ||
             'https://www.pngitem.com/pimgs/m/43-437594_and-oil-moustache-man-beard-free-png-hq.png'

@@ -16,6 +16,7 @@ import {
 import { REGISTER_MEMBER_ROUTE } from '../../routes';
 import {
   selectDataSourceForMDPage,
+  selectFiltersInMDPage,
   selectMDPage,
   selectPaginationInMDPage,
 } from '../../selectors';
@@ -24,11 +25,14 @@ import {
   deleteMember,
   getMemberDetails,
   searchMembers,
+  updateFilter,
   updatePage,
 } from './actions';
-import { get } from '../../utils/helpers';
+import { constructBranchFilters, get } from '../../utils/helpers';
 import DeleteConfirmation from '../../components/DeleteConfirmation';
 import RegisterNewMember from '../../components/RegisterNewMember';
+import DropDown from '../../components/Dropdown';
+import { MontserratRegular } from '../../utils/fonts';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -53,7 +57,17 @@ const PaginationWrap = styled('div')`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin: 2.4rem 0;
+  padding: 2.4rem 0;
+`;
+const FilterWrap = styled('div')``;
+const BranchFilter = styled('div')``;
+const Label = styled('p')`
+  font-size: 1.4rem;
+  margin: 0.5rem 0;
+  font-family: ${MontserratRegular};
+`;
+const BranchFilterDropdn = styled('div')`
+  max-width: 27rem;
 `;
 class MembersDirectory extends React.Component {
   constructor(props) {
@@ -491,6 +505,7 @@ class MembersDirectory extends React.Component {
     const { isLoaded } = get(this.props, 'pageData.membersInfo', {});
     if (!isLoaded) this.props.dispatch(getMemberDetails());
   }
+
   render() {
     const {
       paginationInfo,
@@ -498,12 +513,13 @@ class MembersDirectory extends React.Component {
       getBranchInfo = () => {},
       getPlanInfo = () => {},
       allowedBranchInfo,
+      branchDetails,
+      filters,
     } = this.props;
     const { totalPages, activePage } = paginationInfo;
     const { isLoading } = get(pageData, 'membersInfo', {});
     const {
       showDeleteConfirmation,
-      memberId,
       memberUniqueId,
       showEditScreen,
       name,
@@ -518,12 +534,35 @@ class MembersDirectory extends React.Component {
       plan,
       branch,
     } = this.state;
-    console.log('MemberPage', this.props);
+    const branchFilters = constructBranchFilters(branchDetails);
+    console.log('branchFilters', filters);
     return (
       <Wrapper>
         {!showEditScreen ? (
           <React.Fragment>
             <Search onSearch={this.onSearch} />
+            <FilterWrap>
+              <BranchFilter>
+                <Label>Branch</Label>
+                <BranchFilterDropdn>
+                  <DropDown
+                    name="md-filters"
+                    listItems={branchFilters.map((branch) => branch.branchName)}
+                    otherInfo={branchFilters}
+                    activeItem={filters.branch.index}
+                    onSelect={(index, name, otherInfo) => {
+                      console.log('index', name, otherInfo);
+                      this.props.dispatch(
+                        updateFilter({
+                          ...otherInfo,
+                          index,
+                        }),
+                      );
+                    }}
+                  />
+                </BranchFilterDropdn>
+              </BranchFilter>
+            </FilterWrap>
             <ButtonWrap>
               <RegisterNewMemberCTA
                 onClick={() =>
@@ -600,6 +639,7 @@ const mapStateToProps = (state) => {
     pageData: selectMDPage(state),
     membersData: selectDataSourceForMDPage(state),
     paginationInfo: selectPaginationInMDPage(state),
+    filters: selectFiltersInMDPage(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {

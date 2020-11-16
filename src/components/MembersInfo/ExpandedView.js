@@ -67,12 +67,10 @@ const FieldValue = styled('p')`
   font-family: ${MontserratRegular};
   margin-left: 1rem;
 `;
-function ExpandedView({ profilePic, fields = [] }) {
+function ExpandedView({ profilePic, fields = [], memberUniqueId }) {
   const mid = Math.ceil(fields.length / 2);
   const column1 = fields.slice(0, mid);
   const column2 = fields.slice(mid, fields.length);
-  const { memberId } = fields;
-  console.log('fields', fields);
   return (
     <Wrap>
       <Row>
@@ -87,7 +85,7 @@ function ExpandedView({ profilePic, fields = [] }) {
           {column1.map((column) => {
             const objKeys = Object.keys(column);
             return (
-              <Field key={`${memberId - objKeys[0] - Date.now()}`}>
+              <Field key={`${memberUniqueId - objKeys[0] - Date.now()}`}>
                 <FieldLabel>{objKeys[0]} : </FieldLabel>
                 <FieldValue>{column[objKeys[0]] || '-'}</FieldValue>
               </Field>
@@ -98,7 +96,7 @@ function ExpandedView({ profilePic, fields = [] }) {
           {column2.map((column) => {
             const objKeys = Object.keys(column);
             return (
-              <Field key={`${memberId - objKeys[0] - Date.now()}`}>
+              <Field key={`${memberUniqueId - objKeys[0] - Date.now()}`}>
                 <FieldLabel>{objKeys[0]} : </FieldLabel>
                 <FieldValue>{column[objKeys[0]] || '-'}</FieldValue>
               </Field>
