@@ -1,6 +1,7 @@
 import {
   ADD_NEW_MEMBER,
   GET_MEMBER_DETAILS,
+  INCLUDE_NEW_MEMBER_IN_LIST,
   LOAD_MEMBER_DETAILS,
   LOAD_SEARCH_DATA,
   SEARCH_MEMBERS,
@@ -39,6 +40,12 @@ export function getMemberDetails() {
 export function loadMemberDetails(payload) {
   return {
     type: LOAD_MEMBER_DETAILS,
+    payload,
+  };
+}
+export function includeMemberInList(payload) {
+  return {
+    type: INCLUDE_NEW_MEMBER_IN_LIST,
     payload,
   };
 }

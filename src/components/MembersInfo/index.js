@@ -93,6 +93,7 @@ export default class MembersInfo extends React.Component {
       } = member;
       const branchInfo = getBranchInfo(branchId);
       const planInfo = getPlanInfo(branchId, planId);
+      console.log('planInfo', planInfo);
       return (
         <ItemRow
           index={index}
@@ -101,9 +102,9 @@ export default class MembersInfo extends React.Component {
           showDueColumn={showDueColumn}
           name={name}
           memberId={memberId}
-          plan={planInfo.planName}
+          plan={planInfo.planName || '-'}
           profilePic={profilePic}
-          branch={branchInfo.branchName}
+          branch={branchInfo.branchName || '-'}
           age={age}
           gender={gender}
           mobile={mobile}

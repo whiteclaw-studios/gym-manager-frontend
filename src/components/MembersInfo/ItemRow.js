@@ -66,6 +66,10 @@ const Delete = styled(Button)`
     font-size: 1rem;
     padding: 0.5rem;
   }
+  :hover {
+    border: 1px solid ${RED};
+    color: ${RED};
+  }
 `;
 
 function ItemRow({

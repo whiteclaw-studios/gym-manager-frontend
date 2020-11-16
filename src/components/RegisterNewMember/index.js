@@ -354,6 +354,7 @@ export default class RegisterNewMember extends React.Component {
         images,
         successCallback: () => {
           this.resetState();
+          this.props.history.push('/members-directory');
         },
       }),
     );

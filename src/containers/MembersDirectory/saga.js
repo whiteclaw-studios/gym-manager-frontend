@@ -5,7 +5,11 @@ import { getCookie, searchLogic } from '../../utils/helpers';
 import axiosWrapper from '../../utils/requestWrapper';
 import { responseParser } from '../../utils/responseParser';
 import { displayToaster, loadAdminInfo } from '../App/actions';
-import { loadMemberDetails, loadSearchData } from './actions';
+import {
+  includeMemberInList,
+  loadMemberDetails,
+  loadSearchData,
+} from './actions';
 import {
   ADD_NEW_MEMBER,
   SEARCH_MEMBERS,
@@ -36,7 +40,7 @@ function* addNewMember(params = {}) {
     var formData = new FormData();
     if (images.length > 0) formData.append('file', images[0].imageFile);
     // Object.keys(fieldKeys).map((key) => formData.append(key, fieldKeys[key]));
-    formData.append('data', fieldKeys);
+    formData.append('data', JSON.stringify(fieldKeys));
     const response = yield call(axiosWrapper, {
       method: 'POST',
       headers: { 'Content-type': 'multipart/form-data' },
@@ -46,6 +50,7 @@ function* addNewMember(params = {}) {
 
     const parsedResponse = responseParser(response);
     if (!parsedResponse.isError) {
+      const { data } = parsedResponse;
       yield put(
         displayToaster({
           type: 'success',
@@ -53,6 +58,7 @@ function* addNewMember(params = {}) {
           timeout: 2000,
         }),
       );
+      yield put(includeMemberInList(data));
       successCallback();
     } else {
       console.error('Error in adding member', parsedResponse);

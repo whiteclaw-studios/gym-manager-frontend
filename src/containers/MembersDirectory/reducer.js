@@ -1,6 +1,7 @@
 import { paginationConfigs } from '../../constants';
 import { get, searchLogic } from '../../utils/helpers';
 import {
+  INCLUDE_NEW_MEMBER_IN_LIST,
   LOAD_MEMBER_DETAILS,
   LOAD_SEARCH_DATA,
   UPDATE_PAGE,
@@ -225,6 +226,31 @@ const reducer = (preloadedState = null) => (
           data: membersList,
           logicAppliedData: filteredData,
           ...rest,
+        },
+        pagination: {
+          ...state.pagination,
+          offset: 0,
+          limit: perPage,
+          activePage: 1,
+          totalPages: Math.ceil(membersList.length / perPage),
+        },
+      };
+    }
+    case INCLUDE_NEW_MEMBER_IN_LIST: {
+      const { payload } = action;
+      let membersList = get(state, 'membersInfo.data', []);
+      const searchText = get(state, 'search.searchText', '');
+      membersList = [...membersList, payload];
+      const filteredData = searchLogic({
+        searchText,
+        dataSource: membersList,
+      });
+      return {
+        ...state,
+        membersInfo: {
+          ...state.membersInfo,
+          data: membersList,
+          logicAppliedData: filteredData,
         },
         pagination: {
           ...state.pagination,

@@ -9,13 +9,11 @@ import { addEnquiry } from '../../containers/EnquiryDirectory/actions';
 import { DASHBOARD_ROUTE } from '../../routes';
 const Wrap = styled('div')`
   width: 100%;
-  margin-top: 6.4rem;
   padding: 0 6.4rem;
   padding-top: 2.4rem;
   display: flex;
   justify-content: center;
   @media (max-width: 992px) {
-    margin-top: 4rem;
     padding: 0 2.4rem;
     padding-top: 1.2rem;
   }
