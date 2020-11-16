@@ -7,16 +7,11 @@ import {
   SECONDARY_BLACK,
   WHITE,
 } from '../../constants';
-import Button, { InvertSecondaryButton, SecondaryButton } from '../Button';
+import Button, { InvertSecondaryButton } from '../Button';
 import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
 import UploadImage from '../UploadImage';
-import { addNewMember } from '../../containers/MembersDirectory/actions';
-import {
-  MontserratLight,
-  OpensansBold,
-  OpensansRegular,
-} from '../../utils/fonts';
+import { MontserratLight } from '../../utils/fonts';
 const Wrap = styled('div')`
   width: 100%;
   margin-top: 6.4rem;
@@ -103,266 +98,8 @@ export default class RegisterNewMember extends React.Component {
   constructor(props) {
     super(props);
     this.props.showHeaderHandle(); // to show the header
-    this.state = {
-      name: {
-        value: '',
-        dirty: false,
-        error: false,
-        type: 'firstname',
-      },
-      fatherName: { value: '', dirty: false, error: false, type: 'firstname' },
-      age: {
-        value: '',
-        dirty: false,
-        error: false,
-        type: 'age',
-      },
-      mobile: {
-        value: '',
-        dirty: false,
-        error: false,
-        type: 'mobile',
-      },
-      email: {
-        value: '',
-        dirty: false,
-        error: false,
-        type: 'email',
-      },
-      plan: {
-        selectedItemIndex: -1,
-        showError: false,
-      },
-      gender: {
-        selectedItemIndex: -1,
-        showError: false,
-      },
-      branch: {
-        selectedItemIndex: -1,
-        showError: false,
-      },
-      bloodGroup: {
-        selectedItemIndex: -1,
-        showError: false,
-      },
-      address: {
-        value: '',
-        error: false,
-      },
-      images: [],
-    };
   }
-  onValueChange = (data) => {
-    this.setState(data);
-  };
-  onSelectDropdown = (index, name) => {
-    this.setState({
-      [name]: {
-        selectedItemIndex: index,
-      },
-      ...(name === 'branch' && {
-        plan: {
-          selectedItemIndex: -1,
-          showError: false,
-        },
-      }),
-    });
-  };
-  getPlanDetails = () => {
-    const { branch } = this.state;
-    const branchIndex = branch.selectedItemIndex;
-    const { branchDetails } = this.props;
-    if (branchIndex >= 0)
-      return branchDetails[branchIndex].planDetails.map(
-        (plan) => plan.planName,
-      );
-    return [];
-  };
-  getBranchNames = () => {
-    const { branchDetails } = this.props;
-    return branchDetails.map((branch) => branch.branchName);
-  };
-  readFile = async (file) =>
-    new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.addEventListener('load', () => resolve(reader.result));
-      reader.readAsArrayBuffer(file);
-    });
 
-  chooseImage = async ({ srcs, files }) => {
-    let newImageData = [];
-    for (let i = 0, len = srcs.length; i < len; i += 1) {
-      // eslint-disable-next-line no-await-in-loop
-      const bufferData = await this.readFile(files[i]);
-      newImageData.push({
-        src: srcs[i],
-        imageFile: files[i],
-        bufferData,
-      });
-    }
-    this.setState({
-      images: newImageData,
-    });
-  };
-  validateInputs = () => {
-    const keys = ['name', 'email', 'mobile', 'age', 'fatherName', 'address'];
-    let oldState = { ...this.state };
-    let isError = false;
-    keys.map((key) => {
-      if (!this.state[key].value) {
-        isError = true;
-        const keyData = oldState[key];
-        oldState = {
-          ...oldState,
-          [key]: {
-            ...keyData,
-            error: true,
-          },
-        };
-      }
-    });
-    return {
-      isError,
-      state: oldState,
-    };
-  };
-  validateDropdownData = () => {
-    const { branch, plan, gender, bloodGroup } = this.state;
-    let isError = false;
-    if (
-      branch.selectedItemIndex < 0 ||
-      plan.selectedItemIndex < 0 ||
-      gender.selectedItemIndex < 0 ||
-      bloodGroup.selectedItemIndex < 0
-    ) {
-      isError = true;
-      this.setState({
-        branch: {
-          ...branch,
-          showError: branch.selectedItemIndex < 0,
-        },
-        plan: {
-          ...plan,
-          showError: plan.selectedItemIndex < 0,
-        },
-        gender: {
-          ...gender,
-          showError: gender.selectedItemIndex < 0,
-        },
-        bloodGroup: {
-          ...bloodGroup,
-          showError: bloodGroup.selectedItemIndex < 0,
-        },
-      });
-    }
-    return isError;
-  };
-  getBranchInfoUsingId = (index) => {
-    const { branchDetails } = this.props;
-    const reqBranch = branchDetails[index];
-    return {
-      ...reqBranch,
-    };
-  };
-  resetState = () => {
-    this.setState({
-      name: {
-        value: '',
-        dirty: false,
-        error: false,
-        type: 'firstname',
-      },
-      fatherName: { value: '', dirty: false, error: false, type: 'firstname' },
-      age: {
-        value: '',
-        dirty: false,
-        error: false,
-        type: 'age',
-      },
-      mobile: {
-        value: '',
-        dirty: false,
-        error: false,
-        type: 'mobile',
-      },
-      email: {
-        value: '',
-        dirty: false,
-        error: false,
-        type: 'email',
-      },
-      plan: {
-        selectedItemIndex: -1,
-        showError: false,
-      },
-      gender: {
-        selectedItemIndex: -1,
-        showError: false,
-      },
-      branch: {
-        selectedItemIndex: -1,
-        showError: false,
-      },
-      bloodGroup: {
-        selectedItemIndex: -1,
-        showError: false,
-      },
-      address: {
-        value: '',
-        error: false,
-      },
-      images: [],
-    });
-  };
-  typeAddress = (e) => {
-    const value = e.target.value;
-    this.setState({
-      address: {
-        value,
-        error: false,
-      },
-    });
-  };
-  onRegister = () => {
-    const { isError, state } = this.validateInputs();
-    this.setState(state);
-    const isError2 = this.validateDropdownData();
-    if (isError || isError2) {
-      return;
-    }
-    const {
-      name,
-      mobile,
-      email,
-      age,
-      branch,
-      plan,
-      gender,
-      bloodGroup,
-      images,
-    } = this.state;
-    this.props.dispatch(
-      addNewMember({
-        name: name.value,
-        mobileNumber: mobile.value,
-        mailId: email.value,
-        age: age.value,
-        gender: GENDER[gender.selectedItemIndex],
-        plan: this.getPlanDetails[plan.selectedItemIndex],
-        bloodGroup: BLOOD_GROUP_DATA[bloodGroup.selectedItemIndex],
-        branchId: this.getBranchInfoUsingId(branch.selectedItemIndex).id,
-        images,
-        successCallback: () => {
-          this.resetState();
-          this.props.history.push('/members-directory');
-        },
-      }),
-    );
-
-    console.log('Ready to submit');
-
-    // ready to submit
-  };
   render() {
     const {
       name,
@@ -376,8 +113,16 @@ export default class RegisterNewMember extends React.Component {
       branch,
       images,
       address,
-    } = this.state;
-    console.log('Member', this.props, this.state, this.getPlanDetails());
+      getBranchNames,
+      getPlanDetails,
+      onValueChange,
+      onSelectDropdown,
+      typeAddress,
+      chooseImage,
+      onRegister,
+      onCancel,
+    } = this.props;
+    console.log('getBranchNames()', getBranchNames());
     return (
       <Wrap>
         <Content>
@@ -389,7 +134,7 @@ export default class RegisterNewMember extends React.Component {
                 <NameInput
                   state={name}
                   name="name"
-                  onValueChange={this.onValueChange}
+                  onValueChange={onValueChange}
                   showError={name.error}
                   errorText="Invalid name"
                 />
@@ -399,7 +144,7 @@ export default class RegisterNewMember extends React.Component {
                 <FatherNameInput
                   state={fatherName}
                   name="fatherName"
-                  onValueChange={this.onValueChange}
+                  onValueChange={onValueChange}
                   showError={fatherName.error}
                   errorText="Invalid Father's Name"
                 />
@@ -408,10 +153,10 @@ export default class RegisterNewMember extends React.Component {
                 <Label>Branch</Label>
                 <DropDown
                   name="branch"
-                  listItems={this.getBranchNames()}
+                  listItems={getBranchNames()}
                   placeholder="Select branch"
                   activeItem={branch.selectedItemIndex}
-                  onSelect={this.onSelectDropdown}
+                  onSelect={onSelectDropdown}
                   showError={branch.showError}
                 />
               </InputWrap>
@@ -422,7 +167,7 @@ export default class RegisterNewMember extends React.Component {
                   listItems={GENDER}
                   placeholder="Select gender"
                   activeItem={gender.selectedItemIndex}
-                  onSelect={this.onSelectDropdown}
+                  onSelect={onSelectDropdown}
                   showError={gender.showError}
                 />
               </InputWrap>
@@ -431,7 +176,7 @@ export default class RegisterNewMember extends React.Component {
                 <EmailInput
                   state={email}
                   name="email"
-                  onValueChange={this.onValueChange}
+                  onValueChange={onValueChange}
                   showError={email.error}
                   errorText="Invalid email"
                 />
@@ -444,7 +189,7 @@ export default class RegisterNewMember extends React.Component {
               `}
               >
                 <Label>Address</Label>
-                <Address onChange={this.typeAddress}>{address.value}</Address>
+                <Address onChange={typeAddress}>{address.value}</Address>
                 {address.error && <Error>Invalid address</Error>}
               </InputWrap>
             </Column>
@@ -454,7 +199,7 @@ export default class RegisterNewMember extends React.Component {
                 <AgeInput
                   state={age}
                   name="age"
-                  onValueChange={this.onValueChange}
+                  onValueChange={onValueChange}
                   showError={age.error}
                   errorText="Invalid age"
                 />
@@ -464,7 +209,7 @@ export default class RegisterNewMember extends React.Component {
                 <MobileInput
                   state={mobile}
                   name="mobile"
-                  onValueChange={this.onValueChange}
+                  onValueChange={onValueChange}
                   showError={mobile.error}
                   errorText="Invalid mobile number"
                 />
@@ -473,10 +218,10 @@ export default class RegisterNewMember extends React.Component {
                 <Label>Plan</Label>
                 <DropDown
                   name="plan"
-                  listItems={this.getPlanDetails()}
+                  listItems={getPlanDetails()}
                   placeholder="Select plan"
                   activeItem={plan.selectedItemIndex}
-                  onSelect={this.onSelectDropdown}
+                  onSelect={onSelectDropdown}
                   showError={plan.showError}
                 />
               </InputWrap>
@@ -487,18 +232,16 @@ export default class RegisterNewMember extends React.Component {
                   listItems={BLOOD_GROUP_DATA}
                   placeholder="Select blood group"
                   activeItem={bloodGroup.selectedItemIndex}
-                  onSelect={this.onSelectDropdown}
+                  onSelect={onSelectDropdown}
                   showError={bloodGroup.showError}
                 />
               </InputWrap>
-              <UploadImage images={images} chooseImage={this.chooseImage} />
+              <UploadImage images={images} chooseImage={chooseImage} />
             </Column>
           </Row>
           <Controls>
-            <Cancel onClick={() => this.props.history.push(DASHBOARD_ROUTE)}>
-              Cancel
-            </Cancel>
-            <Register onClick={this.onRegister}>Register</Register>
+            <Cancel onClick={onCancel}>Cancel</Cancel>
+            <Register onClick={onRegister}>Register</Register>
           </Controls>
         </Content>
       </Wrap>

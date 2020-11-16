@@ -79,6 +79,7 @@ export default class MembersInfo extends React.Component {
       isAllowExpand = false,
       hideMemberId = false,
       hidePlan = false,
+      onEditMember,
       onDeleteMember,
     } = this.props;
     return data.map((member, index) => {
@@ -91,6 +92,7 @@ export default class MembersInfo extends React.Component {
         age,
         gender,
         mobileNumber: mobile,
+        mailId,
       } = member;
       const branchInfo = getBranchInfo(branchId);
       const planInfo = getPlanInfo(branchId, planId);
@@ -105,12 +107,16 @@ export default class MembersInfo extends React.Component {
           plan={planInfo.planName || '-'}
           profilePic={profilePic}
           branch={branchInfo.branchName || '-'}
+          branchId={branchId}
+          planId={planId}
           age={age}
           gender={gender}
           mobile={mobile}
+          mailId={mailId}
           isAllowExpand={isAllowExpand}
           hideMemberId={hideMemberId}
           hidePlan={hidePlan}
+          onEditMember={onEditMember}
           onDeleteMember={onDeleteMember}
         />
       );

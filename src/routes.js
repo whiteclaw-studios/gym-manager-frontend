@@ -49,12 +49,6 @@ const routes = [
         key: ENQUIRY_DIRECTORY_KEY,
       },
       {
-        path: REGISTER_MEMBER_ROUTE,
-        exact: true,
-        component: RegisterNewMember,
-        key: REGISTER_MEMBER_KEY,
-      },
-      {
         path: ENQUIRY_FORM_ROUTE,
         exact: true,
         component: EnquiryForm,

@@ -78,9 +78,13 @@ function ItemRow({
   profilePic,
   plan,
   branch,
+  branchId,
+  planId,
   due,
+  mobile,
   type,
   age,
+  mailId,
   gender,
   openPaymentPopup,
   index,
@@ -88,6 +92,7 @@ function ItemRow({
   showDueColumn,
   hideMemberId = false,
   hidePlan = false,
+  onEditMember = () => {},
   onDeleteMember = () => {},
 }) {
   const [expand, toggleState] = useState(false);
@@ -123,7 +128,28 @@ function ItemRow({
               }
             `}
           >
-            <Edit onClick={(e) => e.stopPropagation()}>Edit</Edit>
+            <Edit
+              onClick={(e) => {
+                e.stopPropagation();
+                onEditMember({
+                  memberId,
+                  name,
+                  profilePic,
+                  plan,
+                  branch,
+                  branchId,
+                  planId,
+                  due,
+                  type,
+                  age,
+                  gender,
+                  mailId,
+                  mobile,
+                });
+              }}
+            >
+              Edit
+            </Edit>
             <Delete
               onClick={(e) => {
                 e.stopPropagation();

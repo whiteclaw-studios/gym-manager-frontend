@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 import AddNewImage from './AddNewImage';
 import { ALLOW_IMAGES_TYPES, GREEN, SECONDARY_BLACK } from '../../constants';
 import { MontserratLight } from '../../utils/fonts';
+import { get } from '../../utils/helpers';
 const Wrap = styled('div')`
   display: flex;
   justify-content: center;
@@ -76,15 +77,17 @@ export default class UploadImage extends React.Component {
   };
   render() {
     const { images = [], chooseImage = () => {} } = this.props;
+    const src = get(images, '[0].src', '');
+    const fileName = get(images, '[0].imageFile.name', '');
     return (
       <Wrap>
         {images.length === 1 ? (
           <Container>
             <Section1>
               <Preview>
-                <Img src={images[0].src} />
+                <Img src={src} />
               </Preview>
-              <Filename>{images[0].imageFile.name}</Filename>
+              <Filename>{fileName}</Filename>
             </Section1>
             <Section2>
               <Input

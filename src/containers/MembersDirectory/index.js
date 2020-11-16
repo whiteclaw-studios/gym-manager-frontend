@@ -7,6 +7,8 @@ import MembersInfo from '../../components/MembersInfo';
 import Pagination from '../../components/Pagination';
 import Search from '../../components/Search';
 import {
+  BLOOD_GROUP_DATA,
+  GENDER,
   MEMBERS_DIRECTORY_LAYOUT,
   SECONDARY_BLACK,
   WHITE,
@@ -18,6 +20,7 @@ import {
   selectPaginationInMDPage,
 } from '../../selectors';
 import {
+  addNewMember,
   deleteMember,
   getMemberDetails,
   searchMembers,
@@ -25,6 +28,7 @@ import {
 } from './actions';
 import { get } from '../../utils/helpers';
 import DeleteConfirmation from '../../components/DeleteConfirmation';
+import RegisterNewMember from '../../components/RegisterNewMember';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -38,7 +42,7 @@ const Wrapper = styled('div')`
 const ButtonWrap = styled('div')`
   width: 100%;
 `;
-const RegisterNewMember = styled(Button)`
+const RegisterNewMemberCTA = styled(Button)`
   color: ${SECONDARY_BLACK};
   background: ${WHITE};
   border: none;
@@ -55,31 +59,65 @@ class MembersDirectory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      memberInfoToDelete: {
-        name: '',
-        memberId: '',
+      name: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'firstname',
       },
+      memberId: '',
+      fatherName: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'firstname',
+      },
+      age: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'age',
+      },
+      mobile: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'mobile',
+      },
+      email: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'email',
+      },
+      plan: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      gender: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      branch: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      bloodGroup: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      address: {
+        value: '',
+        error: false,
+      },
+      images: [],
+      showEditScreen:
+        this.props.history.location.pathname === REGISTER_MEMBER_ROUTE,
       showDeleteConfirmation: false,
     };
     this.props.showHeaderHandle();
   }
-  onDelete = (data) => {
-    this.setState({
-      memberInfoToDelete: {
-        ...data,
-      },
-      showDeleteConfirmation: true,
-    });
-  };
-  closeDeleteConfirmation = () => {
-    this.setState({
-      memberInfoToDelete: {
-        name: '',
-        memberId: '',
-      },
-      showDeleteConfirmation: false,
-    });
-  };
+
   onSearch = (searchText) => {
     console.log('searchText', searchText);
 
@@ -93,21 +131,363 @@ class MembersDirectory extends React.Component {
   onPageSelect = (pageNo) => {
     this.props.dispatch(updatePage({ pageNo }));
   };
-  componentDidMount() {
-    const { isLoaded } = get(this.props, 'pageData.membersInfo', {});
-    if (!isLoaded) this.props.dispatch(getMemberDetails());
-  }
+
+  onDelete = (data) => {
+    const { name, memberId } = data;
+    this.setState({
+      ...this.state,
+      name: {
+        ...this.state.name,
+        value: name,
+      },
+      memberId,
+      showDeleteConfirmation: true,
+    });
+  };
+  closeDeleteConfirmation = () => {
+    this.resetState();
+    this.setState({
+      showDeleteConfirmation: false,
+    });
+  };
   confirmDeleteMember = () => {
-    const { name, memberId } = get(this.state, 'memberInfoToDelete', {});
+    const { name, memberId } = this.state;
     this.props.dispatch(
       deleteMember({
-        name,
+        name: name.value,
         memberId,
         successCallback: this.closeDeleteConfirmation,
         failureCallback: this.closeDeleteConfirmation,
       }),
     );
   };
+  findGenderIdx = (gender) => {
+    let selectedGenderIndex = -1;
+    for (let i = 0; i < GENDER.length; i += 1) {
+      if (GENDER[i] === gender) {
+        selectedGenderIndex = i;
+      }
+    }
+    return selectedGenderIndex;
+  };
+  findBloodGrpIdx = (bloodGroup) => {
+    let selectedGenderIndex = -1;
+    for (let i = 0; i < BLOOD_GROUP_DATA.length; i += 1) {
+      if (BLOOD_GROUP_DATA[i] === bloodGroup) {
+        selectedGenderIndex = i;
+      }
+    }
+    return selectedGenderIndex;
+  };
+  onEdit = (data) => {
+    const {
+      memberId,
+      name,
+      profilePic,
+      branchId,
+      planId,
+      age,
+      fatherName,
+      gender,
+      mobile,
+      mailId,
+      bloodGroup,
+    } = data;
+    const {
+      name: nameState,
+      plan: planState,
+      branch: branchState,
+      age: ageState,
+      fatherName: fatherNameState,
+      gender: genderState,
+      mobile: mobileState,
+      email: emailState,
+      bloodgroup: bloodGroupState,
+    } = this.state;
+
+    const { branchDetails } = this.props;
+
+    let selectedBranchIndex = -1;
+    let selectedPlanIndex = -1;
+    let selectedGenderIndex = this.findGenderIdx(gender);
+    let selectedBGIndex = this.findBloodGrpIdx(bloodGroup);
+    for (let i = 0; i < branchDetails.length; i += 1) {
+      console.log('loop', branchDetails[i].id, branchId);
+      if (branchDetails[i].id === branchId) {
+        selectedBranchIndex = i;
+        let { planDetails } = branchDetails[i];
+        for (let j = 0; j < planDetails.length; j += 1) {
+          if (planDetails[j].id === planId) {
+            selectedPlanIndex = j;
+            break;
+          }
+        }
+        break;
+      }
+    }
+
+    this.setState({
+      name: {
+        ...nameState,
+        value: name,
+      },
+      age: {
+        ...ageState,
+        value: age,
+      },
+      fatherName: {
+        ...fatherNameState,
+        value: fatherName,
+      },
+      mobile: {
+        ...mobileState,
+        value: mobile,
+      },
+      email: { ...emailState, value: mailId },
+      gender: {
+        ...genderState,
+        selectedItemIndex: selectedGenderIndex,
+      },
+      branch: {
+        ...branchState,
+        selectedItemIndex: selectedBranchIndex,
+      },
+      plan: {
+        ...planState,
+        selectedItemIndex: selectedPlanIndex,
+      },
+      bloodGroup: {
+        ...bloodGroupState,
+        selectedItemIndex: selectedBGIndex,
+      },
+      memberId,
+      showEditScreen: true,
+      images: [
+        {
+          src: profilePic,
+        },
+      ],
+    });
+  };
+
+  onValueChange = (data) => {
+    this.setState(data);
+  };
+  onSelectDropdown = (index, name) => {
+    this.setState({
+      [name]: {
+        selectedItemIndex: index,
+      },
+      ...(name === 'branch' && {
+        plan: {
+          selectedItemIndex: -1,
+          showError: false,
+        },
+      }),
+    });
+  };
+  getPlanDetails = () => {
+    const { branch } = this.state;
+    const branchIndex = branch.selectedItemIndex;
+    const { branchDetails } = this.props;
+    if (branchIndex >= 0)
+      return branchDetails[branchIndex].planDetails.map(
+        (plan) => plan.planName,
+      );
+    return [];
+  };
+  getBranchNames = () => {
+    const { branchDetails } = this.props;
+    return branchDetails.map((branch) => branch.branchName);
+  };
+  readFile = async (file) =>
+    new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => resolve(reader.result));
+      reader.readAsArrayBuffer(file);
+    });
+
+  chooseImage = async ({ srcs, files }) => {
+    let newImageData = [];
+    for (let i = 0, len = srcs.length; i < len; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      const bufferData = await this.readFile(files[i]);
+      newImageData.push({
+        src: srcs[i],
+        imageFile: files[i],
+        bufferData,
+      });
+    }
+    this.setState({
+      images: newImageData,
+    });
+  };
+  validateInputs = () => {
+    const keys = ['name', 'email', 'mobile', 'age', 'fatherName', 'address'];
+    let oldState = { ...this.state };
+    let isError = false;
+    keys.map((key) => {
+      if (!this.state[key].value) {
+        isError = true;
+        const keyData = oldState[key];
+        oldState = {
+          ...oldState,
+          [key]: {
+            ...keyData,
+            error: true,
+          },
+        };
+      }
+    });
+    return {
+      isError,
+      state: oldState,
+    };
+  };
+  validateDropdownData = () => {
+    const { branch, plan, gender, bloodGroup } = this.state;
+    let isError = false;
+    if (
+      branch.selectedItemIndex < 0 ||
+      plan.selectedItemIndex < 0 ||
+      gender.selectedItemIndex < 0 ||
+      bloodGroup.selectedItemIndex < 0
+    ) {
+      isError = true;
+      this.setState({
+        branch: {
+          ...branch,
+          showError: branch.selectedItemIndex < 0,
+        },
+        plan: {
+          ...plan,
+          showError: plan.selectedItemIndex < 0,
+        },
+        gender: {
+          ...gender,
+          showError: gender.selectedItemIndex < 0,
+        },
+        bloodGroup: {
+          ...bloodGroup,
+          showError: bloodGroup.selectedItemIndex < 0,
+        },
+      });
+    }
+    return isError;
+  };
+  getBranchInfoUsingId = (index) => {
+    const { branchDetails } = this.props;
+    const reqBranch = branchDetails[index];
+    return {
+      ...reqBranch,
+    };
+  };
+  resetState = () => {
+    this.setState({
+      name: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'firstname',
+      },
+      memberId: '',
+      fatherName: { value: '', dirty: false, error: false, type: 'firstname' },
+      age: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'age',
+      },
+      mobile: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'mobile',
+      },
+      email: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'email',
+      },
+      plan: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      gender: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      branch: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      bloodGroup: {
+        selectedItemIndex: -1,
+        showError: false,
+      },
+      address: {
+        value: '',
+        error: false,
+      },
+      images: [],
+    });
+  };
+  typeAddress = (e) => {
+    const value = e.target.value;
+    this.setState({
+      address: {
+        value,
+        error: false,
+      },
+    });
+  };
+  onRegister = () => {
+    const { isError, state } = this.validateInputs();
+    this.setState(state);
+    const isError2 = this.validateDropdownData();
+    if (isError || isError2) {
+      return;
+    }
+    const {
+      name,
+      mobile,
+      email,
+      age,
+      branch,
+      plan,
+      gender,
+      bloodGroup,
+      images,
+    } = this.state;
+    this.props.dispatch(
+      addNewMember({
+        name: name.value,
+        mobileNumber: mobile.value,
+        mailId: email.value,
+        age: age.value,
+        gender: GENDER[gender.selectedItemIndex],
+        plan: this.getPlanDetails[plan.selectedItemIndex],
+        bloodGroup: BLOOD_GROUP_DATA[bloodGroup.selectedItemIndex],
+        branchId: this.getBranchInfoUsingId(branch.selectedItemIndex).id,
+        images,
+        successCallback: () => {
+          this.resetState();
+          this.setState({
+            showEditScreen: false,
+          });
+        },
+      }),
+    );
+
+    console.log('Ready to submit');
+
+    // ready to submit
+  };
+  componentDidMount() {
+    const { isLoaded } = get(this.props, 'pageData.membersInfo', {});
+    if (!isLoaded) this.props.dispatch(getMemberDetails());
+  }
   render() {
     const {
       paginationInfo,
@@ -117,41 +497,93 @@ class MembersDirectory extends React.Component {
     } = this.props;
     const { totalPages, activePage } = paginationInfo;
     const { isLoading } = get(pageData, 'membersInfo', {});
-    const { showDeleteConfirmation, memberInfoToDelete } = this.state;
+    const {
+      showDeleteConfirmation,
+      memberId,
+      showEditScreen,
+      name,
+      gender,
+      fatherName,
+      email,
+      images,
+      mobile,
+      bloodGroup,
+      address,
+      age,
+      plan,
+      branch,
+    } = this.state;
     console.log('MemberPage', this.props);
     return (
       <Wrapper>
-        <Search onSearch={this.onSearch} />
-        <ButtonWrap>
+        {!showEditScreen ? (
+          <React.Fragment>
+            <Search onSearch={this.onSearch} />
+            <ButtonWrap>
+              <RegisterNewMemberCTA
+                onClick={() =>
+                  this.setState({
+                    showEditScreen: true,
+                  })
+                }
+              >
+                Register New Member
+              </RegisterNewMemberCTA>
+            </ButtonWrap>
+            <MembersInfo
+              type={MEMBERS_DIRECTORY_LAYOUT}
+              data={this.getPageData()}
+              isLoading={isLoading}
+              getBranchInfo={getBranchInfo}
+              getPlanInfo={getPlanInfo}
+              isAllowExpand
+              onEditMember={this.onEdit}
+              onDeleteMember={this.onDelete}
+            />
+            <PaginationWrap>
+              <Pagination
+                activePage={activePage}
+                totalPages={totalPages}
+                onSelect={this.onPageSelect}
+              />
+            </PaginationWrap>
+            <DeleteConfirmation
+              name={name.value}
+              memberId={memberId}
+              close={this.closeDeleteConfirmation}
+              show={showDeleteConfirmation}
+              confirmDeleteMember={this.confirmDeleteMember}
+            />
+          </React.Fragment>
+        ) : (
           <RegisterNewMember
-            onClick={() => this.props.history.push(REGISTER_MEMBER_ROUTE)}
-          >
-            Register New Member
-          </RegisterNewMember>
-        </ButtonWrap>
-        <MembersInfo
-          type={MEMBERS_DIRECTORY_LAYOUT}
-          data={this.getPageData()}
-          isLoading={isLoading}
-          getBranchInfo={getBranchInfo}
-          getPlanInfo={getPlanInfo}
-          isAllowExpand
-          onDeleteMember={this.onDelete}
-        />
-        <PaginationWrap>
-          <Pagination
-            activePage={activePage}
-            totalPages={totalPages}
-            onSelect={this.onPageSelect}
+            {...this.props}
+            name={name}
+            gender={gender}
+            fatherName={fatherName}
+            email={email}
+            mobile={mobile}
+            bloodGroup={bloodGroup}
+            address={address}
+            age={age}
+            plan={plan}
+            branch={branch}
+            images={images}
+            getPlanDetails={this.getPlanDetails}
+            getBranchNames={this.getBranchNames}
+            onValueChange={this.onValueChange}
+            onSelectDropdown={this.onSelectDropdown}
+            chooseImage={this.chooseImage}
+            typeAddress={this.typeAddress}
+            onRegister={this.onRegister}
+            onCancel={() => {
+              this.resetState();
+              this.setState({
+                showEditScreen: false,
+              });
+            }}
           />
-        </PaginationWrap>
-        <DeleteConfirmation
-          name={memberInfoToDelete.name}
-          memberId={memberInfoToDelete.memberId}
-          close={this.closeDeleteConfirmation}
-          show={showDeleteConfirmation}
-          confirmDeleteMember={this.confirmDeleteMember}
-        />
+        )}
       </Wrapper>
     );
   }

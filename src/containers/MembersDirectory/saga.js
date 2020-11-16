@@ -136,11 +136,7 @@ function* deleteMemberSaga(params) {
     console.log('params', params);
     const response = yield call(axiosWrapper, {
       method: 'DELETE',
-      url: apiUrls.MEMBERS_URL,
-      data: {
-        name,
-        memberId,
-      },
+      url: `${apiUrls.MEMBERS_URL}/${memberId}`,
     });
     const processResponse = responseParser(response);
     if (!processResponse.isError) {
