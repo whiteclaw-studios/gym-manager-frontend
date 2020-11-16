@@ -203,6 +203,7 @@ function ItemRow({
               margin-right: 1rem;
               max-width: 1rem;
             }
+            ${!isAllowExpand && 'opacity:0;'}
           `}
         >
           <span> {'>'} </span>

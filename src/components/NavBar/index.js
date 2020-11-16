@@ -112,7 +112,14 @@ function NavBar({
     return menus.map((item, index) => {
       const { menu, Icon, url } = item;
       return (
-        <Item key={menu} onMouseOver={() => updateActiveNavIndex(index)}>
+        <Item
+          key={menu}
+          onMouseOver={() => updateActiveNavIndex(index)}
+          onClick={() => {
+            history.push(url);
+            shrinkNavbar();
+          }}
+        >
           <Icon />
           {navbarState && (
             <Menu
@@ -123,10 +130,6 @@ function NavBar({
                     `
                   : ''
               }
-              onClick={() => {
-                history.push(url);
-                shrinkNavbar();
-              }}
             >
               {menu}
             </Menu>
