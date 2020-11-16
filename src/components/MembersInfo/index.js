@@ -87,6 +87,7 @@ export default class MembersInfo extends React.Component {
     return data.map((member, index) => {
       const {
         name,
+        id: memberUniqueId,
         membershipId: memberId,
         planDetailsId: planId,
         photoS3Key: profilePic,
@@ -109,6 +110,7 @@ export default class MembersInfo extends React.Component {
           showDueColumn={showDueColumn}
           name={name}
           memberId={memberId}
+          memberUniqueId={memberUniqueId}
           plan={planInfo.planName || '-'}
           profilePic={profilePic}
           branch={branchInfo.branchName || '-'}

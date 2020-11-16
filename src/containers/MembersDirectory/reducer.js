@@ -267,7 +267,7 @@ const reducer = (preloadedState = null) => (
       let membersList = get(state, 'membersInfo.data', []);
       const searchText = get(state, 'search.searchText', '');
       membersList = membersList.filter(
-        (member) => member.id !== payload.memberId,
+        (member) => member.id !== payload.memberUniqueId,
       );
       const filteredData = searchLogic({
         searchText,

@@ -77,6 +77,7 @@ const Delete = styled(Button)`
 
 function ItemRow({
   memberId,
+  memberUniqueId,
   name,
   profilePic,
   plan,
@@ -140,6 +141,7 @@ function ItemRow({
                       e.stopPropagation();
                       onEditMember({
                         memberId,
+                        memberUniqueId,
                         name,
                         profilePic,
                         plan,
@@ -166,7 +168,7 @@ function ItemRow({
                 allowEdit
                   ? (e) => {
                       e.stopPropagation();
-                      onDeleteMember({ name, memberId });
+                      onDeleteMember({ name, memberId, memberUniqueId });
                     }
                   : () => {}
               }

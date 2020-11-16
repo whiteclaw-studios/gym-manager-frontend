@@ -66,6 +66,7 @@ class MembersDirectory extends React.Component {
         type: 'firstname',
       },
       memberId: '',
+      memberUniqueId: '',
       fatherName: {
         value: '',
         dirty: false,
@@ -133,7 +134,7 @@ class MembersDirectory extends React.Component {
   };
 
   onDelete = (data) => {
-    const { name, memberId } = data;
+    const { name, memberId, memberUniqueId } = data;
     this.setState({
       ...this.state,
       name: {
@@ -141,6 +142,7 @@ class MembersDirectory extends React.Component {
         value: name,
       },
       memberId,
+      memberUniqueId,
       showDeleteConfirmation: true,
     });
   };
@@ -151,11 +153,10 @@ class MembersDirectory extends React.Component {
     });
   };
   confirmDeleteMember = () => {
-    const { name, memberId } = this.state;
+    const { memberUniqueId } = this.state;
     this.props.dispatch(
       deleteMember({
-        name: name.value,
-        memberId,
+        memberUniqueId,
         successCallback: this.closeDeleteConfirmation,
         failureCallback: this.closeDeleteConfirmation,
       }),
@@ -182,6 +183,7 @@ class MembersDirectory extends React.Component {
   onEdit = (data) => {
     const {
       memberId,
+      memberUniqueId,
       name,
       profilePic,
       branchId,
@@ -260,6 +262,7 @@ class MembersDirectory extends React.Component {
         selectedItemIndex: selectedBGIndex,
       },
       memberId,
+      memberUniqueId,
       showEditScreen: true,
       images: [
         {
@@ -390,6 +393,7 @@ class MembersDirectory extends React.Component {
         type: 'firstname',
       },
       memberId: '',
+      memberUniqueId: '',
       fatherName: { value: '', dirty: false, error: false, type: 'firstname' },
       age: {
         value: '',
@@ -500,6 +504,7 @@ class MembersDirectory extends React.Component {
     const {
       showDeleteConfirmation,
       memberId,
+      memberUniqueId,
       showEditScreen,
       name,
       gender,
@@ -551,7 +556,7 @@ class MembersDirectory extends React.Component {
             </PaginationWrap>
             <DeleteConfirmation
               name={name.value}
-              memberId={memberId}
+              memberUniqueId={memberUniqueId}
               close={this.closeDeleteConfirmation}
               show={showDeleteConfirmation}
               confirmDeleteMember={this.confirmDeleteMember}

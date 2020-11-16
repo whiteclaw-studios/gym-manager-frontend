@@ -128,22 +128,21 @@ function* getMemberDetailsSaga() {
 function* deleteMemberSaga(params) {
   try {
     const {
-      name,
-      memberId,
+      memberUniqueId,
       successCallback = () => {},
       failureCallback = () => {},
     } = params;
     console.log('params', params);
     const response = yield call(axiosWrapper, {
       method: 'DELETE',
-      url: `${apiUrls.MEMBERS_URL}/${memberId}`,
+      url: `${apiUrls.MEMBERS_URL}/${memberUniqueId}`,
     });
     const processResponse = responseParser(response);
     if (!processResponse.isError) {
       yield put(
         removeMemberInList({
           name,
-          memberId,
+          memberUniqueId,
         }),
       );
       successCallback();
