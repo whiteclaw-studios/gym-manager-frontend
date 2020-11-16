@@ -9,11 +9,13 @@ import {
   includeMemberInList,
   loadMemberDetails,
   loadSearchData,
+  removeMemberInList,
 } from './actions';
 import {
   ADD_NEW_MEMBER,
   SEARCH_MEMBERS,
   GET_MEMBER_DETAILS,
+  DELETE_MEMBER,
 } from './constants';
 function* addNewMember(params = {}) {
   try {
@@ -123,6 +125,45 @@ function* getMemberDetailsSaga() {
     console.error('Caught in getMemberDetailsSaga', err);
   }
 }
+function* deleteMemberSaga(params) {
+  try {
+    const {
+      name,
+      memberId,
+      successCallback = () => {},
+      failureCallback = () => {},
+    } = params;
+    console.log('params', params);
+    const response = yield call(axiosWrapper, {
+      method: 'DELETE',
+      url: apiUrls.MEMBERS_URL,
+      data: {
+        name,
+        memberId,
+      },
+    });
+    const processResponse = responseParser(response);
+    if (!processResponse.isError) {
+      yield put(
+        removeMemberInList({
+          name,
+          memberId,
+        }),
+      );
+      successCallback();
+    } else {
+      yield put(
+        displayToaster({
+          type: 'failure',
+          text: 'Something went wrong',
+        }),
+      );
+      failureCallback();
+    }
+  } catch (err) {
+    console.error('Caught in deleteMemberSaga', err);
+  }
+}
 function* watchaddNewMember() {
   yield takeEvery(ADD_NEW_MEMBER, addNewMember);
 }
@@ -132,8 +173,12 @@ function* watchSearchMemberSaga() {
 function* watchGetMemberDetailsSaga() {
   yield takeEvery(GET_MEMBER_DETAILS, getMemberDetailsSaga);
 }
+function* watchDeleteMemberSaga() {
+  yield takeEvery(DELETE_MEMBER, deleteMemberSaga);
+}
 export const membersDirectorySagas = [
   watchaddNewMember(),
   watchSearchMemberSaga(),
   watchGetMemberDetailsSaga(),
+  watchDeleteMemberSaga(),
 ];

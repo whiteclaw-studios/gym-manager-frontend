@@ -4,6 +4,7 @@ import {
   INCLUDE_NEW_MEMBER_IN_LIST,
   LOAD_MEMBER_DETAILS,
   LOAD_SEARCH_DATA,
+  REMOVE_MEMBER_IN_LIST,
   UPDATE_PAGE,
 } from './constants';
 
@@ -241,6 +242,33 @@ const reducer = (preloadedState = null) => (
       let membersList = get(state, 'membersInfo.data', []);
       const searchText = get(state, 'search.searchText', '');
       membersList = [...membersList, payload];
+      const filteredData = searchLogic({
+        searchText,
+        dataSource: membersList,
+      });
+      return {
+        ...state,
+        membersInfo: {
+          ...state.membersInfo,
+          data: membersList,
+          logicAppliedData: filteredData,
+        },
+        pagination: {
+          ...state.pagination,
+          offset: 0,
+          limit: perPage,
+          activePage: 1,
+          totalPages: Math.ceil(membersList.length / perPage),
+        },
+      };
+    }
+    case REMOVE_MEMBER_IN_LIST: {
+      const { payload } = action;
+      let membersList = get(state, 'membersInfo.data', []);
+      const searchText = get(state, 'search.searchText', '');
+      membersList = membersList.filter(
+        (member) => member.id !== payload.memberId,
+      );
       const filteredData = searchLogic({
         searchText,
         dataSource: membersList,

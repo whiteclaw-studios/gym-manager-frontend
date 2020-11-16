@@ -1263,6 +1263,14 @@
       "publicPath": "bundle.js"
     }
   ],
+  "../../components/DeleteConfirmation": [
+    {
+      "id": "./src/components/DeleteConfirmation/index.js",
+      "name": "./src/components/DeleteConfirmation/index.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
   "../Dropdown/Loadable": [
     {
       "id": "./src/components/Dropdown/Loadable.js",

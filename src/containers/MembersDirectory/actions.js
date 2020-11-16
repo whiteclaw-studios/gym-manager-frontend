@@ -1,9 +1,11 @@
 import {
   ADD_NEW_MEMBER,
+  DELETE_MEMBER,
   GET_MEMBER_DETAILS,
   INCLUDE_NEW_MEMBER_IN_LIST,
   LOAD_MEMBER_DETAILS,
   LOAD_SEARCH_DATA,
+  REMOVE_MEMBER_IN_LIST,
   SEARCH_MEMBERS,
   UPDATE_PAGE,
 } from './constants';
@@ -46,6 +48,18 @@ export function loadMemberDetails(payload) {
 export function includeMemberInList(payload) {
   return {
     type: INCLUDE_NEW_MEMBER_IN_LIST,
+    payload,
+  };
+}
+export function deleteMember(payload) {
+  return {
+    type: DELETE_MEMBER,
+    ...payload,
+  };
+}
+export function removeMemberInList(payload) {
+  return {
+    type: REMOVE_MEMBER_IN_LIST,
     payload,
   };
 }

@@ -6,3 +6,6 @@ export const GET_MEMBER_DETAILS = 'app/MembersDirectory/GET_MEMBER_DETAILS';
 export const LOAD_MEMBER_DETAILS = 'app/MembersDirectory/LOAD_MEMBER_DETAILS';
 export const INCLUDE_NEW_MEMBER_IN_LIST =
   'app/MembersDirectory/INCLUDE_NEW_MEMBER_IN_LIST';
+export const DELETE_MEMBER = 'app/MembersDirectory/DELETE_MEMBER';
+export const REMOVE_MEMBER_IN_LIST =
+  'app/MembersDirectory/REMOVE_MEMBER_IN_LIST';

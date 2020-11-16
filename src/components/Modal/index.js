@@ -104,6 +104,10 @@ const CloseContainer = styled('div')`
   top: 20px;
   right: 20px;
   z-index: 1;
+  cursor: pointer;
+  @media (max-width: 992px) {
+    cursor: default;
+  }
 `;
 
 export default class ModalNew extends React.Component {
@@ -117,7 +121,7 @@ export default class ModalNew extends React.Component {
   };
 
   render() {
-    const { show = true } = this.props;
+    const { show = true, close } = this.props;
     const backButton = this.props.backButton || false;
     const closeButton = this.props.closeButton || false;
     const ModalNode = (
@@ -146,7 +150,10 @@ export default class ModalNew extends React.Component {
                     </BackContainer>
                   ) : null}
                   {closeButton ? (
-                    <CloseContainer className="modal-close-icon">
+                    <CloseContainer
+                      className="modal-close-icon"
+                      onClick={close}
+                    >
                       <div>X</div>
                     </CloseContainer>
                   ) : null}

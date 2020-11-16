@@ -88,6 +88,7 @@ function ItemRow({
   showDueColumn,
   hideMemberId = false,
   hidePlan = false,
+  onDeleteMember = () => {},
 }) {
   const [expand, toggleState] = useState(false);
   const constructControls = (data) => {
@@ -123,7 +124,14 @@ function ItemRow({
             `}
           >
             <Edit onClick={(e) => e.stopPropagation()}>Edit</Edit>
-            <Delete>Delete</Delete>
+            <Delete
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteMember({ name, memberId });
+              }}
+            >
+              Delete
+            </Delete>
           </Item>
         );
       }

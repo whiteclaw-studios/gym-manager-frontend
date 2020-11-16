@@ -17,8 +17,14 @@ import {
   selectMDPage,
   selectPaginationInMDPage,
 } from '../../selectors';
-import { getMemberDetails, searchMembers, updatePage } from './actions';
+import {
+  deleteMember,
+  getMemberDetails,
+  searchMembers,
+  updatePage,
+} from './actions';
 import { get } from '../../utils/helpers';
+import DeleteConfirmation from '../../components/DeleteConfirmation';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -48,8 +54,32 @@ const PaginationWrap = styled('div')`
 class MembersDirectory extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      memberInfoToDelete: {
+        name: '',
+        memberId: '',
+      },
+      showDeleteConfirmation: false,
+    };
     this.props.showHeaderHandle();
   }
+  onDelete = (data) => {
+    this.setState({
+      memberInfoToDelete: {
+        ...data,
+      },
+      showDeleteConfirmation: true,
+    });
+  };
+  closeDeleteConfirmation = () => {
+    this.setState({
+      memberInfoToDelete: {
+        name: '',
+        memberId: '',
+      },
+      showDeleteConfirmation: false,
+    });
+  };
   onSearch = (searchText) => {
     console.log('searchText', searchText);
 
@@ -67,6 +97,17 @@ class MembersDirectory extends React.Component {
     const { isLoaded } = get(this.props, 'pageData.membersInfo', {});
     if (!isLoaded) this.props.dispatch(getMemberDetails());
   }
+  confirmDeleteMember = () => {
+    const { name, memberId } = get(this.state, 'memberInfoToDelete', {});
+    this.props.dispatch(
+      deleteMember({
+        name,
+        memberId,
+        successCallback: this.closeDeleteConfirmation,
+        failureCallback: this.closeDeleteConfirmation,
+      }),
+    );
+  };
   render() {
     const {
       paginationInfo,
@@ -76,6 +117,7 @@ class MembersDirectory extends React.Component {
     } = this.props;
     const { totalPages, activePage } = paginationInfo;
     const { isLoading } = get(pageData, 'membersInfo', {});
+    const { showDeleteConfirmation, memberInfoToDelete } = this.state;
     console.log('MemberPage', this.props);
     return (
       <Wrapper>
@@ -94,6 +136,7 @@ class MembersDirectory extends React.Component {
           getBranchInfo={getBranchInfo}
           getPlanInfo={getPlanInfo}
           isAllowExpand
+          onDeleteMember={this.onDelete}
         />
         <PaginationWrap>
           <Pagination
@@ -102,6 +145,13 @@ class MembersDirectory extends React.Component {
             onSelect={this.onPageSelect}
           />
         </PaginationWrap>
+        <DeleteConfirmation
+          name={memberInfoToDelete.name}
+          memberId={memberInfoToDelete.memberId}
+          close={this.closeDeleteConfirmation}
+          show={showDeleteConfirmation}
+          confirmDeleteMember={this.confirmDeleteMember}
+        />
       </Wrapper>
     );
   }
