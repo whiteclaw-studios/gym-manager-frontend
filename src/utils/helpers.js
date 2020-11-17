@@ -24,6 +24,11 @@ export const setCookie = (name, value, { days = 30, secure = false } = {}) => {
     // none
   }
 };
+export function deleteCookie(name) {
+  if (typeof window === 'object')
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+  return true;
+}
 export const getCookie = (name, cookie) => {
   let value = '';
   try {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled, { css } from 'react-emotion';
 import { GREEN, LIGHT_GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
-import { DASHBOARD_ROUTE } from '../../routes';
+import { deleteCookie } from '../../utils/helpers';
 import {
   DashboardIcon,
   EnquiryIcon,
@@ -95,9 +95,8 @@ const menus = [
 ];
 const footerMenus = [
   {
-    menu: 'Support',
+    menu: 'Logout',
     Icon: EnquiryIcon,
-    url: '/dashboard',
   },
 ];
 function NavBar({
@@ -176,7 +175,7 @@ function NavBar({
               key={menu}
               onMouseOver={() => updateActiveNavIndex(menusLength + index)}
             >
-              <Icon />
+              {Icon && <Icon />}
               {navbarState && (
                 <Menu
                   className={
@@ -186,6 +185,10 @@ function NavBar({
                         `
                       : ''
                   }
+                  onClick={() => {
+                    deleteCookie('VJS');
+                    window.location.reload();
+                  }}
                 >
                   {menu}
                 </Menu>
