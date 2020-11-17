@@ -105,12 +105,19 @@ export const searchLogic = ({ searchText = '', dataSource = [] }) => {
   if (!dataSource.length) return [];
   if (!searchText) return dataSource;
   return dataSource.filter((member) => {
-    const { name = '', membershipId = '' } = member;
-    const isNameMatches =
+    const { name = '', membershipId = '', mobileNumber } = member;
+    let isNameMatches =
       name.toLowerCase().indexOf(searchText.toLowerCase()) === 0;
-    const isMembershipIdMatches =
-      membershipId.toString().indexOf(searchText.toLowerCase()) === 0;
-    return isNameMatches || isMembershipIdMatches;
+    let isMembershipIdMatches;
+    let isMobileMatches;
+    if (!isNameMatches)
+      isMembershipIdMatches =
+        membershipId.toString().indexOf(searchText.toLowerCase()) === 0;
+    if (!isNameMatches && !isMembershipIdMatches)
+      isMobileMatches =
+        mobileNumber.toString().indexOf(searchText.toLowerCase()) === 0;
+
+    return isNameMatches || isMembershipIdMatches || isMobileMatches;
   });
 };
 export const filterLogic = ({ filters, dataSource = [] }) => {

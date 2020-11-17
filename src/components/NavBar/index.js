@@ -54,6 +54,7 @@ const Item = styled('li')`
   display: flex;
   height: 5.6rem;
   cursor: pointer;
+  align-items: center;
   @media (max-width) {
     cursor: default;
   }
@@ -113,15 +114,13 @@ function NavBar({
     return menus.map((item, index) => {
       const { menu, Icon, url } = item;
       return (
-        <Item
-          key={menu}
-          onMouseOver={() => updateActiveNavIndex(index)}
-          onClick={() => {
-            history.push(url);
-            shrinkNavbar();
-          }}
-        >
-          <Icon />
+        <Item key={menu} onMouseOver={() => updateActiveNavIndex(index)}>
+          <Icon
+            onClick={() => {
+              history.push(url);
+              shrinkNavbar();
+            }}
+          />
           {navbarState && (
             <Menu
               className={
@@ -131,6 +130,10 @@ function NavBar({
                     `
                   : ''
               }
+              onClick={() => {
+                history.push(url);
+                shrinkNavbar();
+              }}
             >
               {menu}
             </Menu>

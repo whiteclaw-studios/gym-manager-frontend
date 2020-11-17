@@ -41,11 +41,16 @@ const reducer = (preloadedState = null) => (
     case LOAD_SEARCH_DATA: {
       const { payload } = action;
       const { isSearching, data, searchText } = payload;
+      const filteredData = applySearchAndFilterLogic({
+        searchText,
+        dataSource: data,
+        filters: state.filters,
+      });
       return {
         ...state,
         enquiryInfo: {
           data: state.enquiryInfo.data,
-          logicAppliedData: data,
+          logicAppliedData: filteredData,
         },
         pagination: {
           offset: 0,
