@@ -95,6 +95,9 @@ function ItemRow({
   hideMemberId = false,
   hidePlan = false,
   allowEdit = false,
+  showEmail = false,
+  showMobile = false,
+
   onEditMember = () => {},
   onDeleteMember = () => {},
 }) {
@@ -238,15 +241,29 @@ function ItemRow({
             `}
           >
             {!hidePlan && <Plan>{plan}</Plan>}
+            {showEmail && (
+              <Plan
+                className={css`
+                  @media (max-width: 992px) {
+                    display: none;
+                  }
+                  max-width: 23rem;
+                `}
+              >
+                {mailId}
+              </Plan>
+            )}
             <Item
               className={css`
                 @media (max-width: 992px) {
                   display: none;
                 }
+                max-width: 23rem;
               `}
             >
               {branch}
             </Item>
+            {showMobile && <Due>{mobile}</Due>}
             {showDueColumn && <Due>{due}</Due>}
           </div>
         </Info>

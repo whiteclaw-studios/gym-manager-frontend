@@ -101,9 +101,8 @@ const reducer = (preloadedState = null) => (
     case UPDATE_FILTER: {
       const { payload } = action;
       const filtersInfo = {
-        branch: {
-          ...payload,
-        },
+        ...state.filters,
+        ...payload,
       };
       let enquiryList = get(state, 'enquiryInfo.data', []);
       const searchText = get(state, 'search.searchText', '');

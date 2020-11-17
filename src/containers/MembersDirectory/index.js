@@ -47,9 +47,22 @@ const Wrapper = styled('div')`
     padding-top: 1.2rem;
   }
 `;
-const ButtonWrap = styled('div')`
-  width: 100%;
+
+const SearchWrap = styled('div')`
+  width: 27rem;
+  margin: 0.5rem 1rem;
+  @media (max-width: 992px) {
+    margin: 0;
+  } ;
 `;
+const ButtonWrap = styled('div')`
+  width: 27rem;
+  margin: 0.5rem 1rem;
+  @media (max-width: 992px) {
+    margin: 0;
+  } ;
+`;
+
 const RegisterNewMemberCTA = styled(Button)`
   color: ${SECONDARY_BLACK};
   background: ${WHITE};
@@ -556,10 +569,26 @@ class MembersDirectory extends React.Component {
       <Wrapper>
         {!showEditScreen ? (
           <React.Fragment>
-            <Search
-              onSearch={this.onSearch}
-              placeholder="Search by name,membership id"
-            />
+            <FilterWrap>
+              <SearchWrap>
+                <Search
+                  onSearch={this.onSearch}
+                  placeholder="Search by name,membership id"
+                />
+              </SearchWrap>
+              <ButtonWrap>
+                <RegisterNewMemberCTA
+                  onClick={() =>
+                    this.setState({
+                      showEditScreen: true,
+                    })
+                  }
+                >
+                  Register New Member
+                </RegisterNewMemberCTA>
+              </ButtonWrap>
+            </FilterWrap>
+
             <FilterWrap>
               <Filter>
                 <Label>Branch</Label>
@@ -570,12 +599,15 @@ class MembersDirectory extends React.Component {
                     otherInfo={branchFilters}
                     activeItem={selectedBranchFilterIndex}
                     onSelect={(index, name, otherInfo) => {
-                      console.log('branch', index, name, otherInfo);
                       this.props.dispatch(
                         updateFilter({
                           branch: {
                             ...otherInfo,
                             index,
+                          },
+                          plan: {
+                            ...filters.plan,
+                            index: 0,
                           },
                         }),
                       );
@@ -606,17 +638,7 @@ class MembersDirectory extends React.Component {
                 </FilterDropdn>
               </Filter>
             </FilterWrap>
-            <ButtonWrap>
-              <RegisterNewMemberCTA
-                onClick={() =>
-                  this.setState({
-                    showEditScreen: true,
-                  })
-                }
-              >
-                Register New Member
-              </RegisterNewMemberCTA>
-            </ButtonWrap>
+
             <MembersInfo
               type={MEMBERS_DIRECTORY_LAYOUT}
               data={this.getPageData()}

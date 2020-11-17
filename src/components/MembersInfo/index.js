@@ -83,6 +83,8 @@ export default class MembersInfo extends React.Component {
       onEditMember,
       onDeleteMember,
       allowedBranchInfo,
+      showEmail,
+      showMobile,
     } = this.props;
     return data.map((member, index) => {
       const {
@@ -126,6 +128,8 @@ export default class MembersInfo extends React.Component {
           onEditMember={onEditMember}
           onDeleteMember={onDeleteMember}
           allowEdit={allowEdit}
+          showEmail={showEmail}
+          showMobile={showMobile}
         />
       );
     });
@@ -163,6 +167,8 @@ export default class MembersInfo extends React.Component {
       isLoading = false,
       hideMemberId = false,
       hidePlan = false,
+      showEmail = false,
+      showMobile = false,
     } = this.props;
     return (
       <Wrap>
@@ -176,8 +182,24 @@ export default class MembersInfo extends React.Component {
           <Info>
             <HeadingItem>Name</HeadingItem>
             {!hideMemberId && <HeadingItem>Member id</HeadingItem>}
+            {showEmail && (
+              <HeadingItem
+                className={css`
+                  max-width: 23rem;
+                `}
+              >
+                Email
+              </HeadingItem>
+            )}
             {!hidePlan && <HeadingItem>Plan</HeadingItem>}
-            <HeadingItem>Branch</HeadingItem>
+            <HeadingItem
+              className={css`
+                max-width: 23rem;
+              `}
+            >
+              Branch
+            </HeadingItem>
+            {showMobile && <HeadingItem>Mobile</HeadingItem>}
             {showDueColumn && <HeadingItem>Due</HeadingItem>}
           </Info>
           <HeadingItem></HeadingItem>

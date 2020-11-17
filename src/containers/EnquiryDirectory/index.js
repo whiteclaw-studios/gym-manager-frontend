@@ -19,7 +19,11 @@ import {
   selectFiltersInEDPage,
 } from '../../selectors';
 import { getEnquiryDetails, searchEnquiry, updateFilter } from './actions';
-import { constructBranchFilters, get } from '../../utils/helpers';
+import {
+  constructBranchFilters,
+  constructPlanFilters,
+  get,
+} from '../../utils/helpers';
 import { MontserratRegular } from '../../utils/fonts';
 import DropDown from '../../components/Dropdown';
 const Wrapper = styled('div')`
@@ -28,11 +32,22 @@ const Wrapper = styled('div')`
   padding-top: 2.4rem;
   @media (max-width: 992px) {
     margin-top: 4rem;
+    padding: 0 2.4rem;
     padding-top: 1.2rem;
   }
 `;
+
+const SearchWrap = styled('div')`
+  width: 27rem;
+  margin: 0.5rem 1rem;
+  @media (max-width: 992px) {
+    margin: 0;
+  } ;
+`;
 const ButtonWrap = styled('div')`
   width: 100%;
+  width: 27rem;
+  margin: 0.5rem 1rem;
 `;
 const RegisterNewMember = styled(Button)`
   color: ${SECONDARY_BLACK};
@@ -40,6 +55,9 @@ const RegisterNewMember = styled(Button)`
   border: none;
   margin-bottom: 1.2rem;
   box-shadow: 0px 1px 4px #a9a9a9;
+  height: 3.4rem;
+  font-size: 1.2rem;
+  padding: 0;
 `;
 const PaginationWrap = styled('div')`
   width: 100%;
@@ -47,15 +65,27 @@ const PaginationWrap = styled('div')`
   justify-content: center;
   padding: 2.4rem 0;
 `;
-const FilterWrap = styled('div')``;
-const BranchFilter = styled('div')``;
+
+const FilterWrap = styled('div')`
+  display: flex;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  } ;
+`;
+const Filter = styled('div')`
+  font-size: 1.4rem;
+  margin: 0.5rem 1rem;
+  @media (max-width: 992px) {
+    margin: 0;
+  } ;
+`;
 const Label = styled('p')`
   font-size: 1.4rem;
   margin: 0.5rem 0;
   font-family: ${MontserratRegular};
 `;
-const BranchFilterDropdn = styled('div')`
-  max-width: 27rem;
+const FilterDropdn = styled('div')`
+  width: 27rem;
 `;
 class EnquiryDirectory extends React.Component {
   constructor(props) {
@@ -87,40 +117,49 @@ class EnquiryDirectory extends React.Component {
       filters,
     } = this.props;
     const { totalPages, activePage } = paginationInfo;
+    const selectedBranchFilterIndex = get(filters, 'branch.index');
     const { isLoading } = get(pageData, 'enquiryInfo', {});
     const branchFilters = constructBranchFilters(branchDetails);
 
     return (
       <Wrapper>
-        <Search onSearch={this.onSearch} />
         <FilterWrap>
-          <BranchFilter>
+          <SearchWrap>
+            <Search onSearch={this.onSearch} placeholder="Search by name" />
+          </SearchWrap>
+          <ButtonWrap>
+            <RegisterNewMember
+              onClick={() => this.props.history.push(ENQUIRY_FORM_ROUTE)}
+            >
+              Add New Enquiry
+            </RegisterNewMember>
+          </ButtonWrap>
+        </FilterWrap>
+
+        <FilterWrap>
+          <Filter>
             <Label>Branch</Label>
-            <BranchFilterDropdn>
+            <FilterDropdn>
               <DropDown
-                name="md-filters"
+                name="ed-branch-filter"
                 listItems={branchFilters.map((branch) => branch.branchName)}
                 otherInfo={branchFilters}
-                activeItem={filters.branch.index}
+                activeItem={selectedBranchFilterIndex}
                 onSelect={(index, name, otherInfo) => {
                   this.props.dispatch(
                     updateFilter({
-                      ...otherInfo,
-                      index,
+                      branch: {
+                        ...otherInfo,
+                        index,
+                      },
                     }),
                   );
                 }}
               />
-            </BranchFilterDropdn>
-          </BranchFilter>
+            </FilterDropdn>
+          </Filter>
         </FilterWrap>
-        <ButtonWrap>
-          <RegisterNewMember
-            onClick={() => this.props.history.push(ENQUIRY_FORM_ROUTE)}
-          >
-            Add New Enquiry
-          </RegisterNewMember>
-        </ButtonWrap>
+
         <MembersInfo
           type={ENQUIRY_DIRECTORY_LAYOUT}
           data={this.getPageData()}
@@ -130,6 +169,8 @@ class EnquiryDirectory extends React.Component {
           showDueColumn={false}
           hideMemberId
           hidePlan
+          showEmail
+          showMobile
         />
         <PaginationWrap>
           <Pagination
