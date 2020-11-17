@@ -39,7 +39,7 @@ const Title = styled('p')`
   color: ${SECONDARY_BLACK};
   font-family: ${MontserratRegular};
   @media (max-width: 992px) {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 `;
 
@@ -80,6 +80,11 @@ const RecordInfo = styled('div')`
   font-family: ${MontserratRegular};
   font-size: 1.4rem;
   margin-left: 2rem;
+  @media (max-width: 992px) {
+    margin-left: 0;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
 `;
 export default class MembersInfo extends React.Component {
   constructLists = () => {

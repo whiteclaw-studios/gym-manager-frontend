@@ -14,7 +14,7 @@ export const FEES_LAYOUT = 'FEES_LAYOUT';
 export const MEMBERS_DIRECTORY_LAYOUT = 'MEMBERS_DIRECTORY_LAYOUT';
 export const ENQUIRY_DIRECTORY_LAYOUT = 'ENQUIRY_DIRECTORY_LAYOUT';
 export const paginationConfigs = {
-  perPage: 15,
+  perPage: 100,
 };
 export const GENDER = ['Male', 'Female', 'Others'];
 export const BLOOD_GROUP_DATA = ['O-', 'O+', 'AB-', 'AB+', 'B+'];

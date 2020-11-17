@@ -60,12 +60,16 @@ const FieldLabel = styled('p')`
   min-width: 15rem;
   @media (max-width: 992px) {
     min-width: 1rem;
+    font-size: 1.2rem;
   }
 `;
 const FieldValue = styled('p')`
   font-size: 1.4rem;
   font-family: ${MontserratRegular};
   margin-left: 1rem;
+  @media (max-width: 992px) {
+    font-size: 1.2rem;
+  }
 `;
 function ExpandedView({ profilePic, fields = [], memberUniqueId }) {
   const mid = Math.ceil(fields.length / 2);

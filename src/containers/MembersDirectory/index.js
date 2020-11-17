@@ -69,6 +69,9 @@ const RegisterNewMemberCTA = styled(Button)`
   border: none;
   margin-bottom: 1.2rem;
   box-shadow: 0px 1px 4px #a9a9a9;
+  @media (max-width: 992px) {
+    font-size: 1.2rem;
+  }
 `;
 const PaginationWrap = styled('div')`
   width: 100%;
@@ -620,6 +623,7 @@ class MembersDirectory extends React.Component {
                           plan: {
                             ...filters.plan,
                             index: 0,
+                            planName: 'All',
                           },
                         }),
                       );
