@@ -1447,6 +1447,14 @@
       "publicPath": "bundle.js"
     }
   ],
+  "../ToolTip": [
+    {
+      "id": "./src/components/ToolTip/index.js",
+      "name": "./src/components/ToolTip/index.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
   "./AddNewImage": [
     {
       "id": "./src/components/UploadImage/AddNewImage.js",
