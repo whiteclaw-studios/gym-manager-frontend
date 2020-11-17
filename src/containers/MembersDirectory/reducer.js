@@ -8,7 +8,6 @@ import {
   UPDATE_FILTER,
   UPDATE_PAGE,
 } from './constants';
-
 const { perPage } = paginationConfigs;
 export const initialState = {
   membersInfo: {
@@ -27,6 +26,10 @@ export const initialState = {
     branch: {
       index: 0,
       branchName: 'All',
+    },
+    plan: {
+      index: 0,
+      planName: 'All',
     },
   },
   search: {
@@ -157,9 +160,8 @@ const reducer = (preloadedState = null) => (
     case UPDATE_FILTER: {
       const { payload } = action;
       const filtersInfo = {
-        branch: {
-          ...payload,
-        },
+        ...state.filters,
+        ...payload,
       };
       let membersList = get(state, 'membersInfo.data', []);
       const searchText = get(state, 'search.searchText', '');

@@ -28,7 +28,11 @@ import {
   updateFilter,
   updatePage,
 } from './actions';
-import { constructBranchFilters, get } from '../../utils/helpers';
+import {
+  constructBranchFilters,
+  constructPlanFilters,
+  get,
+} from '../../utils/helpers';
 import DeleteConfirmation from '../../components/DeleteConfirmation';
 import RegisterNewMember from '../../components/RegisterNewMember';
 import DropDown from '../../components/Dropdown';
@@ -59,15 +63,26 @@ const PaginationWrap = styled('div')`
   justify-content: center;
   padding: 2.4rem 0;
 `;
-const FilterWrap = styled('div')``;
-const BranchFilter = styled('div')``;
+const FilterWrap = styled('div')`
+  display: flex;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  } ;
+`;
+const Filter = styled('div')`
+  font-size: 1.4rem;
+  margin: 0.5rem 1rem;
+  @media (max-width: 992px) {
+    margin: 0;
+  } ;
+`;
 const Label = styled('p')`
   font-size: 1.4rem;
   margin: 0.5rem 0;
   font-family: ${MontserratRegular};
 `;
-const BranchFilterDropdn = styled('div')`
-  max-width: 27rem;
+const FilterDropdn = styled('div')`
+  width: 27rem;
 `;
 class MembersDirectory extends React.Component {
   constructor(props) {
@@ -528,32 +543,68 @@ class MembersDirectory extends React.Component {
       plan,
       branch,
     } = this.state;
+    const selectedBranchFilterIndex = get(filters, 'branch.index');
+    const selectedPlanFilterIndex = get(filters, 'plan.index');
+
     const branchFilters = constructBranchFilters(branchDetails);
+    const planFilters = constructPlanFilters(
+      branchDetails,
+      selectedBranchFilterIndex,
+    );
+
     return (
       <Wrapper>
         {!showEditScreen ? (
           <React.Fragment>
-            <Search onSearch={this.onSearch} />
+            <Search
+              onSearch={this.onSearch}
+              placeholder="Search by name,membership id"
+            />
             <FilterWrap>
-              <BranchFilter>
+              <Filter>
                 <Label>Branch</Label>
-                <BranchFilterDropdn>
+                <FilterDropdn>
                   <DropDown
-                    name="md-filters"
+                    name="md-branch-filter"
                     listItems={branchFilters.map((branch) => branch.branchName)}
                     otherInfo={branchFilters}
-                    activeItem={filters.branch.index}
+                    activeItem={selectedBranchFilterIndex}
                     onSelect={(index, name, otherInfo) => {
+                      console.log('branch', index, name, otherInfo);
                       this.props.dispatch(
                         updateFilter({
-                          ...otherInfo,
-                          index,
+                          branch: {
+                            ...otherInfo,
+                            index,
+                          },
                         }),
                       );
                     }}
                   />
-                </BranchFilterDropdn>
-              </BranchFilter>
+                </FilterDropdn>
+              </Filter>
+              <Filter>
+                <Label>Plan</Label>
+                <FilterDropdn>
+                  <DropDown
+                    name="md-plan-filter"
+                    listItems={planFilters.map((plan) => plan.planName)}
+                    otherInfo={planFilters}
+                    activeItem={selectedPlanFilterIndex}
+                    onSelect={(index, name, otherInfo) => {
+                      console.log('index', index, name, otherInfo);
+                      this.props.dispatch(
+                        updateFilter({
+                          plan: {
+                            ...otherInfo,
+                            index,
+                          },
+                        }),
+                      );
+                    }}
+                  />
+                </FilterDropdn>
+              </Filter>
             </FilterWrap>
             <ButtonWrap>
               <RegisterNewMemberCTA

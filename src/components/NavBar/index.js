@@ -107,6 +107,7 @@ function NavBar({
   expandNavbar,
   shrinkNavbar,
   hideNavBar,
+  logo,
 }) {
   const constructMenus = () => {
     return menus.map((item, index) => {
@@ -156,9 +157,11 @@ function NavBar({
       }}
       onMouseLeave={() => shrinkNavbar()}
     >
-      <LogoWrap expand={navbarState}>
-        <LogoImg src="https://fitboss-clients-logos.s3.ap-south-1.amazonaws.com/bheema-fit-city.jpg?versionId=1ykWnyzStPVtL6qR3nF04d0khtZCOyfI" />
-      </LogoWrap>
+      {logo && (
+        <LogoWrap expand={navbarState}>
+          <LogoImg src={logo} />
+        </LogoWrap>
+      )}
       <Close onClick={() => hideNavBar()}>X</Close>
       <MenusWrap>{constructMenus()}</MenusWrap>
       <Footer>

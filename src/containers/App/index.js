@@ -15,6 +15,7 @@ import {
   getBranchInfo,
   getPlanInfo,
   selectAllowedBranchDetails,
+  selectLogo,
 } from '../../selectors/';
 import SplashScreen from '../../components/SplashScreen';
 import { getAdminInfo } from './actions';
@@ -184,6 +185,7 @@ class App extends React.Component {
       getBranchInfo,
       getPlanInfo,
       allowedBranchInfo,
+      logo,
     } = this.props;
     const {
       showInstallUI,
@@ -203,6 +205,7 @@ class App extends React.Component {
           show={this.state.showHeader}
           expandNavbar={this.expandNavbar}
           showNavBar={this.showNavBar}
+          logo={logo}
         />
         {!isAdminInfoLoaded ? (
           <SplashScreen />
@@ -229,6 +232,7 @@ class App extends React.Component {
             shrinkNavbar={this.shrinkNavbar}
             navbarState={this.state.expandNavbar}
             hideNavBar={this.hideNavBar}
+            logo={logo}
           />
         )}
         {mountToasterManager && <ToasterManager {...toasterConf} />}
@@ -246,6 +250,7 @@ const mapStateToProps = (state) => {
     getBranchInfo: getBranchInfo(state),
     getPlanInfo: getPlanInfo(state),
     allowedBranchInfo: selectAllowedBranchDetails(state),
+    logo: selectLogo(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {

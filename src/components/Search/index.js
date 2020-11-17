@@ -36,11 +36,12 @@ export default class Search extends React.Component {
     // this.debouncedFn();
   };
   render() {
+    const { placeholder = 'Search' } = this.props;
     return (
       <Wrap>
         <SearchBar
           type="text"
-          placeholder="Search by Name,id"
+          placeholder={placeholder}
           onChange={this.onTyping}
         />
       </Wrap>

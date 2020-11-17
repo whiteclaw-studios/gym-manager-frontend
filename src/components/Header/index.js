@@ -50,7 +50,7 @@ const Title = styled('h5')`
 `;
 export default class Header extends React.Component {
   render() {
-    const { show = true, showNavBar, expandNavbar } = this.props;
+    const { show = true, showNavBar, expandNavbar, logo } = this.props;
     return (
       show && (
         <Wrap>
@@ -63,9 +63,11 @@ export default class Header extends React.Component {
             {' '}
             ={' '}
           </HamburgerWrap>
-          <LogoWrap>
-            <LogoImg src="https://fitboss-clients-logos.s3.ap-south-1.amazonaws.com/bheema-fit-city.jpg?versionId=1ykWnyzStPVtL6qR3nF04d0khtZCOyfI" />
-          </LogoWrap>
+          {logo && (
+            <LogoWrap>
+              <LogoImg src={logo} />
+            </LogoWrap>
+          )}
         </Wrap>
       )
     );

@@ -1,5 +1,5 @@
 import { get } from '../utils/helpers';
-const selectAppState = (state) => get(state, 'appState', null) || {};
+const selectAppState = (state) => get(state, 'app', null) || {};
 const selectHomePageState = (state) => get(state, 'homePage', null) || {};
 const selectLoginPageState = (state) => get(state, 'loginPage', null) || {};
 const selectToasterConf = (state) => get(state, 'app.toasterConf', {});
@@ -72,6 +72,9 @@ const selectFiltersInEDPage = (state) => {
   const edPage = selectEDPage(state);
   return get(edPage, 'filters', {});
 };
+const selectLogo = (state) => {
+  return get(selectAppState(state), 'adminInfo.logoS3Url', '');
+};
 export {
   selectAppState,
   selectHomePageState,
@@ -93,4 +96,5 @@ export {
   selectAllowedBranchDetails,
   selectFiltersInMDPage,
   selectFiltersInEDPage,
+  selectLogo,
 };

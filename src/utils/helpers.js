@@ -104,20 +104,50 @@ export const isClientSide = () => {
 export const searchLogic = ({ searchText = '', dataSource = [] }) => {
   if (!dataSource.length) return [];
   if (!searchText) return dataSource;
-  return dataSource.filter(
-    (member) =>
-      member.name.toLowerCase().indexOf(searchText.toLowerCase()) === 0,
-  );
+  return dataSource.filter((member) => {
+    const { name = '', membershipId = '' } = member;
+    const isNameMatches =
+      name.toLowerCase().indexOf(searchText.toLowerCase()) === 0;
+    const isMembershipIdMatches =
+      membershipId.toString().indexOf(searchText.toLowerCase()) === 0;
+    return isNameMatches || isMembershipIdMatches;
+  });
 };
 export const filterLogic = ({ filters, dataSource = [] }) => {
   if (!filters) return dataSource;
   if (!dataSource) return [];
-  const { branch } = filters;
-  if (branch.branchName === 'All') return dataSource;
-  return dataSource.filter((member) => member.branchId === branch.id);
+  let filteredData = dataSource;
+  const keys = Object.keys(filters);
+  for (let i = 0; i < keys.length; i += 1) {
+    const key = keys[i];
+    switch (key) {
+      case 'branch': {
+        const { branchName, id } = filters[key];
+        if (branchName !== 'All') {
+          filteredData = filteredData.filter(
+            (member) => member.branchId === id,
+          );
+        }
+        break;
+      }
+      case 'plan': {
+        const { id, planName } = filters[key];
+        if (planName !== 'All') {
+          console.log('planName', planName, id, filteredData);
+          filteredData = filteredData.filter(
+            (member) => member.planDetailsId === id,
+          );
+        }
+        break;
+      }
+      default:
+        break;
+    }
+  }
+  return filteredData;
 };
 export const constructBranchFilters = (branchDetails) => {
-  if (!branchDetails) return ['All'];
+  if (!branchDetails) [{ branchName: 'All' }];
   let branchInfo = [{ branchName: 'All' }];
   branchInfo = [
     ...branchInfo,
@@ -127,6 +157,17 @@ export const constructBranchFilters = (branchDetails) => {
     })),
   ];
   return branchInfo;
+};
+export const constructPlanFilters = (
+  branchDetails,
+  selectBranchFilterIndex,
+) => {
+  if (!branchDetails) return [{ planName: 'All' }];
+  if (selectBranchFilterIndex === 0) return [{ planName: 'All' }];
+  return [
+    { planName: 'All' },
+    ...get(branchDetails, `[${selectBranchFilterIndex - 1}].planDetails`),
+  ];
 };
 export const applySearchAndFilterLogic = ({
   searchText,

@@ -68,10 +68,8 @@ const Delete = styled(Button)`
     padding: 0.5rem;
   }
   :hover {
-    ${(props) =>
-      props.allowEdit &&
-      `return border: 1px solid ${RED};
-    color: ${RED};`}
+    border: 1px solid ${RED};
+    color: ${RED};
   }
 `;
 
@@ -134,7 +132,12 @@ function ItemRow({
             `}
           >
             <Edit
-              disabled={!allowEdit}
+              className={
+                !allowEdit &&
+                css`
+                  opacity: 0;
+                `
+              }
               onClick={
                 allowEdit
                   ? (e) => {
@@ -162,8 +165,12 @@ function ItemRow({
               Edit
             </Edit>
             <Delete
-              disabled={!allowEdit}
-              allowEdit={allowEdit}
+              className={
+                !allowEdit &&
+                css`
+                  opacity: 0;
+                `
+              }
               onClick={
                 allowEdit
                   ? (e) => {
