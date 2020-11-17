@@ -530,7 +530,16 @@ class MembersDirectory extends React.Component {
     const { isLoaded } = get(this.props, 'pageData.membersInfo', {});
     if (!isLoaded) this.props.dispatch(getMemberDetails());
   }
-
+  constructRecordInfo = () => {
+    const { paginationInfo, membersData = [] } = this.props;
+    console.log('paginationInfo', paginationInfo);
+    const { offset, limit } = paginationInfo;
+    const totalRecords = membersData.length;
+    const end = limit < totalRecords ? limit : totalRecords;
+    return totalRecords
+      ? `Showing ${offset + 1}-${end} out of ${totalRecords}`
+      : '';
+  };
   render() {
     const {
       paginationInfo,
@@ -652,6 +661,7 @@ class MembersDirectory extends React.Component {
               onEditMember={this.onEdit}
               onDeleteMember={this.onDelete}
               allowedBranchInfo={allowedBranchInfo}
+              recordInfo={this.constructRecordInfo()}
             />
             <PaginationWrap>
               <Pagination

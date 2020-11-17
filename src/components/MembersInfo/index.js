@@ -26,6 +26,13 @@ const Wrap = styled('div')`
     min-height: 10rem;
   }
 `;
+const TitleAndInfo = styled('div')`
+  display: flex;
+  align-items: center;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
 const Title = styled('p')`
   margin: 1.6rem 0;
   font-size: 2rem;
@@ -67,6 +74,12 @@ const NoResults = styled('p')`
   justify-content: center;
   align-items: center;
   display: flex;
+`;
+const RecordInfo = styled('div')`
+  display: flex;
+  font-family: ${MontserratRegular};
+  font-size: 1.4rem;
+  margin-left: 2rem;
 `;
 export default class MembersInfo extends React.Component {
   constructLists = () => {
@@ -169,10 +182,15 @@ export default class MembersInfo extends React.Component {
       hidePlan = false,
       showEmail = false,
       showMobile = false,
+      recordInfo = '',
     } = this.props;
     return (
       <Wrap>
-        <Title>{this.constructTitleText()}</Title>
+        <TitleAndInfo>
+          <Title>{this.constructTitleText()}</Title>
+          <RecordInfo>{recordInfo}</RecordInfo>
+        </TitleAndInfo>
+
         <HeadingRow>
           <HeadingItem
             className={css`
