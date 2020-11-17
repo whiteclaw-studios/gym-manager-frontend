@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   BLOOD_GROUP_DATA,
   GENDER,
+  RED,
   SECONDARY_BLACK,
   WHITE,
 } from '../../constants';
@@ -94,6 +95,9 @@ const Address = styled('textarea')`
     height: 10rem;
   }
 `;
+const Error = styled('div')`
+  color: ${RED};
+`;
 export default class RegisterNewMember extends React.Component {
   constructor(props) {
     super(props);
@@ -122,6 +126,7 @@ export default class RegisterNewMember extends React.Component {
       onRegister,
       onCancel,
     } = this.props;
+    console.log('this.props', this.props);
     return (
       <Wrap>
         <Content>

@@ -114,7 +114,7 @@ export default class EnquiryForm extends React.Component {
     });
   };
   validateInputs = () => {
-    const keys = ['name', 'email', 'mobile'];
+    const keys = ['name', 'mobile'];
     let oldState = { ...this.state };
     let isError = false;
     keys.map((key) => {
@@ -128,6 +128,8 @@ export default class EnquiryForm extends React.Component {
             error: true,
           },
         };
+      } else if (this.state[key].error || this.state['email'].error) {
+        isError = true;
       }
     });
     return {

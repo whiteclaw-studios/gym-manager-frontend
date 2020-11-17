@@ -365,7 +365,7 @@ class MembersDirectory extends React.Component {
     });
   };
   validateInputs = () => {
-    const keys = ['name', 'email', 'mobile', 'age', 'fatherName', 'address'];
+    const keys = ['name', 'mobile', 'age', 'fatherName', 'address'];
     let oldState = { ...this.state };
     let isError = false;
     keys.map((key) => {
@@ -379,6 +379,8 @@ class MembersDirectory extends React.Component {
             error: true,
           },
         };
+      } else if (this.state[key].error || this.state['email'].error) {
+        isError = true;
       }
     });
     return {
@@ -487,6 +489,7 @@ class MembersDirectory extends React.Component {
   };
   onRegister = () => {
     const { isError, state } = this.validateInputs();
+    console.log('validateINouts', isError, state);
     this.setState(state);
     const isError2 = this.validateDropdownData();
     if (isError || isError2) {
