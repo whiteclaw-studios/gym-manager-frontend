@@ -64,7 +64,7 @@ const ButtonWrap = styled('div')`
   margin: 0.5rem 1rem;
   @media (max-width: 992px) {
     margin: 0;
-  } ;
+  }
 `;
 
 const RegisterNewMemberCTA = styled(Button)`

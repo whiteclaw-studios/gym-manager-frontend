@@ -22,7 +22,11 @@ import { constructBranchFilters, get } from '../../utils/helpers';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import DropDown from '../../components/Dropdown';
 import CardLayout from '../../components/CardLayout';
-import { EnquiryIcon, HoverEnquiryIcon } from '../../components/SpriteIcon';
+import {
+  EnquiryIcon,
+  FilterIcon,
+  HoverEnquiryIcon,
+} from '../../components/SpriteIcon';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -35,9 +39,11 @@ const Wrapper = styled('div')`
 `;
 const ButtonSearchWrap = styled('div')`
   display: flex;
-  @media (max-width: 640px) {
-    flex-direction: column;
-  } ;
+  @media (max-width: 992px) {
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+  }
 `;
 const SearchWrap = styled('div')`
   width: 27rem;
@@ -46,10 +52,13 @@ const SearchWrap = styled('div')`
     margin: 0;
   } ;
 `;
+
 const ButtonWrap = styled('div')`
-  width: 100%;
   width: 27rem;
   margin: 0.5rem 1rem;
+  @media (max-width: 992px) {
+    margin: 0;
+  }
 `;
 const RegisterNewMemberCTA = styled(Button)`
   color: ${SECONDARY_BLACK};
@@ -64,7 +73,10 @@ const RegisterNewMemberCTA = styled(Button)`
   font-family: ${MontserratLight};
   justify-content: center;
   @media (max-width: 992px) {
-    font-size: 1.2rem;
+    font-size: 1rem;
+    width: 20rem;
+    padding: 0;
+    margin: 0;
   }
 `;
 const PaginationWrap = styled('div')`
@@ -98,7 +110,15 @@ const FilterDropdn = styled('div')`
 class EnquiryDirectory extends React.Component {
   constructor(props) {
     super(props);
+    let isMobile = false;
+    if (typeof window === 'object') {
+      isMobile = window.innerWidth <= 992;
+    }
     this.props.showHeaderHandle(); // to show the header
+    this.state = {
+      showFilterIconInMobile: isMobile,
+      showFilters: !isMobile,
+    };
   }
   onSearch = (searchText) => {
     this.props.dispatch(searchEnquiry({ searchText }));
@@ -114,7 +134,26 @@ class EnquiryDirectory extends React.Component {
   componentDidMount() {
     const { isLoaded } = get(this.props, 'pageData.enquiryInfo', {});
     if (!isLoaded) this.props.dispatch(getEnquiryDetails());
+    window.addEventListener('resize', this.resizeListener);
   }
+  toggleFilters = (state) => {
+    this.setState({
+      showFilters: state,
+    });
+  };
+  resizeListener = () => {
+    if (window.innerWidth <= 992 && !this.state.showFilterIconInMobile) {
+      this.setState({
+        showFilterIconInMobile: true,
+        showFilters: false,
+      });
+    } else if (window.innerWidth > 992 && this.state.showFilterIconInMobile) {
+      this.setState({
+        showFilterIconInMobile: false,
+        showFilters: true,
+      });
+    }
+  };
   render() {
     const {
       paginationInfo,
@@ -124,6 +163,7 @@ class EnquiryDirectory extends React.Component {
       branchDetails,
       filters,
     } = this.props;
+    const { showFilterIconInMobile, showFilters } = this.state;
     const { totalPages, activePage } = paginationInfo;
     const selectedBranchFilterIndex = get(filters, 'branch.index');
     const { isLoading } = get(pageData, 'enquiryInfo', {});
@@ -147,35 +187,66 @@ class EnquiryDirectory extends React.Component {
               Add New Enquiry
             </RegisterNewMemberCTA>
           </ButtonWrap>
-          <SearchWrap>
+          {showFilterIconInMobile && (
+            <FilterIcon
+              className={css`
+                ${showFilters &&
+                `
+                    background-position: -273px -13px;
+                    width: 18px;
+                    height: 18px;
+                    `}
+                @media (min-width: 993px) {
+                  display: none;
+                }
+              `}
+              onClick={() => this.toggleFilters(!showFilters)}
+            />
+          )}
+          <SearchWrap
+            className={css`
+              @media (max-width: 992px) {
+                display: none;
+              }
+            `}
+          >
             <Search onSearch={this.onSearch} placeholder="Search by name" />
           </SearchWrap>
         </ButtonSearchWrap>
-
-        <FilterWrap>
-          <Filter>
-            <Label>Branch</Label>
-            <FilterDropdn>
-              <DropDown
-                name="ed-branch-filter"
-                listItems={branchFilters.map((branch) => branch.branchName)}
-                otherInfo={branchFilters}
-                activeItem={selectedBranchFilterIndex}
-                onSelect={(index, name, otherInfo) => {
-                  this.props.dispatch(
-                    updateFilter({
-                      branch: {
-                        ...otherInfo,
-                        index,
-                      },
-                    }),
-                  );
-                }}
-              />
-            </FilterDropdn>
-          </Filter>
-        </FilterWrap>
-
+        {(showFilters || !showFilterIconInMobile) && (
+          <FilterWrap>
+            <SearchWrap
+              className={css`
+                @media (min-width: 993px) {
+                  display: none;
+                }
+              `}
+            >
+              <Search onSearch={this.onSearch} placeholder="Search by name" />
+            </SearchWrap>
+            <Filter>
+              <Label>Branch</Label>
+              <FilterDropdn>
+                <DropDown
+                  name="ed-branch-filter"
+                  listItems={branchFilters.map((branch) => branch.branchName)}
+                  otherInfo={branchFilters}
+                  activeItem={selectedBranchFilterIndex}
+                  onSelect={(index, name, otherInfo) => {
+                    this.props.dispatch(
+                      updateFilter({
+                        branch: {
+                          ...otherInfo,
+                          index,
+                        },
+                      }),
+                    );
+                  }}
+                />
+              </FilterDropdn>
+            </Filter>
+          </FilterWrap>
+        )}
         <CardLayout
           type={ENQUIRY_DIRECTORY_LAYOUT}
           data={this.getPageData()}
