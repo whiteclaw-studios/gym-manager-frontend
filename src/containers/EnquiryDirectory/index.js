@@ -3,7 +3,6 @@ import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '../../components/Button';
-import MembersInfo from '../../components/MembersInfo';
 import Pagination from '../../components/Pagination';
 import Search from '../../components/Search';
 import {
@@ -26,6 +25,7 @@ import {
 } from '../../utils/helpers';
 import { MontserratRegular } from '../../utils/fonts';
 import DropDown from '../../components/Dropdown';
+import CardLayout from '../../components/CardLayout';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -160,7 +160,7 @@ class EnquiryDirectory extends React.Component {
           </Filter>
         </FilterWrap>
 
-        <MembersInfo
+        <CardLayout
           type={ENQUIRY_DIRECTORY_LAYOUT}
           data={this.getPageData()}
           isLoading={isLoading}

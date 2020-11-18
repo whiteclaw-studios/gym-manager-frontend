@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '../../components/Button';
@@ -36,7 +36,9 @@ import {
 import DeleteConfirmation from '../../components/DeleteConfirmation';
 import RegisterNewMember from '../../components/RegisterNewMember';
 import DropDown from '../../components/Dropdown';
-import { MontserratRegular } from '../../utils/fonts';
+import { MontserratLight, MontserratRegular } from '../../utils/fonts';
+import { PlusIcon } from '../../components/SpriteIcon';
+import CardLayout from '../../components/CardLayout';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -50,10 +52,11 @@ const Wrapper = styled('div')`
 
 const SearchWrap = styled('div')`
   width: 27rem;
-  margin: 0.5rem 1rem;
+  margin: 0.5rem 1.2rem;
+  align-items: center;
   @media (max-width: 992px) {
     margin: 0;
-  } ;
+  }
 `;
 const ButtonWrap = styled('div')`
   width: 27rem;
@@ -65,10 +68,16 @@ const ButtonWrap = styled('div')`
 
 const RegisterNewMemberCTA = styled(Button)`
   color: ${SECONDARY_BLACK};
+  height: 3.4rem;
   background: ${WHITE};
   border: none;
   margin-bottom: 1.2rem;
   box-shadow: 0px 1px 4px #a9a9a9;
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  font-family: ${MontserratLight};
+  justify-content: center;
   @media (max-width: 992px) {
     font-size: 1.2rem;
   }
@@ -79,23 +88,30 @@ const PaginationWrap = styled('div')`
   justify-content: center;
   padding: 2.4rem 0;
 `;
-const FilterWrap = styled('div')`
+const ButtonSearchWrap = styled('div')`
   display: flex;
   @media (max-width: 640px) {
     flex-direction: column;
   } ;
 `;
+const FilterWrap = styled('div')`
+  display: flex;
+`;
 const Filter = styled('div')`
   font-size: 1.4rem;
   margin: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
   @media (max-width: 992px) {
     margin: 0;
-  } ;
+  }
 `;
 const Label = styled('p')`
   font-size: 1.4rem;
-  margin: 0.5rem 0;
+  margin: 0.5rem 1rem;
   font-family: ${MontserratRegular};
+  height: 3.4rem;
+}
 `;
 const FilterDropdn = styled('div')`
   width: 27rem;
@@ -584,13 +600,7 @@ class MembersDirectory extends React.Component {
       <Wrapper>
         {!showEditScreen ? (
           <React.Fragment>
-            <FilterWrap>
-              <SearchWrap>
-                <Search
-                  onSearch={this.onSearch}
-                  placeholder="Search by name,membership id"
-                />
-              </SearchWrap>
+            <ButtonSearchWrap>
               <ButtonWrap>
                 <RegisterNewMemberCTA
                   onClick={() =>
@@ -599,10 +609,21 @@ class MembersDirectory extends React.Component {
                     })
                   }
                 >
+                  <PlusIcon
+                    className={css`
+                      margin-right: 0.5rem;
+                    `}
+                  />
                   Register New Member
                 </RegisterNewMemberCTA>
               </ButtonWrap>
-            </FilterWrap>
+              <SearchWrap>
+                <Search
+                  onSearch={this.onSearch}
+                  placeholder="Search by name,membership id"
+                />
+              </SearchWrap>
+            </ButtonSearchWrap>
 
             <FilterWrap>
               <Filter>
@@ -633,7 +654,11 @@ class MembersDirectory extends React.Component {
               </Filter>
               <Filter>
                 <Label>Plan</Label>
-                <FilterDropdn>
+                <FilterDropdn
+                  className={css`
+                    max-width: 15rem;
+                  `}
+                >
                   <DropDown
                     name="md-plan-filter"
                     listItems={planFilters.map((plan) => plan.planName)}
@@ -653,9 +678,33 @@ class MembersDirectory extends React.Component {
                   />
                 </FilterDropdn>
               </Filter>
+              <Filter>
+                <Label>Status</Label>
+                <FilterDropdn>
+                  <DropDown
+                    className={css`
+                      max-width: 15rem;
+                    `}
+                    name="md-status-filter"
+                    listItems={planFilters.map((plan) => plan.planName)}
+                    otherInfo={planFilters}
+                    activeItem={selectedPlanFilterIndex}
+                    onSelect={(index, name, otherInfo) => {
+                      this.props.dispatch(
+                        updateFilter({
+                          plan: {
+                            ...otherInfo,
+                            index,
+                          },
+                        }),
+                      );
+                    }}
+                  />
+                </FilterDropdn>
+              </Filter>
             </FilterWrap>
 
-            <MembersInfo
+            <CardLayout
               type={MEMBERS_DIRECTORY_LAYOUT}
               data={this.getPageData()}
               isLoading={isLoading}

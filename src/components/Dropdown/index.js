@@ -128,10 +128,12 @@ export default class DropDown extends React.Component {
       placeholder = 'Select',
       showError = false,
       errorText = 'Select something',
+      className = '',
     } = this.props;
     const { expand } = this.state;
     return (
       <Wrap
+        className={className}
         tabIndex={0}
         onBlur={this.onBlur}
         innerRef={(wrapperRef) => (this.node = wrapperRef)}
