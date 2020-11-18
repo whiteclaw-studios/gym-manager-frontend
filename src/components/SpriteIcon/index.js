@@ -17,60 +17,79 @@ function SpriteIcon(props) {
   return <Icon {...props} />;
 }
 export const BackIcon = styled(SpriteIcon)`
-  background-position: -57px -102px;
+  background-position: -77px -122px;
   width: 18px;
   height: 16px;
 `;
 export const UploadIcon = styled(SpriteIcon)`
-  background-position: -68px -25px;
+  background-position: -78px -35px;
   width: 16px;
   height: 15px;
 `;
 export const ProfileIcon = styled(SpriteIcon)`
-  background-position: -67px -67px;
+  background-position: -77px -77px;
   width: 18px;
   height: 18px;
 `;
 export const HoverProfileIcon = css`
-  background-position: -111px -23px;
+  background-position: -121px -33px;
   width: 18px;
   height: 18px;
 `;
 export const DashboardIcon = styled(SpriteIcon)`
-  background-position: -155px -67px;
+  background-position: -165px -77px;
   width: 18px;
   height: 18px;
 `;
 export const HoverDashBoardIcon = css`
-  background-position: -155px -23px;
+  background-position: -165px -33px;
 `;
 export const EnquiryIcon = styled(SpriteIcon)`
-  background-position: -22px -155px;
+  background-position: -32px -165px;
   width: 19px;
   height: 18px;
 `;
 export const HoverEnquiryIcon = css`
-  background-position: -154px -111px;
+  background-position: -164px -121px;
 `;
 export const SearchIcon = styled(SpriteIcon)`
-  background-position: -23px -67px;
+  background-position: -33px -77px;
   width: 22px;
   height: 18px;
 `;
 export const HamburgerIcon = styled(SpriteIcon)`
-  background-position: -199px -23px;
+  background-position: -209px -33px;
   width: 18px;
   height: 17px;
 `;
 export const CloseIcon = styled(SpriteIcon)`
-  background-position: -111px -111px;
+  background-position: -121px -121px;
+  width: 18px;
+  height: 18px;
+`;
+export const CloseBlackIcon = styled(SpriteIcon)`
+  background-position: -273px -13px;
   width: 18px;
   height: 18px;
 `;
 export const LogoutIcon = styled(SpriteIcon)`
-background-position:-13px -209px;
-width: 18px;
-height: 18px;
-}
+  background-position: -23px -219px;
+  width: 18px;
+  height: 18px;
+`;
+export const filterIcon = styled(SpriteIcon)`
+  background-position: -273px -189px;
+  width: 18px;
+  height: 19px;
+`;
+export const PlusIcon = styled(SpriteIcon)`
+  background-position: -33px -121px;
+  width: 18px;
+  height: 18px;
+`;
+export const GreenPlusIcon = styled(SpriteIcon)`
+  background-position: -273px -145px;
+  width: 18px;
+  height: 18px;
 `;
 export default SpriteIcon;

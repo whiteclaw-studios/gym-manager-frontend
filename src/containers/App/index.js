@@ -22,6 +22,15 @@ import { getAdminInfo } from './actions';
 import { LOGIN_ROUTE } from '../../routes';
 import NavBar from '../../components/NavBar';
 import { get } from '../../utils/helpers';
+import {
+  DashboardIcon,
+  EnquiryIcon,
+  HoverDashBoardIcon,
+  HoverEnquiryIcon,
+  HoverProfileIcon,
+  LogoutIcon,
+  ProfileIcon,
+} from '../../components/SpriteIcon';
 const Wrap = styled('div')`
   background: ${BG_COLOR};
   height: 100%;
@@ -32,11 +41,37 @@ const ChildrenWrap = styled('div')`
     margin-left: 0;
   }
 `;
-const hideNavForRoutes = [LOGIN_ROUTE];
+const menus = [
+  {
+    menu: 'Dashboard',
+    Icon: DashboardIcon,
+    url: '/dashboard',
+    hoverIconCss: HoverDashBoardIcon,
+  },
+  {
+    menu: 'Members Directory',
+    Icon: ProfileIcon,
+    url: '/members-directory',
+    hoverIconCss: HoverProfileIcon,
+  },
+  {
+    menu: 'Enquiry Details',
+    Icon: EnquiryIcon,
+    url: '/enquiry-directory',
+    hoverIconCss: HoverEnquiryIcon,
+  },
+];
+const footerMenus = [
+  {
+    menu: 'Logout',
+    Icon: LogoutIcon,
+  },
+];
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.deferredPrompt = null;
+
     this.state = {
       showInstallUI: false,
       showHeader: false,
@@ -45,11 +80,18 @@ class App extends React.Component {
       showNavBar: true,
       expandNavbar: false,
       navmenu: {
-        activeIndex: -1,
+        activeIndex: this.findCurrentIndex() || 0,
       },
     };
   }
-
+  findCurrentIndex = () => {
+    let currentRoute = get(this.props, 'history.location.pathname', '');
+    let activeIndex = -1;
+    menus.map((menu, index) => {
+      if (menu.url === currentRoute) activeIndex = index;
+    });
+    return activeIndex;
+  };
   showInstallPromotion = () => {
     this.setState({
       showInstallUI: true,
@@ -233,6 +275,8 @@ class App extends React.Component {
             navbarState={this.state.expandNavbar}
             hideNavBar={this.hideNavBar}
             logo={logo}
+            menus={menus}
+            footerMenus={footerMenus}
           />
         )}
         {mountToasterManager && <ToasterManager {...toasterConf} />}

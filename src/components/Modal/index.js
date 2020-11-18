@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import ReactCssTransition from '../ReactCssTransition';
 import { isClientSide } from '../../utils/helpers';
+import { CloseBlackIcon } from '../SpriteIcon';
 
 const unmountOverlay = keyframes`
   0% {
@@ -154,7 +155,7 @@ export default class ModalNew extends React.Component {
                       className="modal-close-icon"
                       onClick={close}
                     >
-                      <div>X</div>
+                      <CloseBlackIcon />
                     </CloseContainer>
                   ) : null}
                 </Controls>

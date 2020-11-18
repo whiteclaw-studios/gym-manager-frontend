@@ -579,12 +579,6 @@
       "publicPath": "bundle.js"
     },
     {
-      "id": "./src/containers/EnquiryDirectory/actions.js",
-      "name": "./src/containers/EnquiryDirectory/actions.js",
-      "file": "bundle.js",
-      "publicPath": "bundle.js"
-    },
-    {
       "id": "./src/containers/LoginPage/actions.js",
       "name": "./src/containers/LoginPage/actions.js",
       "file": "bundle.js",
@@ -1407,7 +1401,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../SpriteIcon": [
+  "../../components/SpriteIcon": [
     {
       "id": "./src/components/SpriteIcon/index.js",
       "name": "./src/components/SpriteIcon/index.js",
@@ -1523,6 +1517,14 @@
     {
       "id": "./src/containers/App/saga.js",
       "name": "./src/containers/App/saga.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
+  "../../containers/EnquiryDirectory/actions": [
+    {
+      "id": "./src/containers/EnquiryDirectory/actions.js",
+      "name": "./src/containers/EnquiryDirectory/actions.js",
       "file": "bundle.js",
       "publicPath": "bundle.js"
     }

@@ -4,7 +4,7 @@ import { selectEnquirySource } from '../../selectors';
 import { getCookie, searchLogic } from '../../utils/helpers';
 import axiosWrapper from '../../utils/requestWrapper';
 import { responseParser } from '../../utils/responseParser';
-import { displayToaster } from '../App/actions';
+import { displayToaster, loadAdminInfo } from '../App/actions';
 import { loadEnquiryDetails, loadSearchData } from './actions';
 import { ADD_ENQUIRY, GET_ENQUIRY_DETAILS, SEARCH_ENQUIRY } from './constants';
 function* addEnquirySaga(params = {}) {

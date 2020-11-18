@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
 import styled, { css } from 'react-emotion';
 import { GREEN, LIGHT_GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
+import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import { deleteCookie } from '../../utils/helpers';
-import {
-  CloseIcon,
-  DashboardIcon,
-  EnquiryIcon,
-  HoverDashBoardIcon,
-  HoverEnquiryIcon,
-  HoverProfileIcon,
-  LogoutIcon,
-  ProfileIcon,
-} from '../SpriteIcon';
+import { CloseIcon } from '../SpriteIcon';
 const Wrap = styled('div')`
   position: fixed;
   top: 0;
@@ -22,14 +14,15 @@ const Wrap = styled('div')`
   display: flex;
   flex-direction: column;
   z-index: 11;
-  padding: 0 1.2rem;
   align-items: center;
 `;
 const LogoWrap = styled('div')`
   height: 1.5rem;
   width: 5rem;
   margin: 1rem 0;
+  padding: 0 1.2rem;
   ${(props) => props.expand && expandedCss}
+
   @media (max-width: 992px) {
     display: none;
   }
@@ -37,6 +30,7 @@ const LogoWrap = styled('div')`
 const expandedCss = css`
   height: 4rem;
   width: 12rem;
+  padding-left: 2.4rem;
 `;
 const LogoImg = styled('img')`
   width: 100%;
@@ -52,6 +46,9 @@ const Item = styled('li')`
   height: 5.6rem;
   cursor: pointer;
   align-items: center;
+  padding: 0 1.2rem;
+  background: ${(props) => (props.activeItem ? '#fff' : 'none')};
+  ${(props) => (props.expandState ? 'padding-left:2.4rem' : '')};
   @media (max-width) {
     cursor: default;
   }
@@ -62,11 +59,17 @@ const Footer = styled('div')`
 const Close = styled('div')`
   position: relative;
   top: 1.4rem;
+  padding: 0 1.2rem;
+  padding-left: 2.4rem;
+  @media (min-width: 993px) {
+    display: none;
+  }
 `;
 const Menu = styled('span')`
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: ${WHITE};
   margin-left: 1.2rem;
+  font-family:${MontserratRegular}
   animation: fadeIn 0.2s ease-in-out;
   @keyframes fadeIn {
     0% {
@@ -77,32 +80,7 @@ const Menu = styled('span')`
     }
   }
 `;
-const menus = [
-  {
-    menu: 'Dashboard',
-    Icon: DashboardIcon,
-    url: '/dashboard',
-    hoverIconCss: HoverDashBoardIcon,
-  },
-  {
-    menu: 'Members Directory',
-    Icon: ProfileIcon,
-    url: '/members-directory',
-    hoverIconCss: HoverProfileIcon,
-  },
-  {
-    menu: 'Enquiry Details',
-    Icon: EnquiryIcon,
-    url: '/enquiry-directory',
-    hoverIconCss: HoverEnquiryIcon,
-  },
-];
-const footerMenus = [
-  {
-    menu: 'Logout',
-    Icon: LogoutIcon,
-  },
-];
+
 function NavBar({
   updateActiveNavIndex,
   activeIndex,
@@ -112,17 +90,26 @@ function NavBar({
   shrinkNavbar,
   hideNavBar,
   logo,
+  menus,
+  footerMenus,
 }) {
   const constructMenus = () => {
+    console.log('activeItem', activeIndex);
     return menus.map((item, index) => {
       const { menu, Icon, url, hoverIconCss } = item;
       return (
-        <Item key={menu} onMouseOver={() => updateActiveNavIndex(index)}>
+        <Item
+          key={menu}
+          onMouseOver={() => updateActiveNavIndex(index)}
+          activeItem={index === activeIndex}
+          expandState={navbarState}
+        >
           <Icon
             className={index === activeIndex ? hoverIconCss : ''}
             onClick={() => {
               history.push(url);
               shrinkNavbar();
+              updateActiveNavIndex(index);
             }}
           />
           {navbarState && (
@@ -153,7 +140,7 @@ function NavBar({
           ? css`
               width: 20rem;
               align-items: unset;
-              padding-left: 2.4rem;
+              // padding-left: 2.4rem;
               box-shadow: 0px 1px 5px ${SECONDARY_BLACK};
               transition: all 0.1s ease-in-out;
             `
@@ -169,9 +156,11 @@ function NavBar({
           <LogoImg src={logo} />
         </LogoWrap>
       )}
-      <Close>
-        <CloseIcon onClick={() => hideNavBar()} />
-      </Close>
+      {navbarState && (
+        <Close>
+          <CloseIcon onClick={() => hideNavBar()} />
+        </Close>
+      )}
       <MenusWrap>{constructMenus()}</MenusWrap>
       <Footer>
         {footerMenus.map((item, index) => {
