@@ -3,9 +3,13 @@ import styled, { css } from 'react-emotion';
 import { GREEN, LIGHT_GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
 import { deleteCookie } from '../../utils/helpers';
 import {
+  CloseIcon,
   DashboardIcon,
   EnquiryIcon,
-  FeeIcon,
+  HoverDashBoardIcon,
+  HoverEnquiryIcon,
+  HoverProfileIcon,
+  LogoutIcon,
   ProfileIcon,
 } from '../SpriteIcon';
 const Wrap = styled('div')`
@@ -38,14 +42,7 @@ const LogoImg = styled('img')`
   width: 100%;
   height: 100%;
 `;
-const Close = styled('span')`
-  font-size: 1.2rem;
-  height: 40px;
-  margin-top: 12px;
-  @media (min-width: 993px) {
-    display: none;
-  }
-`;
+
 const MenusWrap = styled('div')`
   flex: 3;
   margin-top: 4rem;
@@ -61,6 +58,10 @@ const Item = styled('li')`
 `;
 const Footer = styled('div')`
   flex: 1;
+`;
+const Close = styled('div')`
+  position: relative;
+  top: 1.4rem;
 `;
 const Menu = styled('span')`
   font-size: 1.4rem;
@@ -81,22 +82,25 @@ const menus = [
     menu: 'Dashboard',
     Icon: DashboardIcon,
     url: '/dashboard',
+    hoverIconCss: HoverDashBoardIcon,
   },
   {
     menu: 'Members Directory',
     Icon: ProfileIcon,
     url: '/members-directory',
+    hoverIconCss: HoverProfileIcon,
   },
   {
     menu: 'Enquiry Details',
     Icon: EnquiryIcon,
     url: '/enquiry-directory',
+    hoverIconCss: HoverEnquiryIcon,
   },
 ];
 const footerMenus = [
   {
     menu: 'Logout',
-    Icon: EnquiryIcon,
+    Icon: LogoutIcon,
   },
 ];
 function NavBar({
@@ -111,10 +115,11 @@ function NavBar({
 }) {
   const constructMenus = () => {
     return menus.map((item, index) => {
-      const { menu, Icon, url } = item;
+      const { menu, Icon, url, hoverIconCss } = item;
       return (
         <Item key={menu} onMouseOver={() => updateActiveNavIndex(index)}>
           <Icon
+            className={index === activeIndex ? hoverIconCss : ''}
             onClick={() => {
               history.push(url);
               shrinkNavbar();
@@ -164,7 +169,9 @@ function NavBar({
           <LogoImg src={logo} />
         </LogoWrap>
       )}
-      <Close onClick={() => hideNavBar()}>X</Close>
+      <Close>
+        <CloseIcon onClick={() => hideNavBar()} />
+      </Close>
       <MenusWrap>{constructMenus()}</MenusWrap>
       <Footer>
         {footerMenus.map((item, index) => {

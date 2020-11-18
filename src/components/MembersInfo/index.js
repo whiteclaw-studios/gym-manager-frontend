@@ -10,7 +10,7 @@ import {
   WHITE,
 } from '../../constants';
 import { getBranchInfo, getPlanInfo } from '../../selectors';
-import { MontserratRegular } from '../../utils/fonts';
+import { MontserratBold, MontserratRegular } from '../../utils/fonts';
 import { get } from '../../utils/helpers';
 import EllipsisLoader from '../EllipsisLoader';
 import { Item, Row, Info } from './commonStyles';
@@ -37,7 +37,7 @@ const Title = styled('p')`
   margin: 1.6rem 0;
   font-size: 2rem;
   color: ${SECONDARY_BLACK};
-  font-family: ${MontserratRegular};
+  font-family: ${MontserratBold};
   @media (max-width: 992px) {
     font-size: 1.4rem;
   }

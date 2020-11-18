@@ -3,20 +3,21 @@ import styled from 'react-emotion';
 import { BG_COLOR, SECONDARY_BLACK } from '../../constants';
 import { MontserratRegular } from '../../utils/fonts';
 import { debounce } from '../../utils/helpers';
+import { SearchIcon } from '../SpriteIcon';
 const Wrap = styled('div')`
   width: 100%;
   margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid ${SECONDARY_BLACK};
 `;
 const SearchBar = styled('input')`
   width: 100%;
   border: none;
   background: ${BG_COLOR};
-  border-bottom: 1px solid ${SECONDARY_BLACK};
   padding: 1rem;
+  margin-left: 0.5rem;
   font-family: ${MontserratRegular};
-  &:focus {
-    border-bottom: 1px solid ${SECONDARY_BLACK};
-  }
 `;
 export default class Search extends React.Component {
   onTyping = (event) => {
@@ -39,6 +40,7 @@ export default class Search extends React.Component {
     const { placeholder = 'Search' } = this.props;
     return (
       <Wrap>
+        <SearchIcon />
         <SearchBar
           type="text"
           placeholder={placeholder}
