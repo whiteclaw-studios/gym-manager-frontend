@@ -40,6 +40,7 @@ import DropDown from '../../components/Dropdown';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import { PlusIcon, FilterIcon } from '../../components/SpriteIcon';
 import CardLayout from '../../components/CardLayout';
+import MemberProfile from '../../components/MemberProfile';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -136,6 +137,7 @@ class MembersDirectory extends React.Component {
       isMobile = window.innerWidth <= 992;
     }
     this.state = {
+      showMemberProfile: true,
       showFilterIconInMobile: isMobile,
       showFilters: !isMobile,
       name: {
@@ -625,6 +627,7 @@ class MembersDirectory extends React.Component {
       branch,
       showFilters,
       showFilterIconInMobile,
+      showMemberProfile,
     } = this.state;
     const selectedBranchFilterIndex = get(filters, 'branch.index');
     const selectedPlanFilterIndex = get(filters, 'plan.index');
@@ -637,7 +640,16 @@ class MembersDirectory extends React.Component {
 
     return (
       <Wrapper>
-        {!showEditScreen ? (
+        {showMemberProfile ? (
+          <MemberProfile
+            name={name.value || 'Rajesh'}
+            email={email.value || 'rajesh@gmail.com'}
+            mobile={mobile.value || '1234567890'}
+            plan={'Monthly'}
+            memberId={'32131'}
+            branch={'Tambaram'}
+          />
+        ) : !showEditScreen ? (
           <React.Fragment>
             <ButtonSearchWrap>
               <ButtonWrap>

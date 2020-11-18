@@ -11,7 +11,7 @@ const Wrap = styled('div')`
   outline: none;
 `;
 const SelectedItem = styled('div')`
-  border-bottom: 1px solid ${SECONDARY_BLACK};
+  // border-bottom: 1px solid ${SECONDARY_BLACK};
   padding: 1rem;
   display: flex;
   align-items: center;

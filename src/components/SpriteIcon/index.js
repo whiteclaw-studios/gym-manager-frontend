@@ -92,4 +92,14 @@ export const GreenPlusIcon = styled(SpriteIcon)`
   width: 18px;
   height: 18px;
 `;
+export const EditIcon = styled(SpriteIcon)`
+  background-position: -13px -273px;
+  width: 18px;
+  height: 18px;
+`;
+export const PauseIcon = styled(SpriteIcon)`
+  background-position: -274px -101px;
+  width: 16px;
+  height: 18px;
+`;
 export default SpriteIcon;
