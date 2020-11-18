@@ -77,7 +77,7 @@ export const LogoutIcon = styled(SpriteIcon)`
   width: 18px;
   height: 18px;
 `;
-export const filterIcon = styled(SpriteIcon)`
+export const FilterIcon = styled(SpriteIcon)`
   background-position: -273px -189px;
   width: 18px;
   height: 19px;

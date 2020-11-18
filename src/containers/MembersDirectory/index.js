@@ -9,6 +9,7 @@ import Search from '../../components/Search';
 import {
   BLOOD_GROUP_DATA,
   GENDER,
+  GREEN,
   MEMBERS_DIRECTORY_LAYOUT,
   SECONDARY_BLACK,
   WHITE,
@@ -37,7 +38,7 @@ import DeleteConfirmation from '../../components/DeleteConfirmation';
 import RegisterNewMember from '../../components/RegisterNewMember';
 import DropDown from '../../components/Dropdown';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
-import { PlusIcon } from '../../components/SpriteIcon';
+import { PlusIcon, FilterIcon } from '../../components/SpriteIcon';
 import CardLayout from '../../components/CardLayout';
 const Wrapper = styled('div')`
   width: 100%;
@@ -79,7 +80,10 @@ const RegisterNewMemberCTA = styled(Button)`
   font-family: ${MontserratLight};
   justify-content: center;
   @media (max-width: 992px) {
-    font-size: 1.2rem;
+    font-size: 1rem;
+    width: 20rem;
+    padding: 0;
+    margin: 0;
   }
 `;
 const PaginationWrap = styled('div')`
@@ -90,12 +94,17 @@ const PaginationWrap = styled('div')`
 `;
 const ButtonSearchWrap = styled('div')`
   display: flex;
-  @media (max-width: 640px) {
-    flex-direction: column;
-  } ;
+  @media (max-width: 992px) {
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+  }
 `;
 const FilterWrap = styled('div')`
   display: flex;
+  @media (max-width: 992px) {
+    flex-direction: column;
+  }
 `;
 const Filter = styled('div')`
   font-size: 1.4rem;
@@ -111,6 +120,9 @@ const Label = styled('p')`
   margin: 0.5rem 1rem;
   font-family: ${MontserratRegular};
   height: 3.4rem;
+  @media (max-width: 992px) {
+    width:7rem;
+  }
 }
 `;
 const FilterDropdn = styled('div')`
@@ -119,7 +131,13 @@ const FilterDropdn = styled('div')`
 class MembersDirectory extends React.Component {
   constructor(props) {
     super(props);
+    let isMobile = false;
+    if (typeof window === 'object') {
+      isMobile = window.innerWidth <= 992;
+    }
     this.state = {
+      showFilterIconInMobile: isMobile,
+      showFilters: !isMobile,
       name: {
         value: '',
         dirty: false,
@@ -548,6 +566,7 @@ class MembersDirectory extends React.Component {
   componentDidMount() {
     const { isLoaded } = get(this.props, 'pageData.membersInfo', {});
     if (!isLoaded) this.props.dispatch(getMemberDetails());
+    window.addEventListener('resize', this.resizeListener);
   }
   constructRecordInfo = () => {
     const { paginationInfo, membersData = [] } = this.props;
@@ -558,6 +577,24 @@ class MembersDirectory extends React.Component {
     return totalRecords
       ? `Showing ${offset + 1}-${end} out of ${totalRecords}`
       : '';
+  };
+  toggleFilters = (state) => {
+    this.setState({
+      showFilters: state,
+    });
+  };
+  resizeListener = () => {
+    if (window.innerWidth <= 992 && !this.state.showFilterIconInMobile) {
+      this.setState({
+        showFilterIconInMobile: true,
+        showFilters: false,
+      });
+    } else if (window.innerWidth > 992 && this.state.showFilterIconInMobile) {
+      this.setState({
+        showFilterIconInMobile: false,
+        showFilters: true,
+      });
+    }
   };
   render() {
     const {
@@ -586,6 +623,8 @@ class MembersDirectory extends React.Component {
       age,
       plan,
       branch,
+      showFilters,
+      showFilterIconInMobile,
     } = this.state;
     const selectedBranchFilterIndex = get(filters, 'branch.index');
     const selectedPlanFilterIndex = get(filters, 'plan.index');
@@ -603,6 +642,13 @@ class MembersDirectory extends React.Component {
             <ButtonSearchWrap>
               <ButtonWrap>
                 <RegisterNewMemberCTA
+                  className={css`
+                    @media (max-width: 992px) {
+                      color: ${GREEN};
+                      border: none;
+                      box-shadow: none;
+                    }
+                  `}
                   onClick={() =>
                     this.setState({
                       showEditScreen: true,
@@ -612,98 +658,143 @@ class MembersDirectory extends React.Component {
                   <PlusIcon
                     className={css`
                       margin-right: 0.5rem;
+                      @media (max-width: 992px) {
+                        background-position: -273px -145px;
+                      }
                     `}
                   />
                   Register New Member
                 </RegisterNewMemberCTA>
               </ButtonWrap>
-              <SearchWrap>
+              {showFilterIconInMobile && (
+                <FilterIcon
+                  className={css`
+                    ${showFilters &&
+                    `
+                    background-position: -273px -13px;
+                    width: 18px;
+                    height: 18px;
+                    `}
+                    @media (min-width: 993px) {
+                      display: none;
+                    }
+                  `}
+                  onClick={() => this.toggleFilters(!showFilters)}
+                />
+              )}
+              <SearchWrap
+                className={css`
+                  @media (max-width: 992px) {
+                    display: none;
+                  }
+                `}
+              >
                 <Search
                   onSearch={this.onSearch}
                   placeholder="Search by name,membership id"
                 />
               </SearchWrap>
             </ButtonSearchWrap>
-
-            <FilterWrap>
-              <Filter>
-                <Label>Branch</Label>
-                <FilterDropdn>
-                  <DropDown
-                    name="md-branch-filter"
-                    listItems={branchFilters.map((branch) => branch.branchName)}
-                    otherInfo={branchFilters}
-                    activeItem={selectedBranchFilterIndex}
-                    onSelect={(index, name, otherInfo) => {
-                      this.props.dispatch(
-                        updateFilter({
-                          branch: {
-                            ...otherInfo,
-                            index,
-                          },
-                          plan: {
-                            ...filters.plan,
-                            index: 0,
-                            planName: 'All',
-                          },
-                        }),
-                      );
-                    }}
-                  />
-                </FilterDropdn>
-              </Filter>
-              <Filter>
-                <Label>Plan</Label>
-                <FilterDropdn
+            {(showFilters || !showFilterIconInMobile) && (
+              <FilterWrap>
+                <SearchWrap
                   className={css`
-                    max-width: 15rem;
+                    @media (min-width: 993px) {
+                      display: none;
+                    }
                   `}
                 >
-                  <DropDown
-                    name="md-plan-filter"
-                    listItems={planFilters.map((plan) => plan.planName)}
-                    otherInfo={planFilters}
-                    activeItem={selectedPlanFilterIndex}
-                    onSelect={(index, name, otherInfo) => {
-                      console.log('index', index, name, otherInfo);
-                      this.props.dispatch(
-                        updateFilter({
-                          plan: {
-                            ...otherInfo,
-                            index,
-                          },
-                        }),
-                      );
-                    }}
+                  <Search
+                    onSearch={this.onSearch}
+                    placeholder="Search by name,membership id"
                   />
-                </FilterDropdn>
-              </Filter>
-              <Filter>
-                <Label>Status</Label>
-                <FilterDropdn>
-                  <DropDown
+                </SearchWrap>
+                <Filter>
+                  <Label>Branch</Label>
+                  <FilterDropdn>
+                    <DropDown
+                      name="md-branch-filter"
+                      listItems={branchFilters.map(
+                        (branch) => branch.branchName,
+                      )}
+                      otherInfo={branchFilters}
+                      activeItem={selectedBranchFilterIndex}
+                      onSelect={(index, name, otherInfo) => {
+                        this.props.dispatch(
+                          updateFilter({
+                            branch: {
+                              ...otherInfo,
+                              index,
+                            },
+                            plan: {
+                              ...filters.plan,
+                              index: 0,
+                              planName: 'All',
+                            },
+                          }),
+                        );
+                      }}
+                    />
+                  </FilterDropdn>
+                </Filter>
+                <Filter>
+                  <Label>Plan</Label>
+                  <FilterDropdn
                     className={css`
                       max-width: 15rem;
+                      @media (max-width: 992px) {
+                        max-width: unset;
+                      }
                     `}
-                    name="md-status-filter"
-                    listItems={planFilters.map((plan) => plan.planName)}
-                    otherInfo={planFilters}
-                    activeItem={selectedPlanFilterIndex}
-                    onSelect={(index, name, otherInfo) => {
-                      this.props.dispatch(
-                        updateFilter({
-                          plan: {
-                            ...otherInfo,
-                            index,
-                          },
-                        }),
-                      );
-                    }}
-                  />
-                </FilterDropdn>
-              </Filter>
-            </FilterWrap>
-
+                  >
+                    <DropDown
+                      name="md-plan-filter"
+                      listItems={planFilters.map((plan) => plan.planName)}
+                      otherInfo={planFilters}
+                      activeItem={selectedPlanFilterIndex}
+                      onSelect={(index, name, otherInfo) => {
+                        console.log('index', index, name, otherInfo);
+                        this.props.dispatch(
+                          updateFilter({
+                            plan: {
+                              ...otherInfo,
+                              index,
+                            },
+                          }),
+                        );
+                      }}
+                    />
+                  </FilterDropdn>
+                </Filter>
+                <Filter>
+                  <Label>Status</Label>
+                  <FilterDropdn>
+                    <DropDown
+                      className={css`
+                        max-width: 15rem;
+                        @media (max-width: 992px) {
+                          max-width: unset;
+                        }
+                      `}
+                      name="md-status-filter"
+                      listItems={planFilters.map((plan) => plan.planName)}
+                      otherInfo={planFilters}
+                      activeItem={selectedPlanFilterIndex}
+                      onSelect={(index, name, otherInfo) => {
+                        this.props.dispatch(
+                          updateFilter({
+                            plan: {
+                              ...otherInfo,
+                              index,
+                            },
+                          }),
+                        );
+                      }}
+                    />
+                  </FilterDropdn>
+                </Filter>
+              </FilterWrap>
+            )}
             <CardLayout
               type={MEMBERS_DIRECTORY_LAYOUT}
               data={this.getPageData()}
