@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css, cx } from 'react-emotion';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '../../components/Button';
@@ -18,14 +18,11 @@ import {
   selectFiltersInEDPage,
 } from '../../selectors';
 import { getEnquiryDetails, searchEnquiry, updateFilter } from './actions';
-import {
-  constructBranchFilters,
-  constructPlanFilters,
-  get,
-} from '../../utils/helpers';
-import { MontserratRegular } from '../../utils/fonts';
+import { constructBranchFilters, get } from '../../utils/helpers';
+import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import DropDown from '../../components/Dropdown';
 import CardLayout from '../../components/CardLayout';
+import { EnquiryIcon, HoverEnquiryIcon } from '../../components/SpriteIcon';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -36,7 +33,12 @@ const Wrapper = styled('div')`
     padding-top: 1.2rem;
   }
 `;
-
+const ButtonSearchWrap = styled('div')`
+  display: flex;
+  @media (max-width: 640px) {
+    flex-direction: column;
+  } ;
+`;
 const SearchWrap = styled('div')`
   width: 27rem;
   margin: 0.5rem 1rem;
@@ -49,15 +51,21 @@ const ButtonWrap = styled('div')`
   width: 27rem;
   margin: 0.5rem 1rem;
 `;
-const RegisterNewMember = styled(Button)`
+const RegisterNewMemberCTA = styled(Button)`
   color: ${SECONDARY_BLACK};
+  height: 3.4rem;
   background: ${WHITE};
   border: none;
   margin-bottom: 1.2rem;
   box-shadow: 0px 1px 4px #a9a9a9;
-  height: 3.4rem;
-  font-size: 1.2rem;
-  padding: 0;
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  font-family: ${MontserratLight};
+  justify-content: center;
+  @media (max-width: 992px) {
+    font-size: 1.2rem;
+  }
 `;
 const PaginationWrap = styled('div')`
   width: 100%;
@@ -123,18 +131,26 @@ class EnquiryDirectory extends React.Component {
 
     return (
       <Wrapper>
-        <FilterWrap>
+        <ButtonSearchWrap>
+          <ButtonWrap>
+            <RegisterNewMemberCTA
+              onClick={() => this.props.history.push(ENQUIRY_FORM_ROUTE)}
+            >
+              <EnquiryIcon
+                className={cx(
+                  HoverEnquiryIcon,
+                  css`
+                    margin-right: 1rem;
+                  `,
+                )}
+              />
+              Add New Enquiry
+            </RegisterNewMemberCTA>
+          </ButtonWrap>
           <SearchWrap>
             <Search onSearch={this.onSearch} placeholder="Search by name" />
           </SearchWrap>
-          <ButtonWrap>
-            <RegisterNewMember
-              onClick={() => this.props.history.push(ENQUIRY_FORM_ROUTE)}
-            >
-              Add New Enquiry
-            </RegisterNewMember>
-          </ButtonWrap>
-        </FilterWrap>
+        </ButtonSearchWrap>
 
         <FilterWrap>
           <Filter>

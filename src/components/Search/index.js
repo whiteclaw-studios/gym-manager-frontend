@@ -2,14 +2,16 @@ import React from 'react';
 import styled from 'react-emotion';
 import { BG_COLOR, SECONDARY_BLACK } from '../../constants';
 import { MontserratRegular } from '../../utils/fonts';
-import { debounce } from '../../utils/helpers';
+// import { debounce } from '../../utils/helpers';
 import { SearchIcon } from '../SpriteIcon';
 const Wrap = styled('div')`
   width: 100%;
   margin-bottom: 1.2rem;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid ${SECONDARY_BLACK};
+  &:focus {
+    border-bottom: 1px solid ${SECONDARY_BLACK};
+  }
 `;
 const SearchBar = styled('input')`
   width: 100%;
@@ -39,7 +41,7 @@ export default class Search extends React.Component {
   render() {
     const { placeholder = 'Search' } = this.props;
     return (
-      <Wrap>
+      <Wrap tabIndex={0}>
         <SearchIcon />
         <SearchBar
           type="text"

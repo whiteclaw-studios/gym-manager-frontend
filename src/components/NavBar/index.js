@@ -14,7 +14,6 @@ const Wrap = styled('div')`
   display: flex;
   flex-direction: column;
   z-index: 11;
-  align-items: center;
 `;
 const LogoWrap = styled('div')`
   height: 1.5rem;
@@ -46,9 +45,11 @@ const Item = styled('li')`
   height: 5.6rem;
   cursor: pointer;
   align-items: center;
+  justify-content: center;
   padding: 0 1.2rem;
   background: ${(props) => (props.activeItem ? '#fff' : 'none')};
-  ${(props) => (props.expandState ? 'padding-left:2.4rem' : '')};
+  ${(props) =>
+    props.expandState ? 'padding-left:2.4rem;justify-content:flex-start;' : ''};
   @media (max-width) {
     cursor: default;
   }
@@ -100,7 +101,7 @@ function NavBar({
       return (
         <Item
           key={menu}
-          onMouseOver={() => updateActiveNavIndex(index)}
+          // onMouseOver={() => updateActiveNavIndex(index)}
           activeItem={index === activeIndex}
           expandState={navbarState}
         >
@@ -124,6 +125,7 @@ function NavBar({
               onClick={() => {
                 history.push(url);
                 shrinkNavbar();
+                updateActiveNavIndex(index);
               }}
             >
               {menu}
@@ -169,9 +171,18 @@ function NavBar({
           return (
             <Item
               key={menu}
-              onMouseOver={() => updateActiveNavIndex(menusLength + index)}
+              // onMouseOver={() => updateActiveNavIndex(menusLength + index)}
+              activeItem={menusLength + index === activeIndex}
+              expandState={navbarState}
             >
-              {Icon && <Icon />}
+              {Icon && (
+                <Icon
+                  onClick={() => {
+                    deleteCookie('VJS');
+                    window.location.reload();
+                  }}
+                />
+              )}
               {navbarState && (
                 <Menu
                   className={

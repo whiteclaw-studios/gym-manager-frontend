@@ -61,6 +61,7 @@ const NoResults = styled('p')`
   font-family: ${MontserratRegular};
   min-height: 10rem;
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: center;
 `;
