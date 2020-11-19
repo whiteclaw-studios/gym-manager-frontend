@@ -50,6 +50,10 @@ const LiWrap = styled('div')`
 const Item = styled('span')`
   font-family: ${MontserratRegular};
   opacity: 0.5;
+  font-size: 1.4rem;
+  @media (max-width: 992px) {
+    font-size: 1.2rem;
+  }
 `;
 const Smallbox = styled('div')`
   display: flex;
@@ -64,10 +68,13 @@ const Title = styled('span')`
   opacity: 0.5;
   font-size: 1.4rem;
   text-transform: capitalize;
+  text-align: center;
 `;
 const Value = styled('span')`
   font-family: ${MontserratRegular};
   font-size: 1.4rem;
+  margin: 0.5rem 0;
+  text-align: center;
 `;
 const BoxWrap = styled('div')`
   display: flex;
@@ -148,15 +155,16 @@ class MemberProfile extends React.Component {
               <LiWrap>
                 <Item>{mobile} </Item>
                 {mobile && email && (
-                  <span
+                  <Item
                     className={css`
+                      margin: 0 0.5rem;
                       @media (max-width: 992px) {
                         display: none;
                       }
                     `}
                   >
                     |{' '}
-                  </span>
+                  </Item>
                 )}
                 <Item> {email}</Item>
               </LiWrap>

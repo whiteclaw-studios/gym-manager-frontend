@@ -5,7 +5,6 @@ import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import Button from '../Button';
 const Wrap = styled('div')`
   background: ${WHITE};
-  padding: 1rem;
   margin: 1rem;
   @media (min-width: 993px) {
     min-width: 40rem;
@@ -18,6 +17,8 @@ const Wrap = styled('div')`
 const Title = styled('div')`
   font-family: ${MontserratRegular};
   font-size: 1.8rem;
+  padding: 1rem;
+
   @media (max-width: 992px) {
     font-size: 1.6rem;
   }
@@ -44,6 +45,7 @@ const ItemWrap = styled('div')`
 const Item = styled('li')`
   flex: 1;
   display: flex;
+  height: 3.2rem;
   justify-content: center;
   align-items: center;
 
@@ -51,6 +53,7 @@ const Item = styled('li')`
   font-size: 1.4rem;
   @media (max-width: 992px) {
     font-size: 1.2rem;
+    height: 2.4rem;
   }
 `;
 const Pay = styled(Button)`
