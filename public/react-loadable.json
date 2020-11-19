@@ -1327,6 +1327,14 @@
       "publicPath": "bundle.js"
     }
   ],
+  "./GridData": [
+    {
+      "id": "./src/components/MemberProfile/GridData.js",
+      "name": "./src/components/MemberProfile/GridData.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
   "../../components/MemberProfile": [
     {
       "id": "./src/components/MemberProfile/index.js",

@@ -3,6 +3,7 @@ import styled, { css } from 'react-emotion';
 import { WHITE } from '../../constants';
 import { MontserratBold, MontserratRegular } from '../../utils/fonts';
 import { BackIcon, EditIcon, PauseIcon } from '../SpriteIcon';
+import GridData from './GridData';
 const Wrapper = styled('div')`
   width: 100%;
 `;
@@ -103,6 +104,13 @@ const CTA = styled('span')`
   font-size: 1.4rem;
   font-family: ${MontserratRegular};
 `;
+const FeesAndHistoryWrap = styled('div')`
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 992px) {
+    flex-direction: column;
+  }
+`;
 class MemberProfile extends React.Component {
   constructBoxes = () => {
     const { branch, memberId, plan } = this.props;
@@ -184,6 +192,10 @@ class MemberProfile extends React.Component {
             </BoxWrap>
           </Section2>
         </InfoBox>
+        <FeesAndHistoryWrap>
+          <GridData />
+          <GridData showHistory />
+        </FeesAndHistoryWrap>
       </Wrapper>
     );
   }

@@ -97,6 +97,7 @@ class App extends React.Component {
       showInstallUI: true,
     });
   };
+
   beforeInstallPrompt = (e) => {
     e.preventDefault();
     // Stash the event so it can be triggered later.
@@ -145,8 +146,9 @@ class App extends React.Component {
     const {
       isLoggedIn: isLoggedInPrevProp,
       isAdminInfoLoaded: infoLoadedPrevProp,
+      history: historyPrevProp,
     } = prevProps;
-    const { isLoggedIn, isAdminInfoLoaded } = this.props;
+    const { isLoggedIn, isAdminInfoLoaded, history } = this.props;
     // going back to previous page once logged in
 
     if (infoLoadedPrevProp !== isAdminInfoLoaded && isAdminInfoLoaded) {
@@ -156,6 +158,10 @@ class App extends React.Component {
       } else if (!isLoggedIn) {
         this.props.history.push('/login');
       }
+    }
+    if (historyPrevProp.location.pathname !== history.location.pathname) {
+      const currentNavItem = this.findCurrentIndex();
+      this.updateActiveNavIndex(currentNavItem);
     }
     this.hideHeaderInMobile();
   }
