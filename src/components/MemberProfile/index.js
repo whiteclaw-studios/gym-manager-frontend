@@ -134,13 +134,13 @@ const FeesAndHistoryWrap = styled('div')`
 `;
 class MemberProfile extends React.Component {
   constructBoxes = () => {
-    const { branch, memberId, plan } = this.props;
+    const { branch, memberId, plan, memberUniqueId } = this.props;
     const obj = { branch, memberId, plan };
     const keys = Object.keys(obj);
     return keys.map((key) => {
       return (
         obj[key] && (
-          <Smallbox>
+          <Smallbox key={`smallbox-${memberUniqueId}-${key}`}>
             <Title>{key}</Title>
             <Value>{obj[key]}</Value>
           </Smallbox>
@@ -264,8 +264,15 @@ class MemberProfile extends React.Component {
           </Section2>
         </InfoBox>
         <FeesAndHistoryWrap>
-          <GridData key={memberUniqueId} />
-          <GridData showHistory key={memberUniqueId} />
+          <GridData
+            key={`${memberUniqueId}-fees-data`}
+            memberUniqueId={memberUniqueId}
+          />
+          <GridData
+            showHistory
+            key={`${memberUniqueId}-history-data`}
+            memberUniqueId={memberUniqueId}
+          />
         </FeesAndHistoryWrap>
       </Wrapper>
     );

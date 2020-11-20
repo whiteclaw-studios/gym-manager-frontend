@@ -735,7 +735,7 @@ class MembersDirectory extends React.Component {
     } = this.state;
     const selectedBranchFilterIndex = get(filters, 'branch.index');
     const selectedPlanFilterIndex = get(filters, 'plan.index');
-    console.log('profilePic', images);
+    console.log('state', this.state);
     const branchFilters = constructBranchFilters(branchDetails);
     const planFilters = constructPlanFilters(
       branchDetails,
