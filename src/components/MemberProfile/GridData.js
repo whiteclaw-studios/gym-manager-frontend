@@ -1,8 +1,9 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { WHITE, GREY } from '../../constants';
+import { WHITE, GREY, RED, GREEN } from '../../constants';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import Button from '../Button';
+import EllipsisLoader from '../EllipsisLoader';
 const Wrap = styled('div')`
   background: ${WHITE};
   margin: 1rem 0;
@@ -69,6 +70,29 @@ const Pay = styled(Button)`
     height: 2.4rem;
   }
 `;
+const LoaderWrap = styled('div')`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+const Noresults = styled('p')`
+  font-size: 1.2rem;
+  font-family: ${MontserratRegular};
+  color: ${GREEN};
+  min-height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const Error = styled('p')`
+  color: ${RED};
+  font-size: 1.2rem;
+  font-family: ${MontserratRegular};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 10rem;
+`;
 function GridData({
   headingInfo = ['Fees', 'Due Date', 'Paid Date'],
   data = [
@@ -100,6 +124,9 @@ function GridData({
   ],
   showHistory = false,
   memberUniqueId,
+  isLoaded,
+  isError,
+  isLoading,
 }) {
   return (
     <Wrap>
@@ -123,29 +150,39 @@ function GridData({
             </Heading>
           ))}
         </HeadingWrap>
-        <Data>
-          {data.map((info, index) => {
-            const { fee, dueDate, paidDate } = info;
-            return (
-              <ItemWrap
-                key={`${
-                  showHistory ? 'History' : 'Fees Due'
-                }- ${memberUniqueId}-${index}`}
-                className={
-                  index % 2 === 0
-                    ? css`
-                        background: ${GREY};
-                      `
-                    : ''
-                }
-              >
-                <Item>{fee}</Item>
-                <Item>{dueDate}</Item>
-                <Item>{showHistory ? paidDate || '-' : <Pay>Pay</Pay>}</Item>
-              </ItemWrap>
-            );
-          })}
-        </Data>
+        {isError ? (
+          <Error>Something went wrong</Error>
+        ) : isLoading ? (
+          <LoaderWrap>
+            <EllipsisLoader />
+          </LoaderWrap>
+        ) : isLoaded && data.length <= 0 ? (
+          <Noresults>No data found</Noresults>
+        ) : (
+          <Data>
+            {data.map((info, index) => {
+              const { fee, dueDate, paidDate } = info;
+              return (
+                <ItemWrap
+                  key={`${
+                    showHistory ? 'History' : 'Fees Due'
+                  }- ${memberUniqueId}-${index}`}
+                  className={
+                    index % 2 === 0
+                      ? css`
+                          background: ${GREY};
+                        `
+                      : ''
+                  }
+                >
+                  <Item>{fee}</Item>
+                  <Item>{dueDate}</Item>
+                  <Item>{showHistory ? paidDate || '-' : <Pay>Pay</Pay>}</Item>
+                </ItemWrap>
+              );
+            })}
+          </Data>
+        )}
       </Content>
     </Wrap>
   );

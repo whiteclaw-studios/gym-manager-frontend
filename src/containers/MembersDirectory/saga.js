@@ -1,4 +1,4 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { call, put, select, take, takeEvery } from 'redux-saga/effects';
 import { apiUrls } from '../../constants';
 import { selectMembersSource } from '../../selectors';
 import { getCookie, searchLogic } from '../../utils/helpers';
@@ -8,6 +8,7 @@ import { displayToaster, loadAdminInfo } from '../App/actions';
 import {
   includeMemberInList,
   loadMemberDetails,
+  loadMemberFeeDetails,
   loadSearchData,
   removeMemberInList,
 } from './actions';
@@ -16,6 +17,7 @@ import {
   SEARCH_MEMBERS,
   GET_MEMBER_DETAILS,
   DELETE_MEMBER,
+  GET_MEMBER_FEE_DETAILS,
 } from './constants';
 function* addNewMember(params = {}) {
   try {
@@ -155,6 +157,51 @@ function* deleteMemberSaga(params) {
     console.error('Caught in deleteMemberSaga', err);
   }
 }
+function* getMemberFeeDetailsSaga(params) {
+  try {
+    const {
+      memberUniqueId,
+      successCallback = () => {},
+      failureCallback = () => {},
+    } = params;
+
+    const response = yield call(axiosWrapper, {
+      method: 'GET',
+      url: `${apiUrls.MEMBER_DETAIL_URL}/${memberUniqueId}`,
+    });
+    console.log('response', response);
+    const processResponse = responseParser(response);
+    if (!processResponse.isError) {
+      yield put(
+        loadMemberFeeDetails({
+          memberUniqueId,
+          isLoaded: true,
+          isLoading: false,
+          isError: false,
+        }),
+      );
+      successCallback();
+    } else {
+      yield put(
+        displayToaster({
+          type: 'failure',
+          text: 'Something went wrong',
+        }),
+      );
+      yield put(
+        loadMemberFeeDetails({
+          memberUniqueId,
+          isLoaded: true,
+          isLoading: false,
+          isError: true,
+        }),
+      );
+      failureCallback();
+    }
+  } catch (err) {
+    console.error('Caught in getMemberFeeDetailsSaga ', err);
+  }
+}
 function* watchaddNewMember() {
   yield takeEvery(ADD_NEW_MEMBER, addNewMember);
 }
@@ -167,9 +214,13 @@ function* watchGetMemberDetailsSaga() {
 function* watchDeleteMemberSaga() {
   yield takeEvery(DELETE_MEMBER, deleteMemberSaga);
 }
+function* watchGetMemberFeeDetailsSaga() {
+  yield takeEvery(GET_MEMBER_FEE_DETAILS, getMemberFeeDetailsSaga);
+}
 export const membersDirectorySagas = [
   watchaddNewMember(),
   watchSearchMemberSaga(),
   watchGetMemberDetailsSaga(),
   watchDeleteMemberSaga(),
+  watchGetMemberFeeDetailsSaga(),
 ];

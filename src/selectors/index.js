@@ -82,6 +82,10 @@ const selectMemberInfo = (state) => (membershipId) => {
   ) || [{}];
   return { ...memberInfo[0] };
 };
+const selectMemberFeeDetails = (state) => (memberUniqueId) => {
+  const mdPage = selectMDPage(state);
+  return get(mdPage, `feeDetails.${memberUniqueId}`, {});
+};
 export {
   selectAppState,
   selectHomePageState,
@@ -105,4 +109,5 @@ export {
   selectFiltersInEDPage,
   selectLogo,
   selectMemberInfo,
+  selectMemberFeeDetails,
 };

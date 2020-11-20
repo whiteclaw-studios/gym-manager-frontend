@@ -133,6 +133,10 @@ const FeesAndHistoryWrap = styled('div')`
   }
 `;
 class MemberProfile extends React.Component {
+  componentDidMount() {
+    const { getFeeDetails = () => {}, memberUniqueId } = this.props;
+    if (getFeeDetails) getFeeDetails(memberUniqueId);
+  }
   constructBoxes = () => {
     const { branch, memberId, plan, memberUniqueId } = this.props;
     const obj = { branch, memberId, plan };
@@ -198,7 +202,14 @@ class MemberProfile extends React.Component {
       memberUniqueId,
       onPauseMembership,
       onBack,
+      selectMemberFeeDetails,
     } = this.props;
+    const memberFeeDetails = selectMemberFeeDetails(memberUniqueId);
+    const {
+      isLoading = true,
+      isError = false,
+      isLoaded = false,
+    } = memberFeeDetails;
     return (
       <Wrapper>
         <Heading>
@@ -267,11 +278,17 @@ class MemberProfile extends React.Component {
           <GridData
             key={`${memberUniqueId}-fees-data`}
             memberUniqueId={memberUniqueId}
+            isLoaded={isLoaded}
+            isError={isError}
+            isLoading={isLoading}
           />
           <GridData
             showHistory
             key={`${memberUniqueId}-history-data`}
             memberUniqueId={memberUniqueId}
+            isLoaded={isLoaded}
+            isError={isError}
+            isLoading={isLoading}
           />
         </FeesAndHistoryWrap>
       </Wrapper>

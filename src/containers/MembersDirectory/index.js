@@ -19,6 +19,7 @@ import {
   selectDataSourceForMDPage,
   selectFiltersInMDPage,
   selectMDPage,
+  selectMemberFeeDetails,
   selectMemberInfo,
   selectPaginationInMDPage,
 } from '../../selectors';
@@ -26,6 +27,7 @@ import {
   addNewMember,
   deleteMember,
   getMemberDetails,
+  getMemberFeeDetails,
   searchMembers,
   updateFilter,
   updatePage,
@@ -700,6 +702,13 @@ class MembersDirectory extends React.Component {
       );
     }
   };
+  getFeeDetails = (memberUniqueId) => {
+    const { selectMemberFeeDetails, dispatch } = this.props;
+    const memberFeeDetails = selectMemberFeeDetails(memberUniqueId);
+    console.log('getFeeDetails', memberFeeDetails);
+    const isLoaded = get(memberFeeDetails, 'isLoaded', false);
+    if (!isLoaded) dispatch(getMemberFeeDetails({ memberUniqueId }));
+  };
   render() {
     const {
       paginationInfo,
@@ -709,6 +718,7 @@ class MembersDirectory extends React.Component {
       allowedBranchInfo,
       branchDetails,
       filters,
+      selectMemberFeeDetails,
     } = this.props;
     const { totalPages, activePage } = paginationInfo;
     const { isLoading } = get(pageData, 'membersInfo', {});
@@ -769,6 +779,8 @@ class MembersDirectory extends React.Component {
                 showMemberProfile: false,
               })
             }
+            getFeeDetails={this.getFeeDetails}
+            selectMemberFeeDetails={selectMemberFeeDetails}
           />
         ) : !showEditScreen ? (
           <React.Fragment>
@@ -1009,6 +1021,7 @@ const mapStateToProps = (state) => {
     paginationInfo: selectPaginationInMDPage(state),
     filters: selectFiltersInMDPage(state),
     selectMemberInfo: selectMemberInfo(state),
+    selectMemberFeeDetails: selectMemberFeeDetails(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {

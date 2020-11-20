@@ -3,6 +3,7 @@ import { get, applySearchAndFilterLogic } from '../../utils/helpers';
 import {
   INCLUDE_NEW_MEMBER_IN_LIST,
   LOAD_MEMBER_DETAILS,
+  LOAD_MEMBER_FEE_DETAILS,
   LOAD_SEARCH_DATA,
   REMOVE_MEMBER_IN_LIST,
   UPDATE_FILTER,
@@ -36,6 +37,7 @@ export const initialState = {
     isSearching: false,
     searchText: '',
   },
+  feeDetails: {},
 };
 
 const reducer = (preloadedState = null) => (
@@ -188,6 +190,20 @@ const reducer = (preloadedState = null) => (
           limit: perPage,
           activePage: 1,
           totalPages: Math.ceil(filteredData.length / perPage),
+        },
+      };
+    }
+    case LOAD_MEMBER_FEE_DETAILS: {
+      const { payload } = action;
+      console.log('payload', payload);
+      const { memberUniqueId, ...rest } = payload;
+      return {
+        ...state,
+        feeDetails: {
+          ...state.feeDetails,
+          [memberUniqueId]: {
+            ...rest,
+          },
         },
       };
     }
