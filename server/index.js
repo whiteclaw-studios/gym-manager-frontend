@@ -5,9 +5,11 @@ import path from 'path';
 import { createStore, combineReducers } from 'redux';
 import reducer from '../src/reducers';
 var bodyParser = require('body-parser');
+const compression = require('compression');
 const cors = require('cors');
 const server = express();
 server.use(bodyParser.json({ limit: '256kb' }));
+server.use(compression());
 server.use(cors());
 server.get(
   /^\/[a-zA-Z]+\.[(a-zA-Z0-9).js|js|svg|png|css|ico|json]*[?a-zA-Z]+$/,

@@ -42,7 +42,10 @@ function* addNewMember(params = {}) {
       gender,
     };
     var formData = new FormData();
-    if (images.length > 0) formData.append('file', images[0].imageFile);
+    if (images.length > 0) {
+      const { imageFile = '' } = images[0];
+      if (imageFile) formData.append('file', imageFile);
+    }
     // Object.keys(fieldKeys).map((key) => formData.append(key, fieldKeys[key]));
     formData.append('data', JSON.stringify(fieldKeys));
     const response = yield call(axiosWrapper, {

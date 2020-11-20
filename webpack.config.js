@@ -11,17 +11,17 @@ module.exports = {
     filename: 'bundle.js',
     chunkFilename: '[name].[chunkhash].js',
   },
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        },
-      },
-    },
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     cacheGroups: {
+  //       commons: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         name: 'vendors',
+  //         chunks: 'all',
+  //       },
+  //     },
+  //   },
+  // },
   module: {
     rules: [
       {
@@ -94,6 +94,12 @@ module.exports = {
     ]),
     new ReactLoadablePlugin({
       filename: path.resolve(process.cwd(), 'public/react-loadable.json'),
+    }),
+    new BrotliPlugin({
+      asset: '[path].br[query]',
+      test: /\.(js|css|html|svg)$/,
+      threshold: 10240,
+      minRatio: 0.8,
     }),
   ],
 };
