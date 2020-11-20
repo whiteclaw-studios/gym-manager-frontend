@@ -11,6 +11,17 @@ module.exports = {
     filename: 'bundle.js',
     chunkFilename: '[name].[chunkhash].js',
   },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  },
   module: {
     rules: [
       {
