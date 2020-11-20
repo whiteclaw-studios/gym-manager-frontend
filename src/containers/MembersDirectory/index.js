@@ -11,6 +11,7 @@ import {
   GENDER,
   GREEN,
   MEMBERS_DIRECTORY_LAYOUT,
+  MEMBER_STATUS,
   SECONDARY_BLACK,
   WHITE,
 } from '../../constants';
@@ -745,6 +746,7 @@ class MembersDirectory extends React.Component {
     } = this.state;
     const selectedBranchFilterIndex = get(filters, 'branch.index');
     const selectedPlanFilterIndex = get(filters, 'plan.index');
+    const selectedStatusFilterIndex = get(filters, 'status.index');
     console.log('state', this.state);
     const branchFilters = constructBranchFilters(branchDetails);
     const planFilters = constructPlanFilters(
@@ -899,7 +901,6 @@ class MembersDirectory extends React.Component {
                       otherInfo={planFilters}
                       activeItem={selectedPlanFilterIndex}
                       onSelect={(index, name, otherInfo) => {
-                        console.log('index', index, name, otherInfo);
                         this.props.dispatch(
                           updateFilter({
                             plan: {
@@ -923,15 +924,14 @@ class MembersDirectory extends React.Component {
                         }
                       `}
                       name="md-status-filter"
-                      listItems={planFilters.map((plan) => plan.planName)}
-                      otherInfo={planFilters}
-                      activeItem={selectedPlanFilterIndex}
-                      onSelect={(index, name, otherInfo) => {
+                      listItems={MEMBER_STATUS}
+                      activeItem={selectedStatusFilterIndex}
+                      onSelect={(index) => {
                         this.props.dispatch(
                           updateFilter({
-                            plan: {
-                              ...otherInfo,
+                            status: {
                               index,
+                              name: MEMBER_STATUS[index],
                             },
                           }),
                         );
@@ -951,6 +951,7 @@ class MembersDirectory extends React.Component {
               allowedBranchInfo={allowedBranchInfo}
               recordInfo={this.constructRecordInfo()}
               onSelectMember={this.onSelectMember}
+              isClickable
             />
             <PaginationWrap>
               <Pagination

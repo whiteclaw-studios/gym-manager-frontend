@@ -69,7 +69,7 @@ const Close = styled('div')`
 const Menu = styled('span')`
   font-size: 1.2rem;
   color: ${WHITE};
-  margin-left: 1.2rem;
+  padding-left: 1.2rem;
   font-family:${MontserratRegular}
   animation: fadeIn 0.2s ease-in-out;
   @keyframes fadeIn {

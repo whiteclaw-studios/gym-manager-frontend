@@ -145,12 +145,23 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
       case 'plan': {
         const { id, planName } = filters[key];
         if (planName !== 'All') {
-          console.log('planName', planName, id, filteredData);
           filteredData = filteredData.filter(
             (member) => member.planDetailsId === id,
           );
         }
         break;
+      }
+      case 'status': {
+        const { name } = filters[key];
+        if (name !== 'All') {
+          filteredData = filteredData.filter((member) => {
+            if (name === 'Active') {
+              return member.isActive;
+            } else {
+              return !member.isActive;
+            }
+          });
+        }
       }
       default:
         break;

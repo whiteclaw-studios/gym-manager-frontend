@@ -69,7 +69,7 @@ export const CloseIcon = styled(SpriteIcon)`
 `;
 export const CloseBlackIcon = styled(SpriteIcon)`
   background-position: -273px -13px;
-  width: 18px;
+  width: 21px;
   height: 18px;
 `;
 export const LogoutIcon = styled(SpriteIcon)`

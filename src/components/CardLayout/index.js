@@ -65,6 +65,17 @@ const NoResults = styled('p')`
   align-items: center;
   justify-content: center;
 `;
+const RecordInfo = styled('div')`
+  display: flex;
+  font-family: ${MontserratRegular};
+  font-size: 1.4rem;
+  margin-left: 2rem;
+  @media (max-width: 992px) {
+    margin-left: 0;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+`;
 export default class CardLayout extends React.Component {
   constructTitleText = () => {
     const { type } = this.props;
@@ -103,6 +114,7 @@ export default class CardLayout extends React.Component {
       showEmail,
       showMobile,
       onSelectMember,
+      isClickable = false,
     } = this.props;
     return data.map((member, index) => {
       const {
@@ -127,6 +139,7 @@ export default class CardLayout extends React.Component {
       return (
         <Card
           key={`member-${uniqueId}`}
+          isClickable={isClickable}
           index={index}
           openPaymentPopup={openPaymentPopup}
           type={type}
@@ -158,13 +171,14 @@ export default class CardLayout extends React.Component {
     });
   };
   render() {
-    const { data, isLoading } = this.props;
+    const { data, isLoading, recordInfo } = this.props;
     return (
       <Wrap>
         <TitleAndInfo>
           <Title>{this.constructTitleText()}</Title>
-          {/* <RecordInfo>{recordInfo}</RecordInfo> */}
+          <RecordInfo>{recordInfo}</RecordInfo>
         </TitleAndInfo>
+
         {isLoading ? (
           <LoaderWrap>
             <EllipsisLoader />

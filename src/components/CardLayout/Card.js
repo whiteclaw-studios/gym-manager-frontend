@@ -8,7 +8,7 @@ const Wrap = styled('div')`
   padding: 1rem;
   margin: 1.2rem 1.5rem;
   min-width: 27rem;
-  cursor: pointer;
+  cursor: ${(props) => (props.isClickable ? 'pointer' : 'default')};
   @media (max-width: 992px) {
     margin: 1.2rem 0;
     cursor: default;
@@ -61,28 +61,33 @@ function Card({
   profilePic,
   address,
   onSelectMember,
+  isClickable,
 }) {
   return (
     <Wrap
-      onClick={() =>
-        onSelectMember({
-          name,
-          fatherName,
-          memberId,
-          branch,
-          branchId,
-          mobile,
-          mailId,
-          gender,
-          age,
-          plan,
-          planId,
-          address,
-          bloodGroup,
-          memberUniqueId,
-          profilePic:
-            'https://www.dmarge.com/wp-content/uploads/2017/03/chevron.jpg',
-        })
+      isClickable={isClickable}
+      onClick={
+        isClickable
+          ? () =>
+              onSelectMember({
+                name,
+                fatherName,
+                memberId,
+                branch,
+                branchId,
+                mobile,
+                mailId,
+                gender,
+                age,
+                plan,
+                planId,
+                address,
+                bloodGroup,
+                memberUniqueId,
+                profilePic:
+                  'https://www.dmarge.com/wp-content/uploads/2017/03/chevron.jpg',
+              })
+          : () => {}
       }
     >
       <Section1>

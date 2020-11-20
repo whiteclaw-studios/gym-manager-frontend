@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { BG_COLOR, SECONDARY_BLACK } from '../../constants';
 import { MontserratRegular } from '../../utils/fonts';
 // import { debounce } from '../../utils/helpers';
@@ -22,6 +22,12 @@ const SearchBar = styled('input')`
   font-family: ${MontserratRegular};
 `;
 export default class Search extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isFocus: false,
+    };
+  }
   onTyping = (event) => {
     let searchString = event.target.value;
     const { onSearch } = this.props;
@@ -39,9 +45,31 @@ export default class Search extends React.Component {
     // this.debouncedFn();
   };
   render() {
+    console.log('this.state -> search', this.state);
+    const { isFocus } = this.state;
     const { placeholder = 'Search' } = this.props;
     return (
-      <Wrap tabIndex={0}>
+      <Wrap
+        className={
+          isFocus
+            ? css`
+                border-bottom: 1px solid ${SECONDARY_BLACK};
+                transition: all 0.4s ease-in-out;
+              `
+            : ''
+        }
+        tabIndex={0}
+        onFocus={() =>
+          this.setState({
+            isFocus: true,
+          })
+        }
+        onBlur={() => {
+          this.setState({
+            isFocus: false,
+          });
+        }}
+      >
         <SearchIcon />
         <SearchBar
           type="text"

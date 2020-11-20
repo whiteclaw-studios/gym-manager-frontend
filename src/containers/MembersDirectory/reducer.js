@@ -32,6 +32,10 @@ export const initialState = {
       index: 0,
       planName: 'All',
     },
+    status: {
+      index: 0,
+      name: 'All',
+    },
   },
   search: {
     isSearching: false,
