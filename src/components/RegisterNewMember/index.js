@@ -16,14 +16,14 @@ import { MontserratLight } from '../../utils/fonts';
 import { BackIcon } from '../SpriteIcon';
 const Wrap = styled('div')`
   width: 100%;
-  margin-top: 6.4rem;
+  margin-top: 2.4rem;
   padding: 0 6.4rem;
   padding-top: 2.4rem;
   display: flex;
   justify-content: center;
   position: relative;
   @media (max-width: 992px) {
-    margin-top: 4rem;
+    margin-top: 3rem;
     padding: 0 2.4rem;
     padding-top: 1.2rem;
   }
@@ -103,7 +103,7 @@ const Error = styled('div')`
 const BackWrap = styled('div')`
   margin: 1rem 0;
   position: absolute;
-  top: -5rem;
+  top: -2rem;
   left: 0;
   cursor: pointer;
   @media (max-width: 992px) {

@@ -54,6 +54,11 @@ const routes = [
         component: EnquiryForm,
         key: ENQUIRY_FORM_KEY,
       },
+      {
+        path: '*',
+        component: HomePage,
+        key: HOME_PAGE_KEY,
+      },
     ],
   },
 ];

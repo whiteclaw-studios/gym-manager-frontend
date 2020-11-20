@@ -1,7 +1,7 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects';
 import { apiUrls } from '../../constants';
 import { selectEnquirySource } from '../../selectors';
-import { getCookie, searchLogic } from '../../utils/helpers';
+import { applySearchAndFilterLogic, getCookie } from '../../utils/helpers';
 import axiosWrapper from '../../utils/requestWrapper';
 import { responseParser } from '../../utils/responseParser';
 import { displayToaster, loadAdminInfo } from '../App/actions';
@@ -50,9 +50,10 @@ function* searchEnquirySaga(params = {}) {
     const { searchText = '' } = params;
     const state = yield select();
     const enquiryData = selectEnquirySource(state);
-    const filteredData = searchLogic({
+    const filteredData = applySearchAndFilterLogic({
       searchText,
       dataSource: enquiryData,
+      filters: enquiryData.filters,
     });
 
     yield put(

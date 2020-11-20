@@ -1,7 +1,7 @@
 import { call, put, select, take, takeEvery } from 'redux-saga/effects';
 import { apiUrls } from '../../constants';
 import { selectMembersSource } from '../../selectors';
-import { getCookie, searchLogic } from '../../utils/helpers';
+import { applySearchAndFilterLogic, getCookie } from '../../utils/helpers';
 import axiosWrapper from '../../utils/requestWrapper';
 import { responseParser } from '../../utils/responseParser';
 import { displayToaster, loadAdminInfo } from '../App/actions';
@@ -76,9 +76,10 @@ function* searchMemberSaga(params = {}) {
     const { searchText = '' } = params;
     const state = yield select();
     const membersData = selectMembersSource(state);
-    const filteredData = searchLogic({
+    const filteredData = applySearchAndFilterLogic({
       searchText,
       dataSource: membersData,
+      filters: membersData.filters,
     });
 
     yield put(
