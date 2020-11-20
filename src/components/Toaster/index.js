@@ -59,9 +59,11 @@ const ToasterContent = styled('div')`
   align-items: center;
   line-height: normal;
   font-size: 1.2rem;
+  max-width: 20rem;
   font-family: ${MontserratLight};
   @media (max-width: 992px) {
     font-size: 1rem;
+    max-width: 17rem;
   }
 `;
 const toasterWidth = css`

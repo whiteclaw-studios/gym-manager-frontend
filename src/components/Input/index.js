@@ -48,6 +48,13 @@ export default class Input extends React.Component {
       });
     }
   };
+  // onBlur = () => {
+  //   console.log('onBlur called');
+  //   const state = { ...this.props.state };
+  //   const { onBlurHandler, name } = this.props;
+  //   state.error = !validations.check(state);
+  //   if (onBlurHandler) onBlurHandler({ [name]: state });
+  // };
   render() {
     const {
       state,
@@ -64,6 +71,7 @@ export default class Input extends React.Component {
       <InputWrap className={className}>
         <Section1>
           <StyledInput
+            tabIndex={1}
             value={state.value}
             onChange={this.onValueChange}
             {...restProps}

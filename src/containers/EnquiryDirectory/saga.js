@@ -32,7 +32,7 @@ function* addEnquirySaga(params = {}) {
       yield put(
         displayToaster({
           type: 'success',
-          text: 'Added',
+          text: 'Successfully added',
           timeout: 2000,
         }),
       );

@@ -1,27 +1,32 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
-import { WHITE } from '../../constants';
+import { SECONDARY_BLACK, WHITE } from '../../constants';
 import Button, { InvertSecondaryButton } from '../Button';
 import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
 import { addEnquiry } from '../../containers/EnquiryDirectory/actions';
 import { ENQUIRY_DIRECTORY_ROUTE } from '../../routes';
+import { BackIcon } from '../SpriteIcon';
 const Wrap = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
   padding-top: 2.4rem;
   display: flex;
+  position: relative;
   justify-content: center;
   @media (max-width: 992px) {
     padding: 0 2.4rem;
-    padding-top: 1.2rem;
+    padding-top: 5.5rem;
   }
 `;
 const Content = styled('div')`
   background: ${WHITE};
   box-shadow: 0px 1px 4px #a9a9a9;
   padding: 3.2rem;
+  @media (max-width: 360px) {
+    max-width: 28rem;
+  }
 `;
 const Title = styled('div')`
   font-size: 1.6rem;
@@ -50,6 +55,9 @@ const CommonInput = styled(Input)`
   @media (max-width: 992px) {
     width: 25rem;
   }
+  @media (max-width: 360px) {
+    width: 22rem;
+  }
 `;
 const NameInput = styled(CommonInput)``;
 const AgeInput = styled(CommonInput)``;
@@ -72,6 +80,18 @@ const Add = styled(Button)`
 const Cancel = styled(InvertSecondaryButton)`
   font-size: 1.4rem;
   max-width: 10rem;
+`;
+const BackWrap = styled('div')`
+  margin: 1rem 0;
+  position: absolute;
+  top: 0rem;
+  left: 2rem;
+  cursor: pointer;
+  @media (max-width: 992px) {
+    cursor: default;
+    top: 5rem;
+    left: 3rem;
+  }
 `;
 export default class EnquiryForm extends React.Component {
   constructor(props) {
@@ -174,6 +194,10 @@ export default class EnquiryForm extends React.Component {
       },
     });
   };
+  onCancel = () => {
+    this.props.history.push(ENQUIRY_DIRECTORY_ROUTE);
+  };
+
   onAddEnquiry = () => {
     const { name, mobile, email, branch } = this.state;
     const { isError, state } = this.validateInputs();
@@ -195,7 +219,10 @@ export default class EnquiryForm extends React.Component {
             mailId: email.value,
             mobileNumber: mobile.value,
             branchId: this.getBranchInfoUsingId(branch.selectedItemIndex).id,
-            successCallback: this.resetState,
+            successCallback: () => {
+              this.resetState();
+              this.onCancel();
+            },
           }),
         );
       }
@@ -205,6 +232,9 @@ export default class EnquiryForm extends React.Component {
     const { name, email, mobile, branch } = this.state;
     return (
       <Wrap>
+        <BackWrap>
+          <BackIcon onClick={this.onCancel} />
+        </BackWrap>
         <Content>
           <Title> New Enquiry</Title>
           <Row>
@@ -217,6 +247,7 @@ export default class EnquiryForm extends React.Component {
                   onValueChange={this.onValueChange}
                   showError={name.error}
                   errorText="Invalid name"
+                  onBlurHandler={this.onBlurHandler}
                 />
               </InputWrap>
 
@@ -228,6 +259,7 @@ export default class EnquiryForm extends React.Component {
                   onValueChange={this.onValueChange}
                   showError={email.error}
                   errorText="Invalid email"
+                  onBlurHandler={this.onBlurHandler}
                 />
               </InputWrap>
             </Column>
@@ -240,11 +272,17 @@ export default class EnquiryForm extends React.Component {
                   onValueChange={this.onValueChange}
                   showError={mobile.error}
                   errorText="Invalid mobile number"
+                  onBlurHandler={this.onBlurHandler}
                 />
               </InputWrap>
               <InputWrap>
                 <Label>Branch</Label>
                 <DropDown
+                  className={css`
+                    > div {
+                      border-bottom: 1px solid ${SECONDARY_BLACK};
+                    }
+                  `}
                   name="branch"
                   listItems={this.getBranchNames()}
                   placeholder=""
@@ -257,11 +295,7 @@ export default class EnquiryForm extends React.Component {
             </Column>
           </Row>
           <Controls>
-            <Cancel
-              onClick={() => this.props.history.push(ENQUIRY_DIRECTORY_ROUTE)}
-            >
-              Cancel
-            </Cancel>
+            <Cancel onClick={this.onCancel}>Cancel</Cancel>
             <Add onClick={this.onAddEnquiry}>Add</Add>
           </Controls>
         </Content>
