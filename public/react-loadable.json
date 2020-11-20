@@ -675,12 +675,6 @@
       "publicPath": "bundle.js"
     },
     {
-      "id": "./src/containers/App/actions.js",
-      "name": "./src/containers/App/actions.js",
-      "file": "bundle.js",
-      "publicPath": "bundle.js"
-    },
-    {
       "id": "./src/containers/EnquiryDirectory/actions.js",
       "name": "./src/containers/EnquiryDirectory/actions.js",
       "file": "bundle.js",
@@ -1111,7 +1105,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "./warning": [
+  "../utils/warning": [
     {
       "id": "./node_modules/react-redux/es/utils/warning.js",
       "name": "./node_modules/react-redux/es/utils/warning.js",
@@ -1333,7 +1327,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../../components/Button": [
+  "../Button": [
     {
       "id": "./src/components/Button/index.js",
       "name": "./src/components/Button/index.js",
@@ -1373,7 +1367,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../../components/EllipsisLoader": [
+  "../EllipsisLoader": [
     {
       "id": "./src/components/EllipsisLoader/index.js",
       "name": "./src/components/EllipsisLoader/index.js",
@@ -1397,7 +1391,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../../components/Input": [
+  "../Input": [
     {
       "id": "./src/components/Input/index.js",
       "name": "./src/components/Input/index.js",
@@ -1569,6 +1563,14 @@
     {
       "id": "./src/containers/MembersDirectory/constants.js",
       "name": "./src/containers/MembersDirectory/constants.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    }
+  ],
+  "../App/actions": [
+    {
+      "id": "./src/containers/App/actions.js",
+      "name": "./src/containers/App/actions.js",
       "file": "bundle.js",
       "publicPath": "bundle.js"
     }
