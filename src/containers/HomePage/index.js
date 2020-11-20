@@ -3,8 +3,8 @@ import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectHomePageState } from '../../selectors';
-import MembersInfo from '../../components/MembersInfo';
-import Search from '../../components/Search';
+import MembersInfo from '../../components/MembersInfo/Loadable';
+// import Search from '../../components/Search';
 import PaymentPopup from '../../components/PaymentPopup';
 import { FEES_LAYOUT } from '../../constants';
 

@@ -10,7 +10,7 @@ const server = express();
 server.use(bodyParser.json({ limit: '256kb' }));
 server.use(cors());
 server.get(
-  /^\/[a-zA-Z]+\.[bundle.js|js|svg|png|css|ico|json]*[?a-zA-Z]+$/,
+  /^\/[a-zA-Z]+\.[(a-zA-Z0-9).js|js|svg|png|css|ico|json]*[?a-zA-Z]+$/,
   express.static(__dirname.slice(0, -6) + 'public'),
 );
 

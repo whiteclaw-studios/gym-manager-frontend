@@ -3,7 +3,6 @@ import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '../../components/Button';
-import MembersInfo from '../../components/MembersInfo';
 import Pagination from '../../components/Pagination';
 import Search from '../../components/Search';
 import {
@@ -40,12 +39,12 @@ import {
   scrollToTop,
 } from '../../utils/helpers';
 import DeleteConfirmation from '../../components/DeleteConfirmation';
-import RegisterNewMember from '../../components/RegisterNewMember';
+import RegisterNewMember from '../../components/RegisterNewMember/Loadable';
 import DropDown from '../../components/Dropdown';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import { PlusIcon, FilterIcon } from '../../components/SpriteIcon';
-import CardLayout from '../../components/CardLayout';
-import MemberProfile from '../../components/MemberProfile';
+import CardLayout from '../../components/CardLayout/Loadable';
+import MemberProfile from '../../components/MemberProfile/Loadable';
 import { displayToaster } from '../App/actions';
 const Wrapper = styled('div')`
   width: 100%;

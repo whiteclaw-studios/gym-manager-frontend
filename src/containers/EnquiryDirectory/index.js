@@ -21,7 +21,7 @@ import { getEnquiryDetails, searchEnquiry, updateFilter } from './actions';
 import { constructBranchFilters, get } from '../../utils/helpers';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import DropDown from '../../components/Dropdown';
-import CardLayout from '../../components/CardLayout';
+import CardLayout from '../../components/CardLayout/Loadable';
 import {
   EnquiryIcon,
   FilterIcon,

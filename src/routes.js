@@ -1,5 +1,4 @@
-import EnquiryForm from './components/EnquiryForm';
-import RegisterNewMember from './components/RegisterNewMember';
+import EnquiryForm from './components/EnquiryForm/Loadable';
 import App from './containers/App';
 import EnquiryDirectory from './containers/EnquiryDirectory';
 import HomePage from './containers/HomePage';
@@ -10,7 +9,6 @@ const HOME_PAGE_KEY = 'HOME_PAGE_KEY';
 const LOGIN_PAGE_KEY = 'LOGIN_PAGE_KEY';
 const MEMBERS_DIRECTORY_KEY = 'MEMBERS_DIRECTORY_KEY';
 const ENQUIRY_DIRECTORY_KEY = 'ENQUIRY_DIRECTORY_KEY';
-const REGISTER_MEMBER_KEY = 'REGISTER_MEMBER_KEY';
 const ENQUIRY_FORM_KEY = 'ENQUIRY_FORM_KEY';
 export const DASHBOARD_ROUTE = '/dashboard';
 export const LOGIN_ROUTE = '/login';
