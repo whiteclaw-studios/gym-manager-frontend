@@ -7,6 +7,7 @@ import {
   WHITE,
 } from '../../constants';
 import { MontserratBold } from '../../utils/fonts';
+import { throttle } from '../../utils/helpers';
 const Wrap = styled('button')`
   outline: none;
   width: 100%;
@@ -59,7 +60,7 @@ function Button({
       )}
       onMouseOver={disabled ? () => {} : () => setHoverState(true)}
       onMouseLeave={disabled ? () => {} : () => setHoverState(false)}
-      onClick={disabled ? () => {} : onClick}
+      onClick={disabled ? () => {} : throttle(onClick, 1000)}
       {...otherProps}
     >
       {children}

@@ -1,13 +1,14 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
-import { SECONDARY_BLACK, WHITE } from '../../constants';
+import { GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
 import Button, { InvertSecondaryButton } from '../Button';
 import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
 import { addEnquiry } from '../../containers/EnquiryDirectory/actions';
 import { ENQUIRY_DIRECTORY_ROUTE } from '../../routes';
 import { BackIcon } from '../SpriteIcon';
+import EllipsisLoader from '../EllipsisLoader';
 const Wrap = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -93,11 +94,21 @@ const BackWrap = styled('div')`
     left: 3rem;
   }
 `;
+const LoaderWrap = styled('div')`
+  max-height: 4.4rem;
+  display: flex;
+  align-items: center;
+  border: 1px solid ${GREEN};
+  margin-left: 2rem;
+  width: 10rem;
+  justify-content: center;
+`;
 export default class EnquiryForm extends React.Component {
   constructor(props) {
     super(props);
     this.props.showHeaderHandle(); // to show the header
     this.state = {
+      isSubmitting: false,
       name: {
         value: '',
         dirty: false,
@@ -213,6 +224,9 @@ export default class EnquiryForm extends React.Component {
     if (!isError) {
       if (branch.selectedItemIndex >= 0) {
         // submit data
+        this.setState({
+          isSubmitting: true,
+        });
         this.props.dispatch(
           addEnquiry({
             name: name.value,
@@ -222,6 +236,14 @@ export default class EnquiryForm extends React.Component {
             successCallback: () => {
               this.resetState();
               this.onCancel();
+              this.setState({
+                isSubmitting: false,
+              });
+            },
+            failureCallback: () => {
+              this.setState({
+                isSubmitting: false,
+              });
             },
           }),
         );
@@ -229,7 +251,7 @@ export default class EnquiryForm extends React.Component {
     }
   };
   render() {
-    const { name, email, mobile, branch } = this.state;
+    const { name, email, mobile, branch, isSubmitting = false } = this.state;
     return (
       <Wrap>
         <BackWrap>
@@ -296,7 +318,13 @@ export default class EnquiryForm extends React.Component {
           </Row>
           <Controls>
             <Cancel onClick={this.onCancel}>Cancel</Cancel>
-            <Add onClick={this.onAddEnquiry}>Add</Add>
+            {isSubmitting ? (
+              <LoaderWrap>
+                <EllipsisLoader />
+              </LoaderWrap>
+            ) : (
+              <Add onClick={this.onAddEnquiry}>Add</Add>
+            )}
           </Controls>
         </Content>
       </Wrap>

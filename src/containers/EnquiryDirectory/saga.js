@@ -15,6 +15,7 @@ function* addEnquirySaga(params = {}) {
       mailId,
       mobileNumber,
       successCallback = () => {},
+      failureCallback = () => {},
     } = params;
     const response = yield call(axiosWrapper, {
       method: 'POST',
@@ -38,6 +39,7 @@ function* addEnquirySaga(params = {}) {
       );
       successCallback();
     } else {
+      failureCallback();
       console.error('Error in adding enquiry', parsedResponse);
     }
   } catch (err) {
