@@ -19,6 +19,7 @@ import {
   selectDataSourceForMDPage,
   selectFiltersInMDPage,
   selectMDPage,
+  selectMemberInfo,
   selectPaginationInMDPage,
 } from '../../selectors';
 import {
@@ -33,6 +34,7 @@ import {
   constructBranchFilters,
   constructPlanFilters,
   get,
+  scrollToTop,
 } from '../../utils/helpers';
 import DeleteConfirmation from '../../components/DeleteConfirmation';
 import RegisterNewMember from '../../components/RegisterNewMember';
@@ -41,6 +43,7 @@ import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import { PlusIcon, FilterIcon } from '../../components/SpriteIcon';
 import CardLayout from '../../components/CardLayout';
 import MemberProfile from '../../components/MemberProfile';
+import { displayToaster } from '../App/actions';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -137,7 +140,7 @@ class MembersDirectory extends React.Component {
       isMobile = window.innerWidth <= 992;
     }
     this.state = {
-      showMemberProfile: true,
+      showMemberProfile: false,
       showFilterIconInMobile: isMobile,
       showFilters: !isMobile,
       name: {
@@ -210,6 +213,7 @@ class MembersDirectory extends React.Component {
   };
   onPageSelect = (pageNo) => {
     this.props.dispatch(updatePage({ pageNo }));
+    scrollToTop();
   };
 
   onDelete = (data) => {
@@ -259,21 +263,25 @@ class MembersDirectory extends React.Component {
     }
     return selectedGenderIndex;
   };
-  onEdit = (data) => {
+  storeMemberInfo = (data) => {
     const {
       memberId,
       memberUniqueId,
       name,
       profilePic,
+      branch,
       branchId,
       planId,
+      plan,
       age,
       fatherName,
-      gender,
+      gender = '',
       mobile,
       mailId,
       bloodGroup,
+      address,
     } = data;
+    console.log('data', data);
     const {
       name: nameState,
       plan: planState,
@@ -284,6 +292,7 @@ class MembersDirectory extends React.Component {
       mobile: mobileState,
       email: emailState,
       bloodgroup: bloodGroupState,
+      address: addressState,
     } = this.state;
 
     const { branchDetails } = this.props;
@@ -327,18 +336,28 @@ class MembersDirectory extends React.Component {
       gender: {
         ...genderState,
         selectedItemIndex: selectedGenderIndex,
+        value: gender,
       },
       branch: {
         ...branchState,
         selectedItemIndex: selectedBranchIndex,
+        name: branch,
+        id: branchId,
       },
       plan: {
         ...planState,
         selectedItemIndex: selectedPlanIndex,
+        name: plan,
+        id: planId,
       },
       bloodGroup: {
         ...bloodGroupState,
         selectedItemIndex: selectedBGIndex,
+        name: bloodGroup,
+      },
+      address: {
+        ...addressState,
+        value: address,
       },
       memberId,
       memberUniqueId,
@@ -348,6 +367,14 @@ class MembersDirectory extends React.Component {
           src: profilePic,
         },
       ],
+    });
+  };
+  onEdit = (data) => {
+    this.storeMemberInfo(data);
+    this.setState({
+      showMemberProfile: false,
+      showEditScreen: true,
+      screenType: 'EDIT',
     });
   };
 
@@ -514,7 +541,7 @@ class MembersDirectory extends React.Component {
         value: '',
         error: false,
       },
-      images: [],
+      images: [{}],
     });
   };
   typeAddress = (e) => {
@@ -598,6 +625,81 @@ class MembersDirectory extends React.Component {
       });
     }
   };
+  onSelectMember = (memberInfo) => {
+    console.log('memberInfo', memberInfo);
+    this.storeMemberInfo(memberInfo);
+    this.setState({
+      showMemberProfile: true,
+    });
+  };
+  submitEdition = () => {
+    const {
+      memberUniqueId,
+      name,
+      email,
+      age,
+      mobile,
+      gender,
+      branch,
+      plan,
+      images,
+      fatherName,
+      address,
+      bloodGroup,
+    } = this.state;
+    const oldMemberInfo = this.props.selectMemberInfo(memberUniqueId);
+    const {
+      name: oldName,
+      mailId,
+      fatherName: oldFatherName,
+      gender: oldGender,
+      age: oldAge,
+      planDetailsId,
+      mobileNumber,
+      branchId,
+      oldAddress,
+      photoS3Key,
+      bloodGroup: oldBG,
+    } = oldMemberInfo;
+    console.log(
+      oldMemberInfo,
+      this.state,
+      oldName !== name.value,
+      mailId !== email.value,
+      oldAge !== age.value,
+      oldFatherName !== fatherName.value,
+      mobileNumber != mobile.value,
+      oldGender !== gender.value,
+      branchId !== branch.id,
+      planDetailsId !== plan.id,
+      oldAddress !== address.value,
+      photoS3Key !== images[0].src,
+      oldBG !== bloodGroup.name,
+    );
+    if (
+      oldName !== name.value ||
+      mailId !== email.value ||
+      oldAge !== age.value ||
+      oldFatherName !== fatherName.value ||
+      mobileNumber != mobile.value ||
+      oldGender !== gender.value ||
+      branchId !== branch.id ||
+      planDetailsId !== plan.id ||
+      oldAddress !== address.value ||
+      photoS3Key !== images[0].src ||
+      oldBG !== bloodGroup.name
+    ) {
+      console.log('Make edit api call');
+    } else {
+      this.props.dispatch(
+        displayToaster({
+          type: 'failure',
+          text: 'No changes has been made',
+          timeout: 2000,
+        }),
+      );
+    }
+  };
   render() {
     const {
       paginationInfo,
@@ -613,6 +715,7 @@ class MembersDirectory extends React.Component {
     const {
       showDeleteConfirmation,
       memberUniqueId,
+      memberId,
       showEditScreen,
       name,
       gender,
@@ -628,10 +731,11 @@ class MembersDirectory extends React.Component {
       showFilters,
       showFilterIconInMobile,
       showMemberProfile,
+      screenType,
     } = this.state;
     const selectedBranchFilterIndex = get(filters, 'branch.index');
     const selectedPlanFilterIndex = get(filters, 'plan.index');
-
+    console.log('profilePic', images);
     const branchFilters = constructBranchFilters(branchDetails);
     const planFilters = constructPlanFilters(
       branchDetails,
@@ -642,12 +746,29 @@ class MembersDirectory extends React.Component {
       <Wrapper>
         {showMemberProfile ? (
           <MemberProfile
-            name={name.value || 'Rajesh'}
-            email={email.value || 'rajesh@gmail.com'}
-            mobile={mobile.value || '1234567890'}
-            plan={'Monthly'}
-            memberId={'32131'}
-            branch={'Tambaram'}
+            name={name.value}
+            mailId={email.value}
+            mobile={mobile.value}
+            age={age.value}
+            gender={gender.value}
+            bloodGroup={bloodGroup.name}
+            fatherName={fatherName.value}
+            memberId={memberId}
+            memberUniqueId={memberUniqueId}
+            profilePic={images[0].src}
+            branch={branch.name}
+            branchId={branch.id}
+            plan={plan.name}
+            planId={plan.id}
+            address={address.value}
+            onEditMember={this.onEdit}
+            onPauseMembership={this.onDelete}
+            onBack={() =>
+              this.setState({
+                showEditScreen: false,
+                showMemberProfile: false,
+              })
+            }
           />
         ) : !showEditScreen ? (
           <React.Fragment>
@@ -664,6 +785,7 @@ class MembersDirectory extends React.Component {
                   onClick={() =>
                     this.setState({
                       showEditScreen: true,
+                      screenType: 'REGISTER',
                     })
                   }
                 >
@@ -814,10 +936,9 @@ class MembersDirectory extends React.Component {
               getBranchInfo={getBranchInfo}
               getPlanInfo={getPlanInfo}
               isAllowExpand
-              onEditMember={this.onEdit}
-              onDeleteMember={this.onDelete}
               allowedBranchInfo={allowedBranchInfo}
               recordInfo={this.constructRecordInfo()}
+              onSelectMember={this.onSelectMember}
             />
             <PaginationWrap>
               <Pagination
@@ -838,6 +959,7 @@ class MembersDirectory extends React.Component {
         ) : (
           <RegisterNewMember
             {...this.props}
+            type={screenType}
             name={name}
             gender={gender}
             fatherName={fatherName}
@@ -856,12 +978,24 @@ class MembersDirectory extends React.Component {
             chooseImage={this.chooseImage}
             typeAddress={this.typeAddress}
             onRegister={this.onRegister}
-            onCancel={() => {
-              this.resetState();
-              this.setState({
-                showEditScreen: false,
-              });
-            }}
+            onEdit={this.submitEdition}
+            onCancel={
+              screenType === 'REGISTER'
+                ? () => {
+                    this.resetState();
+                    this.setState({
+                      showEditScreen: false,
+                      showMemberProfile: false,
+                    });
+                  }
+                : () => {
+                    this.resetState();
+                    this.setState({
+                      showEditScreen: false,
+                      showMemberProfile: true,
+                    });
+                  }
+            }
           />
         )}
       </Wrapper>
@@ -874,6 +1008,7 @@ const mapStateToProps = (state) => {
     membersData: selectDataSourceForMDPage(state),
     paginationInfo: selectPaginationInMDPage(state),
     filters: selectFiltersInMDPage(state),
+    selectMemberInfo: selectMemberInfo(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {

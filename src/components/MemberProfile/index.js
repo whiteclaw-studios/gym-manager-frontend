@@ -12,6 +12,7 @@ const InfoBox = styled('div')`
   background: ${WHITE};
   padding: 2.4rem;
   justify-content: space-between;
+  box-shadow: 0px 1px 4px #a9a9a9;
   @media (max-width: 992px) {
     flex-direction: column;
   }
@@ -25,6 +26,10 @@ const ImageWrap = styled('div')`
   @media (max-width: 992px) {
     width: 12rem;
     height: 12rem;
+  }
+  @media (max-width: 420px) {
+    width: 10rem;
+    height: 10rem;
   }
 `;
 const ProfilePic = styled('img')`
@@ -62,6 +67,9 @@ const Smallbox = styled('div')`
   margin: 0 0.5rem;
   border-radius: 4px;
   padding: 1rem;
+  @media (max-width: 992px) {
+    min-width: 12rem;
+  }
 `;
 const Title = styled('span')`
   font-family: ${MontserratRegular};
@@ -69,12 +77,18 @@ const Title = styled('span')`
   font-size: 1.4rem;
   text-transform: capitalize;
   text-align: center;
+  @media (max-width: 992px) {
+    font-size: 1.2rem;
+  }
 `;
 const Value = styled('span')`
   font-family: ${MontserratRegular};
   font-size: 1.4rem;
   margin: 0.5rem 0;
   text-align: center;
+  @media (max-width: 992px) {
+    font-size: 1.2rem;
+  }
 `;
 const BoxWrap = styled('div')`
   display: flex;
@@ -134,15 +148,64 @@ class MemberProfile extends React.Component {
       );
     });
   };
+  onEditMember = () => {
+    const {
+      onEditMember = () => {},
+      memberId,
+      memberUniqueId,
+      name,
+      profilePic,
+      plan,
+      branch,
+      branchId,
+      planId,
+      due,
+      age,
+      gender,
+      mailId,
+      mobile,
+      address,
+      fatherName,
+      bloodGroup,
+    } = this.props;
+
+    onEditMember({
+      memberId,
+      memberUniqueId,
+      name,
+      profilePic,
+      plan,
+      branch,
+      branchId,
+      planId,
+      due,
+      age,
+      gender,
+      mailId,
+      mobile,
+      address,
+      fatherName,
+      bloodGroup,
+    });
+  };
   render() {
-    const { name, mobile, email } = this.props;
+    console.log('MemberProfile', this.props);
+
+    const {
+      name,
+      mobile,
+      email,
+      memberUniqueId,
+      onPauseMembership,
+      onBack,
+    } = this.props;
     return (
       <Wrapper>
         <Heading>
-          <BackIcon />
+          <BackIcon onClick={onBack} />
           <Controls>
-            <EditIcon />
-            <PauseIcon />
+            <EditIcon onClick={this.onEditMember} />
+            <PauseIcon onClick={onPauseMembership} />
           </Controls>
         </Heading>
         <InfoBox>
@@ -180,11 +243,11 @@ class MemberProfile extends React.Component {
             </Details>
           </Section1>
           <Section2>
-            <IconButtonWrap>
+            <IconButtonWrap onClick={this.onEditMember}>
               <EditIcon />
               <CTA>Edit Details</CTA>
             </IconButtonWrap>
-            <IconButtonWrap>
+            <IconButtonWrap onClick={onPauseMembership}>
               <PauseIcon />
               <CTA>Pause Membership</CTA>
             </IconButtonWrap>
@@ -201,8 +264,8 @@ class MemberProfile extends React.Component {
           </Section2>
         </InfoBox>
         <FeesAndHistoryWrap>
-          <GridData />
-          <GridData showHistory />
+          <GridData key={memberUniqueId} />
+          <GridData showHistory key={memberUniqueId} />
         </FeesAndHistoryWrap>
       </Wrapper>
     );

@@ -6,6 +6,7 @@ import { GREEN, RED, SECONDARY_BLACK, WHITE } from '../../constants';
 import styled from 'react-emotion';
 import { MontserratRegular } from '../../utils/fonts';
 import { get } from '../../utils/helpers';
+import { DownIcon } from '../SpriteIcon';
 const Wrap = styled('div')`
   position: relative;
   outline: none;
@@ -29,19 +30,16 @@ const Item = styled('p')`
   flex: 1;
 `;
 const ArrowWrap = styled('div')`
-  width: 1rem;
   margin: 0 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   @media (max-width: 992px) {
     width: 2rem;
     height: 2rem;
   }
 `;
-const Arrow = styled('img')`
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  flex: 1;
-`;
+
 const OptionsWrap = styled('ul')`
   position: absolute;
   width: 100%;
@@ -157,7 +155,7 @@ export default class DropDown extends React.Component {
             )}
           </Data>
           <ArrowWrap>
-            <Arrow src={downarrow} onClick={this.onExpand} />
+            <DownIcon onClick={this.onExpand} />
           </ArrowWrap>
         </SelectedItem>
         {<Error>{showError ? errorText : ' '}</Error>}

@@ -13,6 +13,7 @@ import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
 import UploadImage from '../UploadImage';
 import { MontserratLight } from '../../utils/fonts';
+import { BackIcon } from '../SpriteIcon';
 const Wrap = styled('div')`
   width: 100%;
   margin-top: 6.4rem;
@@ -20,6 +21,7 @@ const Wrap = styled('div')`
   padding-top: 2.4rem;
   display: flex;
   justify-content: center;
+  position: relative;
   @media (max-width: 992px) {
     margin-top: 4rem;
     padding: 0 2.4rem;
@@ -98,6 +100,16 @@ const Address = styled('textarea')`
 const Error = styled('div')`
   color: ${RED};
 `;
+const BackWrap = styled('div')`
+  margin: 1rem 0;
+  position: absolute;
+  top: -5rem;
+  left: 0;
+  cursor: pointer;
+  @media (max-width: 992px) {
+    cursor: default;
+  }
+`;
 export default class RegisterNewMember extends React.Component {
   constructor(props) {
     super(props);
@@ -106,6 +118,7 @@ export default class RegisterNewMember extends React.Component {
 
   render() {
     const {
+      type,
       name,
       fatherName,
       age,
@@ -124,13 +137,19 @@ export default class RegisterNewMember extends React.Component {
       typeAddress,
       chooseImage,
       onRegister,
+      onEdit,
       onCancel,
     } = this.props;
     console.log('this.props', this.props);
     return (
       <Wrap>
+        <BackWrap>
+          <BackIcon onClick={onCancel} />
+        </BackWrap>
         <Content>
-          <Title>Register New Member</Title>
+          <Title>
+            {type === 'REGISTER' ? 'Register New Member' : 'Edit Details'}
+          </Title>
           <Row>
             <Column>
               <InputWrap>
@@ -156,6 +175,11 @@ export default class RegisterNewMember extends React.Component {
               <InputWrap>
                 <Label>Branch</Label>
                 <DropDown
+                  className={css`
+                    > div {
+                      border-bottom: 1px solid ${SECONDARY_BLACK};
+                    }
+                  `}
                   name="branch"
                   listItems={getBranchNames()}
                   placeholder="Select branch"
@@ -167,6 +191,11 @@ export default class RegisterNewMember extends React.Component {
               <InputWrap>
                 <Label>Gender</Label>
                 <DropDown
+                  className={css`
+                    > div {
+                      border-bottom: 1px solid ${SECONDARY_BLACK};
+                    }
+                  `}
                   name="gender"
                   listItems={GENDER}
                   placeholder="Select gender"
@@ -221,6 +250,11 @@ export default class RegisterNewMember extends React.Component {
               <InputWrap>
                 <Label>Plan</Label>
                 <DropDown
+                  className={css`
+                    > div {
+                      border-bottom: 1px solid ${SECONDARY_BLACK};
+                    }
+                  `}
                   name="plan"
                   listItems={getPlanDetails()}
                   placeholder="Select plan"
@@ -232,6 +266,11 @@ export default class RegisterNewMember extends React.Component {
               <InputWrap>
                 <Label>Blood group</Label>
                 <DropDown
+                  className={css`
+                    > div {
+                      border-bottom: 1px solid ${SECONDARY_BLACK};
+                    }
+                  `}
                   name="bloodGroup"
                   listItems={BLOOD_GROUP_DATA}
                   placeholder="Select blood group"
@@ -245,7 +284,9 @@ export default class RegisterNewMember extends React.Component {
           </Row>
           <Controls>
             <Cancel onClick={onCancel}>Cancel</Cancel>
-            <Register onClick={onRegister}>Register</Register>
+            <Register onClick={type === 'REGISTER' ? onRegister : onEdit}>
+              {type === 'REGISTER' ? 'Register' : 'Edit'}
+            </Register>
           </Controls>
         </Content>
       </Wrap>

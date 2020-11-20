@@ -7,6 +7,7 @@ import React from 'react';
 import styled, { css, cx } from 'react-emotion';
 import PropTypes from 'prop-types';
 import { GREEN, RED, WHITE } from '../../constants';
+import { MontserratLight } from '../../utils/fonts';
 
 /* eslint-disable indent */
 const ToasterWrapper = styled('div')`
@@ -55,9 +56,13 @@ const ToasterWrapper = styled('div')`
 `;
 const ToasterContent = styled('div')`
   display: flex;
-  /* justify-content: space-evenly; */
   align-items: center;
   line-height: normal;
+  font-size: 1.2rem;
+  font-family: ${MontserratLight};
+  @media (max-width: 992px) {
+    font-size: 1rem;
+  }
 `;
 const toasterWidth = css`
   /* width: 100%; */

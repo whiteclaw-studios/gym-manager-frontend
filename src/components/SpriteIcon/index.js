@@ -102,4 +102,9 @@ export const PauseIcon = styled(SpriteIcon)`
   width: 16px;
   height: 18px;
 `;
+export const DownIcon = styled(SpriteIcon)`
+  background-position: -62px -279px;
+  width: 8px;
+  height: 6px;
+`;
 export default SpriteIcon;

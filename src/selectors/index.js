@@ -75,6 +75,13 @@ const selectFiltersInEDPage = (state) => {
 const selectLogo = (state) => {
   return get(selectAppState(state), 'adminInfo.logoS3Url', '');
 };
+const selectMemberInfo = (state) => (membershipId) => {
+  const memberDetails = selectMembersSource(state);
+  const memberInfo = memberDetails.filter(
+    (member) => member.id === membershipId,
+  ) || [{}];
+  return { ...memberInfo[0] };
+};
 export {
   selectAppState,
   selectHomePageState,
@@ -97,4 +104,5 @@ export {
   selectFiltersInMDPage,
   selectFiltersInEDPage,
   selectLogo,
+  selectMemberInfo,
 };

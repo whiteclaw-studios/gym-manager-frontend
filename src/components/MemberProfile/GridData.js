@@ -5,7 +5,8 @@ import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import Button from '../Button';
 const Wrap = styled('div')`
   background: ${WHITE};
-  margin: 1rem;
+  margin: 1rem 0;
+  box-shadow: 0px 1px 4px #a9a9a9;
   @media (min-width: 993px) {
     min-width: 40rem;
     margin: 2rem 0;
@@ -98,13 +99,14 @@ function GridData({
     },
   ],
   showHistory = false,
+  memberUniqueId,
 }) {
   return (
     <Wrap>
       <Title>{showHistory ? 'History' : 'Fees Due'}</Title>
       <Content>
         <HeadingWrap>
-          {headingInfo.map((heading) => (
+          {headingInfo.map((heading, index) => (
             <Heading
               className={
                 heading === 'Paid Date' && !showHistory
@@ -113,16 +115,22 @@ function GridData({
                     `
                   : ''
               }
+              key={`${
+                showHistory ? 'History' : 'Fees Due'
+              }- ${memberUniqueId}-${heading}`}
             >
               {heading}
             </Heading>
           ))}
         </HeadingWrap>
         <Data>
-          {data.map((member, index) => {
-            const { fee, dueDate, paidDate } = member;
+          {data.map((info, index) => {
+            const { fee, dueDate, paidDate } = info;
             return (
               <ItemWrap
+                key={`${
+                  showHistory ? 'History' : 'Fees Due'
+                }- ${memberUniqueId}-${index}`}
                 className={
                   index % 2 === 0
                     ? css`

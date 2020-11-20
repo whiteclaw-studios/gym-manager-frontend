@@ -154,15 +154,14 @@ class App extends React.Component {
     if (infoLoadedPrevProp !== isAdminInfoLoaded && isAdminInfoLoaded) {
       if (isLoggedInPrevProp !== isLoggedIn && isLoggedIn) {
         const currentUrl = this.props.history.location.pathname;
-        if (currentUrl === LOGIN_ROUTE) this.props.history.goBack();
+        if (currentUrl === LOGIN_ROUTE) {
+          this.props.history.goBack();
+        }
       } else if (!isLoggedIn) {
         this.props.history.push('/login');
       }
     }
-    if (historyPrevProp.location.pathname !== history.location.pathname) {
-      const currentNavItem = this.findCurrentIndex();
-      this.updateActiveNavIndex(currentNavItem);
-    }
+
     this.hideHeaderInMobile();
   }
   hideHeaderInMobile = () => {
@@ -268,6 +267,7 @@ class App extends React.Component {
               getBranchInfo,
               getPlanInfo,
               allowedBranchInfo,
+              updateActiveNavIndex: this.updateActiveNavIndex,
             })}
           </ChildrenWrap>
         )}

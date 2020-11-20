@@ -1439,7 +1439,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../../components/SpriteIcon": [
+  "../SpriteIcon": [
     {
       "id": "./src/components/SpriteIcon/index.js",
       "name": "./src/components/SpriteIcon/index.js",

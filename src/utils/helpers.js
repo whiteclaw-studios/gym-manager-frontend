@@ -192,3 +192,6 @@ export const applySearchAndFilterLogic = ({
   });
   return filterLogic({ dataSource: filteredData, filters });
 };
+export const scrollToTop = () => {
+  window.scrollTo(0, 9);
+};

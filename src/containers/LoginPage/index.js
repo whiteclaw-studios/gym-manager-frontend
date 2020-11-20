@@ -119,6 +119,8 @@ class LoginPage extends React.Component {
           successCallback: () => {
             this.props.dispatch(getAdminInfo());
             this.props.history.push(DASHBOARD_ROUTE);
+            const { updateActiveNavIndex } = this.props;
+            updateActiveNavIndex(0);
             this.hideLoader();
           },
           failureCallback: () => {

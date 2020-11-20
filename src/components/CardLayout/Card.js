@@ -8,8 +8,10 @@ const Wrap = styled('div')`
   padding: 1rem;
   margin: 1.2rem 1.5rem;
   min-width: 27rem;
+  cursor: pointer;
   @media (max-width: 992px) {
     margin: 1.2rem 0;
+    cursor: default;
   }
 `;
 const Section1 = styled('div')`
@@ -42,9 +44,47 @@ const Item = styled('span')`
   font-family: ${MontserratRegular};
   color: ${SECONDARY_BLACK};
 `;
-function Card({ name, memberId, branch, mobile, email }) {
+function Card({
+  name,
+  fatherName,
+  memberId,
+  branch,
+  branchId,
+  memberUniqueId,
+  mobile,
+  mailId,
+  gender,
+  age,
+  plan,
+  planId,
+  bloodGroup,
+  profilePic,
+  address,
+  onSelectMember,
+}) {
   return (
-    <Wrap>
+    <Wrap
+      onClick={() =>
+        onSelectMember({
+          name,
+          fatherName,
+          memberId,
+          branch,
+          branchId,
+          mobile,
+          mailId,
+          gender,
+          age,
+          plan,
+          planId,
+          address,
+          bloodGroup,
+          memberUniqueId,
+          profilePic:
+            'https://www.dmarge.com/wp-content/uploads/2017/03/chevron.jpg',
+        })
+      }
+    >
       <Section1>
         <ProfilePic src="https://www.dmarge.com/wp-content/uploads/2017/03/chevron.jpg" />
       </Section1>
@@ -52,13 +92,13 @@ function Card({ name, memberId, branch, mobile, email }) {
         <Name>{name}</Name>
         <LiWrap>
           <Item>{memberId} </Item>
-          {memberId && branch && '|'}
+          {memberId && branch && <Item>|</Item>}
           {branch && <Item>{branch}</Item>}
         </LiWrap>
         <LiWrap>
           <Item>{mobile}</Item>
-          {mobile && email && '|'}
-          {email && <Item>{email}</Item>}
+          {mobile && mailId && <Item>|</Item>}
+          {mailId && <Item>{mailId}</Item>}
         </LiWrap>
       </Section2>
     </Wrap>

@@ -11,6 +11,7 @@ const validations = {
 
   check: (state) => {
     const { type, value } = state;
+    if (type === 'email' && value === '') return true;
     return validations.configs[type]
       ? validations.configs[type].test(value)
       : true;

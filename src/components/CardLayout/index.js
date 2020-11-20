@@ -99,15 +99,16 @@ export default class CardLayout extends React.Component {
       isAllowExpand = false,
       hideMemberId = false,
       hidePlan = false,
-      onEditMember,
-      onDeleteMember,
       allowedBranchInfo,
       showEmail,
       showMobile,
+      onSelectMember,
     } = this.props;
     return data.map((member, index) => {
       const {
         name,
+        fatherName,
+        address,
         id: memberUniqueId,
         membershipId: memberId,
         planDetailsId: planId,
@@ -116,6 +117,7 @@ export default class CardLayout extends React.Component {
         age,
         gender,
         mobileNumber: mobile,
+        bloodGroup,
         mailId,
         id: uniqueId,
       } = member;
@@ -124,12 +126,13 @@ export default class CardLayout extends React.Component {
       const allowEdit = get(allowedBranchInfo, 'id', '') === branchId;
       return (
         <Card
-          key={uniqueId}
+          key={`member-${uniqueId}`}
           index={index}
           openPaymentPopup={openPaymentPopup}
           type={type}
           showDueColumn={showDueColumn}
           name={name}
+          fatherName={fatherName}
           memberId={memberId}
           memberUniqueId={memberUniqueId}
           plan={planInfo.planName || '-'}
@@ -137,15 +140,16 @@ export default class CardLayout extends React.Component {
           branch={branchInfo.branchName || '-'}
           branchId={branchId}
           planId={planId}
+          address={address}
           age={age}
           gender={gender}
           mobile={mobile}
           mailId={mailId}
+          bloodGroup={bloodGroup}
           isAllowExpand={isAllowExpand}
           hideMemberId={hideMemberId}
           hidePlan={hidePlan}
-          onEditMember={onEditMember}
-          onDeleteMember={onDeleteMember}
+          onSelectMember={onSelectMember}
           allowEdit={allowEdit}
           showEmail={showEmail}
           showMobile={showMobile}
