@@ -193,8 +193,6 @@ class MemberProfile extends React.Component {
     });
   };
   render() {
-    console.log('MemberProfile', this.props);
-
     const {
       name,
       mobile,

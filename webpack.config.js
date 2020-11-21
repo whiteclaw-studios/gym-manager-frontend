@@ -95,11 +95,16 @@ module.exports = {
     new ReactLoadablePlugin({
       filename: path.resolve(process.cwd(), 'public/react-loadable.json'),
     }),
-    // new BrotliPlugin({
-    //   asset: '[path].br[query]',
-    //   test: /\.(js|css|html|svg)$/,
-    //   threshold: 10240,
-    //   minRatio: 0.8,
-    // }),
+    () => {
+      const { NODE_ENV = 'production' } = process.env;
+      if (NODE_ENV === 'production') {
+        return new BrotliPlugin({
+          asset: '[path].br[query]',
+          test: /\.(js|css|html|svg)$/,
+          threshold: 10240,
+          minRatio: 0.8,
+        });
+      }
+    },
   ],
 };
