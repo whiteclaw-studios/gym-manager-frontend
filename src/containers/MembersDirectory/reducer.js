@@ -230,7 +230,7 @@ const reducer = (preloadedState = null) => (
       const { memberUniqueId, planDetailsId, feesAmount } = payload;
       const { data } = state.membersInfo;
       let newData = data.filter((member) => member.id !== memberUniqueId);
-      let reqdMember = data.filter((member) => member.id !== memberUniqueId);
+      let reqdMember = data.filter((member) => member.id === memberUniqueId)[0];
       reqdMember = { ...reqdMember, planDetailsId, feesAmount };
       newData = [...newData, { ...reqdMember }];
       const searchText = get(state, 'search.searchText', '');
