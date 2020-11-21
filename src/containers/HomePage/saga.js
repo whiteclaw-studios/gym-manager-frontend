@@ -4,9 +4,21 @@ import { GET_FEE_DUE_DETAILS } from './constants';
 import axiosWrapper from '../../utils/requestWrapper';
 import { apiUrls } from '../../constants';
 import { loadFeeDueDetails } from './actions';
+import { getCookie } from '../../utils/helpers';
 
 export function* getFeeDueDetailsSaga(params = {}) {
   try {
+    const token = getCookie('VJS');
+    // If token  is not present in cookie ,it means not logged in
+    if (!token) {
+      yield put(
+        loadAdminInfo({
+          isLoggedIn: false,
+          infoLoaded: true,
+        }),
+      );
+      return;
+    }
     const response = yield call(axiosWrapper, {
       method: 'GET',
       url: apiUrls.ENQUIRIES_URL,

@@ -1,5 +1,5 @@
-import { applySearchAndFilterLogic } from '../../utils/helpers';
-import { LOAD_FEE_DUE_DETAILS } from './constants';
+import { applySearchAndFilterLogic, get } from '../../utils/helpers';
+import { LOAD_FEE_DUE_DETAILS, UPDATE_FILTER } from './constants';
 
 export const initialState = {
   memberFeesInfo: {
@@ -34,6 +34,27 @@ const reducer = (preloadedState = null) => (
           data,
           logicAppliedData: filteredData,
           ...rest,
+        },
+      };
+    }
+    case UPDATE_FILTER: {
+      const { payload } = action;
+      const filtersInfo = {
+        ...state.filters,
+        ...payload,
+      };
+      let memberFeesInfo = get(state, 'memberFeesInfo.data', []);
+      const filteredData = applySearchAndFilterLogic({
+        searchText: '',
+        dataSource: memberFeesInfo,
+        filters: filtersInfo,
+      });
+      return {
+        ...state,
+        filters: filtersInfo,
+        memberFeesInfo: {
+          ...state.memberFeesInfo,
+          logicAppliedData: filteredData,
         },
       };
     }

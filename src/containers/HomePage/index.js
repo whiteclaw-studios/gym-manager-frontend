@@ -1,13 +1,16 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { selectHomePageState, selectHPDataSource } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo/Loadable';
 import PaymentPopup from '../../components/PaymentPopup';
 import { FEES_LAYOUT } from '../../constants';
-import { getFeeDueDetails } from './actions';
-import { get } from '../../utils/helpers';
+import { getFeeDueDetails, updateFilter } from './actions';
+import { constructBranchFilters, get } from '../../utils/helpers';
+import { MontserratRegular } from '../../utils/fonts';
+import DropDown from '../../components/Dropdown';
+import { FilterIcon } from '../../components/SpriteIcon';
 
 const Wrapper = styled('div')`
   width: 100%;
@@ -27,6 +30,34 @@ const ContentWrap = styled('h1')`
   }
 `;
 
+const FilterWrap = styled('div')`
+  display: flex;
+  @media (max-width: 992px) {
+    flex-direction: column;
+  }
+`;
+const Filter = styled('div')`
+  font-size: 1.4rem;
+  margin: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  @media (max-width: 992px) {
+    margin: 0;
+  }
+`;
+const Label = styled('p')`
+  font-size: 1.4rem;
+  margin: 0.5rem 1rem;
+  font-family: ${MontserratRegular};
+  height: 3.4rem;
+  @media (max-width: 992px) {
+    width: 7rem;
+    margin: 0.5rem 0rem;
+  }
+`;
+const FilterDropdn = styled('div')`
+  width: 27rem;
+`;
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
@@ -80,18 +111,125 @@ class HomePage extends React.Component {
       },
     });
   };
+  toggleFilters = (state) => {
+    this.setState({
+      showFilters: state,
+    });
+  };
   render() {
     const {
       feeDueDetails = [],
       getBranchInfo = () => {},
       getPlanInfo = () => {},
       pageData,
+      branchDetails,
     } = this.props;
+    const { showFilters, showFilterIconInMobile } = this.state;
     const { isLoading } = get(pageData, 'memberFeesInfo', {});
+    const { filters } = pageData;
+    const branchFilters = constructBranchFilters(branchDetails);
+    const selectedBranchFilterIndex = get(filters, 'branch.index');
+
     console.log('HomePage', pageData, isLoading);
 
     return (
       <Wrapper>
+        {showFilterIconInMobile && (
+          <FilterIcon
+            className={css`
+              ${showFilters &&
+              `
+                    background-position: -273px -13px;
+                    width: 18px;
+                    height: 18px;
+                    `}
+              @media (min-width: 993px) {
+                display: none;
+              }
+              @media (max-width: 992px) {
+                margin-bottom: 1rem;
+              }
+            `}
+            onClick={() => this.toggleFilters(!showFilters)}
+          />
+        )}
+        {(showFilters || !showFilterIconInMobile) && (
+          <FilterWrap>
+            <Filter>
+              <Label>Branch</Label>
+              <FilterDropdn>
+                <DropDown
+                  name="hp-branch-filter"
+                  listItems={branchFilters.map((branch) => branch.branchName)}
+                  otherInfo={branchFilters}
+                  activeItem={selectedBranchFilterIndex}
+                  onSelect={(index, name, otherInfo) => {
+                    const { branchName, id } = otherInfo || {};
+                    this.props.dispatch(
+                      updateFilter({
+                        branch: {
+                          ...otherInfo,
+                          index,
+                          id,
+                          name: branchName,
+                        },
+                      }),
+                    );
+                  }}
+                />
+              </FilterDropdn>
+            </Filter>
+            <Filter>
+              <Label>From</Label>
+              <FilterDropdn>
+                <DropDown
+                  name="hp-branch-filter"
+                  listItems={branchFilters.map((branch) => branch.branchName)}
+                  otherInfo={branchFilters}
+                  activeItem={selectedBranchFilterIndex}
+                  onSelect={(index, name, otherInfo) => {
+                    const { branchName, id } = otherInfo || {};
+                    this.props.dispatch(
+                      updateFilter({
+                        branch: {
+                          ...otherInfo,
+                          index,
+                          id,
+                          name: branchName,
+                        },
+                      }),
+                    );
+                  }}
+                />
+              </FilterDropdn>
+            </Filter>
+            <Filter>
+              <Label>To</Label>
+              <FilterDropdn>
+                <DropDown
+                  name="hp-branch-filter"
+                  listItems={branchFilters.map((branch) => branch.branchName)}
+                  otherInfo={branchFilters}
+                  activeItem={selectedBranchFilterIndex}
+                  onSelect={(index, name, otherInfo) => {
+                    const { branchName, id } = otherInfo || {};
+                    this.props.dispatch(
+                      updateFilter({
+                        branch: {
+                          ...otherInfo,
+                          index,
+                          id,
+                          name: branchName,
+                        },
+                      }),
+                    );
+                  }}
+                />
+              </FilterDropdn>
+            </Filter>
+          </FilterWrap>
+        )}
+
         <MembersInfo
           openPaymentPopup={this.openPaymentPopup}
           type={FEES_LAYOUT}
