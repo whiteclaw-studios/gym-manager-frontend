@@ -86,6 +86,10 @@ const selectMemberFeeDetails = (state) => (memberUniqueId) => {
   const mdPage = selectMDPage(state);
   return get(mdPage, `feeDetails.${memberUniqueId}`, {});
 };
+const selectHPDataSource = (state) => {
+  const hpData = selectHomePageState(state);
+  return get(hpData, 'memberFeesInfo.logicAppliedData', {});
+};
 export {
   selectAppState,
   selectHomePageState,
@@ -110,4 +114,5 @@ export {
   selectLogo,
   selectMemberInfo,
   selectMemberFeeDetails,
+  selectHPDataSource,
 };

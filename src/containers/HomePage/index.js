@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'react-emotion';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { selectHomePageState } from '../../selectors';
+import { selectHomePageState, selectHPDataSource } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo/Loadable';
-// import Search from '../../components/Search';
 import PaymentPopup from '../../components/PaymentPopup';
 import { FEES_LAYOUT } from '../../constants';
+import { getFeeDueDetails } from './actions';
+import { get } from '../../utils/helpers';
 
 const Wrapper = styled('div')`
   width: 100%;
@@ -29,8 +30,14 @@ const ContentWrap = styled('h1')`
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
+    let isMobile = false;
+    if (typeof window === 'object') {
+      isMobile = window.innerWidth <= 992;
+    }
     this.state = {
       close: true,
+      showFilterIconInMobile: isMobile,
+      showFilters: !isMobile,
       paymentPopupInfo: {
         open: false,
         memberInfo: {},
@@ -38,6 +45,25 @@ class HomePage extends React.Component {
     };
     this.props.showHeaderHandle(); // to show the header
   }
+  componentDidMount = () => {
+    const { isLoaded = false } = get(this.props, 'pageData.memberFeesInfo', {});
+    console.log('isLoaded', isLoaded);
+    if (!isLoaded) this.props.dispatch(getFeeDueDetails());
+    window.addEventListener('resize', this.resizeListener);
+  };
+  resizeListener = () => {
+    if (window.innerWidth <= 992 && !this.state.showFilterIconInMobile) {
+      this.setState({
+        showFilterIconInMobile: true,
+        showFilters: false,
+      });
+    } else if (window.innerWidth > 992 && this.state.showFilterIconInMobile) {
+      this.setState({
+        showFilterIconInMobile: false,
+        showFilters: true,
+      });
+    }
+  };
   onClosePaymentPopup = () => {
     this.setState({
       paymentPopupInfo: {
@@ -55,12 +81,24 @@ class HomePage extends React.Component {
     });
   };
   render() {
+    const {
+      feeDueDetails = [],
+      getBranchInfo = () => {},
+      getPlanInfo = () => {},
+      pageData,
+    } = this.props;
+    const { isLoading } = get(pageData, 'memberFeesInfo', {});
+    console.log('HomePage', pageData, isLoading);
+
     return (
       <Wrapper>
         <MembersInfo
           openPaymentPopup={this.openPaymentPopup}
           type={FEES_LAYOUT}
-          data={[]}
+          data={feeDueDetails}
+          getBranchInfo={getBranchInfo}
+          getPlanInfo={getPlanInfo}
+          isLoading={isLoading}
         />
         <PaymentPopup
           {...this.state.paymentPopupInfo}
@@ -73,7 +111,8 @@ class HomePage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    homePage: selectHomePageState(state),
+    pageData: selectHomePageState(state),
+    feeDueDetails: selectHPDataSource(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {

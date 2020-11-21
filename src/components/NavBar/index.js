@@ -21,7 +21,10 @@ const LogoWrap = styled('div')`
   margin: 1rem 0;
   padding: 0 1.2rem;
   ${(props) => props.expand && expandedCss}
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   @media (max-width: 992px) {
     display: none;
   }
@@ -29,7 +32,7 @@ const LogoWrap = styled('div')`
 const expandedCss = css`
   height: 4rem;
   width: 12rem;
-  padding-left: 2.4rem;
+  padding: 0 1rem;
 `;
 const LogoImg = styled('img')`
   width: 100%;

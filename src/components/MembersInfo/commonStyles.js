@@ -14,6 +14,7 @@ export const Item = styled('li')`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
   font-family: ${MontserratRegular};
   @media (max-width: 992px) {
     font-size: 1.2rem;

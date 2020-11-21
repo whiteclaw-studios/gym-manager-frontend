@@ -1,13 +1,13 @@
-import { GET_FEE_DETAILS, LOAD_FEE_DETAILS } from './constants';
+import { GET_FEE_DUE_DETAILS, LOAD_FEE_DUE_DETAILS } from './constants';
 
-export function getFeeDetails() {
+export function getFeeDueDetails() {
   return {
-    type: GET_FEE_DETAILS,
+    type: GET_FEE_DUE_DETAILS,
   };
 }
-export function loadFeeDetails(payload) {
+export function loadFeeDueDetails(payload) {
   return {
-    type: LOAD_FEE_DETAILS,
+    type: LOAD_FEE_DUE_DETAILS,
     payload,
   };
 }

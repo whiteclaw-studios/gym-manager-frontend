@@ -2,14 +2,12 @@ import React from 'react';
 import styled, { css } from 'react-emotion';
 import {
   FEES_LAYOUT,
-  GREY,
   MEMBERS_DIRECTORY_LAYOUT,
   ENQUIRY_DIRECTORY_LAYOUT,
   RED,
   SECONDARY_BLACK,
   WHITE,
 } from '../../constants';
-import { getBranchInfo, getPlanInfo } from '../../selectors';
 import { MontserratBold, MontserratRegular } from '../../utils/fonts';
 import { get } from '../../utils/helpers';
 import EllipsisLoader from '../EllipsisLoader';
@@ -45,6 +43,7 @@ const Title = styled('p')`
 
 const HeadingRow = styled(Row)`
   margin-bottom: 2.4rem;
+  padding: 0 1rem;
   @media (max-width: 992px) {
     display: none;
   }
@@ -53,6 +52,8 @@ const HeadingRow = styled(Row)`
 const HeadingItem = styled(Item)`
   color: ${SECONDARY_BLACK};
   opacity: 0.7;
+  flex: 1;
+  text-align: center;
 `;
 const MembersWrap = styled('div')`
   max-height: 60rem;
@@ -92,7 +93,6 @@ export default class MembersInfo extends React.Component {
       data = [],
       openPaymentPopup = () => {},
       type,
-      showDueColumn = false,
       getBranchInfo,
       getPlanInfo,
       isAllowExpand = false,
@@ -101,8 +101,6 @@ export default class MembersInfo extends React.Component {
       onEditMember,
       onDeleteMember,
       allowedBranchInfo,
-      showEmail,
-      showMobile,
     } = this.props;
     return data.map((member, index) => {
       const {
@@ -127,7 +125,6 @@ export default class MembersInfo extends React.Component {
           index={index}
           openPaymentPopup={openPaymentPopup}
           type={type}
-          showDueColumn={showDueColumn}
           name={name}
           memberId={memberId}
           memberUniqueId={memberUniqueId}
@@ -141,13 +138,10 @@ export default class MembersInfo extends React.Component {
           mobile={mobile}
           mailId={mailId}
           isAllowExpand={isAllowExpand}
-          hideMemberId={hideMemberId}
           hidePlan={hidePlan}
           onEditMember={onEditMember}
           onDeleteMember={onDeleteMember}
           allowEdit={allowEdit}
-          showEmail={showEmail}
-          showMobile={showMobile}
         />
       );
     });
@@ -166,29 +160,16 @@ export default class MembersInfo extends React.Component {
     }
   };
   showNoResults = () => {
-    const { type } = this.props;
-    switch (type) {
-      case FEES_LAYOUT:
-        return <NoResults>No Fees due </NoResults>;
-      case MEMBERS_DIRECTORY_LAYOUT:
-        return <NoResults>Members not found </NoResults>;
-      case ENQUIRY_DIRECTORY_LAYOUT:
-        return <NoResults>Enquiry data not found </NoResults>;
-      default:
-        return '';
-    }
+    return <NoResults>No Fees due </NoResults>;
   };
   render() {
     const {
       data,
-      showDueColumn = false,
       isLoading = false,
-      hideMemberId = false,
       hidePlan = false,
-      showEmail = false,
-      showMobile = false,
       recordInfo = '',
     } = this.props;
+    console.log('MemberInfo', this.props);
     return (
       <Wrap>
         <TitleAndInfo>
@@ -197,24 +178,17 @@ export default class MembersInfo extends React.Component {
         </TitleAndInfo>
 
         <HeadingRow>
-          <HeadingItem
-            className={css`
-              max-width: 8rem;
-            `}
-          ></HeadingItem>
           <Info>
-            <HeadingItem>Name</HeadingItem>
-            {!hideMemberId && <HeadingItem>Member id</HeadingItem>}
-            {showEmail && (
-              <HeadingItem
-                className={css`
-                  max-width: 23rem;
-                `}
-              >
-                Email
-              </HeadingItem>
-            )}
-            {!hidePlan && <HeadingItem>Plan</HeadingItem>}
+            <HeadingItem
+              className={css`
+                display: flex;
+                max-width: 15rem;
+              `}
+            >
+              Name
+            </HeadingItem>
+            <HeadingItem>Member id</HeadingItem>
+            <HeadingItem>Plan</HeadingItem>
             <HeadingItem
               className={css`
                 max-width: 23rem;
@@ -222,10 +196,13 @@ export default class MembersInfo extends React.Component {
             >
               Branch
             </HeadingItem>
-            {showMobile && <HeadingItem>Mobile</HeadingItem>}
-            {showDueColumn && <HeadingItem>Due</HeadingItem>}
+            <HeadingItem>Due</HeadingItem>
           </Info>
-          <HeadingItem></HeadingItem>
+          <HeadingItem
+            className={css`
+              max-width: 5.5rem;
+            `}
+          ></HeadingItem>
         </HeadingRow>
         {isLoading ? (
           <LoaderWrap>
