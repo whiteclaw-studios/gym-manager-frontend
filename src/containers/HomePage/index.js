@@ -11,6 +11,7 @@ import { constructBranchFilters, get } from '../../utils/helpers';
 import { MontserratRegular } from '../../utils/fonts';
 import DropDown from '../../components/Dropdown';
 import { FilterIcon } from '../../components/SpriteIcon';
+import DatePicker from '../../components/DatePicker/Loadable';
 
 const Wrapper = styled('div')`
   width: 100%;
@@ -34,6 +35,7 @@ const FilterWrap = styled('div')`
   display: flex;
   @media (max-width: 992px) {
     flex-direction: column;
+    margin: 1rem 0;
   }
 `;
 const Filter = styled('div')`
@@ -43,6 +45,7 @@ const Filter = styled('div')`
   align-items: center;
   @media (max-width: 992px) {
     margin: 0;
+    margin: 0.5rem 0;
   }
 `;
 const Label = styled('p')`
@@ -52,6 +55,7 @@ const Label = styled('p')`
   height: 3.4rem;
   @media (max-width: 992px) {
     width: 7rem;
+    height: auto;
     margin: 0.5rem 0rem;
   }
 `;
@@ -116,6 +120,10 @@ class HomePage extends React.Component {
       showFilters: state,
     });
   };
+  validYear = () => {
+    const year = new Date().getFullYear();
+    return year;
+  };
   render() {
     const {
       feeDueDetails = [],
@@ -129,6 +137,8 @@ class HomePage extends React.Component {
     const { filters } = pageData;
     const branchFilters = constructBranchFilters(branchDetails);
     const selectedBranchFilterIndex = get(filters, 'branch.index');
+    const selectedStartDate = get(filters, 'startDate.selectedDate', '');
+    const selectedEndDate = get(filters, 'endDate.selectedDate', '');
 
     console.log('HomePage', pageData, isLoading);
 
@@ -176,54 +186,57 @@ class HomePage extends React.Component {
                       }),
                     );
                   }}
+                  hideError
                 />
               </FilterDropdn>
             </Filter>
             <Filter>
               <Label>From</Label>
               <FilterDropdn>
-                <DropDown
-                  name="hp-branch-filter"
-                  listItems={branchFilters.map((branch) => branch.branchName)}
-                  otherInfo={branchFilters}
-                  activeItem={selectedBranchFilterIndex}
-                  onSelect={(index, name, otherInfo) => {
-                    const { branchName, id } = otherInfo || {};
+                <DatePicker
+                  selectedDate={selectedStartDate}
+                  dateChangeHandler={(selectedDate) => {
                     this.props.dispatch(
                       updateFilter({
-                        branch: {
-                          ...otherInfo,
-                          index,
-                          id,
-                          name: branchName,
+                        startDate: {
+                          selectedDate,
                         },
                       }),
                     );
                   }}
+                  format="DD-MM-YYYY"
+                  // disabled={
+                  //   /* eslint-disable */ birthday
+                  //     ? true
+                  //     : false /* eslint-enable */
+                  // }
+                  placeholder="Select Date"
+                  validateStartYear={this.validYear()}
                 />
               </FilterDropdn>
             </Filter>
             <Filter>
               <Label>To</Label>
               <FilterDropdn>
-                <DropDown
-                  name="hp-branch-filter"
-                  listItems={branchFilters.map((branch) => branch.branchName)}
-                  otherInfo={branchFilters}
-                  activeItem={selectedBranchFilterIndex}
-                  onSelect={(index, name, otherInfo) => {
-                    const { branchName, id } = otherInfo || {};
+                <DatePicker
+                  selectedDate={selectedEndDate}
+                  dateChangeHandler={(selectedDate) => {
                     this.props.dispatch(
                       updateFilter({
-                        branch: {
-                          ...otherInfo,
-                          index,
-                          id,
-                          name: branchName,
+                        endDate: {
+                          selectedDate,
                         },
                       }),
                     );
                   }}
+                  format="DD-MM-YYYY"
+                  // disabled={
+                  //   /* eslint-disable */ birthday
+                  //     ? true
+                  //     : false /* eslint-enable */
+                  // }
+                  placeholder="Select Date"
+                  validateStartYear={this.validYear()}
                 />
               </FilterDropdn>
             </Filter>

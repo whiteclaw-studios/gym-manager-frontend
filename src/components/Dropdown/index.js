@@ -127,6 +127,7 @@ export default class DropDown extends React.Component {
       showError = false,
       errorText = 'Select something',
       className = '',
+      hideError = false,
     } = this.props;
     const { expand } = this.state;
     return (
@@ -158,7 +159,7 @@ export default class DropDown extends React.Component {
             <DownIcon onClick={this.onExpand} />
           </ArrowWrap>
         </SelectedItem>
-        {<Error>{showError ? errorText : ' '}</Error>}
+        {!hideError && <Error>{showError ? errorText : ' '}</Error>}
         {expand && <OptionsWrap>{this.showOptions()}</OptionsWrap>}
       </Wrap>
     );

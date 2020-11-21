@@ -1,6 +1,15 @@
 import { applySearchAndFilterLogic, get } from '../../utils/helpers';
 import { LOAD_FEE_DUE_DETAILS, UPDATE_FILTER } from './constants';
 
+const todayDate = () => {
+  const day = new Date().getDate();
+  const month = new Date().getMonth() + 1; // since its 0 indexed
+  const year = new Date().getFullYear();
+  let format = 'DD/MM/YYYY';
+  format = format.replace('DD', day).replace('MM', month).replace('YYYY', year);
+  return format;
+};
+
 export const initialState = {
   memberFeesInfo: {
     data: [],
@@ -12,6 +21,12 @@ export const initialState = {
     branch: {
       index: 0,
       branchName: 'All',
+    },
+    startDate: {
+      selectedDate: todayDate(),
+    },
+    endDate: {
+      selectedDate: todayDate(),
     },
   },
 };
