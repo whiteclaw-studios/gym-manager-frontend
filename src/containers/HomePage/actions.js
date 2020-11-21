@@ -1,4 +1,5 @@
 import {
+  APPLY_DATE_FILTER,
   GET_FEE_DUE_DETAILS,
   LOAD_FEE_DUE_DETAILS,
   UPDATE_FILTER,
@@ -18,6 +19,12 @@ export function loadFeeDueDetails(payload) {
 export function updateFilter(payload) {
   return {
     type: UPDATE_FILTER,
+    payload,
+  };
+}
+export function applyDateFilter(payload) {
+  return {
+    type: APPLY_DATE_FILTER,
     payload,
   };
 }

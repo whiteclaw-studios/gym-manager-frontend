@@ -3,6 +3,7 @@ import {
   LOAD_ADMIN_INFO,
   LOAD_BRANCH_DETAILS,
   LOGIN_RESPONSE,
+  TOGGLE_PAGE_LOADER,
 } from './constants';
 
 export const initialState = {
@@ -14,6 +15,7 @@ export const initialState = {
     isLoggedIn: false,
     infoLoaded: false, // used to show page loader
   },
+  pageLoaderState: false,
 };
 
 const reducer = (preloadedState = null) => (
@@ -56,6 +58,12 @@ const reducer = (preloadedState = null) => (
           data: [...action.payload],
           isLoaded: true,
         },
+      };
+    }
+    case TOGGLE_PAGE_LOADER: {
+      return {
+        ...state,
+        pageLoaderState: action.payload,
       };
     }
     default: {

@@ -8,6 +8,7 @@ import {
   UPDATE_FILTER,
   UPDATE_MEMBERSHIP_STATUS_IN_STORE,
   UPDATE_PAGE,
+  UPDATE_STORE_AFTER_PAYMENT,
 } from './constants';
 const { perPage } = paginationConfigs;
 export const initialState = {
@@ -221,6 +222,29 @@ const reducer = (preloadedState = null) => (
           [memberUniqueId]: {
             ...rest,
           },
+        },
+      };
+    }
+    case UPDATE_STORE_AFTER_PAYMENT: {
+      const { payload } = action;
+      const { memberUniqueId, planDetailsId, feesAmount } = payload;
+      const { data } = state.membersInfo;
+      let newData = data.filter((member) => member.id !== memberUniqueId);
+      let reqdMember = data.filter((member) => member.id !== memberUniqueId);
+      reqdMember = { ...reqdMember, planDetailsId, feesAmount };
+      newData = [...newData, { ...reqdMember }];
+      const searchText = get(state, 'search.searchText', '');
+      const filteredData = applySearchAndFilterLogic({
+        searchText,
+        dataSource: newData,
+        filters: state.filters,
+      });
+      return {
+        ...state,
+        membersInfo: {
+          ...state.membersInfo,
+          data: newData,
+          logicAppliedData: filteredData,
         },
       };
     }

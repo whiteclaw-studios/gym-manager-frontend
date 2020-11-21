@@ -15,3 +15,6 @@ export const GET_MEMBER_FEE_DETAILS =
   'app/MembersDirectory/GET_MEMBER_FEE_DETAILS';
 export const LOAD_MEMBER_FEE_DETAILS =
   'app/MembersDirectory/LOAD_MEMBER_FEE_DETAILS';
+export const UPDATE_FEE_DETAILS = 'app/MembersDirectory/UPDATE_FEE_DETAILS';
+export const UPDATE_STORE_AFTER_PAYMENT =
+  'app/MembersDirectory/UPDATE_STORE_AFTER_PAYMENT';

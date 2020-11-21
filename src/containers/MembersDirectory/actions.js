@@ -11,6 +11,8 @@ import {
   LOAD_MEMBER_FEE_DETAILS,
   UPDATE_MEMBERSHIP_STATUS,
   UPDATE_MEMBERSHIP_STATUS_IN_STORE,
+  UPDATE_FEE_DETAILS,
+  UPDATE_STORE_AFTER_PAYMENT,
 } from './constants';
 
 export function addNewMember(payload) {
@@ -81,6 +83,18 @@ export function getMemberFeeDetails(payload) {
 export function loadMemberFeeDetails(payload) {
   return {
     type: LOAD_MEMBER_FEE_DETAILS,
+    payload,
+  };
+}
+export function updateFeeDetails(payload) {
+  return {
+    type: UPDATE_FEE_DETAILS,
+    ...payload,
+  };
+}
+export function updateStoreAfterPayment(payload) {
+  return {
+    type: UPDATE_STORE_AFTER_PAYMENT,
     payload,
   };
 }

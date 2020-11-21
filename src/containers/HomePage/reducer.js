@@ -1,13 +1,21 @@
 import { applySearchAndFilterLogic, get } from '../../utils/helpers';
-import { LOAD_FEE_DUE_DETAILS, UPDATE_FILTER } from './constants';
+import {
+  APPLY_DATE_FILTER,
+  LOAD_FEE_DUE_DETAILS,
+  UPDATE_FILTER,
+} from './constants';
 
-const todayDate = () => {
+const currentDate = () => {
   const day = new Date().getDate();
   const month = new Date().getMonth() + 1; // since its 0 indexed
   const year = new Date().getFullYear();
   let format = 'DD/MM/YYYY';
   format = format.replace('DD', day).replace('MM', month).replace('YYYY', year);
-  return format;
+  return {
+    format,
+    currentYear: year,
+    currentMonth: month - 1,
+  };
 };
 
 export const initialState = {
@@ -23,12 +31,21 @@ export const initialState = {
       branchName: 'All',
     },
     startDate: {
-      selectedDate: todayDate(),
+      selectedDate: currentDate().format,
+      currentMonth: currentDate().currentMonth,
+      validStartMonth: currentDate().currentMonth,
+      validEndMonth: 11,
+      currentYear: currentDate().currentYear,
     },
     endDate: {
-      selectedDate: todayDate(),
+      selectedDate: currentDate().format,
+      currentMonth: currentDate().currentMonth,
+      validStartMonth: currentDate().currentMonth,
+      validEndMonth: 11,
+      currentYear: currentDate().currentYear,
     },
   },
+  applyDateFilter: false,
 };
 
 const reducer = (preloadedState = null) => (
@@ -71,6 +88,15 @@ const reducer = (preloadedState = null) => (
           ...state.memberFeesInfo,
           logicAppliedData: filteredData,
         },
+      };
+    }
+    case APPLY_DATE_FILTER: {
+      const { payload } = action;
+      const { isChecked } = payload;
+
+      return {
+        ...state,
+        applyDateFilter: isChecked,
       };
     }
     default: {

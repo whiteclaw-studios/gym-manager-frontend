@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 import { selectHomePageState, selectHPDataSource } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo/Loadable';
 import PaymentPopup from '../../components/PaymentPopup';
-import { FEES_LAYOUT } from '../../constants';
-import { getFeeDueDetails, updateFilter } from './actions';
+import { FEES_LAYOUT, RED } from '../../constants';
+import { applyDateFilter, getFeeDueDetails, updateFilter } from './actions';
 import { constructBranchFilters, get } from '../../utils/helpers';
 import { MontserratRegular } from '../../utils/fonts';
 import DropDown from '../../components/Dropdown';
 import { FilterIcon } from '../../components/SpriteIcon';
 import DatePicker from '../../components/DatePicker/Loadable';
+import Checkbox from '../../components/Checkbox';
 
 const Wrapper = styled('div')`
   width: 100%;
@@ -21,13 +22,6 @@ const Wrapper = styled('div')`
     margin-top: 4rem;
     padding: 0 2.4rem;
     padding-top: 1.2rem;
-  }
-`;
-const ContentWrap = styled('h1')`
-  display: flex;
-  width: 100%;
-  @media (max-width: 992px) {
-    flex-direction: column-reverse;
   }
 `;
 
@@ -53,6 +47,10 @@ const Label = styled('p')`
   margin: 0.5rem 1rem;
   font-family: ${MontserratRegular};
   height: 3.4rem;
+  @media (min-width: 993px) {
+    display: flex;
+    align-items: center;
+  }
   @media (max-width: 992px) {
     width: 7rem;
     height: auto;
@@ -61,6 +59,14 @@ const Label = styled('p')`
 `;
 const FilterDropdn = styled('div')`
   width: 27rem;
+`;
+const Note = styled('p')`
+  color: ${RED};
+  font-size: 1.4rem;
+  margin: 0.5rem 0;
+  @media (min-width: 993px) {
+    margin: 1rem 2rem;
+  }
 `;
 class HomePage extends React.Component {
   constructor(props) {
@@ -124,6 +130,17 @@ class HomePage extends React.Component {
     const year = new Date().getFullYear();
     return year;
   };
+  validStartDate = () => {
+    const day = new Date().getDate();
+    const month = new Date().getMonth() + 1; // since its 0 indexed
+    const year = new Date().getFullYear();
+    let format = 'DD/MM/YYYY';
+    format = format
+      .replace('DD', day)
+      .replace('MM', month)
+      .replace('YYYY', year);
+    return format;
+  };
   render() {
     const {
       feeDueDetails = [],
@@ -137,8 +154,8 @@ class HomePage extends React.Component {
     const { filters } = pageData;
     const branchFilters = constructBranchFilters(branchDetails);
     const selectedBranchFilterIndex = get(filters, 'branch.index');
-    const selectedStartDate = get(filters, 'startDate.selectedDate', '');
-    const selectedEndDate = get(filters, 'endDate.selectedDate', '');
+    const selectedFromDate = get(filters, 'startDate.selectedDate', '');
+    const selectedToDate = get(filters, 'endDate.selectedDate', '');
 
     console.log('HomePage', pageData, isLoading);
 
@@ -194,24 +211,43 @@ class HomePage extends React.Component {
               <Label>From</Label>
               <FilterDropdn>
                 <DatePicker
-                  selectedDate={selectedStartDate}
+                  selectedDate={selectedFromDate}
                   dateChangeHandler={(selectedDate) => {
+                    console.log('selectedDate', selectedDate);
                     this.props.dispatch(
                       updateFilter({
                         startDate: {
+                          ...filters.startDate,
                           selectedDate,
                         },
                       }),
                     );
                   }}
                   format="DD-MM-YYYY"
-                  // disabled={
-                  //   /* eslint-disable */ birthday
-                  //     ? true
-                  //     : false /* eslint-enable */
-                  // }
                   placeholder="Select Date"
-                  validateStartYear={this.validYear()}
+                  validateStartYear={get(filters, `startDate.currentYear`, 0)}
+                  validateEndYear={get(filters, `startDate.currentYear`, 0) + 5}
+                  validateStartDate={this.validStartDate()}
+                  validateStartMonth={get(
+                    filters,
+                    `startDate.validStartMonth`,
+                    0,
+                  )}
+                  validateEndMonth={11}
+                  nextYearHandle={(yearSelected) => {
+                    const { startDate } = filters;
+                    const { currentYear, currentMonth } = startDate || {};
+                    this.props.dispatch(
+                      updateFilter({
+                        startDate: {
+                          ...filters.startDate,
+                          validStartMonth:
+                            yearSelected > currentYear ? 0 : currentMonth,
+                        },
+                      }),
+                    );
+                    console.log('yearSelected', yearSelected);
+                  }}
                 />
               </FilterDropdn>
             </Filter>
@@ -219,28 +255,82 @@ class HomePage extends React.Component {
               <Label>To</Label>
               <FilterDropdn>
                 <DatePicker
-                  selectedDate={selectedEndDate}
+                  selectedDate={selectedToDate}
                   dateChangeHandler={(selectedDate) => {
+                    console.log('selectedDate', selectedDate);
                     this.props.dispatch(
                       updateFilter({
                         endDate: {
+                          ...filters.endDate,
                           selectedDate,
                         },
                       }),
                     );
                   }}
                   format="DD-MM-YYYY"
-                  // disabled={
-                  //   /* eslint-disable */ birthday
-                  //     ? true
-                  //     : false /* eslint-enable */
-                  // }
                   placeholder="Select Date"
-                  validateStartYear={this.validYear()}
+                  validateStartYear={get(filters, `endDate.currentYear`, 0)}
+                  validateEndYear={get(filters, `endDate.currentYear`, 0) + 5}
+                  validateStartDate={this.validStartDate()}
+                  validateStartMonth={get(
+                    filters,
+                    `endDate.validStartMonth`,
+                    0,
+                  )}
+                  validateEndMonth={11}
+                  nextYearHandle={(yearSelected) => {
+                    const { endDate } = filters;
+                    const { currentYear, currentMonth } = endDate || {};
+                    this.props.dispatch(
+                      updateFilter({
+                        endDate: {
+                          ...filters.endDate,
+                          validStartMonth:
+                            yearSelected > currentYear ? 0 : currentMonth,
+                        },
+                      }),
+                    );
+                    console.log('yearSelected', yearSelected);
+                  }}
                 />
               </FilterDropdn>
             </Filter>
           </FilterWrap>
+        )}
+
+        {(showFilters || !showFilterIconInMobile) && (
+          <React.Fragment>
+            <Filter>
+              <Label
+                className={css`
+                  @media (max-width: 992px) {
+                    width: auto;
+                    margin-right: 1rem;
+                  }
+                `}
+              >
+                Apply filter
+              </Label>
+              <Checkbox
+                className={css`
+                  > label > span {
+                    top: -4px !important;
+                  }
+                `}
+                onSelect={(isChecked) => {
+                  this.props.dispatch(
+                    applyDateFilter({
+                      isChecked,
+                    }),
+                  );
+                }}
+              />
+            </Filter>
+            <Note>
+              Date filter will be applied only when To date is greater than or
+              equal to from date
+            </Note>
+          </React.Fragment>
         )}
 
         <MembersInfo

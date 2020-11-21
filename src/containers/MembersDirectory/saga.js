@@ -4,13 +4,18 @@ import { selectMembersSource } from '../../selectors';
 import { applySearchAndFilterLogic, getCookie } from '../../utils/helpers';
 import axiosWrapper from '../../utils/requestWrapper';
 import { responseParser } from '../../utils/responseParser';
-import { displayToaster, loadAdminInfo } from '../App/actions';
+import {
+  displayToaster,
+  loadAdminInfo,
+  togglePageLoader,
+} from '../App/actions';
 import {
   includeMemberInList,
   loadMemberDetails,
   loadMemberFeeDetails,
   loadSearchData,
   updateMembershipStatusInStore,
+  updateStoreAfterPayment,
 } from './actions';
 import {
   ADD_NEW_MEMBER,
@@ -19,6 +24,7 @@ import {
   DELETE_MEMBER,
   GET_MEMBER_FEE_DETAILS,
   UPDATE_MEMBERSHIP_STATUS,
+  UPDATE_FEE_DETAILS,
 } from './constants';
 function* addNewMember(params = {}) {
   try {
@@ -226,6 +232,53 @@ function* getMemberFeeDetailsSaga(params) {
     console.error('Caught in getMemberFeeDetailsSaga ', err);
   }
 }
+function* updateFeeDetailsSaga(params) {
+  try {
+    const {
+      memberUniqueId,
+      currentPlan,
+      successCallback = () => {},
+      failureCallback = () => {},
+    } = params;
+    yield put(togglePageLoader(true));
+    const { id, amount } = currentPlan;
+    const response = yield call(axiosWrapper, {
+      method: 'POST',
+      url: `${apiUrls.UPDATE_FEE_DETAILS_URL}`,
+      data: {
+        memberId: memberUniqueId,
+        planDetailsId: id,
+      },
+    });
+    const processResponse = responseParser(response);
+    if (!processResponse.isError) {
+      yield put(
+        updateStoreAfterPayment({
+          memberUniqueId,
+          planDetailsId: id,
+          feesAmount: amount,
+        }),
+      );
+      yield call(getMemberFeeDetailsSaga, {
+        memberUniqueId,
+        successCallback,
+      });
+      yield put(
+        displayToaster({
+          type: 'Success',
+          text: 'Fee paid successfully',
+          timeout: 3000,
+        }),
+      );
+    } else {
+      if (failureCallback) failureCallback();
+    }
+  } catch (err) {
+    console.error('Caught in updateFeeDetailsSaga', err);
+  } finally {
+    yield put(togglePageLoader(false));
+  }
+}
 function* watchaddNewMember() {
   yield takeEvery(ADD_NEW_MEMBER, addNewMember);
 }
@@ -241,10 +294,14 @@ function* watchUpdateMembershipStatusSaga() {
 function* watchGetMemberFeeDetailsSaga() {
   yield takeEvery(GET_MEMBER_FEE_DETAILS, getMemberFeeDetailsSaga);
 }
+function* watchUpdateFeeDetailsSaga() {
+  yield takeEvery(UPDATE_FEE_DETAILS, updateFeeDetailsSaga);
+}
 export const membersDirectorySagas = [
   watchaddNewMember(),
   watchSearchMemberSaga(),
   watchGetMemberDetailsSaga(),
   watchUpdateMembershipStatusSaga(),
   watchGetMemberFeeDetailsSaga(),
+  watchUpdateFeeDetailsSaga(),
 ];

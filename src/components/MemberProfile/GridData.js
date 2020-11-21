@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'react-emotion';
 import { WHITE, GREY, RED, GREEN } from '../../constants';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
+import { formatDate } from '../../utils/helpers';
 import Button from '../Button';
 import EllipsisLoader from '../EllipsisLoader';
 const Wrap = styled('div')`
@@ -94,39 +95,14 @@ const Error = styled('p')`
   min-height: 10rem;
 `;
 function GridData({
-  headingInfo = ['Fees', 'Due Date', 'Paid Date'],
-  data = [
-    {
-      fee: '$434',
-      dueDate: '20 Jan 2020',
-      paidDate: '',
-    },
-    {
-      fee: '$434',
-      dueDate: '20 Jan 2020',
-      paidDate: '',
-    },
-    {
-      fee: '$434',
-      dueDate: '20 Jan 2020',
-      paidDate: '',
-    },
-    {
-      fee: '$434',
-      dueDate: '20 Jan 2020',
-      paidDate: '',
-    },
-    {
-      fee: '$434',
-      dueDate: '20 Jan 2020',
-      paidDate: '',
-    },
-  ],
+  headingInfo = ['Fees', 'Paid Date', 'dummy'],
+  data = [],
   showHistory = false,
   memberUniqueId,
   isLoaded,
   isError,
   isLoading,
+  onPay,
 }) {
   return (
     <Wrap>
@@ -136,7 +112,7 @@ function GridData({
           {headingInfo.map((heading, index) => (
             <Heading
               className={
-                heading === 'Paid Date' && !showHistory
+                heading === 'dummy'
                   ? css`
                       opacity: 0;
                     `
@@ -161,7 +137,9 @@ function GridData({
         ) : (
           <Data>
             {data.map((info, index) => {
-              const { fee, dueDate, paidDate } = info;
+              const { txnAmount, txnDate } = info;
+              const formattedDate = formatDate(txnDate);
+              console.log('formattedDate', formattedDate);
               return (
                 <ItemWrap
                   key={`${
@@ -175,9 +153,9 @@ function GridData({
                       : ''
                   }
                 >
-                  <Item>{fee}</Item>
-                  <Item>{dueDate}</Item>
-                  <Item>{showHistory ? paidDate || '-' : <Pay>Pay</Pay>}</Item>
+                  <Item>{txnAmount}</Item>
+                  <Item>{formattedDate}</Item>
+                  <Item>{!showHistory && <Pay onClick={onPay}>Pay</Pay>}</Item>
                 </ItemWrap>
               );
             })}

@@ -1,9 +1,14 @@
 import React from 'react';
 import styled from 'react-emotion';
 import { SECONDARY_BLACK, WHITE } from '../../constants';
-import { OpensansRegular } from '../../utils/fonts';
+import {
+  MontserratBold,
+  MontserratRegular,
+  OpensansRegular,
+} from '../../utils/fonts';
 import Button from '../Button';
 import Checkbox from '../Checkbox';
+import DropDown from '../Dropdown';
 import ModalNew from '../Modal';
 const Wrap = styled('div')`
   display: flex;
@@ -13,17 +18,6 @@ const Wrap = styled('div')`
 `;
 const Heading = styled('p')`
   font-size: 1.6rem;
-`;
-const DatesWrap = styled('div')`
-  text-align: left;
-  width: 100%;
-  margin: 2.4rem 0 1.6rem;
-`;
-const DateWrap = styled('div')`
-  display: flex;
-  font-size: 1.4rem;
-  color: ${SECONDARY_BLACK};
-  margin: 0.5rem;
 `;
 const Controls = styled('div')`
   display: flex;
@@ -42,11 +36,12 @@ const Cancel = styled('span')`
   padding: 0.5rem;
   box-shadow: none;
   cursor: pointer;
-  font-family: ${OpensansRegular};
+  font-family: ${MontserratRegular};
   @media (max-width: 992px) {
     cursor: default;
   }
 `;
+
 const Paid = styled(Button)`
   font-size: 1.4rem;
   padding: 0 1.2rem;
@@ -58,28 +53,51 @@ const Amount = styled('p')`
   width: 100%;
   margin-bottom: 2.4rem;
   margin-left: 1.2rem;
+  font-family: ${MontserratRegular};
+  font-size: 1.4rem;
 `;
-function PaymentPopup({ memberInfo = {}, open, onClose = () => {} } = {}) {
-  const { name } = memberInfo;
+const PlanWrap = styled('div')`
+  display: flex;
+  align-items: center;
+  margin: 2rem 1rem;
+`;
+const Label = styled('p')`
+  font-size: 1.4rem;
+  margin-right: 1rem;
+  font-family: ${MontserratBold};
+`;
+function PaymentPopup({
+  name,
+  feeAmount,
+  open,
+  onPay,
+  planDetails,
+  entirePlanDetails,
+  selectedPlan,
+  onClose = () => {},
+  updatePlanIdWhilePayment,
+} = {}) {
   return (
     <ModalNew show={open} close={onClose}>
       <Wrap>
         <Heading>Fees payment</Heading>
         <MemberName>{name}</MemberName>
-        <DatesWrap>
-          <DateWrap>
-            <Checkbox />
-            <span>17-11-2020 to 17-12-2020</span>
-          </DateWrap>
-          <DateWrap>
-            <Checkbox />
-            <span>17-11-2020 to 17-12-2020</span>
-          </DateWrap>
-        </DatesWrap>
-        <Amount>$0 / $1000</Amount>
+        <PlanWrap>
+          <Label>Plan</Label>
+          <DropDown
+            listItems={planDetails}
+            activeItem={selectedPlan}
+            onSelect={(index) => {
+              const { id, amount, planName } = entirePlanDetails[index];
+              updatePlanIdWhilePayment({ index, id, amount, planName });
+            }}
+            hideError
+          />
+        </PlanWrap>
+        {feeAmount && <Amount>Amount : ${feeAmount}</Amount>}
         <Controls>
           <Cancel onClick={onClose}>Cancel</Cancel>
-          <Paid disabled={true}>Paid</Paid>
+          <Paid onClick={onPay}>Pay</Paid>
         </Controls>
       </Wrap>
     </ModalNew>

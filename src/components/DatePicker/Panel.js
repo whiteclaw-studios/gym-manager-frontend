@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { monthNames, currentYear, currentMonth } from './constants';
+import { monthNames } from '../../constants';
+import { currentYear, currentMonth } from './constants';
 const PanelContainer = styled('div')`
   height: 153px;
   overflow: auto;
@@ -50,10 +51,10 @@ export default class Panel extends React.Component {
     this.generateYears(this.startYear, this.endYear);
   }
 
-  monthClicked = data => {
+  monthClicked = (data) => {
     this.props.selectHandler && this.props.selectHandler(data.index);
   };
-  yearClicked = data => {
+  yearClicked = (data) => {
     this.props.selectHandler && this.props.selectHandler(data.target.innerHTML);
   };
   generateMonths = () => {

@@ -4,6 +4,7 @@ import {
   LOAD_ADMIN_INFO,
   LOAD_BRANCH_DETAILS,
   LOGIN_RESPONSE,
+  TOGGLE_PAGE_LOADER,
 } from './constants';
 
 export function displayToaster(data = {}) {
@@ -33,6 +34,12 @@ export function loadAdminInfo(payload) {
 export function loadBranchDetails(payload) {
   return {
     type: LOAD_BRANCH_DETAILS,
+    payload,
+  };
+}
+export function togglePageLoader(payload) {
+  return {
+    type: TOGGLE_PAGE_LOADER,
     payload,
   };
 }

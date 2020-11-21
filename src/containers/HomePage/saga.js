@@ -21,7 +21,7 @@ export function* getFeeDueDetailsSaga(params = {}) {
     }
     const response = yield call(axiosWrapper, {
       method: 'GET',
-      url: apiUrls.ENQUIRIES_URL,
+      url: apiUrls.FEE_DUE_DETAILS_URL,
     });
     console.log('response', response);
     const processResponse = responseParser(response);

@@ -25,14 +25,14 @@ const Wrap = styled('div')`
     position: absolute;
     top: 0;
     left: 0;
-    height: 1.6rem;
-    width: 1.6rem;
     background-color: #eee;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid ${GREEN};
   }
 
   /* On mouse-over, add a grey background color */
   .container:hover input ~ .checkmark {
-    background-color: ${GREEN};
     border: 1px solid ${GREEN};
   }
 
@@ -67,13 +67,14 @@ const Wrap = styled('div')`
 const Input = styled('input')`
   outline: 1px solid ${GREEN};
 `;
-function Checkbox() {
+function Checkbox({ onSelect = () => {}, className = '' }) {
   const [checked, setChecked] = useState(false);
   const handleClick = () => {
     setChecked(!checked);
+    if (onSelect) onSelect(!checked);
   };
   return (
-    <Wrap>
+    <Wrap className={className}>
       <label class="container">
         <Input type="checkbox" onClick={handleClick} />
         <span class="checkmark"></span>

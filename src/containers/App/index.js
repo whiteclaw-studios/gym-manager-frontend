@@ -16,6 +16,7 @@ import {
   getPlanInfo,
   selectAllowedBranchDetails,
   selectLogo,
+  selectAppState,
 } from '../../selectors/';
 import SplashScreen from '../../components/SplashScreen';
 import { getAdminInfo } from './actions';
@@ -31,6 +32,7 @@ import {
   LogoutIcon,
   ProfileIcon,
 } from '../../components/SpriteIcon';
+import PageLoader from '../../components/PageLoader';
 const Wrap = styled('div')`
   background: ${BG_COLOR};
   height: 100%;
@@ -233,6 +235,7 @@ class App extends React.Component {
       getPlanInfo,
       allowedBranchInfo,
       logo,
+      appState,
     } = this.props;
     const {
       showInstallUI,
@@ -242,7 +245,7 @@ class App extends React.Component {
       showNavBar,
       navmenu = {},
     } = this.state;
-
+    const { pageLoaderState } = appState || {};
     return (
       <Wrap>
         {showInstallUI && (
@@ -285,7 +288,12 @@ class App extends React.Component {
             footerMenus={footerMenus}
           />
         )}
-        {mountToasterManager && <ToasterManager {...toasterConf} />}
+        {mountToasterManager && (
+          <React.Fragment>
+            <ToasterManager {...toasterConf} />
+            {pageLoaderState && <PageLoader />}
+          </React.Fragment>
+        )}
       </Wrap>
     );
   }
@@ -293,6 +301,7 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
   return {
     ...state,
+    appState: selectAppState(state),
     isLoggedIn: selectLoginState(state),
     toasterConf: selectToasterConf(state),
     isAdminInfoLoaded: selectInfoLoadedState(state),

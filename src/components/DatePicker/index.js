@@ -8,11 +8,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css, cx } from 'react-emotion';
 import SpriteIcon, { DownIcon } from '../SpriteIcon';
-import { monthNames, weekDays } from './constants';
+import { weekDays } from './constants';
 import Panel from './Panel';
 import { MontserratBold } from '../../utils/fonts';
 import { get } from '../../utils/helpers';
-import { SECONDARY_BLACK, WHITE } from '../../constants';
+import { monthNames, SECONDARY_BLACK, WHITE } from '../../constants';
 /* eslint-disable */
 
 const Wrapper = styled('div')`
@@ -640,6 +640,8 @@ export default class DatePicker extends React.Component {
         currentYear: this.state.currentYear + 1,
       });
     }
+    if (this.props.nextYearHandle)
+      this.props.nextYearHandle(this.state.currentYear + 1);
   };
   showMonthPanel = () => {
     this.setState({

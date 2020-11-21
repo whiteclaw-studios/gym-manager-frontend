@@ -26,6 +26,20 @@ export const ALLOW_IMAGES_TYPES = [
   'image/webp',
   'image/bmp',
 ];
+export const monthNames = [
+  { name: 'January', days: 31, shortName: 'JAN' },
+  { name: 'February', days: 28, shortName: 'FEB' },
+  { name: 'March', days: 31, shortName: 'MAR' },
+  { name: 'April', days: 30, shortName: 'APR' },
+  { name: 'May', days: 31, shortName: 'MAY' },
+  { name: 'June', days: 30, shortName: 'JUN' },
+  { name: 'July', days: 31, shortName: 'JUL' },
+  { name: 'August', days: 31, shortName: 'AUG' },
+  { name: 'September', days: 30, shortName: 'SEP' },
+  { name: 'October', days: 31, shortName: 'OCT' },
+  { name: 'November', days: 30, shortName: 'NOV' },
+  { name: 'December', days: 31, shortName: 'DEC' },
+];
 export const apiUrls = {
   LOGIN_URL: `${BASE_URL}/auth`,
   ADMIN_INFO_URL: `${BASE_URL}/admin_details`,
@@ -35,6 +49,7 @@ export const apiUrls = {
   MEMBER_DETAIL_URL: `${BASE_URL}/member_detail`,
   MEMBER_STATUS_URL: `${BASE_URL}/member_status`,
   FEE_DUE_DETAILS_URL: `${BASE_URL}/fees_due_details`,
+  UPDATE_FEE_DETAILS_URL: `${BASE_URL}/update_fee_details`,
 };
 
 export const SPRITE_IMAGE = '';

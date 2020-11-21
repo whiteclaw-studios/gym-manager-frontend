@@ -31,6 +31,7 @@ import {
   searchMembers,
   updateFilter,
   updatePage,
+  updateFeeDetails,
 } from './actions';
 import {
   constructBranchFilters,
@@ -425,6 +426,13 @@ class MembersDirectory extends React.Component {
       );
     return [];
   };
+  getEntirePlanDetails = () => {
+    const { branch } = this.state;
+    const branchIndex = branch.selectedItemIndex;
+    const { branchDetails } = this.props;
+    if (branchIndex >= 0) return branchDetails[branchIndex].planDetails;
+    return [];
+  };
   getBranchNames = () => {
     const { branchDetails } = this.props;
     return branchDetails.map((branch) => branch.branchName);
@@ -731,6 +739,31 @@ class MembersDirectory extends React.Component {
     const isLoaded = get(memberFeeDetails, 'isLoaded', false);
     if (!isLoaded) dispatch(getMemberFeeDetails({ memberUniqueId }));
   };
+  onPayFee = ({
+    memberUniqueId,
+    currentPlan,
+    successCallback,
+    failureCallback,
+  }) => {
+    this.props.dispatch(
+      updateFeeDetails({
+        memberUniqueId,
+        currentPlan,
+        successCallback: () => {
+          this.setState({
+            plan: {
+              ...this.state.plan,
+              selectedItemIndex: currentPlan.index,
+              name: currentPlan.name,
+              id: currentPlan.id,
+            },
+          });
+          successCallback();
+        },
+        failureCallback,
+      }),
+    );
+  };
   render() {
     const {
       paginationInfo,
@@ -806,6 +839,9 @@ class MembersDirectory extends React.Component {
             }
             getFeeDetails={this.getFeeDetails}
             selectMemberFeeDetails={selectMemberFeeDetails}
+            onPayFee={this.onPayFee}
+            entirePlanDetails={this.getEntirePlanDetails()}
+            planDetails={this.getPlanDetails()}
           />
         ) : !showEditScreen ? (
           <React.Fragment>
@@ -1027,14 +1063,19 @@ class MembersDirectory extends React.Component {
           />
         )}
         <ConfirmationPopup
-          title="Delete Member ?"
-          infoText={`All the details related to ${name.value} will be deleted. Do you
-          want to delete anyway?`}
+          title={isActive ? 'Pause Membership ?' : 'Resume Membership ?'}
+          infoText={
+            isActive
+              ? `All the activities with ${name.value} will be
+          paused. Do you want to pause anyway?`
+              : `All the activities with ${name.value} will be
+          resumed. Do you want to resume anyway?`
+          }
           onNo={this.closeDeleteConfirmation}
           show={showDeleteConfirmation}
           onYes={this.confirmDeleteMember}
-          yesText="Delete"
-          noText="Cancel"
+          yesText={isActive ? 'Pause' : 'Resume'}
+          noText={'Cancel'}
         />
       </Wrapper>
     );

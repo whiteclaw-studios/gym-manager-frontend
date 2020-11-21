@@ -1,3 +1,5 @@
+import { monthNames } from '../constants';
+
 export const get = (from, selector, defaultVal) => {
   const value = selector
     .replace(/\[([^[\]]*)\]/g, '.$1.')
@@ -205,4 +207,10 @@ export const applySearchAndFilterLogic = ({
 };
 export const scrollToTop = () => {
   window.scrollTo(0, 9);
+};
+export const formatDate = (date) => {
+  if (!date) return '';
+  const [dateFormat] = date.split('T');
+  const [day, month, year] = dateFormat.split('-');
+  return `${day}-${monthNames[month - 1].shortName}-${year}`;
 };

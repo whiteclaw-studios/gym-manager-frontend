@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'react-emotion';
 import { WHITE } from '../../constants';
 import { MontserratBold, MontserratRegular } from '../../utils/fonts';
+import PaymentPopup from '../PaymentPopup';
 import { BackIcon, EditIcon, PauseIcon, ResumeIcon } from '../SpriteIcon';
 import GridData from './GridData';
 const Wrapper = styled('div')`
@@ -133,6 +134,29 @@ const FeesAndHistoryWrap = styled('div')`
   }
 `;
 class MemberProfile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showPaymentPopup: false,
+      currentPlan: {
+        id: props.planId,
+        index: this.findPlanIndex(),
+        amount: props.entirePlanDetails[this.findPlanIndex()].amount,
+        name: props.entirePlanDetails[this.findPlanIndex()].planName,
+      },
+    };
+  }
+  findPlanIndex = () => {
+    const { entirePlanDetails, planId } = this.props;
+    let index = -1;
+    for (let i = 0; i < entirePlanDetails.length; i += 1) {
+      if (entirePlanDetails[i].id === planId) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  };
   componentDidMount() {
     const { getFeeDetails = () => {}, memberUniqueId } = this.props;
     if (getFeeDetails) getFeeDetails(memberUniqueId);
@@ -192,9 +216,24 @@ class MemberProfile extends React.Component {
       bloodGroup,
     });
   };
+  closePaymentPopup = () => {
+    this.setState({
+      showPaymentPopup: false,
+    });
+  };
+  updatePlanIdWhilePayment = ({ index, id, amount, planName }) => {
+    this.setState({
+      currentPlan: {
+        id,
+        index,
+        amount,
+        name: planName,
+      },
+    });
+  };
   render() {
-    console.log('MemberProfile', this.props);
-
+    console.log('MemberProfile', this.props, this.state);
+    const { showPaymentPopup, currentPlan } = this.state;
     const {
       name,
       mobile,
@@ -203,7 +242,10 @@ class MemberProfile extends React.Component {
       isActive,
       updateMembershipStatus,
       onBack,
+      planDetails,
+      entirePlanDetails,
       selectMemberFeeDetails,
+      onPayFee,
     } = this.props;
     const memberFeeDetails = selectMemberFeeDetails(memberUniqueId);
     const {
@@ -212,6 +254,8 @@ class MemberProfile extends React.Component {
       isLoaded = false,
       feesHistory = [],
     } = memberFeeDetails;
+    const feeDuesData = feesHistory.filter((info) => !info.nextDuePaidOn);
+    const historyData = feesHistory.filter((info) => info.nextDuePaidOn);
     return (
       <Wrapper>
         <Heading>
@@ -287,7 +331,13 @@ class MemberProfile extends React.Component {
             isLoaded={isLoaded}
             isError={isError}
             isLoading={isLoading}
-            data={feesHistory}
+            data={feeDuesData}
+            headingInfo={['Fees', 'Due Date', 'dummy']}
+            onPay={() => {
+              this.setState({
+                showPaymentPopup: true,
+              });
+            }}
           />
           <GridData
             showHistory
@@ -296,9 +346,29 @@ class MemberProfile extends React.Component {
             isLoaded={isLoaded}
             isError={isError}
             isLoading={isLoading}
-            data={feesHistory}
+            data={historyData}
           />
         </FeesAndHistoryWrap>
+        <PaymentPopup
+          name={name}
+          open={showPaymentPopup}
+          planDetails={planDetails}
+          entirePlanDetails={entirePlanDetails}
+          planId={currentPlan.id}
+          selectedPlan={currentPlan.index}
+          feeAmount={currentPlan.amount}
+          updatePlanIdWhilePayment={this.updatePlanIdWhilePayment}
+          onPay={() => {
+            console.log('onPay called');
+            onPayFee({
+              currentPlan,
+              memberUniqueId,
+              successCallback: () => this.closePaymentPopup(),
+              failureCallback: () => this.closePaymentPopup(),
+            });
+          }}
+          onClose={() => this.closePaymentPopup()}
+        />
       </Wrapper>
     );
   }

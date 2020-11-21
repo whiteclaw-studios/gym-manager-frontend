@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { GREY, SECONDARY_BLACK, WHITE } from '../../constants';
 import { MontserratBold, MontserratRegular } from '../../utils/fonts';
 const Wrap = styled('div')`
@@ -104,8 +104,28 @@ function Card({
         </LiWrap>
         <LiWrap>
           <Item>{mobile}</Item>
-          {mobile && mailId && <Item>|</Item>}
-          {mailId && <Item>{mailId}</Item>}
+          {mobile && mailId && (
+            <Item
+              className={css`
+                @media (max-width: 460px) {
+                  display: none;
+                }
+              `}
+            >
+              |
+            </Item>
+          )}
+          {mailId && (
+            <Item
+              className={css`
+                @media (max-width: 460px) {
+                  display: none;
+                }
+              `}
+            >
+              {mailId}
+            </Item>
+          )}
         </LiWrap>
       </Section2>
     </Wrap>
