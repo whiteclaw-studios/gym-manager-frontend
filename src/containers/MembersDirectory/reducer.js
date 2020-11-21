@@ -5,8 +5,8 @@ import {
   LOAD_MEMBER_DETAILS,
   LOAD_MEMBER_FEE_DETAILS,
   LOAD_SEARCH_DATA,
-  REMOVE_MEMBER_IN_LIST,
   UPDATE_FILTER,
+  UPDATE_MEMBERSHIP_STATUS_IN_STORE,
   UPDATE_PAGE,
 } from './constants';
 const { perPage } = paginationConfigs;
@@ -140,13 +140,26 @@ const reducer = (preloadedState = null) => (
         },
       };
     }
-    case REMOVE_MEMBER_IN_LIST: {
+    case UPDATE_MEMBERSHIP_STATUS_IN_STORE: {
       const { payload } = action;
+      const { memberUniqueId, isActive } = payload;
       let membersList = get(state, 'membersInfo.data', []);
       const searchText = get(state, 'search.searchText', '');
-      membersList = membersList.filter(
-        (member) => member.id !== payload.memberUniqueId,
+      let reqdMember = membersList.filter(
+        (member) => member.id === memberUniqueId,
       );
+
+      membersList = membersList.filter(
+        (member) => member.id !== memberUniqueId,
+      );
+
+      reqdMember = reqdMember[0] || {};
+      reqdMember = {
+        ...reqdMember,
+        isActive,
+      };
+
+      membersList = [...membersList, { ...reqdMember }];
       const filteredData = applySearchAndFilterLogic({
         searchText,
         dataSource: membersList,

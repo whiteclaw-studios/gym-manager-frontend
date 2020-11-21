@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'react-emotion';
 import { WHITE } from '../../constants';
 import { MontserratBold, MontserratRegular } from '../../utils/fonts';
-import { BackIcon, EditIcon, PauseIcon } from '../SpriteIcon';
+import { BackIcon, EditIcon, PauseIcon, ResumeIcon } from '../SpriteIcon';
 import GridData from './GridData';
 const Wrapper = styled('div')`
   width: 100%;
@@ -200,7 +200,8 @@ class MemberProfile extends React.Component {
       mobile,
       email,
       memberUniqueId,
-      onPauseMembership,
+      isActive,
+      updateMembershipStatus,
       onBack,
       selectMemberFeeDetails,
     } = this.props;
@@ -209,6 +210,7 @@ class MemberProfile extends React.Component {
       isLoading = true,
       isError = false,
       isLoaded = false,
+      feesHistory = [],
     } = memberFeeDetails;
     return (
       <Wrapper>
@@ -216,7 +218,11 @@ class MemberProfile extends React.Component {
           <BackIcon onClick={onBack} />
           <Controls>
             <EditIcon onClick={this.onEditMember} />
-            <PauseIcon onClick={onPauseMembership} />
+            {isActive ? (
+              <PauseIcon onClick={updateMembershipStatus} />
+            ) : (
+              <ResumeIcon onClick={updateMembershipStatus} />
+            )}
           </Controls>
         </Heading>
         <InfoBox>
@@ -258,9 +264,9 @@ class MemberProfile extends React.Component {
               <EditIcon />
               <CTA>Edit Details</CTA>
             </IconButtonWrap>
-            <IconButtonWrap onClick={onPauseMembership}>
-              <PauseIcon />
-              <CTA>Pause Membership</CTA>
+            <IconButtonWrap onClick={updateMembershipStatus}>
+              {isActive ? <PauseIcon /> : <ResumeIcon />}
+              <CTA>{isActive ? 'Pause Membership' : 'Resume Membership'}</CTA>
             </IconButtonWrap>
             <BoxWrap
               className={css`
@@ -281,6 +287,7 @@ class MemberProfile extends React.Component {
             isLoaded={isLoaded}
             isError={isError}
             isLoading={isLoading}
+            data={feesHistory}
           />
           <GridData
             showHistory
@@ -289,6 +296,7 @@ class MemberProfile extends React.Component {
             isLoaded={isLoaded}
             isError={isError}
             isLoading={isLoading}
+            data={feesHistory}
           />
         </FeesAndHistoryWrap>
       </Wrapper>

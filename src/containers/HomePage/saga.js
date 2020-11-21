@@ -1,14 +1,14 @@
 import { put, takeEvery } from 'redux-saga/effects';
 
-export function* mainHomeSaga(params = {}) {
+export function* getFeeDetailsSaga(params = {}) {
   try {
   } catch (err) {
     console.error('Caught in homeSaga', err);
   }
 }
 
-function* watchHomeSaga() {
-  yield takeEvery('TEST', mainHomeSaga);
+function* watchGetFeeDetailsSaga() {
+  yield takeEvery('TEST', getFeeDetailsSaga);
 }
 
-export const homeSagas = [watchHomeSaga()];
+export const homeSagas = [watchGetFeeDetailsSaga()];

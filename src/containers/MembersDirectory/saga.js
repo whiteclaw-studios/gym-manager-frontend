@@ -10,7 +10,7 @@ import {
   loadMemberDetails,
   loadMemberFeeDetails,
   loadSearchData,
-  removeMemberInList,
+  updateMembershipStatusInStore,
 } from './actions';
 import {
   ADD_NEW_MEMBER,
@@ -18,6 +18,7 @@ import {
   GET_MEMBER_DETAILS,
   DELETE_MEMBER,
   GET_MEMBER_FEE_DETAILS,
+  UPDATE_MEMBERSHIP_STATUS,
 } from './constants';
 function* addNewMember(params = {}) {
   try {
@@ -30,6 +31,7 @@ function* addNewMember(params = {}) {
       age,
       gender,
       images,
+      bloodGroup,
       successCallback = () => {},
     } = params;
     const fieldKeys = {
@@ -40,11 +42,14 @@ function* addNewMember(params = {}) {
       planId,
       age,
       gender,
+      bloodGroup,
     };
+    console.log('fieldKeys', fieldKeys);
+
     var formData = new FormData();
     if (images.length > 0) {
       const { imageFile = '' } = images[0];
-      if (imageFile) formData.append('file', imageFile);
+      formData.append('file', imageFile);
     }
     // Object.keys(fieldKeys).map((key) => formData.append(key, fieldKeys[key]));
     formData.append('data', JSON.stringify(fieldKeys));
@@ -128,23 +133,28 @@ function* getMemberDetailsSaga() {
     console.error('Caught in getMemberDetailsSaga', err);
   }
 }
-function* deleteMemberSaga(params) {
+function* updateMembershipStatusSaga(params) {
   try {
     const {
       memberUniqueId,
+      isActive,
       successCallback = () => {},
       failureCallback = () => {},
     } = params;
+    console.log('params', params);
     const response = yield call(axiosWrapper, {
-      method: 'DELETE',
-      url: `${apiUrls.MEMBERS_URL}/${memberUniqueId}`,
+      method: 'PUT',
+      url: `${
+        apiUrls.MEMBER_STATUS_URL
+      }/${memberUniqueId}?isActive=${!!isActive}`,
     });
+    console.log('response', response);
     const processResponse = responseParser(response);
     if (!processResponse.isError) {
       yield put(
-        removeMemberInList({
-          name,
+        updateMembershipStatusInStore({
           memberUniqueId,
+          isActive: !!isActive,
         }),
       );
       successCallback();
@@ -152,7 +162,13 @@ function* deleteMemberSaga(params) {
       yield put(
         displayToaster({
           type: 'failure',
-          text: 'Something went wrong',
+          text: 'Something went wrong while updating status',
+        }),
+      );
+      yield put(
+        updateMembershipStatusInStore({
+          memberUniqueId,
+          isActive: !!isActive,
         }),
       );
       failureCallback();
@@ -175,10 +191,14 @@ function* getMemberFeeDetailsSaga(params) {
     });
     console.log('response', response);
     const processResponse = responseParser(response);
+    console.log('processResponse', processResponse);
+
     if (!processResponse.isError) {
+      const { data = {} } = processResponse;
       yield put(
         loadMemberFeeDetails({
           memberUniqueId,
+          feesHistory: data.feesHistory,
           isLoaded: true,
           isLoading: false,
           isError: false,
@@ -215,8 +235,8 @@ function* watchSearchMemberSaga() {
 function* watchGetMemberDetailsSaga() {
   yield takeEvery(GET_MEMBER_DETAILS, getMemberDetailsSaga);
 }
-function* watchDeleteMemberSaga() {
-  yield takeEvery(DELETE_MEMBER, deleteMemberSaga);
+function* watchUpdateMembershipStatusSaga() {
+  yield takeEvery(UPDATE_MEMBERSHIP_STATUS, updateMembershipStatusSaga);
 }
 function* watchGetMemberFeeDetailsSaga() {
   yield takeEvery(GET_MEMBER_FEE_DETAILS, getMemberFeeDetailsSaga);
@@ -225,6 +245,6 @@ export const membersDirectorySagas = [
   watchaddNewMember(),
   watchSearchMemberSaga(),
   watchGetMemberDetailsSaga(),
-  watchDeleteMemberSaga(),
+  watchUpdateMembershipStatusSaga(),
   watchGetMemberFeeDetailsSaga(),
 ];

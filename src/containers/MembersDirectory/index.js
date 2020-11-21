@@ -25,7 +25,7 @@ import {
 } from '../../selectors';
 import {
   addNewMember,
-  deleteMember,
+  updateMembershipStatus,
   getMemberDetails,
   getMemberFeeDetails,
   searchMembers,
@@ -38,7 +38,7 @@ import {
   get,
   scrollToTop,
 } from '../../utils/helpers';
-import DeleteConfirmation from '../../components/DeleteConfirmation';
+import ConfirmationPopup from '../../components/ConfirmationPopup';
 import RegisterNewMember from '../../components/RegisterNewMember/Loadable';
 import DropDown from '../../components/Dropdown';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
@@ -218,31 +218,29 @@ class MembersDirectory extends React.Component {
     scrollToTop();
   };
 
-  onDelete = (data) => {
-    const { name, memberId, memberUniqueId } = data;
+  updateMembershipStatus = () => {
+    console.log('updateMembershipStatus called');
     this.setState({
-      ...this.state,
-      name: {
-        ...this.state.name,
-        value: name,
-      },
-      memberId,
-      memberUniqueId,
       showDeleteConfirmation: true,
     });
   };
   closeDeleteConfirmation = () => {
-    this.resetState();
     this.setState({
       showDeleteConfirmation: false,
     });
   };
   confirmDeleteMember = () => {
-    const { memberUniqueId } = this.state;
+    const { memberUniqueId, isActive } = this.state;
     this.props.dispatch(
-      deleteMember({
+      updateMembershipStatus({
         memberUniqueId,
-        successCallback: this.closeDeleteConfirmation,
+        isActive,
+        successCallback: () => {
+          this.closeDeleteConfirmation();
+          this.setState({
+            isActive: !isActive,
+          });
+        },
         failureCallback: this.closeDeleteConfirmation,
       }),
     );
@@ -383,12 +381,33 @@ class MembersDirectory extends React.Component {
   onValueChange = (data) => {
     this.setState(data);
   };
-  onSelectDropdown = (index, name) => {
+  onSelectDropdown = (index, elementName) => {
+    console.log('onSelect', index, elementName, this.state);
+    let id = null;
+    let name = null;
+    if (elementName === 'branch') {
+      const { branchDetails } = this.props;
+      const reqdBranch = branchDetails[index];
+      id = reqdBranch.id;
+      name = reqdBranch.branchName;
+    } else if (elementName === 'plan') {
+      const { branchDetails } = this.props;
+      const { planDetails } =
+        branchDetails[this.state.branch.selectedItemIndex] || {};
+      const reqdPlan = planDetails[index];
+
+      id = reqdPlan.id;
+      name = reqdPlan.planName;
+    }
     this.setState({
-      [name]: {
+      [elementName]: {
+        ...this.state[elementName],
         selectedItemIndex: index,
+        showError: index < 0,
+        ...(id && { id }),
+        ...(name && { name }),
       },
-      ...(name === 'branch' && {
+      ...(elementName === 'branch' && {
         plan: {
           selectedItemIndex: -1,
           showError: false,
@@ -581,9 +600,9 @@ class MembersDirectory extends React.Component {
         mailId: email.value,
         age: age.value,
         gender: GENDER[gender.selectedItemIndex],
-        plan: this.getPlanDetails[plan.selectedItemIndex],
+        planId: plan.id,
         bloodGroup: BLOOD_GROUP_DATA[bloodGroup.selectedItemIndex],
-        branchId: this.getBranchInfoUsingId(branch.selectedItemIndex).id,
+        branchId: branch.id,
         images,
         successCallback: () => {
           this.resetState();
@@ -630,8 +649,11 @@ class MembersDirectory extends React.Component {
   onSelectMember = (memberInfo) => {
     console.log('memberInfo', memberInfo);
     this.storeMemberInfo(memberInfo);
+    const { isActive } = memberInfo;
     this.setState({
       showMemberProfile: true,
+      showEditScreen: false,
+      isActive,
     });
   };
   submitEdition = () => {
@@ -742,6 +764,7 @@ class MembersDirectory extends React.Component {
       showFilterIconInMobile,
       showMemberProfile,
       screenType,
+      isActive,
     } = this.state;
     const selectedBranchFilterIndex = get(filters, 'branch.index');
     const selectedPlanFilterIndex = get(filters, 'plan.index');
@@ -772,8 +795,9 @@ class MembersDirectory extends React.Component {
             plan={plan.name}
             planId={plan.id}
             address={address.value}
+            isActive={isActive}
             onEditMember={this.onEdit}
-            onPauseMembership={this.onDelete}
+            updateMembershipStatus={this.updateMembershipStatus}
             onBack={() =>
               this.setState({
                 showEditScreen: false,
@@ -960,13 +984,6 @@ class MembersDirectory extends React.Component {
                 name="membersDirectory"
               />
             </PaginationWrap>
-            <DeleteConfirmation
-              name={name.value}
-              memberUniqueId={memberUniqueId}
-              close={this.closeDeleteConfirmation}
-              show={showDeleteConfirmation}
-              confirmDeleteMember={this.confirmDeleteMember}
-            />
           </React.Fragment>
         ) : (
           <RegisterNewMember
@@ -1001,7 +1018,6 @@ class MembersDirectory extends React.Component {
                     });
                   }
                 : () => {
-                    this.resetState();
                     this.setState({
                       showEditScreen: false,
                       showMemberProfile: true,
@@ -1010,6 +1026,16 @@ class MembersDirectory extends React.Component {
             }
           />
         )}
+        <ConfirmationPopup
+          title="Delete Member ?"
+          infoText={`All the details related to ${name.value} will be deleted. Do you
+          want to delete anyway?`}
+          onNo={this.closeDeleteConfirmation}
+          show={showDeleteConfirmation}
+          onYes={this.confirmDeleteMember}
+          yesText="Delete"
+          noText="Cancel"
+        />
       </Wrapper>
     );
   }

@@ -3,16 +3,16 @@
     {
       "id": "./src/components/CardLayout/Card.js",
       "name": "./src/components/CardLayout/Card.js",
-      "file": "CardLayout.a2d279f77144a61774ef.js",
-      "publicPath": "CardLayout.a2d279f77144a61774ef.js"
+      "file": "CardLayout.e74974b191ad1ee9c349.js",
+      "publicPath": "CardLayout.e74974b191ad1ee9c349.js"
     }
   ],
   "./index": [
     {
       "id": "./src/components/CardLayout/index.js",
       "name": "./src/components/CardLayout/index.js",
-      "file": "CardLayout.a2d279f77144a61774ef.js",
-      "publicPath": "CardLayout.a2d279f77144a61774ef.js"
+      "file": "CardLayout.e74974b191ad1ee9c349.js",
+      "publicPath": "CardLayout.e74974b191ad1ee9c349.js"
     },
     {
       "id": "./src/components/EnquiryForm/index.js",
@@ -23,8 +23,8 @@
     {
       "id": "./src/components/MemberProfile/index.js",
       "name": "./src/components/MemberProfile/index.js",
-      "file": "MemberProfile.bf74bdf9917d83f1dbed.js",
-      "publicPath": "MemberProfile.bf74bdf9917d83f1dbed.js"
+      "file": "MemberProfile.08bcb8935433533ded53.js",
+      "publicPath": "MemberProfile.08bcb8935433533ded53.js"
     },
     {
       "id": "./src/components/MembersInfo/index.js",
@@ -57,8 +57,8 @@
     {
       "id": "./src/components/MemberProfile/GridData.js",
       "name": "./src/components/MemberProfile/GridData.js",
-      "file": "MemberProfile.bf74bdf9917d83f1dbed.js",
-      "publicPath": "MemberProfile.bf74bdf9917d83f1dbed.js"
+      "file": "MemberProfile.08bcb8935433533ded53.js",
+      "publicPath": "MemberProfile.08bcb8935433533ded53.js"
     }
   ],
   "./ExpandedView": [
@@ -675,6 +675,12 @@
       "publicPath": "bundle.js"
     },
     {
+      "id": "./src/containers/App/actions.js",
+      "name": "./src/containers/App/actions.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    },
+    {
       "id": "./src/containers/EnquiryDirectory/actions.js",
       "name": "./src/containers/EnquiryDirectory/actions.js",
       "file": "bundle.js",
@@ -1105,7 +1111,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../utils/warning": [
+  "./warning": [
     {
       "id": "./node_modules/react-redux/es/utils/warning.js",
       "name": "./node_modules/react-redux/es/utils/warning.js",
@@ -1327,7 +1333,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../Button": [
+  "../../components/Button": [
     {
       "id": "./src/components/Button/index.js",
       "name": "./src/components/Button/index.js",
@@ -1351,10 +1357,10 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../../components/DeleteConfirmation": [
+  "../../components/ConfirmationPopup": [
     {
-      "id": "./src/components/DeleteConfirmation/index.js",
-      "name": "./src/components/DeleteConfirmation/index.js",
+      "id": "./src/components/ConfirmationPopup/index.js",
+      "name": "./src/components/ConfirmationPopup/index.js",
       "file": "bundle.js",
       "publicPath": "bundle.js"
     }
@@ -1367,7 +1373,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../EllipsisLoader": [
+  "../../components/EllipsisLoader": [
     {
       "id": "./src/components/EllipsisLoader/index.js",
       "name": "./src/components/EllipsisLoader/index.js",
@@ -1391,7 +1397,7 @@
       "publicPath": "bundle.js"
     }
   ],
-  "../Input": [
+  "../../components/Input": [
     {
       "id": "./src/components/Input/index.js",
       "name": "./src/components/Input/index.js",
@@ -1555,6 +1561,12 @@
       "publicPath": "bundle.js"
     },
     {
+      "id": "./src/containers/HomePage/constants.js",
+      "name": "./src/containers/HomePage/constants.js",
+      "file": "bundle.js",
+      "publicPath": "bundle.js"
+    },
+    {
       "id": "./src/containers/LoginPage/constants.js",
       "name": "./src/containers/LoginPage/constants.js",
       "file": "bundle.js",
@@ -1563,14 +1575,6 @@
     {
       "id": "./src/containers/MembersDirectory/constants.js",
       "name": "./src/containers/MembersDirectory/constants.js",
-      "file": "bundle.js",
-      "publicPath": "bundle.js"
-    }
-  ],
-  "../App/actions": [
-    {
-      "id": "./src/containers/App/actions.js",
-      "name": "./src/containers/App/actions.js",
       "file": "bundle.js",
       "publicPath": "bundle.js"
     }

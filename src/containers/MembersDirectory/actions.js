@@ -1,16 +1,16 @@
 import {
   ADD_NEW_MEMBER,
-  DELETE_MEMBER,
   GET_MEMBER_DETAILS,
   INCLUDE_NEW_MEMBER_IN_LIST,
   LOAD_MEMBER_DETAILS,
   LOAD_SEARCH_DATA,
-  REMOVE_MEMBER_IN_LIST,
   UPDATE_FILTER,
   SEARCH_MEMBERS,
   UPDATE_PAGE,
   GET_MEMBER_FEE_DETAILS,
   LOAD_MEMBER_FEE_DETAILS,
+  UPDATE_MEMBERSHIP_STATUS,
+  UPDATE_MEMBERSHIP_STATUS_IN_STORE,
 } from './constants';
 
 export function addNewMember(payload) {
@@ -54,15 +54,15 @@ export function includeMemberInList(payload) {
     payload,
   };
 }
-export function deleteMember(payload) {
+export function updateMembershipStatus(payload) {
   return {
-    type: DELETE_MEMBER,
+    type: UPDATE_MEMBERSHIP_STATUS,
     ...payload,
   };
 }
-export function removeMemberInList(payload) {
+export function updateMembershipStatusInStore(payload) {
   return {
-    type: REMOVE_MEMBER_IN_LIST,
+    type: UPDATE_MEMBERSHIP_STATUS_IN_STORE,
     payload,
   };
 }

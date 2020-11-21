@@ -107,4 +107,9 @@ export const DownIcon = styled(SpriteIcon)`
   width: 8px;
   height: 6px;
 `;
+export const ResumeIcon = styled(SpriteIcon)`
+  background-position: -274px -57px;
+  width: 16px;
+  height: 18px;
+`;
 export default SpriteIcon;

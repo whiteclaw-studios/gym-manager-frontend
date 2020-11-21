@@ -132,6 +132,7 @@ export default class CardLayout extends React.Component {
         bloodGroup,
         mailId,
         id: uniqueId,
+        isActive,
       } = member;
       const branchInfo = getBranchInfo(branchId);
       const planInfo = getPlanInfo(branchId, planId);
@@ -166,6 +167,7 @@ export default class CardLayout extends React.Component {
           allowEdit={allowEdit}
           showEmail={showEmail}
           showMobile={showMobile}
+          isActive={isActive}
         />
       );
     });

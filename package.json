@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "webpack --mode production -d",
+    "bundle": "webpack -d",
     "clean": "rm -rf public/*",
     "start": "npm run clean && npm run bundle && NODE_ENV=prod babel-node  server",
     "build": "npm run clean && npm run bundle && NODE_ENV=prod babel-node  server/buildHtml",
