@@ -62,7 +62,7 @@ export default class Panel extends React.Component {
       itemsArray = [],
       iLoop = 12 / 4;
     const {
-      validateMonthPanel = false,
+      validateMonthPanel = true,
       validateStartMonth,
       validateEndMonth,
     } = this.props;
@@ -77,7 +77,7 @@ export default class Panel extends React.Component {
         const index = (i - 1) * 4 + j - 1;
         const enable = validateMonthPanel
           ? index >= validateStartMonth && index <= validateEndMonth
-          : false;
+          : true;
         itemsArray.push(
           <ItemWrapper>
             <Item

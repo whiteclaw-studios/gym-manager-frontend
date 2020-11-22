@@ -883,7 +883,7 @@ DatePicker.defaultProps = {
   showDataName: false,
   showYear: true,
   initialSelectDate: '',
-  validateMonthPanel: false,
+  validateMonthPanel: true,
   // autScroll: true,
   // showError: false,
 };
