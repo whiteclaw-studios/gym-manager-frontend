@@ -29,8 +29,8 @@ const ImageWrap = styled('div')`
     height: 12rem;
   }
   @media (max-width: 420px) {
-    width: 10rem;
-    height: 10rem;
+    width: 7rem;
+    height: 7rem;
   }
 `;
 const ProfilePic = styled('img')`
@@ -81,6 +81,9 @@ const Title = styled('span')`
   @media (max-width: 992px) {
     font-size: 1.2rem;
   }
+  @media (max-width: 360px) {
+    font-size: 1rem;
+  }
 `;
 const Value = styled('span')`
   font-family: ${MontserratRegular};
@@ -89,6 +92,9 @@ const Value = styled('span')`
   text-align: center;
   @media (max-width: 992px) {
     font-size: 1.2rem;
+  }
+  @media (max-width: 360px) {
+    font-size: 1rem;
   }
 `;
 const BoxWrap = styled('div')`
@@ -136,13 +142,15 @@ const FeesAndHistoryWrap = styled('div')`
 class MemberProfile extends React.Component {
   constructor(props) {
     super(props);
+    const { planName, amount } =
+      props.entirePlanDetails[this.findPlanIndex()] || {};
     this.state = {
       showPaymentPopup: false,
       currentPlan: {
         id: props.planId,
         index: this.findPlanIndex(),
-        amount: props.entirePlanDetails[this.findPlanIndex()].amount,
-        name: props.entirePlanDetails[this.findPlanIndex()].planName,
+        amount: amount,
+        name: planName,
       },
     };
   }
@@ -237,7 +245,7 @@ class MemberProfile extends React.Component {
     const {
       name,
       mobile,
-      email,
+      mailId,
       memberUniqueId,
       isActive,
       updateMembershipStatus,
@@ -278,7 +286,7 @@ class MemberProfile extends React.Component {
               <Name>{name}</Name>
               <LiWrap>
                 <Item>{mobile} </Item>
-                {mobile && email && (
+                {mobile && mailId && (
                   <Item
                     className={css`
                       margin: 0 0.5rem;
@@ -290,7 +298,16 @@ class MemberProfile extends React.Component {
                     |{' '}
                   </Item>
                 )}
-                <Item> {email}</Item>
+                <Item
+                  className={css`
+                    @media (max-width: 360px) {
+                      font-size: 1rem;
+                    }
+                  `}
+                >
+                  {' '}
+                  {mailId}
+                </Item>
               </LiWrap>
               <BoxWrap
                 className={css`

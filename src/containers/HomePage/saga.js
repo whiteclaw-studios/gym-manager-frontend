@@ -1,10 +1,15 @@
 import { put, call, takeEvery } from 'redux-saga/effects';
 import { responseParser } from '../../utils/responseParser';
-import { GET_DATE_FILTERED_DATA, GET_FEE_DUE_DETAILS } from './constants';
+import {
+  GET_DATE_FILTERED_DATA,
+  GET_FEE_DUE_DETAILS,
+  UPDATE_FEE_DETAILS,
+} from './constants';
 import axiosWrapper from '../../utils/requestWrapper';
 import { apiUrls } from '../../constants';
 import { loadDateFilteredData, loadFeeDueDetails } from './actions';
 import { getCookie } from '../../utils/helpers';
+import { togglePageLoader } from '../App/actions';
 
 export function* getFeeDueDetailsSaga(params = {}) {
   try {
@@ -47,7 +52,7 @@ export function* getFeeDueDetailsSaga(params = {}) {
     console.error('Caught in homeSaga', err);
   }
 }
-export function* getDateFilteredDataSaga(params = {}) {
+function* getDateFilteredDataSaga(params = {}) {
   try {
     const { startDate, endDate, sDate, eDate } = params;
     const response = yield call(axiosWrapper, {
@@ -71,14 +76,57 @@ export function* getDateFilteredDataSaga(params = {}) {
     console.error('Caught in getDateFilteredDataSaga', err);
   }
 }
+function* updateFeeDetails(params) {
+  try {
+    const {
+      memberUniqueId,
+      currentPlan,
+      successCallback = () => {},
+      failureCallback = () => {},
+    } = params;
+    yield put(togglePageLoader(true));
+    const { id } = currentPlan;
+    const response = yield call(axiosWrapper, {
+      method: 'POST',
+      url: `${apiUrls.UPDATE_FEE_DETAILS_URL}`,
+      data: {
+        memberId: memberUniqueId,
+        planDetailsId: id,
+      },
+    });
+    const processResponse = responseParser(response);
+
+    if (!processResponse.isError) {
+      yield call(getFeeDueDetailsSaga);
+      yield put(
+        displayToaster({
+          type: 'Success',
+          text: 'Fee paid successfully',
+          timeout: 3000,
+        }),
+      );
+      if (successCallback) successCallback();
+    } else {
+      if (failureCallback) failureCallback();
+    }
+  } catch (err) {
+    console.error('Caught in updateFeeDetails', err);
+  } finally {
+    yield put(togglePageLoader(false));
+  }
+}
 function* watchGetFeeDueDetailsSaga() {
   yield takeEvery(GET_FEE_DUE_DETAILS, getFeeDueDetailsSaga);
 }
 function* watchGetDateFilteredDataSaga() {
   yield takeEvery(GET_DATE_FILTERED_DATA, getDateFilteredDataSaga);
 }
+function* watchUpdateFeeDetails() {
+  yield takeEvery(UPDATE_FEE_DETAILS, updateFeeDetails);
+}
 
 export const homeSagas = [
   watchGetFeeDueDetailsSaga(),
   watchGetDateFilteredDataSaga(),
+  watchUpdateFeeDetails(),
 ];

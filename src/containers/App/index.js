@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { renderRoutes } from 'react-router-config';
 import '../../../globalStyles';
 import { connect } from 'react-redux';
-import { BG_COLOR } from '../../constants';
+import { BG_COLOR, RED } from '../../constants';
 import Header from '../../components/Header';
 import ToasterManager from '../../components/ToasterManager';
 import {
@@ -43,6 +43,14 @@ const ChildrenWrap = styled('div')`
     margin-left: 0;
   }
 `;
+const Error = styled('div')`
+  color: ${RED};
+  font-size: 1.4rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const menus = [
   {
     menu: 'Dashboard',
@@ -75,6 +83,7 @@ class App extends React.Component {
     this.deferredPrompt = null;
 
     this.state = {
+      hasError: false,
       showInstallUI: false,
       showHeader: false,
       mountToasterManager: false,
@@ -225,7 +234,18 @@ class App extends React.Component {
       expandNavbar: false,
     });
   };
-
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    console.error(
+      'Error caught in App getDerivedStateFromError',
+      error.message,
+      error.stack,
+    );
+    return { hasError: true };
+  }
+  componentDidCatch(error) {
+    console.error('App componentDidCatch', error);
+  }
   render() {
     const {
       route = {},
@@ -244,54 +264,64 @@ class App extends React.Component {
       mountNavBar,
       showNavBar,
       navmenu = {},
+      hasError,
     } = this.state;
     const { pageLoaderState } = appState || {};
     return (
       <Wrap>
-        {showInstallUI && (
-          <button onClick={this.promptUserToInstall}>Add to home screen</button>
-        )}
-        <Header
-          show={this.state.showHeader}
-          expandNavbar={this.expandNavbar}
-          showNavBar={this.showNavBar}
-          logo={logo}
-        />
-        {!isAdminInfoLoaded ? (
-          <SplashScreen />
+        {hasError ? (
+          <Error>Something went wrong</Error>
         ) : (
-          <ChildrenWrap>
-            {renderRoutes(route.routes, {
-              ...this.props,
-              showHeaderHandle: this.showHeaderHandle,
-              hideHeader: this.hideHeader,
-              showNavBar: this.showNavBar,
-              hideNavBar: this.hideNavBar,
-              getBranchInfo,
-              getPlanInfo,
-              allowedBranchInfo,
-              updateActiveNavIndex: this.updateActiveNavIndex,
-            })}
-          </ChildrenWrap>
-        )}
-        {mountNavBar && showNavBar && (
-          <NavBar
-            activeIndex={navmenu.activeIndex}
-            updateActiveNavIndex={this.updateActiveNavIndex}
-            history={this.props.history}
-            expandNavbar={this.expandNavbar}
-            shrinkNavbar={this.shrinkNavbar}
-            navbarState={this.state.expandNavbar}
-            hideNavBar={this.hideNavBar}
-            logo={logo}
-            menus={menus}
-            footerMenus={footerMenus}
-          />
-        )}
-        {mountToasterManager && (
           <React.Fragment>
-            <ToasterManager {...toasterConf} />
-            {pageLoaderState && <PageLoader />}
+            {showInstallUI && (
+              <button onClick={this.promptUserToInstall}>
+                Add to home screen
+              </button>
+            )}
+
+            <Header
+              show={this.state.showHeader}
+              expandNavbar={this.expandNavbar}
+              showNavBar={this.showNavBar}
+              logo={logo}
+            />
+            {!isAdminInfoLoaded ? (
+              <SplashScreen />
+            ) : (
+              <ChildrenWrap>
+                {renderRoutes(route.routes, {
+                  ...this.props,
+                  showHeaderHandle: this.showHeaderHandle,
+                  hideHeader: this.hideHeader,
+                  showNavBar: this.showNavBar,
+                  hideNavBar: this.hideNavBar,
+                  getBranchInfo,
+                  getPlanInfo,
+                  allowedBranchInfo,
+                  updateActiveNavIndex: this.updateActiveNavIndex,
+                })}
+              </ChildrenWrap>
+            )}
+            {mountNavBar && showNavBar && (
+              <NavBar
+                activeIndex={navmenu.activeIndex}
+                updateActiveNavIndex={this.updateActiveNavIndex}
+                history={this.props.history}
+                expandNavbar={this.expandNavbar}
+                shrinkNavbar={this.shrinkNavbar}
+                navbarState={this.state.expandNavbar}
+                hideNavBar={this.hideNavBar}
+                logo={logo}
+                menus={menus}
+                footerMenus={footerMenus}
+              />
+            )}
+            {mountToasterManager && (
+              <React.Fragment>
+                <ToasterManager {...toasterConf} />
+                {pageLoaderState && <PageLoader />}
+              </React.Fragment>
+            )}
           </React.Fragment>
         )}
       </Wrap>

@@ -4,6 +4,7 @@ import {
   GET_FEE_DUE_DETAILS,
   LOAD_DATE_FILTERED_DATA,
   LOAD_FEE_DUE_DETAILS,
+  UPDATE_FEE_DETAILS,
   UPDATE_FILTER,
   UPDATE_SOURCE_DATA,
 } from './constants';
@@ -47,5 +48,11 @@ export function updateSourceData(payload) {
   return {
     type: UPDATE_SOURCE_DATA,
     payload,
+  };
+}
+export function updateFeeDetails(payload) {
+  return {
+    type: UPDATE_FEE_DETAILS,
+    ...payload,
   };
 }

@@ -104,7 +104,7 @@ export default class MembersInfo extends React.Component {
     } = this.props;
     return data.map((member, index) => {
       const {
-        name,
+        memberName: name,
         id: memberUniqueId,
         membershipId: memberId,
         planDetailsId: planId,
@@ -139,8 +139,6 @@ export default class MembersInfo extends React.Component {
           mailId={mailId}
           isAllowExpand={isAllowExpand}
           hidePlan={hidePlan}
-          onEditMember={onEditMember}
-          onDeleteMember={onDeleteMember}
           allowEdit={allowEdit}
         />
       );

@@ -63,8 +63,6 @@ function ItemRow({
   openPaymentPopup,
   index,
   isAllowExpand = true,
-  hidePlan = false,
-  allowEdit = false,
   onEditMember = () => {},
   onDeleteMember = () => {},
 }) {
@@ -77,7 +75,10 @@ function ItemRow({
             openPaymentPopup({
               name,
               memberId,
+              memberUniqueId,
               plan,
+              branchId,
+              planId,
               branch,
               due,
             })

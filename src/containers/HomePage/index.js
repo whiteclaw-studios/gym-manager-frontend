@@ -10,6 +10,7 @@ import {
   applyDateFilter,
   getDateFilteredData,
   getFeeDueDetails,
+  updateFeeDetails,
   updateFilter,
   updateSourceData,
 } from './actions';
@@ -151,6 +152,43 @@ class HomePage extends React.Component {
       .replace('YYYY', year);
     return format;
   };
+  getEntirePlanDetails = () => {
+    const memberInfo = get(this.state, 'paymentPopupInfo.memberInfo', {});
+    const { branchId } = memberInfo || {};
+    const { branchDetails = [] } = this.props;
+    if (!branchId) return [];
+
+    return (
+      branchDetails.filter((branch) => branch.id === branchId)[0].planDetails ||
+      []
+    );
+  };
+  getSelectedPlanIndex = () => {
+    const planDetails = this.getEntirePlanDetails();
+    const memberInfo = get(this.state, 'paymentPopupInfo.memberInfo', {});
+    const { planId } = memberInfo || {};
+    let index = -1;
+    for (let i = 0; i < planDetails.length; i += 1) {
+      if (planDetails[i].id === planId) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  };
+  getPlanDetails = () => {
+    const entirePlanDetails = this.getEntirePlanDetails();
+    console.log('entirePlanDetails', entirePlanDetails);
+    return entirePlanDetails.map((plan) => plan.planName);
+  };
+
+  getFeeAmount = () => {
+    const entirePlanDetails = this.getEntirePlanDetails();
+    const index = this.getSelectedPlanIndex();
+    console.log('getFeeAmount', index, entirePlanDetails);
+    if (index < 0) return 0;
+    return entirePlanDetails[index].amount;
+  };
   componentDidUpdate(prevProps) {
     const oldStartDate = get(
       prevProps,
@@ -246,7 +284,12 @@ class HomePage extends React.Component {
       pageData,
       branchDetails,
     } = this.props;
-    const { showFilters, showFilterIconInMobile } = this.state;
+    const {
+      showFilters,
+      showFilterIconInMobile,
+      paymentPopupInfo,
+    } = this.state;
+    const { memberInfo = {}, open } = paymentPopupInfo;
     const { isLoading } = get(pageData, 'memberFeesInfo', {});
     const { filters } = pageData;
     const branchFilters = constructBranchFilters(branchDetails);
@@ -254,7 +297,7 @@ class HomePage extends React.Component {
     const selectedFromDate = get(filters, 'startDate.selectedDate', '');
     const selectedToDate = get(filters, 'endDate.selectedDate', '');
 
-    console.log('HomePage', pageData, isLoading);
+    console.log('HomePage', pageData, isLoading, this.state);
 
     return (
       <Wrapper>
@@ -437,7 +480,36 @@ class HomePage extends React.Component {
           isLoading={isLoading}
         />
         <PaymentPopup
-          {...this.state.paymentPopupInfo}
+          name={memberInfo.name}
+          open={open}
+          planDetails={this.getPlanDetails()}
+          entirePlanDetails={this.getEntirePlanDetails()}
+          planId={memberInfo.planId}
+          selectedPlan={this.getSelectedPlanIndex()}
+          feeAmount={this.getFeeAmount()}
+          updatePlanIdWhilePayment={({ id }) => {
+            this.setState({
+              paymentPopupInfo: {
+                memberInfo: {
+                  ...this.state.paymentPopupInfo.memberInfo,
+                  planId: id,
+                },
+              },
+            });
+          }}
+          onPay={() => {
+            const { planId } = memberInfo;
+            this.props.dispatch(
+              updateFeeDetails({
+                currentPlan: {
+                  id: planId,
+                },
+                memberUniqueId: memberInfo.memberUniqueId,
+                successCallback: () => this.onClosePaymentPopup(),
+                failureCallback: () => this.onClosePaymentPopup(),
+              }),
+            );
+          }}
           onClose={this.onClosePaymentPopup}
         />
       </Wrapper>

@@ -711,21 +711,21 @@ class MembersDirectory extends React.Component {
       photoS3Key,
       bloodGroup: oldBG,
     } = oldMemberInfo;
-    console.log(
-      oldMemberInfo,
-      this.state,
-      oldName !== name.value,
-      mailId !== email.value,
-      oldAge !== age.value,
-      oldFatherName !== fatherName.value,
-      mobileNumber != mobile.value,
-      oldGender !== gender.value,
-      branchId !== branch.id,
-      planDetailsId !== plan.id,
-      oldAddress !== address.value,
-      photoS3Key !== images[0].src,
-      oldBG !== bloodGroup.name,
-    );
+    // console.log(
+    //   oldMemberInfo,
+    //   this.state,
+    //   oldName !== name.value,
+    //   mailId !== email.value,
+    //   oldAge !== age.value,
+    //   oldFatherName !== fatherName.value,
+    //   mobileNumber != mobile.value,
+    //   oldGender !== gender.value,
+    //   branchId !== branch.id,
+    //   planDetailsId !== plan.id,
+    //   oldAddress !== address.value,
+    //   photoS3Key !== images[0].src,
+    //   oldBG !== bloodGroup.name,
+    // );
     if (
       oldName !== name.value ||
       mailId !== email.value ||
@@ -739,7 +739,6 @@ class MembersDirectory extends React.Component {
       photoS3Key !== images[0].src ||
       oldBG !== bloodGroup.name
     ) {
-      console.log('Make edit api call');
       this.props.dispatch(
         submitEditMember({
           memberUniqueId,

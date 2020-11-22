@@ -118,6 +118,10 @@ function Card({
           {mailId && (
             <Item
               className={css`
+                max-width: 10rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
                 @media (max-width: 460px) {
                   display: none;
                 }
