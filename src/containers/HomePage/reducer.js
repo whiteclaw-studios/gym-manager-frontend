@@ -136,7 +136,7 @@ const reducer = (preloadedState = null) => (
       const { sDate, eDate } = payload;
       const dataSource = get(
         state,
-        `memberFeesInfo.${sDate}-${eDate}.data`,
+        `memberFeesInfo.${sDate} - ${eDate}.data`,
         [],
       );
       const filteredData = applySearchAndFilterLogic({

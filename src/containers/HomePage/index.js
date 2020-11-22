@@ -11,6 +11,7 @@ import {
   getDateFilteredData,
   getFeeDueDetails,
   updateFilter,
+  updateSourceData,
 } from './actions';
 import {
   constructBranchFilters,
@@ -181,11 +182,16 @@ class HomePage extends React.Component {
       'pageData.applyDateFilter',
       false,
     );
-
+    console.log(
+      'componentDidUpdate',
+      isDateFilterApplied1 !== isDateFilterApplied2 && isDateFilterApplied2,
+      isDateFilterApplied2 && oldStartDate !== newStartDate,
+      !isDateFilterApplied2 && oldEndDate !== newEndDate,
+    );
     if (
       (isDateFilterApplied1 !== isDateFilterApplied2 && isDateFilterApplied2) ||
       (isDateFilterApplied2 && oldStartDate !== newStartDate) ||
-      (!isDateFilterApplied2 && oldEndDate !== newEndDate)
+      (isDateFilterApplied2 && oldEndDate !== newEndDate)
     ) {
       const isValid = isGreaterThanOrEqualTo(newStartDate, newEndDate);
       console.log('componentDidUpdate 2', isValid, newStartDate, newEndDate);
@@ -193,9 +199,19 @@ class HomePage extends React.Component {
         //check already data available for those dates
         const alreadyDataAvailable = get(
           this.props,
-          `pageData.memberFeesInfo.${newStartDate - newEndDate}.isLoaded`,
+          `pageData.memberFeesInfo.${newStartDate}-${newEndDate}.isLoaded`,
           false,
         );
+        console.log(
+          'componentDidUpdate 3',
+          alreadyDataAvailable,
+          get(this.props, 'pageData.memberFeesInfo'),
+          get(
+            this.props,
+            `pageData.memberFeesInfo.${newStartDate}-${newEndDate}`,
+          ),
+        );
+
         if (!alreadyDataAvailable) {
           const [day1, month1, year1] = newStartDate.split('/');
           const formattedDate1 = `${year1}-${month1}-${day1}`;
@@ -210,12 +226,14 @@ class HomePage extends React.Component {
               eDate: newEndDate,
             }),
           );
-        }else{
+        } else {
           // already data available so load the data into UI
-          this.props.dispatch(updateSourceData({
-            sDate: newStartDate,
+          this.props.dispatch(
+            updateSourceData({
+              sDate: newStartDate,
               eDate: newEndDate,
-          }))
+            }),
+          );
         }
       }
     }
