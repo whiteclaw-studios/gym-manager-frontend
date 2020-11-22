@@ -10,6 +10,7 @@ import {
   togglePageLoader,
 } from '../App/actions';
 import {
+  editMemberInfoInStore,
   includeMemberInList,
   loadMemberDetails,
   loadMemberFeeDetails,
@@ -25,11 +26,13 @@ import {
   GET_MEMBER_FEE_DETAILS,
   UPDATE_MEMBERSHIP_STATUS,
   UPDATE_FEE_DETAILS,
+  SUBMIT_EDIT_MEMBER,
 } from './constants';
 function* addNewMember(params = {}) {
   try {
     const {
       name,
+      fatherName,
       mailId,
       mobileNumber,
       branchId,
@@ -38,20 +41,21 @@ function* addNewMember(params = {}) {
       gender,
       images,
       bloodGroup,
+      feeAmount,
       successCallback = () => {},
     } = params;
     const fieldKeys = {
       name,
+      fatherName,
       mailId,
       mobileNumber,
       branchId,
-      planId,
+      planDetailsId: planId,
       age,
       gender,
       bloodGroup,
     };
-    console.log('fieldKeys', fieldKeys);
-
+    yield put(togglePageLoader(true));
     var formData = new FormData();
     if (images.length > 0) {
       const { imageFile = '' } = images[0];
@@ -77,12 +81,85 @@ function* addNewMember(params = {}) {
         }),
       );
       yield put(includeMemberInList(data));
+      const { id: memberUniqueId, planDetailsId } = data;
+      yield call(updateFeeDetailsSaga, {
+        memberUniqueId,
+        currentPlan: {
+          id: planDetailsId,
+          amount: feeAmount,
+        },
+      });
       successCallback();
     } else {
       console.error('Error in adding member', parsedResponse);
     }
   } catch (err) {
     console.error('Caught in addNewMember', err);
+  } finally {
+    yield put(togglePageLoader(false));
+  }
+}
+function* editMemberSaga(params = {}) {
+  try {
+    const {
+      memberUniqueId,
+      name,
+      fatherName,
+      mailId,
+      mobileNumber,
+      branchId,
+      planId,
+      age,
+      gender,
+      images,
+      bloodGroup,
+      successCallback = () => {},
+    } = params;
+    const fieldKeys = {
+      name,
+      fatherName,
+      mailId,
+      mobileNumber,
+      branchId,
+      planDetailsId: planId,
+      age,
+      gender,
+      bloodGroup,
+    };
+    yield put(togglePageLoader(true));
+    var formData = new FormData();
+    if (images.length > 0) {
+      const { imageFile = '' } = images[0];
+      formData.append('file', imageFile);
+    }
+    // Object.keys(fieldKeys).map((key) => formData.append(key, fieldKeys[key]));
+    formData.append('data', JSON.stringify(fieldKeys));
+    const response = yield call(axiosWrapper, {
+      method: 'PUT',
+      headers: { 'Content-type': 'multipart/form-data' },
+      url: `${apiUrls.MEMBERS_URL}/${memberUniqueId}`,
+      data: formData,
+    });
+
+    const parsedResponse = responseParser(response);
+    if (!parsedResponse.isError) {
+      const { data } = parsedResponse;
+      yield put(
+        displayToaster({
+          type: 'success',
+          text: 'Successfully edited',
+          timeout: 2000,
+        }),
+      );
+      yield put(editMemberInfoInStore(data));
+      successCallback();
+    } else {
+      console.error('Error in editMemberSaga', parsedResponse);
+    }
+  } catch (err) {
+    console.error('Caught in editMemberSaga', err);
+  } finally {
+    yield put(togglePageLoader(false));
   }
 }
 function* searchMemberSaga(params = {}) {
@@ -297,6 +374,9 @@ function* watchGetMemberFeeDetailsSaga() {
 function* watchUpdateFeeDetailsSaga() {
   yield takeEvery(UPDATE_FEE_DETAILS, updateFeeDetailsSaga);
 }
+function* watchEditMemberSaga() {
+  yield takeEvery(SUBMIT_EDIT_MEMBER, editMemberSaga);
+}
 export const membersDirectorySagas = [
   watchaddNewMember(),
   watchSearchMemberSaga(),
@@ -304,4 +384,5 @@ export const membersDirectorySagas = [
   watchUpdateMembershipStatusSaga(),
   watchGetMemberFeeDetailsSaga(),
   watchUpdateFeeDetailsSaga(),
+  watchEditMemberSaga(),
 ];

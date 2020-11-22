@@ -9,6 +9,7 @@ import {
   UPDATE_MEMBERSHIP_STATUS_IN_STORE,
   UPDATE_PAGE,
   UPDATE_STORE_AFTER_PAYMENT,
+  EDIT_MEMBER_INFO_IN_STORE,
 } from './constants';
 const { perPage } = paginationConfigs;
 export const initialState = {
@@ -244,6 +245,27 @@ const reducer = (preloadedState = null) => (
         membersInfo: {
           ...state.membersInfo,
           data: newData,
+          logicAppliedData: filteredData,
+        },
+      };
+    }
+    case EDIT_MEMBER_INFO_IN_STORE: {
+      const { payload } = action;
+      const { id } = payload;
+      let membersList = get(state, 'membersInfo.data', []);
+      const searchText = get(state, 'search.searchText', '');
+      membersList = membersList.filter((member) => member.id !== id);
+      membersList = [...membersList, payload];
+      const filteredData = applySearchAndFilterLogic({
+        searchText,
+        dataSource: membersList,
+        filters: state.filters,
+      });
+      return {
+        ...state,
+        membersInfo: {
+          ...state.membersInfo,
+          data: membersList,
           logicAppliedData: filteredData,
         },
       };

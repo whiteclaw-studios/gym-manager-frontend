@@ -52,5 +52,6 @@ export const apiUrls = {
   UPDATE_FEE_DETAILS_URL: `${BASE_URL}/update_fee_details`,
   FEE_DUE_DETAILS_IN_RANGE: `${BASE_URL}/fees_due_details_in_range`,
 };
+export const RUPEE_SYMBOL = '₹';
 
 export const SPRITE_IMAGE = '';

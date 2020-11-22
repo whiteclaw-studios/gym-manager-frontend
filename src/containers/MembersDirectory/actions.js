@@ -13,6 +13,9 @@ import {
   UPDATE_MEMBERSHIP_STATUS_IN_STORE,
   UPDATE_FEE_DETAILS,
   UPDATE_STORE_AFTER_PAYMENT,
+  SUBMIT_EDIT_MEMBER,
+  EDIT_MEMBER_INFO,
+  EDIT_MEMBER_INFO_IN_STORE,
 } from './constants';
 
 export function addNewMember(payload) {
@@ -95,6 +98,24 @@ export function updateFeeDetails(payload) {
 export function updateStoreAfterPayment(payload) {
   return {
     type: UPDATE_STORE_AFTER_PAYMENT,
+    payload,
+  };
+}
+export function submitEditMember(payload) {
+  return {
+    type: SUBMIT_EDIT_MEMBER,
+    ...payload,
+  };
+}
+export function editMemberInfo(payload) {
+  return {
+    type: EDIT_MEMBER_INFO,
+    payload,
+  };
+}
+export function editMemberInfoInStore(payload) {
+  return {
+    type: EDIT_MEMBER_INFO_IN_STORE,
     payload,
   };
 }

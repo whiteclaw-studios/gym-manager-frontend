@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import {
   BLOOD_GROUP_DATA,
   GENDER,
+  GREEN,
   RED,
+  RUPEE_SYMBOL,
   SECONDARY_BLACK,
   WHITE,
 } from '../../constants';
@@ -12,7 +14,7 @@ import Button, { InvertSecondaryButton } from '../Button';
 import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
 import UploadImage from '../UploadImage';
-import { MontserratLight } from '../../utils/fonts';
+import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import { BackIcon } from '../SpriteIcon';
 const Wrap = styled('div')`
   width: 100%;
@@ -110,12 +112,31 @@ const BackWrap = styled('div')`
     cursor: default;
   }
 `;
+const Note = styled('p')`
+  color: ${GREEN};
+  font-size: 1.4rem;
+  padding: 1rem;
+  font-family: ${MontserratRegular};
+  @media (max-width: 992px) {
+    padding: 2.4rem 1rem;
+  }
+`;
 export default class RegisterNewMember extends React.Component {
   constructor(props) {
     super(props);
     this.props.showHeaderHandle(); // to show the header
   }
-
+  getTotalAmount = () => {
+    const { entirePlanDetails, plan, registerAmount, type } = this.props;
+    if (type !== 'REGISTER') return 0;
+    if (plan.selectedItemIndex >= 0) {
+      return (
+        parseInt(registerAmount, 10) +
+        parseInt(entirePlanDetails[plan.selectedItemIndex].amount, 10)
+      );
+    }
+    return 0;
+  };
   render() {
     const {
       type,
@@ -139,8 +160,11 @@ export default class RegisterNewMember extends React.Component {
       onRegister,
       onEdit,
       onCancel,
+      entirePlanDetails,
+      registerAmount,
     } = this.props;
-    console.log('this.props', this.props);
+    const feeAmount = this.getTotalAmount();
+
     return (
       <Wrap>
         <BackWrap>
@@ -282,6 +306,9 @@ export default class RegisterNewMember extends React.Component {
               <UploadImage images={images} chooseImage={chooseImage} />
             </Column>
           </Row>
+          {feeAmount > 0 && (
+            <Note>Amount to be paid {`${RUPEE_SYMBOL}${feeAmount}`}</Note>
+          )}
           <Controls>
             <Cancel onClick={onCancel}>Cancel</Cancel>
             <Register onClick={type === 'REGISTER' ? onRegister : onEdit}>

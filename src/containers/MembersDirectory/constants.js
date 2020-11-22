@@ -18,3 +18,7 @@ export const LOAD_MEMBER_FEE_DETAILS =
 export const UPDATE_FEE_DETAILS = 'app/MembersDirectory/UPDATE_FEE_DETAILS';
 export const UPDATE_STORE_AFTER_PAYMENT =
   'app/MembersDirectory/UPDATE_STORE_AFTER_PAYMENT';
+export const SUBMIT_EDIT_MEMBER = 'app/MembersDirectory/SUBMIT_EDIT_MEMBER';
+export const EDIT_MEMBER_INFO = 'app/MembersDirectory/EDIT_MEMBER_INFO';
+export const EDIT_MEMBER_INFO_IN_STORE =
+  'app/MembersDirectory/EDIT_MEMBER_INFO_IN_STORE';

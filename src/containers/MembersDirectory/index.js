@@ -32,6 +32,7 @@ import {
   updateFilter,
   updatePage,
   updateFeeDetails,
+  submitEditMember,
 } from './actions';
 import {
   constructBranchFilters,
@@ -582,6 +583,19 @@ class MembersDirectory extends React.Component {
       },
     });
   };
+  getTotalAmount = () => {
+    const { plan, type } = this.state;
+    const entirePlanDetails = this.getEntirePlanDetails();
+    const registerAmount = this.getRegisterAmount();
+    if (type !== 'REGISTER') return 0;
+    if (plan.selectedItemIndex >= 0) {
+      return (
+        parseInt(registerAmount, 10) +
+        parseInt(entirePlanDetails[plan.selectedItemIndex].amount, 10)
+      );
+    }
+    return 0;
+  };
   onRegister = () => {
     const { isError, state } = this.validateInputs();
     console.log('validateINouts', isError, state);
@@ -592,6 +606,7 @@ class MembersDirectory extends React.Component {
     }
     const {
       name,
+      fatherName,
       mobile,
       email,
       age,
@@ -601,6 +616,7 @@ class MembersDirectory extends React.Component {
       bloodGroup,
       images,
     } = this.state;
+    const feeAmount = this.getTotalAmount();
     this.props.dispatch(
       addNewMember({
         name: name.value,
@@ -611,7 +627,9 @@ class MembersDirectory extends React.Component {
         planId: plan.id,
         bloodGroup: BLOOD_GROUP_DATA[bloodGroup.selectedItemIndex],
         branchId: branch.id,
+        fatherName: fatherName.value,
         images,
+        feeAmount,
         successCallback: () => {
           this.resetState();
           this.setState({
@@ -722,6 +740,23 @@ class MembersDirectory extends React.Component {
       oldBG !== bloodGroup.name
     ) {
       console.log('Make edit api call');
+      this.props.dispatch(
+        submitEditMember({
+          memberUniqueId,
+          name: name.value,
+          fatherName: fatherName.value,
+          mailId: email.value,
+          age: age.value,
+          gender: gender.value,
+          branchId: branch.id,
+          planId: plan.id,
+          address: address.value,
+          images,
+          successCallback: () => {
+            this.onCancel();
+          },
+        }),
+      );
     } else {
       this.props.dispatch(
         displayToaster({
@@ -763,6 +798,29 @@ class MembersDirectory extends React.Component {
         failureCallback,
       }),
     );
+  };
+  getRegisterAmount = () => {
+    const { branchDetails } = this.props;
+    const { branch } = this.state;
+    if (branch.selectedItemIndex >= 0) {
+      return branchDetails[branch.selectedItemIndex].registrationAmount;
+    }
+    return 0;
+  };
+  onCancel = () => {
+    const { screenType } = this.state;
+    if (screenType === 'REGISTER') {
+      this.resetState();
+      this.setState({
+        showEditScreen: false,
+        showMemberProfile: false,
+      });
+    } else {
+      this.setState({
+        showEditScreen: false,
+        showMemberProfile: true,
+      });
+    }
   };
   render() {
     const {
@@ -1037,6 +1095,8 @@ class MembersDirectory extends React.Component {
             branch={branch}
             images={images}
             getPlanDetails={this.getPlanDetails}
+            entirePlanDetails={this.getEntirePlanDetails()}
+            registerAmount={this.getRegisterAmount()}
             getBranchNames={this.getBranchNames}
             onValueChange={this.onValueChange}
             onSelectDropdown={this.onSelectDropdown}
@@ -1044,22 +1104,7 @@ class MembersDirectory extends React.Component {
             typeAddress={this.typeAddress}
             onRegister={this.onRegister}
             onEdit={this.submitEdition}
-            onCancel={
-              screenType === 'REGISTER'
-                ? () => {
-                    this.resetState();
-                    this.setState({
-                      showEditScreen: false,
-                      showMemberProfile: false,
-                    });
-                  }
-                : () => {
-                    this.setState({
-                      showEditScreen: false,
-                      showMemberProfile: true,
-                    });
-                  }
-            }
+            onCancel={this.onCancel}
           />
         )}
         <ConfirmationPopup
