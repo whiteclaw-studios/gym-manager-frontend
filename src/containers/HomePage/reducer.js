@@ -1,8 +1,10 @@
 import { applySearchAndFilterLogic, get } from '../../utils/helpers';
 import {
   APPLY_DATE_FILTER,
+  LOAD_DATE_FILTERED_DATA,
   LOAD_FEE_DUE_DETAILS,
   UPDATE_FILTER,
+  UPDATE_SOURCE_DATA,
 } from './constants';
 
 const currentDate = () => {
@@ -93,10 +95,61 @@ const reducer = (preloadedState = null) => (
     case APPLY_DATE_FILTER: {
       const { payload } = action;
       const { isChecked } = payload;
-
+      let memberFeesInfo = get(state, 'memberFeesInfo.data', []);
+      let filteredData = get(state, 'memberFeesInfo.logicAppliedData', []);
+      if (!isChecked) {
+        // if clear the date filter ,then load the old date with branch filter
+        filteredData = applySearchAndFilterLogic({
+          searchText: '',
+          dataSource: memberFeesInfo,
+          filters: state.filters,
+        });
+      }
       return {
         ...state,
+        memberFeesInfo: {
+          ...state.memberFeesInfo,
+          logicAppliedData: filteredData,
+        },
         applyDateFilter: isChecked,
+      };
+    }
+    case LOAD_DATE_FILTERED_DATA: {
+      const { payload } = action;
+      const { data, ...rest } = payload;
+      const filteredData = applySearchAndFilterLogic({
+        searchText: '',
+        dataSource: data,
+        filters: state.filters,
+      });
+      return {
+        ...state,
+        memberFeesInfo: {
+          ...state.memberFeesInfo,
+          logicAppliedData: filteredData,
+          ...rest,
+        },
+      };
+    }
+    case UPDATE_SOURCE_DATA: {
+      const { payload } = action;
+      const { sDate, eDate } = payload;
+      const dataSource = get(
+        state,
+        `memberFeesInfo.${sDate}-${eDate}.data`,
+        [],
+      );
+      const filteredData = applySearchAndFilterLogic({
+        searchText: '',
+        dataSource,
+        filters: state.filters,
+      });
+      return {
+        ...state,
+        memberFeesInfo: {
+          ...state.memberFeesInfo,
+          logicAppliedData: filteredData,
+        },
       };
     }
     default: {

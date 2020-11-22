@@ -214,3 +214,15 @@ export const formatDate = (date) => {
   const [day, month, year] = dateFormat.split('-');
   return `${day}-${monthNames[month - 1].shortName}-${year}`;
 };
+export const isGreaterThanOrEqualTo = (date1, date2) => {
+  if (!date1 || !date2) return false;
+  const [day1, month1, year1] = date1.split('/');
+  const [day2, month2, year2] = date2.split('/');
+
+  const validStartDate = new Date(`${year1}-${month1}-${day1}`);
+  const validEndDate = new Date(`${year2}-${month2}-${day2}`);
+  if (validStartDate && validEndDate) {
+    return validStartDate.getTime() <= validEndDate.getTime();
+  }
+  return false;
+};

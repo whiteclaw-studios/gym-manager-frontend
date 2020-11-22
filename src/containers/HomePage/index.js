@@ -6,8 +6,17 @@ import { selectHomePageState, selectHPDataSource } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo/Loadable';
 import PaymentPopup from '../../components/PaymentPopup';
 import { FEES_LAYOUT, RED } from '../../constants';
-import { applyDateFilter, getFeeDueDetails, updateFilter } from './actions';
-import { constructBranchFilters, get } from '../../utils/helpers';
+import {
+  applyDateFilter,
+  getDateFilteredData,
+  getFeeDueDetails,
+  updateFilter,
+} from './actions';
+import {
+  constructBranchFilters,
+  get,
+  isGreaterThanOrEqualTo,
+} from '../../utils/helpers';
 import { MontserratRegular } from '../../utils/fonts';
 import DropDown from '../../components/Dropdown';
 import { FilterIcon } from '../../components/SpriteIcon';
@@ -141,6 +150,76 @@ class HomePage extends React.Component {
       .replace('YYYY', year);
     return format;
   };
+  componentDidUpdate(prevProps) {
+    const oldStartDate = get(
+      prevProps,
+      'pageData.filters.startDate.selectedDate',
+      '',
+    );
+    const oldEndDate = get(
+      prevProps,
+      'pageData.filters.endDate.selectedDate',
+      '',
+    );
+    const newStartDate = get(
+      this.props,
+      'pageData.filters.startDate.selectedDate',
+      '',
+    );
+    const newEndDate = get(
+      this.props,
+      'pageData.filters.endDate.selectedDate',
+      '',
+    );
+    const isDateFilterApplied1 = get(
+      prevProps,
+      'pageData.applyDateFilter',
+      false,
+    );
+    const isDateFilterApplied2 = get(
+      this.props,
+      'pageData.applyDateFilter',
+      false,
+    );
+
+    if (
+      (isDateFilterApplied1 !== isDateFilterApplied2 && isDateFilterApplied2) ||
+      (isDateFilterApplied2 && oldStartDate !== newStartDate) ||
+      (!isDateFilterApplied2 && oldEndDate !== newEndDate)
+    ) {
+      const isValid = isGreaterThanOrEqualTo(newStartDate, newEndDate);
+      console.log('componentDidUpdate 2', isValid, newStartDate, newEndDate);
+      if (isValid) {
+        //check already data available for those dates
+        const alreadyDataAvailable = get(
+          this.props,
+          `pageData.memberFeesInfo.${newStartDate - newEndDate}.isLoaded`,
+          false,
+        );
+        if (!alreadyDataAvailable) {
+          const [day1, month1, year1] = newStartDate.split('/');
+          const formattedDate1 = `${year1}-${month1}-${day1}`;
+
+          const [day2, month2, year2] = newEndDate.split('/');
+          const formattedDate2 = `${year2}-${month2}-${day2}`;
+          this.props.dispatch(
+            getDateFilteredData({
+              startDate: formattedDate1,
+              endDate: formattedDate2,
+              sDate: newStartDate,
+              eDate: newEndDate,
+            }),
+          );
+        }else{
+          // already data available so load the data into UI
+          this.props.dispatch(updateSourceData({
+            sDate: newStartDate,
+              eDate: newEndDate,
+          }))
+        }
+      }
+    }
+  }
   render() {
     const {
       feeDueDetails = [],
@@ -213,7 +292,6 @@ class HomePage extends React.Component {
                 <DatePicker
                   selectedDate={selectedFromDate}
                   dateChangeHandler={(selectedDate) => {
-                    console.log('selectedDate', selectedDate);
                     this.props.dispatch(
                       updateFilter({
                         startDate: {
@@ -223,7 +301,7 @@ class HomePage extends React.Component {
                       }),
                     );
                   }}
-                  format="DD-MM-YYYY"
+                  format="DD/MM/YYYY"
                   placeholder="Select Date"
                   validateStartYear={get(filters, `startDate.currentYear`, 0)}
                   validateEndYear={get(filters, `startDate.currentYear`, 0) + 5}
@@ -257,7 +335,6 @@ class HomePage extends React.Component {
                 <DatePicker
                   selectedDate={selectedToDate}
                   dateChangeHandler={(selectedDate) => {
-                    console.log('selectedDate', selectedDate);
                     this.props.dispatch(
                       updateFilter({
                         endDate: {
@@ -267,7 +344,7 @@ class HomePage extends React.Component {
                       }),
                     );
                   }}
-                  format="DD-MM-YYYY"
+                  format="DD/MM/YYYY"
                   placeholder="Select Date"
                   validateStartYear={get(filters, `endDate.currentYear`, 0)}
                   validateEndYear={get(filters, `endDate.currentYear`, 0) + 5}

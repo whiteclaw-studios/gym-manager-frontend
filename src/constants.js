@@ -50,6 +50,7 @@ export const apiUrls = {
   MEMBER_STATUS_URL: `${BASE_URL}/member_status`,
   FEE_DUE_DETAILS_URL: `${BASE_URL}/fees_due_details`,
   UPDATE_FEE_DETAILS_URL: `${BASE_URL}/update_fee_details`,
+  FEE_DUE_DETAILS_IN_RANGE: `${BASE_URL}/fees_due_details_in_range`,
 };
 
 export const SPRITE_IMAGE = '';

@@ -1,8 +1,11 @@
 import {
   APPLY_DATE_FILTER,
+  GET_DATE_FILTERED_DATA,
   GET_FEE_DUE_DETAILS,
+  LOAD_DATE_FILTERED_DATA,
   LOAD_FEE_DUE_DETAILS,
   UPDATE_FILTER,
+  UPDATE_SOURCE_DATA,
 } from './constants';
 
 export function getFeeDueDetails() {
@@ -25,6 +28,24 @@ export function updateFilter(payload) {
 export function applyDateFilter(payload) {
   return {
     type: APPLY_DATE_FILTER,
+    payload,
+  };
+}
+export function getDateFilteredData(payload) {
+  return {
+    type: GET_DATE_FILTERED_DATA,
+    ...payload,
+  };
+}
+export function loadDateFilteredData(payload) {
+  return {
+    type: LOAD_DATE_FILTERED_DATA,
+    payload,
+  };
+}
+export function updateSourceData(payload) {
+  return {
+    type: UPDATE_SOURCE_DATA,
     payload,
   };
 }
