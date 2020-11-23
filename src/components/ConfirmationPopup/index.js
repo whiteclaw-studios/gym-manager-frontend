@@ -44,6 +44,7 @@ const Yes = styled(Button)`
   :hover {
     background: none;
     color: ${RED};
+    border: 1px solid ${RED};
   }
 `;
 const No = styled(Button)`

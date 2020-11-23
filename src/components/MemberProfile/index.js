@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { GREEN, WHITE } from '../../constants';
+import { WHITE } from '../../constants';
 import { MontserratBold, MontserratRegular } from '../../utils/fonts';
 import Image from '../Image';
 import PaymentPopup from '../PaymentPopup';
@@ -25,7 +25,6 @@ const Section1 = styled('div')`
 const ImageWrap = styled('div')`
   width: 17rem;
   height: 17rem;
-  border: 1px solid ${GREY};
   @media (max-width: 992px) {
     width: 12rem;
     height: 12rem;
@@ -239,6 +238,7 @@ class MemberProfile extends React.Component {
     });
   };
   render() {
+    console.log('MemberProfile', this.props, this.state);
     const { showPaymentPopup, currentPlan } = this.state;
     const {
       name,
