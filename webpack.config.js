@@ -4,6 +4,7 @@ const { ReactLoadablePlugin } = require('react-loadable/webpack');
 const BrotliPlugin = require('brotli-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
+const AssetsPlugin = require('assets-webpack-plugin');
 module.exports = {
   entry: './src/index.js',
   output: {
@@ -11,17 +12,17 @@ module.exports = {
     filename: 'bundle.js',
     chunkFilename: '[name].[chunkhash].js',
   },
-  // optimization: {
-  //   splitChunks: {
-  //     cacheGroups: {
-  //       commons: {
-  //         test: /[\\/]node_modules[\\/]/,
-  //         name: 'vendors',
-  //         chunks: 'all',
-  //       },
-  //     },
-  //   },
-  // },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
+  },
   module: {
     rules: [
       {
@@ -92,6 +93,11 @@ module.exports = {
         to: './',
       },
     ]),
+    new AssetsPlugin({
+      prettyPrint: true,
+      filename: 'assets.json',
+      path: path.resolve(__dirname, 'public'),
+    }),
     new ReactLoadablePlugin({
       filename: path.resolve(process.cwd(), 'public/react-loadable.json'),
     }),

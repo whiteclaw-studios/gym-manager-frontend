@@ -5,9 +5,14 @@ import { StaticRouter } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 import { Provider } from 'react-redux';
 import routes from '../src/routes';
+const path = require('path');
 function Html({ store, url }) {
   let root = null;
   const state = store.getState();
+  const assetsJson = require(path.join(
+    __dirname.slice(0, -6) + 'public/assets.json',
+  ));
+  const vendorJS = assetsJson && assetsJson.vendors.js;
   const initialState = `window.__INITIAL_STATE__ = ${JSON.stringify(state)}`;
   try {
     root = renderStylesToString(
@@ -37,6 +42,7 @@ function Html({ store, url }) {
     <script>${initialState}</script>
     <div id="root">${root}</div>
     <script src="/bundle.js"></script>
+    <script src="/${vendorJS}"></script>
     <script>
       if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
