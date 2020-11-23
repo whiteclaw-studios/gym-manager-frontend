@@ -12,6 +12,8 @@ import { validateLoginInputs } from '../../utils/helpers';
 import { getAdminInfo } from '../App/actions';
 import { DASHBOARD_ROUTE } from '../../routes';
 import EllipsisLoader from '../../components/EllipsisLoader';
+import FitbossLogo from '../../images/FitBossLogo.jpg';
+
 const Container = styled('div')`
   width: 100%;
   display: flex;
@@ -24,6 +26,7 @@ const Container = styled('div')`
 `;
 const LoginWrap = styled('div')`
   display: flex;
+  align-items: center;
   flex-direction: column;
   background: ${WHITE};
   box-shadow: 4px 4px 12px 0 rgba(0, 0, 0, 0.16);
@@ -70,6 +73,14 @@ const LoaderWrap = styled('div')`
   @media (max-width: 420px) {
     width: 23rem;
   }
+`;
+const LogoWrap = styled('div')`
+  width: 10rem;
+  height: 10rem;
+`;
+const Logo = styled('img')`
+  width: 100%;
+  height: 100%;
 `;
 class LoginPage extends React.Component {
   constructor(props) {
@@ -162,7 +173,11 @@ class LoginPage extends React.Component {
       <Container>
         <LoginWrap>
           <React.Fragment>
+            <LogoWrap>
+              <Logo src={FitbossLogo} />
+            </LogoWrap>
             <Title>Login</Title>
+
             <UsernameWrap>
               <Input
                 name="username"
