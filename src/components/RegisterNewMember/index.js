@@ -140,6 +140,7 @@ export default class RegisterNewMember extends React.Component {
   render() {
     const {
       type,
+      memberId,
       name,
       fatherName,
       age,
@@ -160,8 +161,6 @@ export default class RegisterNewMember extends React.Component {
       onRegister,
       onEdit,
       onCancel,
-      entirePlanDetails,
-      registerAmount,
     } = this.props;
     const feeAmount = this.getTotalAmount();
 
@@ -176,6 +175,17 @@ export default class RegisterNewMember extends React.Component {
           </Title>
           <Row>
             <Column>
+              <InputWrap>
+                <Label>Member id</Label>
+                <NameInput
+                  state={memberId}
+                  name="memberId"
+                  onValueChange={onValueChange}
+                  showError={memberId.error}
+                  errorText="Invalid memberId"
+                  readOnly={type !== 'REGISTER'}
+                />
+              </InputWrap>
               <InputWrap>
                 <Label>Name</Label>
                 <NameInput

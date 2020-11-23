@@ -7,6 +7,7 @@ const validations = {
     username: regex.USER_NAME,
     age: regex.AGE,
     firstname: regex.FIRST_NAME,
+    memberId: regex.MEMBER_ID,
   },
 
   check: (state) => {

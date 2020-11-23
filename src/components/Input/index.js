@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import validations from '../../utils/validations';
 import { MontserratRegular } from '../../utils/fonts';
-import { DARK_BLUE, RED } from '../../constants';
+import { DARK_BLUE, GREY, RED, WHITE } from '../../constants';
 const InputWrap = styled('div')`
   width: 100%;
   font-family: ${MontserratRegular};
@@ -20,8 +20,11 @@ const StyledInput = styled('input')`
   &:focus {
     border-bottom: 1px solid ${DARK_BLUE};
   }
+  ${(props) => props.readOnly && `background:${GREY};cursor: not-allowed;`}
+
   @media (max-width: 992px) {
     font-size: 1.2rem;
+    cursor: default;
   }
 `;
 const ErrorSpan = styled('span')`
@@ -65,6 +68,7 @@ export default class Input extends React.Component {
       CustomElement,
       // eslint-disable-next-line no-unused-vars
       onValueChange = () => {},
+      readOnly = false,
       ...restProps
     } = this.props;
     return (
@@ -74,6 +78,7 @@ export default class Input extends React.Component {
             tabIndex={1}
             value={state.value}
             onChange={this.onValueChange}
+            readOnly={readOnly}
             {...restProps}
           />
           {showCustomElement && <CustomElement />}

@@ -31,6 +31,7 @@ import {
 function* addNewMember(params = {}) {
   try {
     const {
+      memberId,
       name,
       fatherName,
       mailId,
@@ -45,6 +46,7 @@ function* addNewMember(params = {}) {
       successCallback = () => {},
     } = params;
     const fieldKeys = {
+      memberId,
       name,
       fatherName,
       mailId,
@@ -92,6 +94,13 @@ function* addNewMember(params = {}) {
       successCallback();
     } else {
       console.error('Error in adding member', parsedResponse);
+      yield put(
+        displayToaster({
+          type: 'failure',
+          text: 'Something went wrong',
+          timeout: 2000,
+        }),
+      );
     }
   } catch (err) {
     console.error('Caught in addNewMember', err);
@@ -102,6 +111,7 @@ function* addNewMember(params = {}) {
 function* editMemberSaga(params = {}) {
   try {
     const {
+      memberId,
       memberUniqueId,
       name,
       fatherName,
@@ -116,6 +126,7 @@ function* editMemberSaga(params = {}) {
       successCallback = () => {},
     } = params;
     const fieldKeys = {
+      memberId,
       name,
       fatherName,
       mailId,

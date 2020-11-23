@@ -169,7 +169,10 @@ class App extends React.Component {
           this.props.history.goBack();
         }
       } else if (!isLoggedIn) {
-        this.props.history.push('/login');
+        const currentUrl = this.props.history.location.pathname;
+        if (currentUrl !== LOGIN_ROUTE) {
+          window.location.href = '/login';
+        }
       }
     }
 

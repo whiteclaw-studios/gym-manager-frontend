@@ -153,7 +153,7 @@ class MembersDirectory extends React.Component {
         error: false,
         type: 'firstname',
       },
-      memberId: '',
+      memberId: { value: '', dirty: false, error: false, type: 'memberId' },
       memberUniqueId: '',
       fatherName: {
         value: '',
@@ -295,6 +295,7 @@ class MembersDirectory extends React.Component {
       email: emailState,
       bloodgroup: bloodGroupState,
       address: addressState,
+      memberId: memberIdState,
     } = this.state;
 
     const { branchDetails } = this.props;
@@ -361,7 +362,10 @@ class MembersDirectory extends React.Component {
         ...addressState,
         value: address,
       },
-      memberId,
+      memberId: {
+        ...memberIdState,
+        value: memberId,
+      },
       memberUniqueId,
       showEditScreen: true,
       images: [
@@ -461,7 +465,7 @@ class MembersDirectory extends React.Component {
     });
   };
   validateInputs = () => {
-    const keys = ['name', 'mobile', 'age', 'fatherName', 'address'];
+    const keys = ['name', 'memberId', 'mobile', 'age', 'fatherName', 'address'];
     let oldState = { ...this.state };
     let isError = false;
     keys.map((key) => {
@@ -530,7 +534,7 @@ class MembersDirectory extends React.Component {
         error: false,
         type: 'firstname',
       },
-      memberId: '',
+      memberId: { value: '', dirty: false, error: false, type: 'memberId' },
       memberUniqueId: '',
       fatherName: { value: '', dirty: false, error: false, type: 'firstname' },
       age: {
@@ -606,6 +610,7 @@ class MembersDirectory extends React.Component {
     }
     const {
       name,
+      memberId,
       fatherName,
       mobile,
       email,
@@ -619,6 +624,7 @@ class MembersDirectory extends React.Component {
     const feeAmount = this.getTotalAmount();
     this.props.dispatch(
       addNewMember({
+        memberId: memberId.value,
         name: name.value,
         mobileNumber: mobile.value,
         mailId: email.value,
@@ -696,9 +702,11 @@ class MembersDirectory extends React.Component {
       fatherName,
       address,
       bloodGroup,
+      memberId,
     } = this.state;
     const oldMemberInfo = this.props.selectMemberInfo(memberUniqueId);
     const {
+      membershipId,
       name: oldName,
       mailId,
       fatherName: oldFatherName,
@@ -727,6 +735,7 @@ class MembersDirectory extends React.Component {
     //   oldBG !== bloodGroup.name,
     // );
     if (
+      membershipId !== memberId.value ||
       oldName !== name.value ||
       mailId !== email.value ||
       oldAge !== age.value ||
@@ -741,6 +750,7 @@ class MembersDirectory extends React.Component {
     ) {
       this.props.dispatch(
         submitEditMember({
+          memberId: memberId.value,
           memberUniqueId,
           name: name.value,
           fatherName: fatherName.value,
@@ -877,7 +887,7 @@ class MembersDirectory extends React.Component {
             gender={gender.value}
             bloodGroup={bloodGroup.name}
             fatherName={fatherName.value}
-            memberId={memberId}
+            memberId={memberId.value}
             memberUniqueId={memberUniqueId}
             profilePic={images[0].src}
             branch={branch.name}
@@ -1083,6 +1093,7 @@ class MembersDirectory extends React.Component {
             {...this.props}
             type={screenType}
             name={name}
+            memberId={memberId}
             gender={gender}
             fatherName={fatherName}
             email={email}
