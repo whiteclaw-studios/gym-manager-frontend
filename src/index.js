@@ -5,8 +5,8 @@ import { connectRouter } from 'connected-react-router';
 import { renderRoutes } from 'react-router-config';
 import { createBrowserHistory } from 'history';
 import createSagaMiddleware from 'redux-saga';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 import reducer from './reducers';
 import rootSaga from './sagas';
 // import configureStore from './configureStore';
@@ -21,12 +21,17 @@ const preloadedState =
 // Allow the passed state to be garbage-collected
 // eslint-disable-next-line no-underscore-dangle
 delete window.__INITIAL_STATE__;
-
+const { NODE_ENV = 'development' } = window;
+NODE_ENV === 'prod' &&
+  (() => {
+    console.log = () => {};
+    console.error = () => {};
+  })();
 // const IS_DEV = process.env.NODE_ENV === 'development';
 const history = createBrowserHistory();
 // const store = configureStore(preloadedState, history);
 const composeEnhancers =
-  process.env.NODE_ENV !== 'prod' && typeof window === 'object'
+  NODE_ENV !== 'prod' && typeof window === 'object'
     ? composeWithDevTools({ shouldHotReload: true, trace: true }) // Change this to false if app re-renders on `replaceReducer`
     : compose;
 

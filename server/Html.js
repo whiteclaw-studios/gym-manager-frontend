@@ -13,6 +13,7 @@ function Html({ store, url }) {
     __dirname.slice(0, -6) + 'public/assets.json',
   ));
   const vendorJs = assetsJson && assetsJson.vendors.js;
+  const { NODE_ENV } = process.env;
   let npmModulesScripts = '';
   if (assetsJson) {
     Object.keys(assetsJson).map((key) => {
@@ -23,7 +24,9 @@ function Html({ store, url }) {
     });
   }
   // console.log('npmModulesScrips', npmModulesScripts);
-  const initialState = `window.__INITIAL_STATE__ = ${JSON.stringify(state)}`;
+  const initialState = `window.__INITIAL_STATE__ = ${JSON.stringify(
+    state,
+  )};window.NODE_ENV="${NODE_ENV}";`;
   try {
     root = renderStylesToString(
       renderToString(
