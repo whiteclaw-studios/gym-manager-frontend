@@ -1,8 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ReactLoadablePlugin } = require('react-loadable/webpack');
-const BrotliPlugin = require('brotli-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin;
 const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 module.exports = {
@@ -12,29 +13,6 @@ module.exports = {
     filename: 'bundle.js',
     chunkFilename: '[name].[chunkhash].js',
   },
-  // optimization: {
-  //   runtimeChunk: 'single',
-  //   splitChunks: {
-  //     chunks: 'all',
-  //     maxInitialRequests: Infinity,
-  //     minSize: 0,
-  //     cacheGroups: {
-  //       vendor: {
-  //         test: /[\\/]node_modules[\\/]/,
-  //         name(module) {
-  //           // get the name. E.g. node_modules/packageName/not/this/part.js
-  //           // or node_modules/packageName
-  //           const packageName = module.context.match(
-  //             /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
-  //           )[1];
-
-  //           // npm package names are URL-safe, but some servers don't like @ symbols
-  //           return `npm.${packageName.replace('@', '')}`;
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -78,9 +56,15 @@ module.exports = {
         loader: 'json-loader',
       },
       {
-        // Preprocess 3rd party .css files located in node_modules
-        test: /\.ttf$/,
-        use: ['url-loader'],
+        test: /\.(eot|otf|ttf|woff|woff2)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+            },
+          },
+        ],
       },
       {
         test: /\.svg$/,
@@ -124,16 +108,6 @@ module.exports = {
     new ReactLoadablePlugin({
       filename: path.resolve(process.cwd(), 'public/react-loadable.json'),
     }),
-    () => {
-      const { NODE_ENV = 'production' } = process.env;
-      if (NODE_ENV === 'production') {
-        return new BrotliPlugin({
-          asset: '[path].br[query]',
-          test: /\.(js|css|html|svg)$/,
-          threshold: 10240,
-          minRatio: 0.8,
-        });
-      }
-    },
+    new BundleAnalyzerPlugin(),
   ],
 };
