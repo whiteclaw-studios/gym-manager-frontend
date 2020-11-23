@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { selectHomePageState, selectHPDataSource } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo/Loadable';
 import PaymentPopup from '../../components/PaymentPopup';
-import { FEES_LAYOUT, RED } from '../../constants';
+import { FEES_LAYOUT, FEE_DUE_DATE, RED } from '../../constants';
 import {
   applyDateFilter,
   getDateFilteredData,
@@ -38,6 +38,7 @@ const Wrapper = styled('div')`
 
 const FilterWrap = styled('div')`
   display: flex;
+  flex-wrap: wrap;
   @media (max-width: 992px) {
     flex-direction: column;
     margin: 1rem 0;
@@ -70,6 +71,9 @@ const Label = styled('p')`
 `;
 const FilterDropdn = styled('div')`
   width: 27rem;
+  @media (max-width: 360px) {
+    width: 21rem;
+  }
 `;
 const Note = styled('p')`
   color: ${RED};
@@ -294,6 +298,8 @@ class HomePage extends React.Component {
     const { filters } = pageData;
     const branchFilters = constructBranchFilters(branchDetails);
     const selectedBranchFilterIndex = get(filters, 'branch.index');
+    const selectedDueDateFilterIndex = get(filters, 'feeDueDate.index');
+
     const selectedFromDate = get(filters, 'startDate.selectedDate', '');
     const selectedToDate = get(filters, 'endDate.selectedDate', '');
 
@@ -433,6 +439,27 @@ class HomePage extends React.Component {
                 />
               </FilterDropdn>
             </Filter>
+            <Filter>
+              <Label>Due date</Label>
+              <FilterDropdn>
+                <DropDown
+                  name="hp-date-filter"
+                  listItems={FEE_DUE_DATE}
+                  activeItem={selectedDueDateFilterIndex}
+                  onSelect={(index) => {
+                    this.props.dispatch(
+                      updateFilter({
+                        feeDueDate: {
+                          index,
+                          name: FEE_DUE_DATE[index],
+                        },
+                      }),
+                    );
+                  }}
+                  hideError
+                />
+              </FilterDropdn>
+            </Filter>
           </FilterWrap>
         )}
 
@@ -464,6 +491,7 @@ class HomePage extends React.Component {
                 }}
               />
             </Filter>
+
             <Note>
               Date filter will be applied only when To date is greater than or
               equal to from date

@@ -19,6 +19,7 @@ export const paginationConfigs = {
 export const GENDER = ['Male', 'Female', 'Others'];
 export const BLOOD_GROUP_DATA = ['O-', 'O+', 'AB-', 'AB+', 'B+'];
 export const MEMBER_STATUS = ['All', 'Active', 'Inactive'];
+export const FEE_DUE_DATE = ['All', 'Today', 'Past'];
 export const ALLOW_IMAGES_TYPES = [
   'image/png',
   'image/jpeg',

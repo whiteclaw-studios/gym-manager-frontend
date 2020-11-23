@@ -46,6 +46,10 @@ export const initialState = {
       validEndMonth: 11,
       currentYear: currentDate().currentYear,
     },
+    feeDueDate: {
+      index: 0,
+      name: 'All',
+    },
   },
   applyDateFilter: false,
 };

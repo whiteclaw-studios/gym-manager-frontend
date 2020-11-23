@@ -165,6 +165,31 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
           });
         }
       }
+      case 'feeDueDate': {
+        const { name } = filters[key];
+        const dateInfo = getTodayDate();
+        if (name !== 'All') {
+          filteredData = filteredData.filter((member) => {
+            const { nextDue } = member;
+            const [dateFormat] = nextDue.split('T');
+            const [day, month, year] = dateFormat.split('-');
+            const formattedDate = new Date(`${year}-${month}-${day}`);
+            console.log(
+              'due date filter logic',
+              name,
+              formattedDate,
+              dateInfo,
+              formattedDate.getTime() === dateInfo.date.getTime(),
+              formattedDate.getTime() < dateInfo.date.getTime(),
+            );
+            if (name === 'Today')
+              return formattedDate.getTime() === dateInfo.date.getTime();
+            else if (name === 'Past')
+              return formattedDate.getTime() < dateInfo.date.getTime();
+          });
+          console.log('due date filter after logic', filteredData);
+        }
+      }
       default:
         break;
     }
@@ -225,4 +250,17 @@ export const isGreaterThanOrEqualTo = (date1, date2) => {
     return validStartDate.getTime() <= validEndDate.getTime();
   }
   return false;
+};
+export const getTodayDate = () => {
+  const date = new Date();
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  return {
+    date,
+    day,
+    month,
+    year,
+    formattedDate: `${year}-${month}-${day}`,
+  };
 };
