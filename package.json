@@ -9,7 +9,8 @@
     "clean": "rm -rf public/*",
     "start": "npm run clean && npm run bundle && NODE_ENV=prod babel-node  server",
     "dev-bundle": "NODE_ENV=development webpack --mode=development -wd",
-    "start:dev": "nodemon --exec NODE_ENV=development babel-node server"
+    "start:dev": "nodemon --exec NODE_ENV=development babel-node server",
+    "bundle-report": "webpack-bundle-analyzer --port 4200 public/stats.json"
   },
   "repository": {
     "type": "git",

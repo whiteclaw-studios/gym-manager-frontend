@@ -108,6 +108,10 @@ module.exports = {
     new ReactLoadablePlugin({
       filename: path.resolve(process.cwd(), 'public/react-loadable.json'),
     }),
-    new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'disabled',
+      generateStatsFile: true,
+      statsOptions: { source: false },
+    }),
   ],
 };
