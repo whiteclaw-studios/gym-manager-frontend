@@ -9,7 +9,7 @@ import axiosWrapper from '../../utils/requestWrapper';
 import { apiUrls } from '../../constants';
 import { loadDateFilteredData, loadFeeDueDetails } from './actions';
 import { getCookie } from '../../utils/helpers';
-import { togglePageLoader } from '../App/actions';
+import { loadAdminInfo, togglePageLoader } from '../App/actions';
 
 export function* getFeeDueDetailsSaga(params = {}) {
   try {
