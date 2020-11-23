@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'react-emotion';
 import { GREY, SECONDARY_BLACK, WHITE } from '../../constants';
 import { MontserratBold, MontserratRegular } from '../../utils/fonts';
+import Image from '../Image';
 const Wrap = styled('div')`
   display: flex;
   background: ${GREY};
@@ -86,14 +87,13 @@ function Card({
                 address,
                 bloodGroup,
                 memberUniqueId,
-                profilePic:
-                  'https://www.dmarge.com/wp-content/uploads/2017/03/chevron.jpg',
+                profilePic,
               })
           : () => {}
       }
     >
       <Section1>
-        <ProfilePic src="https://www.dmarge.com/wp-content/uploads/2017/03/chevron.jpg" />
+        <Image src={profilePic} />
       </Section1>
       <Section2>
         <Name>{name}</Name>

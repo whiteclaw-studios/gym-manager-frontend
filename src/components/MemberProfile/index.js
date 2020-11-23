@@ -1,7 +1,8 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { WHITE } from '../../constants';
+import { GREEN, WHITE } from '../../constants';
 import { MontserratBold, MontserratRegular } from '../../utils/fonts';
+import Image from '../Image';
 import PaymentPopup from '../PaymentPopup';
 import { BackIcon, EditIcon, PauseIcon, ResumeIcon } from '../SpriteIcon';
 import GridData from './GridData';
@@ -24,6 +25,7 @@ const Section1 = styled('div')`
 const ImageWrap = styled('div')`
   width: 17rem;
   height: 17rem;
+  border: 1px solid ${GREY};
   @media (max-width: 992px) {
     width: 12rem;
     height: 12rem;
@@ -33,10 +35,7 @@ const ImageWrap = styled('div')`
     height: 7rem;
   }
 `;
-const ProfilePic = styled('img')`
-  width: 100%;
-  height: 100%;
-`;
+
 const Details = styled('div')`
   display: flex;
   flex-direction: column;
@@ -240,13 +239,13 @@ class MemberProfile extends React.Component {
     });
   };
   render() {
-    console.log('MemberProfile', this.props, this.state);
     const { showPaymentPopup, currentPlan } = this.state;
     const {
       name,
       mobile,
       mailId,
       memberUniqueId,
+      profilePic,
       isActive,
       updateMembershipStatus,
       onBack,
@@ -280,7 +279,7 @@ class MemberProfile extends React.Component {
         <InfoBox>
           <Section1>
             <ImageWrap>
-              <ProfilePic src="https://www.dmarge.com/wp-content/uploads/2017/03/chevron.jpg" />
+              <Image src={profilePic} />
             </ImageWrap>
             <Details>
               <Name>{name}</Name>

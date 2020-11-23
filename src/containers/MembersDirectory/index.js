@@ -221,7 +221,6 @@ class MembersDirectory extends React.Component {
   };
 
   updateMembershipStatus = () => {
-    console.log('updateMembershipStatus called');
     this.setState({
       showDeleteConfirmation: true,
     });
@@ -236,7 +235,7 @@ class MembersDirectory extends React.Component {
     this.props.dispatch(
       updateMembershipStatus({
         memberUniqueId,
-        isActive,
+        isActive: !isActive,
         successCallback: () => {
           this.closeDeleteConfirmation();
           this.setState({
