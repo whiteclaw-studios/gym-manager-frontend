@@ -4,6 +4,7 @@ import express from 'express';
 import path from 'path';
 import { createStore, combineReducers } from 'redux';
 import reducer from '../src/reducers';
+import { ASSETS_CACHE_TIME, VENDORJS_CACHE_TIME } from './constants.js';
 var bodyParser = require('body-parser');
 const compression = require('compression');
 const cors = require('cors');
@@ -12,8 +13,16 @@ server.use(bodyParser.json({ limit: '256kb' }));
 server.use(compression());
 server.use(cors());
 server.get(
+  /^\/[vendors]+\.[(a-zA-Z0-9).js]+$/,
+  express.static(__dirname.slice(0, -6) + 'public', {
+    maxAge: VENDORJS_CACHE_TIME,
+  }),
+);
+server.get(
   /^\/[a-zA-Z]+\.[(a-zA-Z0-9).js|js|svg|png|css|ico|json]*[?a-zA-Z]+$/,
-  express.static(__dirname.slice(0, -6) + 'public'),
+  express.static(__dirname.slice(0, -6) + 'public', {
+    maxAge: ASSETS_CACHE_TIME,
+  }),
 );
 
 server.get('/service-worker.js', (req, res) => {

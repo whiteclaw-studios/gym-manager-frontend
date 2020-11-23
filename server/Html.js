@@ -12,7 +12,17 @@ function Html({ store, url }) {
   const assetsJson = require(path.join(
     __dirname.slice(0, -6) + 'public/assets.json',
   ));
-  const vendorJS = assetsJson && assetsJson.vendors.js;
+  const vendorJs = assetsJson && assetsJson.vendors.js;
+  let npmModulesScripts = '';
+  if (assetsJson) {
+    Object.keys(assetsJson).map((key) => {
+      if (key.includes('npm')) {
+        console.log('file', assetsJson[key]);
+        npmModulesScripts += `<script src="/${assetsJson[key]['js']}"></script>`;
+      }
+    });
+  }
+  // console.log('npmModulesScrips', npmModulesScripts);
   const initialState = `window.__INITIAL_STATE__ = ${JSON.stringify(state)}`;
   try {
     root = renderStylesToString(
@@ -42,7 +52,8 @@ function Html({ store, url }) {
     <script>${initialState}</script>
     <div id="root">${root}</div>
     <script src="/bundle.js"></script>
-    <script src="/${vendorJS}"></script>
+    <script src="/${vendorJs}"></script>
+    ${npmModulesScripts}
     <script>
       if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
