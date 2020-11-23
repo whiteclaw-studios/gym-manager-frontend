@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'react-emotion';
+import { WHITE } from '../../constants';
 import { GREEN } from '../../constants';
+import FitbossLogo from '../../images/FitBossLogo.jpg';
 const Wrap = styled('div')`
   width: 100%;
   height: 100%;
@@ -11,11 +13,12 @@ const Wrap = styled('div')`
   flex-direction: column;
   padding: 2.4rem;
   position: absolute;
+  background: ${WHITE};
 `;
-const Title = styled('h4')`
-  font-size: 1.6rem;
-  color: ${GREEN};
-`;
+// const Title = styled('h4')`
+//   font-size: 1.6rem;
+//   color: ${GREEN};
+// `;
 const LoaderWrap = styled('div')`
   color: #ffffff;
   position: relative;
@@ -51,10 +54,20 @@ const LoaderWrap = styled('div')`
     }
   }
 `;
+const LogoWrap = styled('div')`
+  width: 10rem;
+  height: 10rem;
+`;
+const Logo = styled('img')`
+  width: 100%;
+  height: 100%;
+`;
 function SplashScreen() {
   return (
     <Wrap>
-      <Title>Fitboss</Title>
+      <LogoWrap>
+        <Logo src={FitbossLogo} />
+      </LogoWrap>
       <LoaderWrap id="bounce-loader">
         <div className="loader">
           <span></span>
