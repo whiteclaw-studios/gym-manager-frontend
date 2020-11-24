@@ -9,7 +9,6 @@ export const DISABLED_BUTTON = '#575757';
 export const WHITE = '#fff';
 export const SECONDARY_BLACK = '#0e0e0e';
 export const LIGHT_GREEN = '#9DF29C';
-export const BASE_URL = 'https://fitboss-backend.herokuapp.com/api/v1';
 export const FEES_LAYOUT = 'FEES_LAYOUT';
 export const MEMBERS_DIRECTORY_LAYOUT = 'MEMBERS_DIRECTORY_LAYOUT';
 export const ENQUIRY_DIRECTORY_LAYOUT = 'ENQUIRY_DIRECTORY_LAYOUT';
@@ -41,6 +40,8 @@ export const monthNames = [
   { name: 'November', days: 30, shortName: 'NOV' },
   { name: 'December', days: 31, shortName: 'DEC' },
 ];
+export const BASE_URL = 'https://fitboss-backend.herokuapp.com/api/v1';
+
 export const apiUrls = {
   LOGIN_URL: `${BASE_URL}/auth`,
   ADMIN_INFO_URL: `${BASE_URL}/admin_details`,
