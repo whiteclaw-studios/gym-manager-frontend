@@ -107,15 +107,13 @@ function NavBar({
           // onMouseOver={() => updateActiveNavIndex(index)}
           activeItem={index === activeIndex}
           expandState={navbarState}
+          onClick={() => {
+            history.push(url);
+            shrinkNavbar();
+            updateActiveNavIndex(index);
+          }}
         >
-          <Icon
-            className={index === activeIndex ? hoverIconCss : ''}
-            onClick={() => {
-              history.push(url);
-              shrinkNavbar();
-              updateActiveNavIndex(index);
-            }}
-          />
+          <Icon className={index === activeIndex ? hoverIconCss : ''} />
           {navbarState && (
             <Menu
               className={
@@ -125,11 +123,6 @@ function NavBar({
                     `
                   : ''
               }
-              onClick={() => {
-                history.push(url);
-                shrinkNavbar();
-                updateActiveNavIndex(index);
-              }}
             >
               {menu}
             </Menu>

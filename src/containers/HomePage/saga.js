@@ -9,7 +9,11 @@ import axiosWrapper from '../../utils/requestWrapper';
 import { apiUrls } from '../../constants';
 import { loadDateFilteredData, loadFeeDueDetails } from './actions';
 import { getCookie } from '../../utils/helpers';
-import { loadAdminInfo, togglePageLoader } from '../App/actions';
+import {
+  displayToaster,
+  loadAdminInfo,
+  togglePageLoader,
+} from '../App/actions';
 
 export function* getFeeDueDetailsSaga(params = {}) {
   try {
@@ -107,6 +111,13 @@ function* updateFeeDetails(params) {
       );
       if (successCallback) successCallback();
     } else {
+      yield put(
+        displayToaster({
+          type: 'failure',
+          text: 'Something went wrong',
+          timeout: 3000,
+        }),
+      );
       if (failureCallback) failureCallback();
     }
   } catch (err) {

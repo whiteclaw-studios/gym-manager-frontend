@@ -81,10 +81,20 @@ const reducer = (preloadedState = null) => (
         ...state.filters,
         ...payload,
       };
-      let memberFeesInfo = get(state, 'memberFeesInfo.data', []);
+      let dataSource = get(state, 'memberFeesInfo.data', []);
+      const applyDateFilter = get(state, 'applyDateFilter', false);
+      if (applyDateFilter) {
+        const startDate = state.filters.startDate.selectedDate;
+        const endDate = state.filters.endDate.selectedDate;
+        dataSource = get(
+          state,
+          `memberFeesInfo.${startDate}-${endDate}.data`,
+          dataSource,
+        );
+      }
       const filteredData = applySearchAndFilterLogic({
         searchText: '',
-        dataSource: memberFeesInfo,
+        dataSource,
         filters: filtersInfo,
       });
       return {
@@ -140,7 +150,7 @@ const reducer = (preloadedState = null) => (
       const { sDate, eDate } = payload;
       const dataSource = get(
         state,
-        `memberFeesInfo.${sDate} - ${eDate}.data`,
+        `memberFeesInfo.${sDate}-${eDate}.data`,
         [],
       );
       const filteredData = applySearchAndFilterLogic({

@@ -256,10 +256,10 @@ class HomePage extends React.Component {
 
         if (!alreadyDataAvailable) {
           const [day1, month1, year1] = newStartDate.split('/');
-          const formattedDate1 = `${year1}-${month1}-${day1}`;
+          const formattedDate1 = `${day1}-${month1}-${year1}`;
 
           const [day2, month2, year2] = newEndDate.split('/');
-          const formattedDate2 = `${year2}-${month2}-${day2}`;
+          const formattedDate2 = `${day2}-${month2}-${year2}`;
           this.props.dispatch(
             getDateFilteredData({
               startDate: formattedDate1,
