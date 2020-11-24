@@ -88,7 +88,7 @@ class App extends React.Component {
       showHeader: false,
       mountToasterManager: false,
       mountNavBar: false,
-      showNavBar: true,
+      showNavBar: false,
       expandNavbar: false,
       navmenu: {
         activeIndex: this.findCurrentIndex() || 0,
@@ -157,11 +157,12 @@ class App extends React.Component {
     const {
       isLoggedIn: isLoggedInPrevProp,
       isAdminInfoLoaded: infoLoadedPrevProp,
-      history: historyPrevProp,
     } = prevProps;
     const { isLoggedIn, isAdminInfoLoaded, history } = this.props;
     // going back to previous page once logged in
-
+    if (isLoggedInPrevProp !== isLoggedIn && isLoggedIn) {
+      this.showNavBar();
+    }
     if (infoLoadedPrevProp !== isAdminInfoLoaded && isAdminInfoLoaded) {
       if (isLoggedInPrevProp !== isLoggedIn && isLoggedIn) {
         const currentUrl = this.props.history.location.pathname;
@@ -262,7 +263,6 @@ class App extends React.Component {
     } = this.props;
     const {
       showInstallUI,
-      showHeader,
       mountToasterManager,
       mountNavBar,
       showNavBar,
