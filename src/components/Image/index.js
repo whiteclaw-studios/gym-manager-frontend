@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
-import FitbossLogo from '../../images/FitBossLogo.jpg';
+import Placeholder from '../../images/Placeholder.jpg';
 const Img = styled('img')`
   width: 100%;
   height: 100%;
@@ -14,11 +14,11 @@ export default class Image extends React.Component {
   }
   render() {
     const { isError } = this.state;
-    const { src = FitbossLogo, alt, onLoad, onError, ...rest } = this.props;
+    const { src = Placeholder, alt, onLoad, onError, ...rest } = this.props;
     return (
       <React.Fragment>
         <Img
-          src={src || FitbossLogo}
+          src={src || Placeholder}
           alt={alt}
           onError={() => {
             this.setState({
@@ -28,7 +28,7 @@ export default class Image extends React.Component {
           }}
           {...rest}
         />
-        {isError && <Img src={FitbossLogo} />}
+        {isError && <Img src={Placeholder} />}
       </React.Fragment>
     );
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import { WHITE } from '../../constants';
 import { GREEN } from '../../constants';
-import FitbossLogo from '../../images/FitBossLogo.jpg';
+import FitbossLogo from '../../images/FitBossLogo.png';
 const Wrap = styled('div')`
   width: 100%;
   height: 100%;
@@ -56,7 +56,7 @@ const LoaderWrap = styled('div')`
 `;
 const LogoWrap = styled('div')`
   width: 10rem;
-  height: 10rem;
+  height: 2rem;
 `;
 const Logo = styled('img')`
   width: 100%;

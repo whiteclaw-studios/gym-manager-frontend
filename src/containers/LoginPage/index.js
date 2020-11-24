@@ -12,7 +12,7 @@ import { validateLoginInputs } from '../../utils/helpers';
 import { getAdminInfo } from '../App/actions';
 import { DASHBOARD_ROUTE } from '../../routes';
 import EllipsisLoader from '../../components/EllipsisLoader';
-import FitbossLogo from '../../images/FitBossLogo.jpg';
+import FitbossLogo from '../../images/FitBossLogo.png';
 
 const Container = styled('div')`
   width: 100%;
@@ -76,7 +76,7 @@ const LoaderWrap = styled('div')`
 `;
 const LogoWrap = styled('div')`
   width: 10rem;
-  height: 10rem;
+  height: 2rem;
 `;
 const Logo = styled('img')`
   width: 100%;
