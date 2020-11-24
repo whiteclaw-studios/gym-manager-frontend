@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
-import Placeholder from '../../images/Placeholder.jpg';
+import { PLACEHOLDER_IMAGE } from '../../constants';
 const Img = styled('img')`
   width: 100%;
   height: 100%;
@@ -14,11 +14,17 @@ export default class Image extends React.Component {
   }
   render() {
     const { isError } = this.state;
-    const { src = Placeholder, alt, onLoad, onError, ...rest } = this.props;
+    const {
+      src = PLACEHOLDER_IMAGE,
+      alt,
+      onLoad,
+      onError,
+      ...rest
+    } = this.props;
     return (
       <React.Fragment>
         <Img
-          src={src || Placeholder}
+          src={src || PLACEHOLDER_IMAGE}
           alt={alt}
           onError={() => {
             this.setState({
@@ -28,7 +34,7 @@ export default class Image extends React.Component {
           }}
           {...rest}
         />
-        {isError && <Img src={Placeholder} />}
+        {isError && <Img src={PLACEHOLDER_IMAGE} />}
       </React.Fragment>
     );
   }

@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { WHITE } from '../../constants';
+import { FITBOSS_LOGO, WHITE } from '../../constants';
 import { GREEN } from '../../constants';
-import FitbossLogo from '../../images/FitBossLogo.png';
 const Wrap = styled('div')`
   width: 100%;
   height: 100%;
@@ -66,7 +65,7 @@ function SplashScreen() {
   return (
     <Wrap>
       <LogoWrap>
-        <Logo src={FitbossLogo} />
+        <Logo src={FITBOSS_LOGO} />
       </LogoWrap>
       <LoaderWrap id="bounce-loader">
         <div className="loader">

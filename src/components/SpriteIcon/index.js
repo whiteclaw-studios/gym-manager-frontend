@@ -1,8 +1,8 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import spriteImage from '../../images/SpriteImage.png';
+import { SPRITE_IMAGE_URL } from '../../constants';
 const Icon = styled('span')`
-  background: url(${(props) => props.url || spriteImage}) no-repeat;
+  background: url(${(props) => props.url || SPRITE_IMAGE_URL}) no-repeat;
   background-position: ${(props) => props.backgroundPosition || ''};
   width: ${(props) => props.width || '18px'};
   height: ${(props) => props.width || '17px'};

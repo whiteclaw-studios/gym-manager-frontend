@@ -55,4 +55,9 @@ export const apiUrls = {
 };
 export const RUPEE_SYMBOL = '₹';
 
-export const SPRITE_IMAGE = '';
+export const SPRITE_IMAGE_URL =
+  'https://fitboss-assets.s3.ap-south-1.amazonaws.com/Images/SpriteImage.png';
+export const PLACEHOLDER_IMAGE =
+  'https://fitboss-assets.s3.ap-south-1.amazonaws.com/Images/placeholder.jpg';
+export const FITBOSS_LOGO =
+  'https://fitboss-assets.s3.ap-south-1.amazonaws.com/Images/Fitboss+logo.png';

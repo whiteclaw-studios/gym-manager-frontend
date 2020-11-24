@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { selectLoginPageState } from '../../selectors';
 import styled from 'react-emotion';
 import Input from '../../components/Input';
-import { DARK_BLUE, GREEN, WHITE } from '../../constants';
+import { DARK_BLUE, GREEN, FITBOSS_LOGO, WHITE } from '../../constants';
 import Button from '../../components/Button';
 import LinkTag from '../../components/LinkTag';
 import { loginWithPassword } from './actions';
@@ -12,7 +12,6 @@ import { validateLoginInputs } from '../../utils/helpers';
 import { getAdminInfo } from '../App/actions';
 import { DASHBOARD_ROUTE } from '../../routes';
 import EllipsisLoader from '../../components/EllipsisLoader';
-import FitbossLogo from '../../images/FitBossLogo.png';
 
 const Container = styled('div')`
   width: 100%;
@@ -174,7 +173,7 @@ class LoginPage extends React.Component {
         <LoginWrap>
           <React.Fragment>
             <LogoWrap>
-              <Logo src={FitbossLogo} />
+              <Logo src={FITBOSS_LOGO} />
             </LogoWrap>
             <Title>Login</Title>
 
