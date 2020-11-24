@@ -235,7 +235,7 @@ function* updateMembershipStatusSaga(params) {
       successCallback = () => {},
       failureCallback = () => {},
     } = params;
-    console.log('params', params);
+    yield put(togglePageLoader(true));
     const response = yield call(axiosWrapper, {
       method: 'PUT',
       url: `${
@@ -269,6 +269,8 @@ function* updateMembershipStatusSaga(params) {
     }
   } catch (err) {
     console.error('Caught in deleteMemberSaga', err);
+  } finally {
+    yield put(togglePageLoader(false));
   }
 }
 function* getMemberFeeDetailsSaga(params) {
