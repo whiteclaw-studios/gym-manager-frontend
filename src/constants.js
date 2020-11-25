@@ -40,7 +40,7 @@ export const monthNames = [
   { name: 'November', days: 30, shortName: 'NOV' },
   { name: 'December', days: 31, shortName: 'DEC' },
 ];
-export const BASE_URL = 'https://fitboss-backend.herokuapp.com/api/v1';
+export const BASE_URL = 'http://ec2-65-0-202-25.ap-south-1.compute.amazonaws.com:90/api/v1';
 
 export const apiUrls = {
   LOGIN_URL: `${BASE_URL}/auth`,
