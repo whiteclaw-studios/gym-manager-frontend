@@ -24,7 +24,7 @@ function Html({ store, url }) {
       }
     });
   }
-  const config = `window.apiUrls=JSON.parse('${JSON.stringify(apiUrls)}')`;
+  const config = `window.apiUrls=${JSON.stringify(apiUrls)}`;
 
   // console.log('npmModulesScrips', npmModulesScripts);
   const initialState = `window.__INITIAL_STATE__ = ${JSON.stringify(
