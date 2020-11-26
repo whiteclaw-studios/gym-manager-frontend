@@ -40,20 +40,7 @@ export const monthNames = [
   { name: 'November', days: 30, shortName: 'NOV' },
   { name: 'December', days: 31, shortName: 'DEC' },
 ];
-export const BASE_URL = 'http://ec2-65-0-202-25.ap-south-1.compute.amazonaws.com:90/api/v1';
 
-export const apiUrls = {
-  LOGIN_URL: `${BASE_URL}/auth`,
-  ADMIN_INFO_URL: `${BASE_URL}/admin_details`,
-  BRANCH_DETAILS_URL: `${BASE_URL}/branch_details`,
-  ENQUIRIES_URL: `${BASE_URL}/enquiries`,
-  MEMBERS_URL: `${BASE_URL}/member_details`,
-  MEMBER_DETAIL_URL: `${BASE_URL}/member_detail`,
-  MEMBER_STATUS_URL: `${BASE_URL}/member_status`,
-  FEE_DUE_DETAILS_URL: `${BASE_URL}/fees_due_details`,
-  UPDATE_FEE_DETAILS_URL: `${BASE_URL}/update_fee_details`,
-  FEE_DUE_DETAILS_IN_RANGE: `${BASE_URL}/fees_due_details_in_range`,
-};
 export const RUPEE_SYMBOL = '₹';
 
 export const SPRITE_IMAGE_URL =

@@ -1,5 +1,4 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { apiUrls } from '../../constants';
 import { getCookie } from '../../utils/helpers';
 import axiosWrapper from '../../utils/requestWrapper';
 import { responseParser } from '../../utils/responseParser';
@@ -18,6 +17,7 @@ function* getAdminInfoSaga(params = {}) {
       );
       return;
     }
+    console.log('apiUrls', window.apiUrls);
     const response = yield call(axiosWrapper, {
       method: 'GET',
       url: apiUrls.ADMIN_INFO_URL,

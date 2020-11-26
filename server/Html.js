@@ -5,6 +5,7 @@ import { StaticRouter } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
 import { Provider } from 'react-redux';
 import routes from '../src/routes';
+import { apiUrls } from './constants';
 const path = require('path');
 function Html({ store, url }) {
   let root = null;
@@ -23,6 +24,8 @@ function Html({ store, url }) {
       }
     });
   }
+  const config = `window.apiUrls=JSON.parse('${JSON.stringify(apiUrls)}')`;
+
   // console.log('npmModulesScrips', npmModulesScripts);
   const initialState = `window.__INITIAL_STATE__ = ${JSON.stringify(
     state,
@@ -52,6 +55,7 @@ function Html({ store, url }) {
     <meta name='mobile-web-app-capable' content='yes'>
     </head>
     <body>
+    <script>${config}</script>
     <script>${initialState}</script>
     <div id="root">${root}</div>
     <script src="/bundle.js"></script>

@@ -6,7 +6,6 @@ import {
   UPDATE_FEE_DETAILS,
 } from './constants';
 import axiosWrapper from '../../utils/requestWrapper';
-import { apiUrls } from '../../constants';
 import { loadDateFilteredData, loadFeeDueDetails } from './actions';
 import { getCookie } from '../../utils/helpers';
 import {

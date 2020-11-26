@@ -1,5 +1,4 @@
 import { call, put, select, take, takeEvery } from 'redux-saga/effects';
-import { apiUrls } from '../../constants';
 import { selectMembersSource } from '../../selectors';
 import { applySearchAndFilterLogic, getCookie } from '../../utils/helpers';
 import axiosWrapper from '../../utils/requestWrapper';

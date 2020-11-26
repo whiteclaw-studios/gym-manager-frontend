@@ -85,7 +85,7 @@ class App extends React.Component {
     this.state = {
       hasError: false,
       showInstallUI: false,
-      showHeader: false,
+      showHeader: true,
       mountToasterManager: false,
       mountNavBar: false,
       showNavBar: false,
