@@ -24,6 +24,7 @@ export const setCookie = (name, value, { days = 30, secure = false } = {}) => {
     }`;
   } catch (error) {
     // none
+    console.error('Error in setting cookie', error);
   }
 };
 export function deleteCookie(name) {
