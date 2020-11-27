@@ -22,6 +22,7 @@ export const setCookie = (name, value, { days = 30, secure = false } = {}) => {
     document.cookie = `${name}=${value};${expires};path=/;${
       secure ? 'secure' : ''
     }`;
+    console.log('setting cookie', name, value);
   } catch (error) {
     // none
     console.error('Error in setting cookie', error);
