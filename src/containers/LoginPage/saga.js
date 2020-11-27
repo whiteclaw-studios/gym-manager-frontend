@@ -27,7 +27,6 @@ export function* loginWithPasswordSaga(params = {}) {
     if (!parsedResponse.isError) {
       const { data } = parsedResponse;
       const { token } = data || {};
-      let domain = document.domain || '/';
       setCookie('VJS', token, { days: 10, domain });
       yield put(
         loginResponse({
