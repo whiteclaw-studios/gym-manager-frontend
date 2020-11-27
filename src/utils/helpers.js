@@ -8,7 +8,11 @@ export const get = (from, selector, defaultVal) => {
     .reduce((prev, cur) => prev && prev[cur], from);
   return value === undefined || value === null ? defaultVal : value;
 };
-export const setCookie = (name, value, { days = 30, secure = false } = {}) => {
+export const setCookie = (
+  name,
+  value,
+  { days = 30, secure = false, domain = '/' } = {},
+) => {
   try {
     let date;
     let expires;
@@ -19,7 +23,7 @@ export const setCookie = (name, value, { days = 30, secure = false } = {}) => {
     } else {
       expires = 'expires=Fri, 30 Dec 9999 23:59:59 GMT';
     }
-    document.cookie = `${name}=${value};${expires};path=/;${
+    document.cookie = `${name}=${value};${expires};path=${domain};${
       secure ? 'secure' : ''
     }`;
     console.log('setting cookie', name, value);
