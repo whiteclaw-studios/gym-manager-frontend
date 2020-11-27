@@ -25,6 +25,7 @@ function Html({ store, url }) {
     });
   }
   const config = `window.apiUrls=${JSON.stringify(apiUrls)}`;
+  const domain = `window.domainName=${process.env.domainName || '/'}`;
 
   // console.log('npmModulesScrips', npmModulesScripts);
   const initialState = `window.__INITIAL_STATE__ = ${JSON.stringify(
@@ -57,6 +58,7 @@ function Html({ store, url }) {
     <body>
     <script>${config}</script>
     <script>${initialState}</script>
+    <script>${domain}</script>
     <div id="root">${root}</div>
     <script src="/bundle.js"></script>
     <script src="/${vendorJs}"></script>
