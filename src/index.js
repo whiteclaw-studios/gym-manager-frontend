@@ -29,11 +29,11 @@ console.log(
   window.hasOwnProperty('apiUrls'),
   apiUrls,
 );
-// NODE_ENV === 'prod' &&
-//   (() => {
-//     console.log = () => {};
-//     console.error = () => {};
-//   })();
+NODE_ENV === 'prod' &&
+  (() => {
+    console.log = () => {};
+    console.error = () => {};
+  })();
 // const IS_DEV = process.env.NODE_ENV === 'development';
 const history = createBrowserHistory();
 // const store = configureStore(preloadedState, history);
