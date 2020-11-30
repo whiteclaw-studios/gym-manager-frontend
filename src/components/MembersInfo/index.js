@@ -59,7 +59,7 @@ const MembersWrap = styled('div')`
   max-height: 60rem;
   overflow: auto;
   @media (max-width: 992px) {
-    max-height: 30rem;
+    max-height: 50rem;
   }
 `;
 const LoaderWrap = styled('div')`

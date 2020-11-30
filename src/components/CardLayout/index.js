@@ -50,7 +50,7 @@ const MembersWrap = styled('div')`
     flex-wrap: wrap;
   }
   @media (max-width: 992px) {
-    max-height: 30rem;
+    max-height: 50rem;
     flex-direction: column;
   }
 `;
