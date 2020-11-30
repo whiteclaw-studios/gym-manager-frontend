@@ -678,7 +678,6 @@ class MembersDirectory extends React.Component {
     }
   };
   onSelectMember = (memberInfo) => {
-    console.log('memberInfo', memberInfo);
     this.storeMemberInfo(memberInfo);
     const { isActive } = memberInfo;
     this.setState({
@@ -686,6 +685,8 @@ class MembersDirectory extends React.Component {
       showEditScreen: false,
       isActive,
     });
+    // to clear the searchText
+    this.onSearch('');
   };
   submitEdition = () => {
     const {
@@ -908,6 +909,7 @@ class MembersDirectory extends React.Component {
             onPayFee={this.onPayFee}
             entirePlanDetails={this.getEntirePlanDetails()}
             planDetails={this.getPlanDetails()}
+            branchDetails={branchDetails}
           />
         ) : !showEditScreen ? (
           <React.Fragment>

@@ -137,8 +137,10 @@ function GridData({
         ) : (
           <Data>
             {data.map((info, index) => {
-              const { txnAmount, txnDate } = info;
-              const formattedDate = formatDate(txnDate);
+              const { txnAmount, txnDate, nextDue } = info;
+              const formattedDate = showHistory
+                ? formatDate(txnDate)
+                : formatDate(nextDue);
               console.log('formattedDate', formattedDate);
               return (
                 <ItemWrap

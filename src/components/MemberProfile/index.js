@@ -1,7 +1,8 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { WHITE } from '../../constants';
+import { PROFILE_PLACEHOLDER, WHITE } from '../../constants';
 import { MontserratBold, MontserratRegular } from '../../utils/fonts';
+import { get } from '../../utils/helpers';
 import Image from '../Image';
 import PaymentPopup from '../PaymentPopup';
 import { BackIcon, EditIcon, PauseIcon, ResumeIcon } from '../SpriteIcon';
@@ -237,9 +238,15 @@ class MemberProfile extends React.Component {
       },
     });
   };
+  findIsAllowedToChange = () => {
+    const { branchId, branchDetails } = this.props;
+    const reqdBranch = branchDetails.filter((branch) => branch.id === branchId);
+    let isAllowedToChange = get(reqdBranch, '[0].isWriteAllowed', false);
+    return isAllowedToChange;
+  };
   render() {
-    console.log('MemberProfile', this.props, this.state);
     const { showPaymentPopup, currentPlan } = this.state;
+    const isAllowedToChange = this.findIsAllowedToChange();
     const {
       name,
       mobile,
@@ -262,7 +269,7 @@ class MemberProfile extends React.Component {
       feesHistory = [],
     } = memberFeeDetails;
     const feeDuesData = feesHistory.filter((info) => !info.nextDuePaidOn);
-    const historyData = feesHistory.filter((info) => info.nextDuePaidOn);
+    const historyData = feesHistory;
     return (
       <Wrapper>
         <Heading>
@@ -319,26 +326,28 @@ class MemberProfile extends React.Component {
               </BoxWrap>
             </Details>
           </Section1>
-          <Section2>
-            <IconButtonWrap onClick={this.onEditMember}>
-              <EditIcon />
-              <CTA>Edit Details</CTA>
-            </IconButtonWrap>
-            <IconButtonWrap onClick={updateMembershipStatus}>
-              {isActive ? <PauseIcon /> : <ResumeIcon />}
-              <CTA>{isActive ? 'Pause Membership' : 'Resume Membership'}</CTA>
-            </IconButtonWrap>
-            <BoxWrap
-              className={css`
-                margin: 1rem 0;
-                @media (min-width: 993px) {
-                  display: none;
-                }
-              `}
-            >
-              {this.constructBoxes()}
-            </BoxWrap>
-          </Section2>
+          {isAllowedToChange && (
+            <Section2>
+              <IconButtonWrap onClick={this.onEditMember}>
+                <EditIcon />
+                <CTA>Edit Details</CTA>
+              </IconButtonWrap>
+              <IconButtonWrap onClick={updateMembershipStatus}>
+                {isActive ? <PauseIcon /> : <ResumeIcon />}
+                <CTA>{isActive ? 'Pause Membership' : 'Resume Membership'}</CTA>
+              </IconButtonWrap>
+              <BoxWrap
+                className={css`
+                  margin: 1rem 0;
+                  @media (min-width: 993px) {
+                    display: none;
+                  }
+                `}
+              >
+                {this.constructBoxes()}
+              </BoxWrap>
+            </Section2>
+          )}
         </InfoBox>
         <FeesAndHistoryWrap>
           <GridData

@@ -10,9 +10,9 @@ import styled, { css, cx } from 'react-emotion';
 import SpriteIcon, { DownIcon } from '../SpriteIcon';
 import { weekDays } from './constants';
 import Panel from './Panel';
-import { MontserratBold } from '../../utils/fonts';
+import { MontserratBold, MontserratRegular } from '../../utils/fonts';
 import { get } from '../../utils/helpers';
-import { monthNames, SECONDARY_BLACK, WHITE } from '../../constants';
+import { monthNames, WHITE } from '../../constants';
 /* eslint-disable */
 
 const Wrapper = styled('div')`
@@ -32,7 +32,7 @@ const Container = styled('div')`
 `;
 const SelectedDate = styled('p')`
   flex: 2;
-
+  font-family: ${MontserratRegular};
   font-size: 1.2rem;
   color: ${(props) => (props.picked === true ? '#231535' : '#9d9fa4')};
 `;

@@ -49,3 +49,5 @@ export const PLACEHOLDER_IMAGE =
   'https://fitboss-assets.s3.ap-south-1.amazonaws.com/Images/placeholder.jpg';
 export const FITBOSS_LOGO =
   'https://fitboss-assets.s3.ap-south-1.amazonaws.com/Images/Fitboss+logo.png';
+export const PROFILE_PLACEHOLDER =
+  'https://fitboss-assets.s3.ap-south-1.amazonaws.com/Images/profileImg.png';

@@ -59,12 +59,13 @@ const Label = styled('p')`
   margin: 0.5rem 1rem;
   font-family: ${MontserratRegular};
   height: 3.4rem;
+  width: 7rem;
+
   @media (min-width: 993px) {
     display: flex;
     align-items: center;
   }
   @media (max-width: 992px) {
-    width: 7rem;
     height: auto;
     margin: 0.5rem 0rem;
   }
@@ -354,92 +355,6 @@ class HomePage extends React.Component {
               </FilterDropdn>
             </Filter>
             <Filter>
-              <Label>From</Label>
-              <FilterDropdn>
-                <DatePicker
-                  selectedDate={selectedFromDate}
-                  dateChangeHandler={(selectedDate) => {
-                    this.props.dispatch(
-                      updateFilter({
-                        startDate: {
-                          ...filters.startDate,
-                          selectedDate,
-                        },
-                      }),
-                    );
-                  }}
-                  format="DD/MM/YYYY"
-                  placeholder="Select Date"
-                  validateStartYear={get(filters, `startDate.currentYear`, 0)}
-                  validateEndYear={get(filters, `startDate.currentYear`, 0) + 5}
-                  validateStartDate={this.validStartDate()}
-                  validateStartMonth={get(
-                    filters,
-                    `startDate.validStartMonth`,
-                    0,
-                  )}
-                  validateEndMonth={11}
-                  nextYearHandle={(yearSelected) => {
-                    const { startDate } = filters;
-                    const { currentYear, currentMonth } = startDate || {};
-                    this.props.dispatch(
-                      updateFilter({
-                        startDate: {
-                          ...filters.startDate,
-                          validStartMonth:
-                            yearSelected > currentYear ? 0 : currentMonth,
-                        },
-                      }),
-                    );
-                    console.log('yearSelected', yearSelected);
-                  }}
-                />
-              </FilterDropdn>
-            </Filter>
-            <Filter>
-              <Label>To</Label>
-              <FilterDropdn>
-                <DatePicker
-                  selectedDate={selectedToDate}
-                  dateChangeHandler={(selectedDate) => {
-                    this.props.dispatch(
-                      updateFilter({
-                        endDate: {
-                          ...filters.endDate,
-                          selectedDate,
-                        },
-                      }),
-                    );
-                  }}
-                  format="DD/MM/YYYY"
-                  placeholder="Select Date"
-                  validateStartYear={get(filters, `endDate.currentYear`, 0)}
-                  validateEndYear={get(filters, `endDate.currentYear`, 0) + 5}
-                  validateStartDate={this.validStartDate()}
-                  validateStartMonth={get(
-                    filters,
-                    `endDate.validStartMonth`,
-                    0,
-                  )}
-                  validateEndMonth={11}
-                  nextYearHandle={(yearSelected) => {
-                    const { endDate } = filters;
-                    const { currentYear, currentMonth } = endDate || {};
-                    this.props.dispatch(
-                      updateFilter({
-                        endDate: {
-                          ...filters.endDate,
-                          validStartMonth:
-                            yearSelected > currentYear ? 0 : currentMonth,
-                        },
-                      }),
-                    );
-                    console.log('yearSelected', yearSelected);
-                  }}
-                />
-              </FilterDropdn>
-            </Filter>
-            <Filter>
               <Label>Due date</Label>
               <FilterDropdn>
                 <DropDown
@@ -460,12 +375,144 @@ class HomePage extends React.Component {
                 />
               </FilterDropdn>
             </Filter>
+            <div
+              className={css`
+                display: flex;
+                @media (max-width: 992px) {
+                  flex-direction: column;
+                }
+              `}
+            >
+              <Filter>
+                <Label>From</Label>
+                <FilterDropdn>
+                  <DatePicker
+                    selectedDate={selectedFromDate}
+                    dateChangeHandler={(selectedDate) => {
+                      this.props.dispatch(
+                        updateFilter({
+                          startDate: {
+                            ...filters.startDate,
+                            selectedDate,
+                          },
+                        }),
+                      );
+                    }}
+                    format="DD/MM/YYYY"
+                    placeholder="Select Date"
+                    validateStartYear={get(filters, `startDate.currentYear`, 0)}
+                    validateEndYear={
+                      get(filters, `startDate.currentYear`, 0) + 5
+                    }
+                    validateStartDate={this.validStartDate()}
+                    validateStartMonth={get(
+                      filters,
+                      `startDate.validStartMonth`,
+                      0,
+                    )}
+                    validateEndMonth={11}
+                    nextYearHandle={(yearSelected) => {
+                      const { startDate } = filters;
+                      const { currentYear, currentMonth } = startDate || {};
+                      this.props.dispatch(
+                        updateFilter({
+                          startDate: {
+                            ...filters.startDate,
+                            validStartMonth:
+                              yearSelected > currentYear ? 0 : currentMonth,
+                          },
+                        }),
+                      );
+                      console.log('yearSelected', yearSelected);
+                    }}
+                  />
+                </FilterDropdn>
+              </Filter>
+              <Filter>
+                <Label>To</Label>
+                <FilterDropdn>
+                  <DatePicker
+                    selectedDate={selectedToDate}
+                    dateChangeHandler={(selectedDate) => {
+                      this.props.dispatch(
+                        updateFilter({
+                          endDate: {
+                            ...filters.endDate,
+                            selectedDate,
+                          },
+                        }),
+                      );
+                    }}
+                    format="DD/MM/YYYY"
+                    placeholder="Select Date"
+                    validateStartYear={get(filters, `endDate.currentYear`, 0)}
+                    validateEndYear={get(filters, `endDate.currentYear`, 0) + 5}
+                    validateStartDate={this.validStartDate()}
+                    validateStartMonth={get(
+                      filters,
+                      `endDate.validStartMonth`,
+                      0,
+                    )}
+                    validateEndMonth={11}
+                    nextYearHandle={(yearSelected) => {
+                      const { endDate } = filters;
+                      const { currentYear, currentMonth } = endDate || {};
+                      this.props.dispatch(
+                        updateFilter({
+                          endDate: {
+                            ...filters.endDate,
+                            validStartMonth:
+                              yearSelected > currentYear ? 0 : currentMonth,
+                          },
+                        }),
+                      );
+                      console.log('yearSelected', yearSelected);
+                    }}
+                  />
+                </FilterDropdn>
+              </Filter>
+              <Filter
+                className={css`
+                  @media (max-width: 992px) {
+                    display: none;
+                  }
+                `}
+              >
+                <Label
+                  className={css`
+                    width: auto;
+                  `}
+                >
+                  Apply Date filter
+                </Label>
+                <Checkbox
+                  className={css`
+                    > label > span {
+                      top: -4px !important;
+                    }
+                  `}
+                  onSelect={(isChecked) => {
+                    this.props.dispatch(
+                      applyDateFilter({
+                        isChecked,
+                      }),
+                    );
+                  }}
+                />
+              </Filter>
+            </div>
           </FilterWrap>
         )}
 
         {(showFilters || !showFilterIconInMobile) && (
           <React.Fragment>
-            <Filter>
+            <Filter
+              className={css`
+                @media (min-width: 993px) {
+                  display: none;
+                }
+              `}
+            >
               <Label
                 className={css`
                   @media (max-width: 992px) {

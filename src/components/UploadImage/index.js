@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import AddNewImage from './AddNewImage';
-import { ALLOW_IMAGES_TYPES, GREEN, SECONDARY_BLACK } from '../../constants';
+import {
+  ALLOW_IMAGES_TYPES,
+  GREEN,
+  PROFILE_PLACEHOLDER,
+  SECONDARY_BLACK,
+} from '../../constants';
 import { MontserratLight } from '../../utils/fonts';
 import { get } from '../../utils/helpers';
 const Wrap = styled('div')`
@@ -85,7 +90,7 @@ export default class UploadImage extends React.Component {
           <Container>
             <Section1>
               <Preview>
-                <Img src={src} />
+                <Img src={src || PROFILE_PLACEHOLDER} />
               </Preview>
               <Filename>{fileName}</Filename>
             </Section1>

@@ -84,7 +84,7 @@ function ItemRow({
             })
           }
         >
-          Paid
+          Pay
         </Paid>
       </Item>
     );

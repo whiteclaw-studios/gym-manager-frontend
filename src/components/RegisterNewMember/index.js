@@ -86,6 +86,7 @@ const Register = styled(Button)`
 const Cancel = styled(InvertSecondaryButton)`
   font-size: 1.4rem;
   max-width: 10rem;
+  box-shadow: none;
 `;
 const Address = styled('textarea')`
   resize: none;
@@ -322,7 +323,7 @@ export default class RegisterNewMember extends React.Component {
           <Controls>
             <Cancel onClick={onCancel}>Cancel</Cancel>
             <Register onClick={type === 'REGISTER' ? onRegister : onEdit}>
-              {type === 'REGISTER' ? 'Register' : 'Edit'}
+              {type === 'REGISTER' ? 'Register' : 'Save'}
             </Register>
           </Controls>
         </Content>

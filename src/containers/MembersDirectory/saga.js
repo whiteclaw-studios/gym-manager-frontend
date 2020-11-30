@@ -125,7 +125,7 @@ function* editMemberSaga(params = {}) {
       successCallback = () => {},
     } = params;
     const fieldKeys = {
-      memberId,
+      membershipId: memberId,
       name,
       fatherName,
       mailId,
