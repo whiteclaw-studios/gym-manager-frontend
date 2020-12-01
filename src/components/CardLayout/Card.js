@@ -99,7 +99,15 @@ function Card({
         <Name>{name}</Name>
         <LiWrap>
           <Item>{memberId} </Item>
-          {memberId && branch && <Item>|</Item>}
+          {memberId && branch && (
+            <Item
+              className={css`
+                margin: 0 0.5rem;
+              `}
+            >
+              |
+            </Item>
+          )}
           {branch && <Item>{branch}</Item>}
         </LiWrap>
         <LiWrap>
@@ -110,6 +118,7 @@ function Card({
                 @media (max-width: 460px) {
                   display: none;
                 }
+                margin: 0 0.5rem;
               `}
             >
               |
@@ -118,7 +127,7 @@ function Card({
           {mailId && (
             <Item
               className={css`
-                max-width: 10rem;
+                max-width: 7rem;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;

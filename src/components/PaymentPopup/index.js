@@ -1,11 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { SECONDARY_BLACK, WHITE } from '../../constants';
-import {
-  MontserratBold,
-  MontserratRegular,
-  OpensansRegular,
-} from '../../utils/fonts';
+import { RUPEE_SYMBOL, SECONDARY_BLACK, WHITE } from '../../constants';
+import { MontserratBold, MontserratRegular } from '../../utils/fonts';
 import Button from '../Button';
 import Checkbox from '../Checkbox';
 import DropDown from '../Dropdown';
@@ -94,7 +90,12 @@ function PaymentPopup({
             hideError
           />
         </PlanWrap>
-        {feeAmount && <Amount>Amount : ${feeAmount}</Amount>}
+        {feeAmount && (
+          <Amount>
+            Amount : {RUPEE_SYMBOL}
+            {feeAmount}
+          </Amount>
+        )}
         <Controls>
           <Cancel onClick={onClose}>Cancel</Cancel>
           <Paid onClick={onPay}>Pay</Paid>

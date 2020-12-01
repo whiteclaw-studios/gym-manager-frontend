@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { WHITE, GREY, RED, GREEN } from '../../constants';
+import { WHITE, GREY, RED, GREEN, RUPEE_SYMBOL } from '../../constants';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import { formatDate } from '../../utils/helpers';
 import Button from '../Button';
@@ -141,7 +141,6 @@ function GridData({
               const formattedDate = showHistory
                 ? formatDate(txnDate)
                 : formatDate(nextDue);
-              console.log('formattedDate', formattedDate);
               return (
                 <ItemWrap
                   key={`${
@@ -155,7 +154,10 @@ function GridData({
                       : ''
                   }
                 >
-                  <Item>{txnAmount}</Item>
+                  <Item>
+                    {RUPEE_SYMBOL}
+                    {txnAmount}
+                  </Item>
                   <Item>{formattedDate}</Item>
                   <Item>{!showHistory && <Pay onClick={onPay}>Pay</Pay>}</Item>
                 </ItemWrap>

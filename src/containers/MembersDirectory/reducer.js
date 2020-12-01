@@ -38,6 +38,10 @@ export const initialState = {
       index: 0,
       name: 'All',
     },
+    bloodGroup: {
+      index: 0,
+      name: 'All',
+    },
   },
   search: {
     isSearching: false,

@@ -118,16 +118,18 @@ export const searchLogic = ({ searchText = '', dataSource = [] }) => {
   if (!dataSource.length) return [];
   if (!searchText) return dataSource;
   return dataSource.filter((member) => {
-    const { name = '', membershipId = '', mobileNumber } = member;
+    const { name = '', membershipId = '', mobileNumber = '' } = member;
     let isNameMatches =
-      name.toLowerCase().indexOf(searchText.toLowerCase()) === 0;
+      name && name.toLowerCase().indexOf(searchText.toLowerCase()) === 0;
     let isMembershipIdMatches;
     let isMobileMatches;
     if (!isNameMatches)
       isMembershipIdMatches =
+        membershipId &&
         membershipId.toString().indexOf(searchText.toLowerCase()) === 0;
     if (!isNameMatches && !isMembershipIdMatches)
       isMobileMatches =
+        mobileNumber &&
         mobileNumber.toString().indexOf(searchText.toLowerCase()) === 0;
 
     return isNameMatches || isMembershipIdMatches || isMobileMatches;
@@ -195,6 +197,17 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
           });
           console.log('due date filter after logic', filteredData);
         }
+        break;
+      }
+      case 'bloodGroup': {
+        const { name } = filters[key];
+        if (name !== 'All') {
+          filteredData = filteredData.filter((member) => {
+            if (member.bloodGroup) return member.bloodGroup === name;
+            return true;
+          });
+        }
+        break;
       }
       default:
         break;
@@ -224,6 +237,10 @@ export const constructPlanFilters = (
     { planName: 'All' },
     ...get(branchDetails, `[${selectBranchFilterIndex - 1}].planDetails`),
   ];
+};
+export const constructBloodGrpFilters = (bloodGroupData) => {
+  if (!bloodGroupData) return ['All'];
+  return ['All', ...bloodGroupData];
 };
 export const applySearchAndFilterLogic = ({
   searchText,

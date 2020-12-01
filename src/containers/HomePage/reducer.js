@@ -32,6 +32,10 @@ export const initialState = {
       index: 0,
       branchName: 'All',
     },
+    plan: {
+      index: 0,
+      planName: 'All',
+    },
     startDate: {
       selectedDate: currentDate().format,
       currentMonth: currentDate().currentMonth,

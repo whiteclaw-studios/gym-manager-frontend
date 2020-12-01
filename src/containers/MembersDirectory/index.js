@@ -37,6 +37,7 @@ import {
 import {
   constructBranchFilters,
   constructPlanFilters,
+  constructBloodGrpFilters,
   get,
   scrollToTop,
 } from '../../utils/helpers';
@@ -651,7 +652,6 @@ class MembersDirectory extends React.Component {
   }
   constructRecordInfo = () => {
     const { paginationInfo, membersData = [] } = this.props;
-    console.log('paginationInfo', paginationInfo);
     const { offset, limit } = paginationInfo;
     const totalRecords = membersData.length;
     const end = limit < totalRecords ? limit : totalRecords;
@@ -719,21 +719,6 @@ class MembersDirectory extends React.Component {
       photoS3Key,
       bloodGroup: oldBG,
     } = oldMemberInfo;
-    // console.log(
-    //   oldMemberInfo,
-    //   this.state,
-    //   oldName !== name.value,
-    //   mailId !== email.value,
-    //   oldAge !== age.value,
-    //   oldFatherName !== fatherName.value,
-    //   mobileNumber != mobile.value,
-    //   oldGender !== gender.value,
-    //   branchId !== branch.id,
-    //   planDetailsId !== plan.id,
-    //   oldAddress !== address.value,
-    //   photoS3Key !== images[0].src,
-    //   oldBG !== bloodGroup.name,
-    // );
     if (
       membershipId !== memberId.value ||
       oldName !== name.value ||
@@ -841,6 +826,7 @@ class MembersDirectory extends React.Component {
       branchDetails,
       filters,
       selectMemberFeeDetails,
+      isSuperAdmin,
     } = this.props;
     const { totalPages, activePage } = paginationInfo;
     const { isLoading } = get(pageData, 'membersInfo', {});
@@ -868,14 +854,14 @@ class MembersDirectory extends React.Component {
     } = this.state;
     const selectedBranchFilterIndex = get(filters, 'branch.index');
     const selectedPlanFilterIndex = get(filters, 'plan.index');
+    const selectedBGFilterIndex = get(filters, 'bloodGroup.index');
     const selectedStatusFilterIndex = get(filters, 'status.index');
-    console.log('state', this.state);
     const branchFilters = constructBranchFilters(branchDetails);
     const planFilters = constructPlanFilters(
       branchDetails,
       selectedBranchFilterIndex,
     );
-
+    const bloodGroupFilters = constructBloodGrpFilters(BLOOD_GROUP_DATA);
     return (
       <Wrapper>
         {showMemberProfile ? (
@@ -984,62 +970,93 @@ class MembersDirectory extends React.Component {
                     placeholder="Search by name,membership id"
                   />
                 </SearchWrap>
-                <Filter>
-                  <Label>Branch</Label>
-                  <FilterDropdn>
-                    <DropDown
-                      name="md-branch-filter"
-                      listItems={branchFilters.map(
-                        (branch) => branch.branchName,
-                      )}
-                      otherInfo={branchFilters}
-                      activeItem={selectedBranchFilterIndex}
-                      onSelect={(index, name, otherInfo) => {
-                        this.props.dispatch(
-                          updateFilter({
-                            branch: {
-                              ...otherInfo,
-                              index,
-                            },
-                            plan: {
-                              ...filters.plan,
-                              index: 0,
-                              planName: 'All',
-                            },
-                          }),
-                        );
-                      }}
-                    />
-                  </FilterDropdn>
-                </Filter>
-                <Filter>
-                  <Label>Plan</Label>
-                  <FilterDropdn
-                    className={css`
-                      max-width: 15rem;
-                      @media (max-width: 992px) {
-                        max-width: unset;
-                      }
-                    `}
-                  >
-                    <DropDown
-                      name="md-plan-filter"
-                      listItems={planFilters.map((plan) => plan.planName)}
-                      otherInfo={planFilters}
-                      activeItem={selectedPlanFilterIndex}
-                      onSelect={(index, name, otherInfo) => {
-                        this.props.dispatch(
-                          updateFilter({
-                            plan: {
-                              ...otherInfo,
-                              index,
-                            },
-                          }),
-                        );
-                      }}
-                    />
-                  </FilterDropdn>
-                </Filter>
+                {isSuperAdmin && (
+                  <React.Fragment>
+                    <Filter>
+                      <Label>Branch</Label>
+                      <FilterDropdn>
+                        <DropDown
+                          name="md-branch-filter"
+                          listItems={branchFilters.map(
+                            (branch) => branch.branchName,
+                          )}
+                          otherInfo={branchFilters}
+                          activeItem={selectedBranchFilterIndex}
+                          onSelect={(index, name, otherInfo) => {
+                            this.props.dispatch(
+                              updateFilter({
+                                branch: {
+                                  ...otherInfo,
+                                  index,
+                                },
+                                plan: {
+                                  ...filters.plan,
+                                  index: 0,
+                                  planName: 'All',
+                                },
+                              }),
+                            );
+                          }}
+                        />
+                      </FilterDropdn>
+                    </Filter>
+                    <Filter>
+                      <Label>Plan</Label>
+                      <FilterDropdn
+                        className={css`
+                          max-width: 15rem;
+                          @media (max-width: 992px) {
+                            max-width: unset;
+                          }
+                        `}
+                      >
+                        <DropDown
+                          name="md-plan-filter"
+                          listItems={planFilters.map((plan) => plan.planName)}
+                          otherInfo={planFilters}
+                          activeItem={selectedPlanFilterIndex}
+                          onSelect={(index, name, otherInfo) => {
+                            this.props.dispatch(
+                              updateFilter({
+                                plan: {
+                                  ...otherInfo,
+                                  index,
+                                },
+                              }),
+                            );
+                          }}
+                        />
+                      </FilterDropdn>
+                    </Filter>
+                    <Filter>
+                      <Label>Blood group</Label>
+                      <FilterDropdn
+                        className={css`
+                          max-width: 15rem;
+                          @media (max-width: 992px) {
+                            max-width: unset;
+                          }
+                        `}
+                      >
+                        <DropDown
+                          name="md-bloodGroup-filter"
+                          listItems={bloodGroupFilters}
+                          activeItem={selectedBGFilterIndex}
+                          onSelect={(index, name, otherInfo) => {
+                            this.props.dispatch(
+                              updateFilter({
+                                bloodGroup: {
+                                  index,
+                                  name: bloodGroupFilters[index],
+                                },
+                              }),
+                            );
+                          }}
+                        />
+                      </FilterDropdn>
+                    </Filter>
+                  </React.Fragment>
+                )}
                 <Filter>
                   <Label>Status</Label>
                   <FilterDropdn>

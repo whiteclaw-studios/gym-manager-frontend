@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled, { css } from 'react-emotion';
-import { GREY, WHITE } from '../../constants';
+import { GREY, RUPEE_SYMBOL, WHITE } from '../../constants';
 import { OpensansBold } from '../../utils/fonts';
+import { formatDate } from '../../utils/helpers';
 import Button from '../Button';
 import { Item, Row, Info } from './commonStyles';
 // import ExpandedView from './ExpandedView';
@@ -55,6 +56,7 @@ function ItemRow({
   branchId,
   planId,
   due,
+  dueDate,
   mobile,
   type,
   age,
@@ -158,7 +160,20 @@ function ItemRow({
                 }
               `}
             >
-              {due || 'Dummy due'}
+              {RUPEE_SYMBOL}
+              {due || 0}
+            </Due>
+            <Due
+              className={css`
+                @media (max-width: 992px) {
+                  display: flex;
+                }
+                @media (min-width: 992px) and (max-width: 1100px) {
+                  display: none;
+                }
+              `}
+            >
+              {formatDate(dueDate)}
             </Due>
           </div>
         </Info>

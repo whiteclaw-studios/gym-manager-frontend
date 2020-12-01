@@ -3,6 +3,7 @@ const selectAppState = (state) => get(state, 'app', null) || {};
 const selectHomePageState = (state) => get(state, 'homePage', null) || {};
 const selectLoginPageState = (state) => get(state, 'loginPage', null) || {};
 const selectToasterConf = (state) => get(state, 'app.toasterConf', {});
+const isSuperAdmin = (state) => get(state, 'app.adminInfo.isSuperAdmin', false);
 const selectLoginState = (state) =>
   get(state, 'app.adminInfo.isLoggedIn', false);
 const selectInfoLoadedState = (state) =>
@@ -115,4 +116,5 @@ export {
   selectMemberInfo,
   selectMemberFeeDetails,
   selectHPDataSource,
+  isSuperAdmin,
 };

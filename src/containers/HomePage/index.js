@@ -16,6 +16,7 @@ import {
 } from './actions';
 import {
   constructBranchFilters,
+  constructPlanFilters,
   get,
   isGreaterThanOrEqualTo,
 } from '../../utils/helpers';
@@ -281,6 +282,13 @@ class HomePage extends React.Component {
       }
     }
   }
+  constructRecordInfo = () => {
+    const { feeDueDetails } = this.props;
+    const totalRecords = feeDueDetails ? feeDueDetails.length : 0;
+    return totalRecords
+      ? `Showing ${1}-${totalRecords} out of ${totalRecords}`
+      : '';
+  };
   render() {
     const {
       feeDueDetails = [],
@@ -297,13 +305,17 @@ class HomePage extends React.Component {
     const { memberInfo = {}, open } = paymentPopupInfo;
     const { isLoading } = get(pageData, 'memberFeesInfo', {});
     const { filters } = pageData;
-    const branchFilters = constructBranchFilters(branchDetails);
-    const selectedBranchFilterIndex = get(filters, 'branch.index');
-    const selectedDueDateFilterIndex = get(filters, 'feeDueDate.index');
 
+    const selectedBranchFilterIndex = get(filters, 'branch.index');
+    const selectedPlanFilterIndex = get(filters, 'plan.index');
+    const selectedDueDateFilterIndex = get(filters, 'feeDueDate.index');
     const selectedFromDate = get(filters, 'startDate.selectedDate', '');
     const selectedToDate = get(filters, 'endDate.selectedDate', '');
-
+    const branchFilters = constructBranchFilters(branchDetails);
+    const planFilters = constructPlanFilters(
+      branchDetails,
+      selectedBranchFilterIndex,
+    );
     console.log('HomePage', pageData, isLoading, this.state);
 
     return (
@@ -346,6 +358,35 @@ class HomePage extends React.Component {
                           index,
                           id,
                           name: branchName,
+                        },
+                      }),
+                    );
+                  }}
+                  hideError
+                />
+              </FilterDropdn>
+            </Filter>
+            <Filter>
+              <Label>Plan</Label>
+              <FilterDropdn
+                className={css`
+                  max-width: 15rem;
+                  @media (max-width: 992px) {
+                    max-width: unset;
+                  }
+                `}
+              >
+                <DropDown
+                  name="hp-plan-filter"
+                  listItems={planFilters.map((plan) => plan.planName)}
+                  otherInfo={planFilters}
+                  activeItem={selectedPlanFilterIndex}
+                  onSelect={(index, name, otherInfo) => {
+                    this.props.dispatch(
+                      updateFilter({
+                        plan: {
+                          ...otherInfo,
+                          index,
                         },
                       }),
                     );
@@ -553,6 +594,7 @@ class HomePage extends React.Component {
           getBranchInfo={getBranchInfo}
           getPlanInfo={getPlanInfo}
           isLoading={isLoading}
+          recordInfo={this.constructRecordInfo()}
         />
         <PaymentPopup
           name={memberInfo.name}

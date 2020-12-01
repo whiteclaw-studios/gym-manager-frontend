@@ -17,6 +17,7 @@ import {
   selectAllowedBranchDetails,
   selectLogo,
   selectAppState,
+  isSuperAdmin,
 } from '../../selectors/';
 import SplashScreen from '../../components/SplashScreen';
 import { getAdminInfo } from './actions';
@@ -260,6 +261,7 @@ class App extends React.Component {
       allowedBranchInfo,
       logo,
       appState,
+      isSuperAdmin,
     } = this.props;
     const {
       showInstallUI,
@@ -301,6 +303,7 @@ class App extends React.Component {
                   getBranchInfo,
                   getPlanInfo,
                   allowedBranchInfo,
+                  isSuperAdmin,
                   updateActiveNavIndex: this.updateActiveNavIndex,
                 })}
               </ChildrenWrap>
@@ -343,6 +346,7 @@ const mapStateToProps = (state) => {
     getPlanInfo: getPlanInfo(state),
     allowedBranchInfo: selectAllowedBranchDetails(state),
     logo: selectLogo(state),
+    isSuperAdmin: isSuperAdmin(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {
