@@ -100,6 +100,12 @@ class HomePage extends React.Component {
         open: false,
         memberInfo: {},
       },
+      dueDate: {
+        value: '',
+        type: 'dueDate',
+        error: false,
+        dirty: false,
+      },
     };
     this.props.showHeaderHandle(); // to show the header
   }
@@ -301,6 +307,7 @@ class HomePage extends React.Component {
       showFilters,
       showFilterIconInMobile,
       paymentPopupInfo,
+      dueDate,
     } = this.state;
     const { memberInfo = {}, open } = paymentPopupInfo;
     const { isLoading } = get(pageData, 'memberFeesInfo', {});
@@ -313,7 +320,7 @@ class HomePage extends React.Component {
     const selectedToDate = get(filters, 'endDate.selectedDate', '');
     const branchFilters = constructBranchFilters(branchDetails);
     const planFilters = constructPlanFilters(branchDetails);
-
+    console.log('state', this.state);
     return (
       <Wrapper>
         {showFilterIconInMobile && (
@@ -600,6 +607,12 @@ class HomePage extends React.Component {
           planId={memberInfo.planId}
           selectedPlan={this.getSelectedPlanIndex()}
           feeAmount={this.getFeeAmount()}
+          dueDate={dueDate}
+          onDueDateChange={(data) => {
+            this.setState({
+              ...data,
+            });
+          }}
           updatePlanIdWhilePayment={({ id }) => {
             this.setState({
               paymentPopupInfo: {
@@ -612,12 +625,23 @@ class HomePage extends React.Component {
           }}
           onPay={() => {
             const { planId } = memberInfo;
+            const { dueDate } = this.state;
+            if (dueDate.error || !dueDate.value) {
+              this.setState({
+                dueDate: {
+                  ...dueDate,
+                  error: true,
+                },
+              });
+              return;
+            }
             this.props.dispatch(
               updateFeeDetails({
                 currentPlan: {
                   id: planId,
                 },
                 memberUniqueId: memberInfo.memberUniqueId,
+                dueDate: dueDate.value,
                 successCallback: () => this.onClosePaymentPopup(),
                 failureCallback: () => this.onClosePaymentPopup(),
               }),

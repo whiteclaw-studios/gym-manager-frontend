@@ -5,6 +5,7 @@ import { MontserratBold, MontserratRegular } from '../../utils/fonts';
 import Button from '../Button';
 import Checkbox from '../Checkbox';
 import DropDown from '../Dropdown';
+import Input from '../Input';
 import ModalNew from '../Modal';
 const Wrap = styled('div')`
   display: flex;
@@ -56,12 +57,35 @@ const Amount = styled('p')`
 const PlanWrap = styled('div')`
   display: flex;
   align-items: center;
-  margin: 2rem 3rem;
+  margin: 0.5rem 3rem;
 `;
 const Label = styled('p')`
   font-size: 1.4rem;
   margin-right: 1rem;
   font-family: ${MontserratBold};
+  width: 11rem;
+`;
+const DateWrap = styled('div')`
+  display: flex;
+  margin: 0.5rem 3rem;
+  align-items: center;
+`;
+const PlanAndDateWrap = styled('div')`
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 0rem;
+  margin-bottom: 1.2rem;
+`;
+const PaymentDate = styled('p')`
+  font-size: 1.4rem;
+  margin-right: 1rem;
+  font-family: ${MontserratBold};
+  position: relative;
+  top: -0.5rem;
+  width: 11rem;
+`;
+const InputWrap = styled('div')`
+  width: 15rem;
 `;
 function PaymentPopup({
   name,
@@ -71,6 +95,8 @@ function PaymentPopup({
   planDetails,
   entirePlanDetails,
   selectedPlan,
+  dueDate,
+  onDueDateChange,
   onClose = () => {},
   updatePlanIdWhilePayment,
 } = {}) {
@@ -79,18 +105,33 @@ function PaymentPopup({
       <Wrap>
         <Heading>Fees payment</Heading>
         <MemberName>{name}</MemberName>
-        <PlanWrap>
-          <Label>Plan</Label>
-          <DropDown
-            listItems={planDetails}
-            activeItem={selectedPlan}
-            onSelect={(index) => {
-              const { id, amount, planName } = entirePlanDetails[index];
-              updatePlanIdWhilePayment({ index, id, amount, planName });
-            }}
-            hideError
-          />
-        </PlanWrap>
+        <PlanAndDateWrap>
+          <PlanWrap>
+            <Label>Plan</Label>
+            <DropDown
+              listItems={planDetails}
+              activeItem={selectedPlan}
+              onSelect={(index) => {
+                const { id, amount, planName } = entirePlanDetails[index];
+                updatePlanIdWhilePayment({ index, id, amount, planName });
+              }}
+              hideError
+            />
+          </PlanWrap>
+          <DateWrap>
+            <PaymentDate>Payment date</PaymentDate>
+            <InputWrap>
+              <Input
+                state={dueDate}
+                name="dueDate"
+                onValueChange={onDueDateChange}
+                placeholder="DD/MM/YYYY"
+                showError={dueDate.error}
+                errorText="Invalid date"
+              />
+            </InputWrap>
+          </DateWrap>
+        </PlanAndDateWrap>
         {feeAmount && (
           <Amount>
             Amount : {RUPEE_SYMBOL}
