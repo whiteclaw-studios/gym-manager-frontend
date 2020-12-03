@@ -79,9 +79,9 @@ const MonthContainer = styled('div')`
 `;
 const Month = styled('p')`
   flex: 1.5;
-  cursor: pointer;
+  cursor: ${(props) => (props.disableMonthClick ? 'default' : 'pointer')};
   &:hover {
-    background: #e9e9e9;
+    background: ${(props) => (props.disableMonthClick ? 'none' : '#e9e9e9')};
   }
   @media (max-width: 992px) {
     cursor: default;
@@ -89,9 +89,9 @@ const Month = styled('p')`
 `;
 const Year = styled('p')`
   flex: 1.5;
-  cursor: pointer;
+  cursor: ${(props) => (props.disableYearClick ? 'default' : 'pointer')};
   &:hover {
-    background: #e9e9e9;
+    background: ${(props) => (props.disableYearClick ? 'none' : '#e9e9e9')};
   }
   @media (max-width: 992px) {
     cursor: default;
@@ -317,7 +317,7 @@ export default class DatePicker extends React.Component {
       } else {
         // this.errorText = 'Pick a valid Date';
         this.setState({
-          selectedDate: this.props.placeholder || 'custom placeholder',
+          // selectedDate: this.props.placeholder || 'custom placeholder',
           showCalendar: alwaysShowCalendar,
         });
         if (this.props.dateChangeHandler)
@@ -345,7 +345,7 @@ export default class DatePicker extends React.Component {
       } else {
         // this.errorText = 'Pick a valid Date';
         this.setState({
-          selectedDate: this.props.placeholder || 'custom placeholder',
+          // selectedDate: this.props.placeholder || 'custom placeholder',
           showCalendar: alwaysShowCalendar,
         });
         if (this.props.dateChangeHandler)
@@ -451,10 +451,10 @@ export default class DatePicker extends React.Component {
     let threshold = null,
       enableOnClick = true;
     if (validStartYear && this.state.currentYear === validStartYear) {
-      culpritMonth = monthIndex === validStartMonth;
+      culpritMonth = monthIndex >= validStartMonth;
       threshold = validStartDay;
     } else if (validEndYear && this.state.currentYear === validEndYear) {
-      culpritMonth = monthIndex === validEndMonth;
+      culpritMonth = monthIndex <= validEndMonth;
       threshold = validEndDay;
     }
     const { checkForBlockedDates = false, activeDayCss = null } = this.props;
@@ -706,6 +706,8 @@ export default class DatePicker extends React.Component {
       setIdForCalendar,
       showDataName = false,
       showYear = true,
+      disableMonthClick,
+      disableYearClick,
     } = this.props;
     return (
       <React.Fragment>
@@ -776,24 +778,31 @@ export default class DatePicker extends React.Component {
               <MonthContainer>
                 <PreviousArrow
                   onClick={() => {
-                    this.checkIsValidPreviousMonth()
-                      ? this.previousMonth()
-                      : null;
+                    this.previousMonth();
+                    // this.checkIsValidPreviousMonth()
+                    //   ? this.previousMonth()
+                    //   : null;
                   }}
-                  disable={!this.checkIsValidPreviousMonth()}
+                  // disable={!this.checkIsValidPreviousMonth()}
                 />
                 <Month
-                  onClick={() => {
-                    this.showMonthPanel();
-                  }}
+                  onClick={
+                    disableMonthClick
+                      ? () => {}
+                      : () => {
+                          this.showMonthPanel();
+                        }
+                  }
+                  disableMonthClick={disableMonthClick}
                 >
                   {monthNames[this.state.currentMonth].name}
                 </Month>
                 <NextArrow
                   onClick={() => {
-                    this.checkIsValidNextMonth() ? this.nextMonth() : null;
+                    this.nextMonth();
+                    // this.checkIsValidNextMonth() ? this.nextMonth() : null;
                   }}
-                  disable={!this.checkIsValidNextMonth()}
+                  // disable={!this.checkIsValidNextMonth()}
                 />
               </MonthContainer>
               {showYear && (
@@ -807,9 +816,14 @@ export default class DatePicker extends React.Component {
                     disable={!this.checkIsValidPreviousYear()}
                   />
                   <Year
-                    onClick={() => {
-                      // this.showYearPanel();
-                    }}
+                    onClick={
+                      disableYearClick
+                        ? () => {}
+                        : () => {
+                            this.showYearPanel();
+                          }
+                    }
+                    disableYearClick={disableYearClick}
                   >
                     {this.state.currentYear}
                   </Year>
@@ -883,7 +897,8 @@ DatePicker.defaultProps = {
   showDataName: false,
   showYear: true,
   initialSelectDate: '',
-  validateMonthPanel: true,
+  validateMonthPanel: false,
+  disableMonthClick: false,
   // autScroll: true,
   // showError: false,
 };

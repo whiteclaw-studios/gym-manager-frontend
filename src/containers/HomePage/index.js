@@ -454,6 +454,9 @@ class HomePage extends React.Component {
                       `startDate.validStartMonth`,
                       0,
                     )}
+                    disableMonthClick
+                    disableYearClick
+                    validateMonthPanel
                     validateEndMonth={11}
                     nextYearHandle={(yearSelected) => {
                       const { startDate } = filters;
@@ -497,6 +500,9 @@ class HomePage extends React.Component {
                       `endDate.validStartMonth`,
                       0,
                     )}
+                    disableMonthClick
+                    disableYearClick
+                    validateMonthPanel
                     validateEndMonth={11}
                     nextYearHandle={(yearSelected) => {
                       const { endDate } = filters;
@@ -510,7 +516,6 @@ class HomePage extends React.Component {
                           },
                         }),
                       );
-                      console.log('yearSelected', yearSelected);
                     }}
                   />
                 </FilterDropdn>
