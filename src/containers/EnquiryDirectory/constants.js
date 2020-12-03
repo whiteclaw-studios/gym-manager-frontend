@@ -5,3 +5,4 @@ export const UPDATE_PAGE = 'app/EnquiryDirectory/UPDATE_PAGE';
 export const GET_ENQUIRY_DETAILS = 'app/EnquiryDirectory/GET_ENQUIRY_DETAILS';
 export const LOAD_ENQUIRY_DETAILS = 'app/EnquiryDirectory/LOAD_ENQUIRY_DETAILS';
 export const UPDATE_FILTER = 'app/EnquiryDirectory/UPDATE_FILTER';
+export const ADD_ENQUIRY_TO_STORE = 'app/EnquiryDirectory/ADD_ENQUIRY_TO_STORE';

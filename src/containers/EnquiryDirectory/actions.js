@@ -1,5 +1,6 @@
 import {
   ADD_ENQUIRY,
+  ADD_ENQUIRY_TO_STORE,
   GET_ENQUIRY_DETAILS,
   LOAD_ENQUIRY_DETAILS,
   LOAD_SEARCH_DATA,
@@ -47,6 +48,12 @@ export function loadEnquiryDetails(payload) {
 export function updateFilter(payload) {
   return {
     type: UPDATE_FILTER,
+    payload,
+  };
+}
+export function addEnquiryToStore(payload) {
+  return {
+    type: ADD_ENQUIRY_TO_STORE,
     payload,
   };
 }

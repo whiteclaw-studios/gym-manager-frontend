@@ -1,11 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
 import { GREEN, RED, WHITE } from '../../constants';
-import {
-  MontserratBold,
-  MontserratLight,
-  MontserratRegular,
-} from '../../utils/fonts';
+import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import Button from '../Button';
 import Modal from '../Modal';
 const Wrap = styled('div')`

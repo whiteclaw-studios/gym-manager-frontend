@@ -27,6 +27,7 @@ import {
   FilterIcon,
   HoverEnquiryIcon,
 } from '../../components/SpriteIcon';
+import EnquiryInfo from '../../components/EnquiryInfo';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -118,6 +119,13 @@ class EnquiryDirectory extends React.Component {
     this.state = {
       showFilterIconInMobile: isMobile,
       showFilters: !isMobile,
+      showEnquiryInfo: false,
+      enquiryInfo: {
+        name: '',
+        mobileNumber: '',
+        branchName: '',
+        mailId: '',
+      },
     };
   }
   onSearch = (searchText) => {
@@ -154,6 +162,25 @@ class EnquiryDirectory extends React.Component {
       });
     }
   };
+  onSelectMember = (data) => {
+    console.log('data', data);
+    const { name, branch: branchName, mailId, mobile: mobileNumber } =
+      data || {};
+    this.setState({
+      showEnquiryInfo: true,
+      enquiryInfo: {
+        name,
+        branchName,
+        mailId,
+        mobileNumber,
+      },
+    });
+  };
+  onCloseEnquiryInfo = () => {
+    this.setState({
+      showEnquiryInfo: false,
+    });
+  };
   render() {
     const {
       paginationInfo,
@@ -163,7 +190,12 @@ class EnquiryDirectory extends React.Component {
       branchDetails,
       filters,
     } = this.props;
-    const { showFilterIconInMobile, showFilters } = this.state;
+    const {
+      showFilterIconInMobile,
+      showFilters,
+      enquiryInfo,
+      showEnquiryInfo,
+    } = this.state;
     const { totalPages, activePage } = paginationInfo;
     const selectedBranchFilterIndex = get(filters, 'branch.index');
     const { isLoading } = get(pageData, 'enquiryInfo', {});
@@ -258,6 +290,8 @@ class EnquiryDirectory extends React.Component {
           hidePlan
           showEmail
           showMobile
+          isClickable
+          onSelectMember={this.onSelectMember}
         />
         <PaginationWrap>
           <Pagination
@@ -267,6 +301,11 @@ class EnquiryDirectory extends React.Component {
             name="enquiryDirectory"
           />
         </PaginationWrap>
+        <EnquiryInfo
+          show={showEnquiryInfo}
+          onClose={this.onCloseEnquiryInfo}
+          {...enquiryInfo}
+        />
       </Wrapper>
     );
   }
