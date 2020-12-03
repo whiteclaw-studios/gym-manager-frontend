@@ -312,11 +312,7 @@ class HomePage extends React.Component {
     const selectedFromDate = get(filters, 'startDate.selectedDate', '');
     const selectedToDate = get(filters, 'endDate.selectedDate', '');
     const branchFilters = constructBranchFilters(branchDetails);
-    const planFilters = constructPlanFilters(
-      branchDetails,
-      selectedBranchFilterIndex,
-    );
-    console.log('HomePage', pageData, isLoading, this.state);
+    const planFilters = constructPlanFilters(branchDetails);
 
     return (
       <Wrapper>

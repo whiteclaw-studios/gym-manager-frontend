@@ -169,8 +169,8 @@ class MemberProfile extends React.Component {
     if (getFeeDetails) getFeeDetails(memberUniqueId);
   }
   constructBoxes = () => {
-    const { branch, memberId, plan, memberUniqueId } = this.props;
-    const obj = { branch, memberId, plan };
+    const { branch, memberId, plan, memberUniqueId, bloodGroup } = this.props;
+    const obj = { branch, memberId, plan, bloodGroup };
     const keys = Object.keys(obj);
     return keys.map((key) => {
       return (

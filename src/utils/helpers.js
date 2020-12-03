@@ -153,10 +153,10 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
         break;
       }
       case 'plan': {
-        const { id, planName } = filters[key];
+        const { planName } = filters[key];
         if (planName !== 'All') {
           filteredData = filteredData.filter(
-            (member) => member.planDetailsId === id,
+            (member) => member.planName === planName,
           );
         }
         break;
@@ -172,6 +172,7 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
             }
           });
         }
+        break;
       }
       case 'feeDueDate': {
         const { name } = filters[key];
@@ -202,10 +203,14 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
       case 'bloodGroup': {
         const { name } = filters[key];
         if (name !== 'All') {
-          filteredData = filteredData.filter((member) => {
-            if (member.bloodGroup) return member.bloodGroup === name;
-            return true;
-          });
+          if (name === 'None') {
+            filteredData = filteredData.filter((member) => {
+              return !member.bloodGroup;
+            });
+          } else
+            filteredData = filteredData.filter((member) => {
+              if (member.bloodGroup) return member.bloodGroup === name;
+            });
         }
         break;
       }
@@ -227,20 +232,24 @@ export const constructBranchFilters = (branchDetails) => {
   ];
   return branchInfo;
 };
-export const constructPlanFilters = (
-  branchDetails,
-  selectBranchFilterIndex,
-) => {
+export const constructPlanFilters = (branchDetails) => {
   if (!branchDetails) return [{ planName: 'All' }];
-  if (selectBranchFilterIndex === 0) return [{ planName: 'All' }];
+  let plans = new Set();
+  for (let i = 0; i < branchDetails.length; i += 1) {
+    const { planDetails } = branchDetails[i] || {};
+    for (let j = 0; j < planDetails.length; j += 1) {
+      plans.add(planDetails[j].planName);
+    }
+  }
+  const plansArray = [...plans];
   return [
     { planName: 'All' },
-    ...get(branchDetails, `[${selectBranchFilterIndex - 1}].planDetails`),
+    ...plansArray.map((planName) => ({ planName: planName })),
   ];
 };
 export const constructBloodGrpFilters = (bloodGroupData) => {
-  if (!bloodGroupData) return ['All'];
-  return ['All', ...bloodGroupData];
+  if (!bloodGroupData) return ['All', 'None'];
+  return ['All', 'None', ...bloodGroupData];
 };
 export const applySearchAndFilterLogic = ({
   searchText,

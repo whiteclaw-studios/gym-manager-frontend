@@ -122,6 +122,9 @@ const Note = styled('p')`
     padding: 2.4rem 1rem;
   }
 `;
+const Splitup = styled('span')`
+  color: ${GREEN};
+`;
 export default class RegisterNewMember extends React.Component {
   constructor(props) {
     super(props);
@@ -138,6 +141,22 @@ export default class RegisterNewMember extends React.Component {
     }
     return 0;
   };
+
+  getFeeSplitup = () => {
+    const { entirePlanDetails, plan, registerAmount, type } = this.props;
+    if (type !== 'REGISTER') return '';
+    if (plan.selectedItemIndex >= 0) {
+      return (
+        <Splitup>
+          (Regtr.amount = {RUPEE_SYMBOL}
+          {parseInt(registerAmount, 10)}+ Fee amount = {RUPEE_SYMBOL}
+          {parseInt(entirePlanDetails[plan.selectedItemIndex].amount, 10)})
+        </Splitup>
+      );
+    }
+    return '';
+  };
+
   render() {
     const {
       type,
@@ -282,22 +301,7 @@ export default class RegisterNewMember extends React.Component {
                   errorText="Invalid mobile number"
                 />
               </InputWrap>
-              <InputWrap>
-                <Label>Plan</Label>
-                <DropDown
-                  className={css`
-                    > div {
-                      border-bottom: 1px solid ${SECONDARY_BLACK};
-                    }
-                  `}
-                  name="plan"
-                  listItems={getPlanDetails()}
-                  placeholder="Select plan"
-                  activeItem={plan.selectedItemIndex}
-                  onSelect={onSelectDropdown}
-                  showError={plan.showError}
-                />
-              </InputWrap>
+
               <InputWrap>
                 <Label>Blood group</Label>
                 <DropDown
@@ -314,11 +318,30 @@ export default class RegisterNewMember extends React.Component {
                   showError={bloodGroup.showError}
                 />
               </InputWrap>
+              <InputWrap>
+                <Label>Plan</Label>
+                <DropDown
+                  className={css`
+                    > div {
+                      border-bottom: 1px solid ${SECONDARY_BLACK};
+                    }
+                  `}
+                  name="plan"
+                  listItems={getPlanDetails()}
+                  placeholder="Select plan"
+                  activeItem={plan.selectedItemIndex}
+                  onSelect={onSelectDropdown}
+                  showError={plan.showError}
+                />
+              </InputWrap>
               <UploadImage images={images} chooseImage={chooseImage} />
             </Column>
           </Row>
           {feeAmount > 0 && (
-            <Note>Amount to be paid {`${RUPEE_SYMBOL}${feeAmount}`}</Note>
+            <Note>
+              Amount to be paid {`${RUPEE_SYMBOL}${feeAmount}`}
+              {this.getFeeSplitup()}
+            </Note>
           )}
           <Controls>
             <Cancel onClick={onCancel}>Cancel</Cancel>

@@ -857,10 +857,7 @@ class MembersDirectory extends React.Component {
     const selectedBGFilterIndex = get(filters, 'bloodGroup.index');
     const selectedStatusFilterIndex = get(filters, 'status.index');
     const branchFilters = constructBranchFilters(branchDetails);
-    const planFilters = constructPlanFilters(
-      branchDetails,
-      selectedBranchFilterIndex,
-    );
+    const planFilters = constructPlanFilters(branchDetails);
     const bloodGroupFilters = constructBloodGrpFilters(BLOOD_GROUP_DATA);
     return (
       <Wrapper>
@@ -884,12 +881,13 @@ class MembersDirectory extends React.Component {
             isActive={isActive}
             onEditMember={this.onEdit}
             updateMembershipStatus={this.updateMembershipStatus}
-            onBack={() =>
+            onBack={() => {
               this.setState({
                 showEditScreen: false,
                 showMemberProfile: false,
-              })
-            }
+              });
+              this.resetState();
+            }}
             getFeeDetails={this.getFeeDetails}
             selectMemberFeeDetails={selectMemberFeeDetails}
             onPayFee={this.onPayFee}
