@@ -176,25 +176,20 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
       }
       case 'feeDueDate': {
         const { name } = filters[key];
-        const dateInfo = getTodayDate();
+        const { day: tDay, month: tMonth, year: tYear } = getTodayDate();
         if (name !== 'All') {
           filteredData = filteredData.filter((member) => {
             const { nextDue } = member;
             const [dateFormat] = nextDue.split('T');
             const [day, month, year] = dateFormat.split('-');
-            const formattedDate = new Date(`${year}-${month}-${day}`);
-            console.log(
-              'due date filter logic',
-              name,
-              formattedDate,
-              dateInfo,
-              formattedDate.getTime() === dateInfo.date.getTime(),
-              formattedDate.getTime() < dateInfo.date.getTime(),
-            );
-            if (name === 'Today')
-              return formattedDate.getTime() === dateInfo.date.getTime();
-            else if (name === 'Past')
-              return formattedDate.getTime() < dateInfo.date.getTime();
+            const formattedDate = new Date(
+              `${year}-${month}-${day >= 10 ? day : `0${day}`}`,
+            ).getTime();
+            const formattedTDate = new Date(
+              `${tYear}-${tMonth}-${tDay}`,
+            ).getTime();
+            if (name === 'Today') return formattedDate === formattedTDate;
+            else if (name === 'Past') return formattedDate < formattedTDate;
           });
           console.log('due date filter after logic', filteredData);
         }

@@ -965,7 +965,7 @@ class MembersDirectory extends React.Component {
                 >
                   <Search
                     onSearch={this.onSearch}
-                    placeholder="Search by name,membership id"
+                    placeholder="Search by Name, Membership ID , Mobile"
                   />
                 </SearchWrap>
                 {isSuperAdmin && (
@@ -1142,11 +1142,11 @@ class MembersDirectory extends React.Component {
               : `All the activities with ${name.value} will be
           resumed. Do you want to resume anyway?`
           }
-          onNo={this.closeDeleteConfirmation}
           show={showDeleteConfirmation}
-          onYes={this.confirmDeleteMember}
-          yesText={isActive ? 'Pause' : 'Resume'}
-          noText={'Cancel'}
+          onYes={this.closeDeleteConfirmation}
+          onNo={this.confirmDeleteMember}
+          noText={isActive ? 'Pause' : 'Resume'}
+          yesText={'Cancel'}
         />
       </Wrapper>
     );

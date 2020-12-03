@@ -18,6 +18,7 @@ const Heading = styled('p')`
 const Controls = styled('div')`
   display: flex;
   justify-content: flex-end;
+  margin: 2rem 0;
 `;
 const MemberName = styled('p')`
   opacity: 0.6;
@@ -47,15 +48,15 @@ const Paid = styled(Button)`
 const Amount = styled('p')`
   text-align: left;
   width: 100%;
-  margin-bottom: 2.4rem;
-  margin-left: 1.2rem;
+  margin-bottom: 3.4rem;
+  margin-left: 5rem;
   font-family: ${MontserratRegular};
   font-size: 1.4rem;
 `;
 const PlanWrap = styled('div')`
   display: flex;
   align-items: center;
-  margin: 2rem 1rem;
+  margin: 2rem 3rem;
 `;
 const Label = styled('p')`
   font-size: 1.4rem;

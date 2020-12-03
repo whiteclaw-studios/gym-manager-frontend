@@ -51,8 +51,8 @@ export const initialState = {
       currentYear: currentDate().currentYear,
     },
     feeDueDate: {
-      index: 0,
-      name: 'All',
+      index: 1,
+      name: 'Today',
     },
   },
   applyDateFilter: false,

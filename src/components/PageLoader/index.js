@@ -20,7 +20,7 @@ const OverlayBackground = styled('div')`
   width: 100%;
   height: 100%;
   background-color: #000000;
-  opacity: 0.3;
+  opacity: 0.5;
 `;
 const Loader = styled('div')`
   z-index: 101;

@@ -57,6 +57,7 @@ export function* getFeeDueDetailsSaga(params = {}) {
 }
 function* getDateFilteredDataSaga(params = {}) {
   try {
+    yield put(togglePageLoader(true));
     const { startDate, endDate, sDate, eDate } = params;
     const response = yield call(axiosWrapper, {
       method: 'GET',
@@ -77,6 +78,8 @@ function* getDateFilteredDataSaga(params = {}) {
     }
   } catch (err) {
     console.error('Caught in getDateFilteredDataSaga', err);
+  } finally {
+    yield put(togglePageLoader(false));
   }
 }
 function* updateFeeDetails(params) {
