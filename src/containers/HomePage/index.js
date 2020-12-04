@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { selectHomePageState, selectHPDataSource } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo/Loadable';
 import PaymentPopup from '../../components/PaymentPopup';
-import { FEES_LAYOUT, FEE_DUE_DATE, RED } from '../../constants';
+import { FEES_LAYOUT, FEE_DUE_DATE, GREEN, RED } from '../../constants';
 import {
   applyDateFilter,
   getDateFilteredData,
@@ -78,7 +78,7 @@ const FilterDropdn = styled('div')`
   }
 `;
 const Note = styled('p')`
-  color: ${RED};
+  color: ${GREEN};
   font-size: 1.4rem;
   margin: 0.5rem 0;
   @media (min-width: 993px) {

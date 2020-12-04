@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import styled, { css } from 'react-emotion';
-import { GREEN, LIGHT_GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
+import {
+  GREEN,
+  LIGHT_GREEN,
+  PROFILE_PLACEHOLDER,
+  SECONDARY_BLACK,
+  WHITE,
+} from '../../constants';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import { deleteCookie } from '../../utils/helpers';
 import { CloseIcon } from '../SpriteIcon';
@@ -91,6 +97,18 @@ const UserName = styled('p')`
   position: relative;
   top: 3.2rem;
   color: ${WHITE};
+  font-family: ${MontserratRegular};
+  display: flex;
+  align-items: center;
+`;
+const ProfileIcon = styled('div')`
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1rem;
+`;
+const ProfileImg = styled('img')`
+  width: 100%;
+  height: 100%;
 `;
 function NavBar({
   updateActiveNavIndex,
@@ -166,7 +184,14 @@ function NavBar({
           <CloseIcon onClick={() => hideNavBar()} />
         </Close>
       )}
-      {navbarState && userName && <UserName>Logged in as {userName}</UserName>}
+      {navbarState && userName && (
+        <UserName>
+          <ProfileIcon>
+            <ProfileImg src={PROFILE_PLACEHOLDER} />
+          </ProfileIcon>
+          {userName}
+        </UserName>
+      )}
 
       <MenusWrap>{constructMenus()}</MenusWrap>
       <Footer>
