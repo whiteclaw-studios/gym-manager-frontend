@@ -262,6 +262,7 @@ class App extends React.Component {
       logo,
       appState,
       isSuperAdmin,
+      isLoggedIn,
     } = this.props;
     const {
       showInstallUI,
@@ -272,7 +273,11 @@ class App extends React.Component {
       hasError,
     } = this.state;
     const firstName = get(appState, 'adminInfo.firstName', '');
-    const { pageLoaderState } = appState || {};
+    const { pageLoaderState, adminInfo } = appState || {};
+    const { isLoading = false } = adminInfo;
+    const currentUrl = this.props.history.location.pathname;
+    const showSplashScreen =
+      !isLoggedIn && currentUrl === '/login' ? false : isLoading;
     return (
       <Wrap>
         {hasError ? (
@@ -291,7 +296,7 @@ class App extends React.Component {
               showNavBar={this.showNavBar}
               logo={logo}
             />
-            {!isAdminInfoLoaded ? (
+            {showSplashScreen ? (
               <SplashScreen />
             ) : (
               <ChildrenWrap>

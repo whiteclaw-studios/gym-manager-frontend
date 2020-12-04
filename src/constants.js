@@ -17,14 +17,14 @@ export const paginationConfigs = {
 };
 export const GENDER = ['Male', 'Female', 'Others'];
 export const BLOOD_GROUP_DATA = [
-  'O+ve',
-  'O-ve',
-  'AB+ve',
-  'AB-ve',
-  'B+ve',
-  'B-ve',
-  'A+ve',
-  'A-ve',
+  'O+VE',
+  'O-VE',
+  'AB+VE',
+  'AB-VE',
+  'B+VE',
+  'B-VE',
+  'A+VE',
+  'A-VE',
 ];
 export const MEMBER_STATUS = ['All', 'Active', 'Inactive'];
 export const FEE_DUE_DATE = ['All', 'Today', 'Past', 'Future'];

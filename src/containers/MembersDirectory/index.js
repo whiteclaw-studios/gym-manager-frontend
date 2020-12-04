@@ -930,7 +930,7 @@ class MembersDirectory extends React.Component {
                       }
                     `}
                   />
-                  Register New Member
+                  Register
                 </RegisterNewMemberCTA>
               </ButtonWrap>
               {showFilterIconInMobile && (

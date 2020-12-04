@@ -31,6 +31,7 @@ function* getAdminInfoSaga(params = {}) {
         loadAdminInfo({
           isLoggedIn: true,
           infoLoaded: true,
+          isLoading: false,
           ...adminInfo,
         }),
       );
