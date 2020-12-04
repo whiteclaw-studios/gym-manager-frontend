@@ -106,7 +106,7 @@ function GridData({
 }) {
   return (
     <Wrap>
-      <Title>{showHistory ? 'History' : 'Fees Due'}</Title>
+      <Title>{showHistory ? 'Fee History' : 'Fees Due'}</Title>
       <Content>
         <HeadingWrap>
           {headingInfo.map((heading, index) => (
@@ -119,7 +119,7 @@ function GridData({
                   : ''
               }
               key={`${
-                showHistory ? 'History' : 'Fees Due'
+                showHistory ? 'Fee History' : 'Fees Due'
               }- ${memberUniqueId}-${heading}`}
             >
               {heading}

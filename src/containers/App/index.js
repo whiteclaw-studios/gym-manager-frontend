@@ -66,7 +66,7 @@ const menus = [
     hoverIconCss: HoverProfileIcon,
   },
   {
-    menu: 'Enquiry Details',
+    menu: 'Enquiry Directory',
     Icon: EnquiryIcon,
     url: '/enquiry-directory',
     hoverIconCss: HoverEnquiryIcon,
@@ -271,6 +271,7 @@ class App extends React.Component {
       navmenu = {},
       hasError,
     } = this.state;
+    const firstName = get(appState, 'adminInfo.firstName', '');
     const { pageLoaderState } = appState || {};
     return (
       <Wrap>
@@ -320,6 +321,7 @@ class App extends React.Component {
                 logo={logo}
                 menus={menus}
                 footerMenus={footerMenus}
+                userName={firstName}
               />
             )}
             {mountToasterManager && (

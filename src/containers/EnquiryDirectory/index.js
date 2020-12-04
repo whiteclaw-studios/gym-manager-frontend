@@ -47,13 +47,22 @@ const ButtonSearchWrap = styled('div')`
   }
 `;
 const SearchWrap = styled('div')`
-  width: 27rem;
+  width: 100%;
   margin: 0.5rem 1rem;
   @media (max-width: 992px) {
     margin: 0;
-  } ;
+  }
+  @media (min-width: 993px) {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
 `;
-
+const DesktopSearch = styled(Search)`
+  @media (min-width: 993px) {
+    width: 27rem;
+  }
+`;
 const ButtonWrap = styled('div')`
   width: 27rem;
   margin: 0.5rem 1rem;
@@ -89,7 +98,7 @@ const PaginationWrap = styled('div')`
 
 const FilterWrap = styled('div')`
   display: flex;
-  @media (max-width: 640px) {
+  @media (max-width: 992px) {
     flex-direction: column;
   } ;
 `;
@@ -242,7 +251,10 @@ class EnquiryDirectory extends React.Component {
               }
             `}
           >
-            <Search onSearch={this.onSearch} placeholder="Search by name" />
+            <DesktopSearch
+              onSearch={this.onSearch}
+              placeholder="Search by Name"
+            />
           </SearchWrap>
         </ButtonSearchWrap>
         {(showFilters || !showFilterIconInMobile) && (
@@ -254,7 +266,7 @@ class EnquiryDirectory extends React.Component {
                 }
               `}
             >
-              <Search onSearch={this.onSearch} placeholder="Search by name" />
+              <Search onSearch={this.onSearch} placeholder="Search by Name" />
             </SearchWrap>
             <Filter>
               <Label>Branch</Label>

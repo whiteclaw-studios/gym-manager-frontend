@@ -61,9 +61,14 @@ const Wrapper = styled('div')`
 `;
 
 const SearchWrap = styled('div')`
-  width: 27rem;
+  width: 100%;
   margin: 0.5rem 1.2rem;
   align-items: center;
+  @media (min-width: 993px) {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
   @media (max-width: 992px) {
     margin: 0;
   }
@@ -135,6 +140,9 @@ const Label = styled('p')`
 }
 `;
 const FilterDropdn = styled('div')`
+  width: 27rem;
+`;
+const DesktopSearch = styled(Search)`
   width: 27rem;
 `;
 class MembersDirectory extends React.Component {
@@ -948,9 +956,9 @@ class MembersDirectory extends React.Component {
                   }
                 `}
               >
-                <Search
+                <DesktopSearch
                   onSearch={this.onSearch}
-                  placeholder="Search by name,membership id"
+                  placeholder="Search by Name, Membership ID , Mobile"
                 />
               </SearchWrap>
             </ButtonSearchWrap>

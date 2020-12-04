@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
+import styled, { css, cx } from 'react-emotion';
 import { BG_COLOR, SECONDARY_BLACK } from '../../constants';
 import { MontserratRegular } from '../../utils/fonts';
 // import { debounce } from '../../utils/helpers';
@@ -9,9 +9,10 @@ const Wrap = styled('div')`
   margin-bottom: 1.2rem;
   display: flex;
   align-items: center;
-  &:focus {
-    border-bottom: 1px solid ${SECONDARY_BLACK};
-  }
+  border-bottom: 1px solid ${SECONDARY_BLACK};
+  // &:focus {
+  //   border-bottom: 1px solid ${SECONDARY_BLACK};
+  // }
 `;
 const SearchBar = styled('input')`
   width: 100%;
@@ -47,17 +48,18 @@ export default class Search extends React.Component {
   render() {
     console.log('this.state -> search', this.state);
     const { isFocus } = this.state;
-    const { placeholder = 'Search' } = this.props;
+    const { placeholder = 'Search', className } = this.props;
     return (
       <Wrap
-        className={
+        className={cx(
           isFocus
             ? css`
                 border-bottom: 1px solid ${SECONDARY_BLACK};
                 transition: all 0.4s ease-in-out;
               `
-            : ''
-        }
+            : '',
+          className,
+        )}
         tabIndex={0}
         onFocus={() =>
           this.setState({

@@ -84,7 +84,14 @@ const Menu = styled('span')`
     }
   }
 `;
-
+const UserName = styled('p')`
+  font-size: 1.4rem;
+  padding: 0 1.2rem;
+  padding-left: 2.4rem;
+  position: relative;
+  top: 3.2rem;
+  color: ${WHITE};
+`;
 function NavBar({
   updateActiveNavIndex,
   activeIndex,
@@ -96,9 +103,9 @@ function NavBar({
   logo,
   menus,
   footerMenus,
+  userName,
 }) {
   const constructMenus = () => {
-    console.log('activeItem', activeIndex);
     return menus.map((item, index) => {
       const { menu, Icon, url, hoverIconCss } = item;
       return (
@@ -159,6 +166,8 @@ function NavBar({
           <CloseIcon onClick={() => hideNavBar()} />
         </Close>
       )}
+      {navbarState && userName && <UserName>Logged in as {userName}</UserName>}
+
       <MenusWrap>{constructMenus()}</MenusWrap>
       <Footer>
         {footerMenus.map((item, index) => {

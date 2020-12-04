@@ -125,6 +125,9 @@ const Note = styled('p')`
 const Splitup = styled('span')`
   color: ${GREEN};
 `;
+const Asterik = styled('span')`
+  color: ${RED};
+`;
 export default class RegisterNewMember extends React.Component {
   constructor(props) {
     super(props);
@@ -196,7 +199,9 @@ export default class RegisterNewMember extends React.Component {
           <Row>
             <Column>
               <InputWrap>
-                <Label>Member id</Label>
+                <Label>
+                  Member id {type === 'REGISTER' && <Asterik>*</Asterik>}
+                </Label>
                 <NameInput
                   state={memberId}
                   name="memberId"
@@ -207,7 +212,9 @@ export default class RegisterNewMember extends React.Component {
                 />
               </InputWrap>
               <InputWrap>
-                <Label>Name</Label>
+                <Label>
+                  Name {type === 'REGISTER' && <Asterik>*</Asterik>}
+                </Label>
                 <NameInput
                   state={name}
                   name="name"
@@ -217,7 +224,9 @@ export default class RegisterNewMember extends React.Component {
                 />
               </InputWrap>
               <InputWrap>
-                <Label>Father Name</Label>
+                <Label>
+                  Father Name {type === 'REGISTER' && <Asterik>*</Asterik>}
+                </Label>
                 <FatherNameInput
                   state={fatherName}
                   name="fatherName"
@@ -227,7 +236,10 @@ export default class RegisterNewMember extends React.Component {
                 />
               </InputWrap>
               <InputWrap>
-                <Label>Branch</Label>
+                <Label>
+                  Branch
+                  {type === 'REGISTER' && <Asterik>*</Asterik>}
+                </Label>
                 <DropDown
                   className={css`
                     > div {
@@ -243,7 +255,9 @@ export default class RegisterNewMember extends React.Component {
                 />
               </InputWrap>
               <InputWrap>
-                <Label>Gender</Label>
+                <Label>
+                  Gender {type === 'REGISTER' && <Asterik>*</Asterik>}
+                </Label>
                 <DropDown
                   className={css`
                     > div {
@@ -259,7 +273,9 @@ export default class RegisterNewMember extends React.Component {
                 />
               </InputWrap>
               <InputWrap>
-                <Label>Email</Label>
+                <Label>
+                  Email {type === 'REGISTER' && <Asterik>*</Asterik>}
+                </Label>
                 <EmailInput
                   state={email}
                   name="email"
@@ -275,14 +291,16 @@ export default class RegisterNewMember extends React.Component {
               }
               `}
               >
-                <Label>Address</Label>
+                <Label>
+                  Address {type === 'REGISTER' && <Asterik>*</Asterik>}
+                </Label>
                 <Address onChange={typeAddress}>{address.value}</Address>
                 {address.error && <Error>Invalid address</Error>}
               </InputWrap>
             </Column>
             <Column>
               <InputWrap>
-                <Label>Age</Label>
+                <Label>Age {type === 'REGISTER' && <Asterik>*</Asterik>}</Label>
                 <AgeInput
                   state={age}
                   name="age"
@@ -292,7 +310,9 @@ export default class RegisterNewMember extends React.Component {
                 />
               </InputWrap>
               <InputWrap>
-                <Label>Mobile</Label>
+                <Label>
+                  Mobile {type === 'REGISTER' && <Asterik>*</Asterik>}
+                </Label>
                 <MobileInput
                   state={mobile}
                   name="mobile"
@@ -303,7 +323,9 @@ export default class RegisterNewMember extends React.Component {
               </InputWrap>
 
               <InputWrap>
-                <Label>Blood group</Label>
+                <Label>
+                  Blood group {type === 'REGISTER' && <Asterik>*</Asterik>}
+                </Label>
                 <DropDown
                   className={css`
                     > div {
@@ -319,7 +341,9 @@ export default class RegisterNewMember extends React.Component {
                 />
               </InputWrap>
               <InputWrap>
-                <Label>Plan</Label>
+                <Label>
+                  Plan {type === 'REGISTER' && <Asterik>*</Asterik>}
+                </Label>
                 <DropDown
                   className={css`
                     > div {

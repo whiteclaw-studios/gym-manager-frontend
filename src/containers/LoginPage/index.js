@@ -184,7 +184,7 @@ class LoginPage extends React.Component {
                 placeholder="User name"
                 onValueChange={this.onInputChange}
                 showError={username.error}
-                errorText="Invalid username"
+                errorText="Invalid Username"
                 onKeyDown={this.onNameEnter}
               />
             </UsernameWrap>
@@ -196,7 +196,7 @@ class LoginPage extends React.Component {
                 onValueChange={this.onInputChange}
                 type="password"
                 showError={password.error}
-                errorText="Invalid password"
+                errorText="Invalid Password"
                 onKeyDown={this.onEnter}
               />
             </PasswordWrap>
@@ -211,14 +211,14 @@ class LoginPage extends React.Component {
                 </Button>
               </ButtonWrap>
             )}
-            <LinkTag
+            {/* <LinkTag
               onClick={(e) => {
                 e.preventDefault();
                 this.props.history.push('/forgot-password');
               }}
             >
               Forgot Password?
-            </LinkTag>
+            </LinkTag> */}
           </React.Fragment>
         </LoginWrap>
       </Container>

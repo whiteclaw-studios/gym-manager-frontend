@@ -154,6 +154,7 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
       }
       case 'plan': {
         const { planName } = filters[key];
+        console.log('filteredData', filteredData, planName);
         if (planName !== 'All') {
           filteredData = filteredData.filter(
             (member) => member.planName === planName,
@@ -190,6 +191,7 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
             ).getTime();
             if (name === 'Today') return formattedDate === formattedTDate;
             else if (name === 'Past') return formattedDate < formattedTDate;
+            else if (name === 'Future') return formattedDate > formattedTDate;
           });
           console.log('due date filter after logic', filteredData);
         }
@@ -204,7 +206,8 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
             });
           } else
             filteredData = filteredData.filter((member) => {
-              if (member.bloodGroup) return member.bloodGroup === name;
+              if (member.bloodGroup)
+                return member.bloodGroup.toLowerCase() === name.toLowerCase();
             });
         }
         break;

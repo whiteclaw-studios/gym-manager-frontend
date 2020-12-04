@@ -27,7 +27,7 @@ export const BLOOD_GROUP_DATA = [
   'A-ve',
 ];
 export const MEMBER_STATUS = ['All', 'Active', 'Inactive'];
-export const FEE_DUE_DATE = ['All', 'Today', 'Past'];
+export const FEE_DUE_DATE = ['All', 'Today', 'Past', 'Future'];
 export const ALLOW_IMAGES_TYPES = [
   'image/png',
   'image/jpeg',
