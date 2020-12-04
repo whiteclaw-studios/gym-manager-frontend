@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { GREEN, PROFILE_PLACEHOLDER } from '../../constants';
-import { MontserratRegular } from '../../utils/fonts';
+import { GREEN, PROFILE_PLACEHOLDER, SECONDARY_BLACK } from '../../constants';
+import { MontserratBold, MontserratRegular } from '../../utils/fonts';
 import Modal from '../Modal';
 const Wrap = styled('div')`
   display: flex;
@@ -37,6 +37,23 @@ const Item = styled('p')`
   margin: 1rem 0;
   font-size: 1.4rem;
   font-family: ${MontserratRegular};
+  display: flex;
+`;
+const Title = styled('p')`
+  font-family: ${MontserratBold};
+  font-size: 1.4rem;
+  color: ${SECONDARY_BLACK};
+  margin-right: 1rem;
+  @media (max-width: 360px) {
+    font-size: 1.2rem;
+  }
+`;
+const Data = styled('p')`
+  font-family: ${MontserratRegular};
+  font-size: 1.4rem;
+  @media (max-width: 360px) {
+    font-size: 1.2rem;
+  }
 `;
 function EnquiryInfo({
   show = false,
@@ -55,9 +72,18 @@ function EnquiryInfo({
           <ProfilePic src={profilePic} />
         </ProfilePicWrap>
         <OtherInfoWrap>
-          <Item>{branchName}</Item>
-          <Item>{mobileNumber}</Item>
-          <Item>{mailId}</Item>
+          <Item>
+            <Title>Branch :</Title>
+            <Data>{branchName} </Data>
+          </Item>
+          <Item>
+            <Title>Mobile :</Title>
+            <Data>{mobileNumber}</Data>
+          </Item>
+          <Item>
+            <Title>E-mail :</Title>
+            <Data>{mailId}</Data>
+          </Item>
         </OtherInfoWrap>
       </Wrap>
     </Modal>
