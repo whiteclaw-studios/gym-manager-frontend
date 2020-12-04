@@ -995,11 +995,6 @@ class MembersDirectory extends React.Component {
                                   ...otherInfo,
                                   index,
                                 },
-                                plan: {
-                                  ...filters.plan,
-                                  index: 0,
-                                  planName: 'All',
-                                },
                               }),
                             );
                           }}

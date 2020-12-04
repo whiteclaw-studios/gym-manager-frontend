@@ -72,8 +72,14 @@ export default class Search extends React.Component {
           });
         }}
       >
-        <SearchIcon />
+        <SearchIcon
+          onClick={() => {
+            let element = document.getElementById('search-bar');
+            if (element) element.focus();
+          }}
+        />
         <SearchBar
+          id="search-bar"
           type="text"
           placeholder={placeholder}
           onChange={this.onTyping}

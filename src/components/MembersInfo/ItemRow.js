@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled, { css } from 'react-emotion';
-import { GREY, RUPEE_SYMBOL, WHITE } from '../../constants';
-import { OpensansBold } from '../../utils/fonts';
+import { GREY, RUPEE_SYMBOL, SECONDARY_BLACK, WHITE } from '../../constants';
+import { MontserratRegular, OpensansBold } from '../../utils/fonts';
 import { formatDate } from '../../utils/helpers';
 import Button from '../Button';
+import DropDown from '../Dropdown';
 import { Item, Row, Info } from './commonStyles';
-// import ExpandedView from './ExpandedView';
-
+import ConfirmationPopup from '../ConfirmationPopup';
 const MemberRow = styled(Row)`
   align-items: center;
   padding: 1rem;
@@ -45,6 +45,18 @@ const Paid = styled(Button)`
     height: 2.4rem;
   }
 `;
+const DropdownWrap = styled('div')`
+  flex: 1;
+  font-size: 1.4rem;
+  color: ${SECONDARY_BLACK};
+  max-width: 17rem;
+  text-align: center;
+  position: relative;
+  font-family: ${MontserratRegular};
+  @media (max-width: 992px) {
+    font-size: 1.2rem;
+  }
+`;
 
 function ItemRow({
   memberId,
@@ -64,32 +76,58 @@ function ItemRow({
   gender,
   openPaymentPopup,
   index,
+  makeMemberInactive,
   isAllowExpand = true,
   onEditMember = () => {},
   onDeleteMember = () => {},
 }) {
   const [expand, toggleState] = useState(false);
-  const constructControls = (data) => {
+  const [statusIndex, setStatusIndex] = useState(-1);
+  const [showDeleteConfirmation, setDeleteConfirmationPopup] = useState(false);
+  const constructControls = () => {
     return (
-      <Item>
-        <Paid
-          onClick={() =>
-            openPaymentPopup({
-              name,
-              memberId,
-              memberUniqueId,
-              plan,
-              branchId,
-              planId,
-              branch,
-              due,
-            })
-          }
-        >
-          Pay
-        </Paid>
-      </Item>
+      <DropdownWrap>
+        <DropDown
+          name="hp-status"
+          placeholder="Choose option"
+          listItems={['Pay due', 'Make inactive']}
+          activeItem={statusIndex}
+          hideError
+          onSelect={(index, name, otherInfo) => {
+            setStatusIndex(index);
+            if (index === 0) {
+              openPaymentPopup({
+                name,
+                memberId,
+                memberUniqueId,
+                plan,
+                branchId,
+                planId,
+                branch,
+                due,
+              });
+            } else if (index === 1) {
+              updateMembershipStatus();
+            }
+          }}
+        />
+      </DropdownWrap>
     );
+  };
+  const updateMembershipStatus = () => {
+    setDeleteConfirmationPopup(true);
+  };
+  const closeDeleteConfirmation = () => {
+    setDeleteConfirmationPopup(false);
+  };
+  const confirmDeleteMember = () => {
+    makeMemberInactive({
+      memberUniqueId,
+      successCallback: () => {
+        closeDeleteConfirmation();
+      },
+      failureCallback: closeDeleteConfirmation,
+    });
   };
   return (
     <React.Fragment>
@@ -188,38 +226,16 @@ function ItemRow({
           {constructControls()}
         </div>
       </MemberRow>
-      {/* {expand && (
-        <ExpandedView
-          memberUniqueId={memberUniqueId}
-          profilePic={
-            profilePic ||
-            'https://www.pngitem.com/pimgs/m/43-437594_and-oil-moustache-man-beard-free-png-hq.png'
-          }
-          fields={[
-            {
-              Name: name,
-            },
-            {
-              age,
-            },
-            {
-              gender,
-            },
-            {
-              FatherName: 'Kumaran S',
-            },
-            {
-              memberId,
-            },
-            {
-              plan,
-            },
-            {
-              branch,
-            },
-          ]}
-        />
-      )} */}
+      <ConfirmationPopup
+        title={'Pause Membership ?'}
+        infoText={`All the activities with ${name} will be
+          resumed. Do you want to resume anyway?`}
+        show={showDeleteConfirmation}
+        onYes={closeDeleteConfirmation}
+        onNo={confirmDeleteMember}
+        noText={'Pause'}
+        yesText={'Cancel'}
+      />
     </React.Fragment>
   );
 }

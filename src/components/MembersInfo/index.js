@@ -98,6 +98,7 @@ export default class MembersInfo extends React.Component {
       isAllowExpand = false,
       hidePlan = false,
       allowedBranchInfo,
+      makeMemberInactive,
     } = this.props;
     return data.map((member, index) => {
       const {
@@ -141,6 +142,7 @@ export default class MembersInfo extends React.Component {
           isAllowExpand={isAllowExpand}
           hidePlan={hidePlan}
           allowEdit={allowEdit}
+          makeMemberInactive={makeMemberInactive}
         />
       );
     });

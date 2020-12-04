@@ -4,6 +4,7 @@ import {
   LOAD_DATE_FILTERED_DATA,
   LOAD_FEE_DUE_DETAILS,
   UPDATE_FILTER,
+  UPDATE_MEMBERSHIP_STATUS_IN_STORE,
   UPDATE_SOURCE_DATA,
 } from './constants';
 
@@ -162,6 +163,26 @@ const reducer = (preloadedState = null) => (
         dataSource,
         filters: state.filters,
       });
+      return {
+        ...state,
+        memberFeesInfo: {
+          ...state.memberFeesInfo,
+          logicAppliedData: filteredData,
+        },
+      };
+    }
+    case UPDATE_MEMBERSHIP_STATUS_IN_STORE: {
+      const memberUniqueId = get(action, 'payload.memberUniqueId', '');
+      let memberFeesInfo = get(state, 'memberFeesInfo.data', []);
+      memberFeesInfo = memberFeesInfo.filter(
+        (member) => member.id !== memberUniqueId,
+      );
+      let filteredData = applySearchAndFilterLogic({
+        searchText: '',
+        dataSource: memberFeesInfo,
+        filters: state.filters,
+      });
+
       return {
         ...state,
         memberFeesInfo: {

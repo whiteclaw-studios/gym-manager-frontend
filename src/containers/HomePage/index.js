@@ -12,6 +12,7 @@ import {
   getFeeDueDetails,
   updateFeeDetails,
   updateFilter,
+  updateMembershipStatus,
   updateSourceData,
 } from './actions';
 import {
@@ -294,6 +295,9 @@ class HomePage extends React.Component {
     return totalRecords
       ? `Showing ${1}-${totalRecords} out of ${totalRecords}`
       : '';
+  };
+  makeMemberInactive = (data) => {
+    this.props.dispatch(updateMembershipStatus(data));
   };
   render() {
     const {
@@ -603,6 +607,7 @@ class HomePage extends React.Component {
           getPlanInfo={getPlanInfo}
           isLoading={isLoading}
           recordInfo={this.constructRecordInfo()}
+          makeMemberInactive={this.makeMemberInactive}
         />
         <PaymentPopup
           name={memberInfo.name}

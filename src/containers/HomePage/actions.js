@@ -7,6 +7,8 @@ import {
   UPDATE_FEE_DETAILS,
   UPDATE_FILTER,
   UPDATE_SOURCE_DATA,
+  UPDATE_MEMBERSHIP_STATUS,
+  UPDATE_MEMBERSHIP_STATUS_IN_STORE,
 } from './constants';
 
 export function getFeeDueDetails() {
@@ -54,5 +56,17 @@ export function updateFeeDetails(payload) {
   return {
     type: UPDATE_FEE_DETAILS,
     ...payload,
+  };
+}
+export function updateMembershipStatus(payload) {
+  return {
+    type: UPDATE_MEMBERSHIP_STATUS,
+    ...payload,
+  };
+}
+export function updateMembershipStatusInStore(payload) {
+  return {
+    type: UPDATE_MEMBERSHIP_STATUS_IN_STORE,
+    payload,
   };
 }

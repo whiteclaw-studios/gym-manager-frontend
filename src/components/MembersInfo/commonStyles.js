@@ -15,6 +15,8 @@ export const Item = styled('li')`
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+  z-index: 5;
+  position: relative;
   font-family: ${MontserratRegular};
   @media (max-width: 992px) {
     font-size: 1.2rem;

@@ -4,9 +4,14 @@ import {
   GET_DATE_FILTERED_DATA,
   GET_FEE_DUE_DETAILS,
   UPDATE_FEE_DETAILS,
+  UPDATE_MEMBERSHIP_STATUS,
 } from './constants';
 import axiosWrapper from '../../utils/requestWrapper';
-import { loadDateFilteredData, loadFeeDueDetails } from './actions';
+import {
+  loadDateFilteredData,
+  loadFeeDueDetails,
+  updateMembershipStatusInStore,
+} from './actions';
 import { getCookie } from '../../utils/helpers';
 import {
   displayToaster,
@@ -31,7 +36,6 @@ export function* getFeeDueDetailsSaga(params = {}) {
       method: 'GET',
       url: apiUrls.FEE_DUE_DETAILS_URL,
     });
-    console.log('response', response);
     const processResponse = responseParser(response);
     if (!processResponse.isError) {
       const { data = [] } = processResponse;
@@ -63,7 +67,6 @@ function* getDateFilteredDataSaga(params = {}) {
       method: 'GET',
       url: `${apiUrls.FEE_DUE_DETAILS_IN_RANGE}?from=${startDate}&to=${endDate}`,
     });
-    console.log('response', response);
     const processResponse = responseParser(response);
     if (!processResponse.isError) {
       yield put(
@@ -128,6 +131,46 @@ function* updateFeeDetails(params) {
     yield put(togglePageLoader(false));
   }
 }
+function* updateMembershipStatusSaga(params) {
+  try {
+    const {
+      memberUniqueId,
+      successCallback = () => {},
+      failureCallback = () => {},
+    } = params;
+    yield put(togglePageLoader(true));
+    const response = yield call(axiosWrapper, {
+      method: 'PUT',
+      url: `${apiUrls.MEMBER_STATUS_URL}/${memberUniqueId}?isActive=false`,
+    });
+    const processResponse = responseParser(response);
+    if (!processResponse.isError) {
+      yield put(
+        updateMembershipStatusInStore({
+          memberUniqueId,
+        }),
+      );
+      successCallback();
+    } else {
+      yield put(
+        displayToaster({
+          type: 'failure',
+          text: 'Something went wrong while updating status',
+        }),
+      );
+      yield put(
+        updateMembershipStatusInStore({
+          memberUniqueId,
+        }),
+      );
+      failureCallback();
+    }
+  } catch (err) {
+    console.error('Caught in deleteMemberSaga', err);
+  } finally {
+    yield put(togglePageLoader(false));
+  }
+}
 function* watchGetFeeDueDetailsSaga() {
   yield takeEvery(GET_FEE_DUE_DETAILS, getFeeDueDetailsSaga);
 }
@@ -137,9 +180,12 @@ function* watchGetDateFilteredDataSaga() {
 function* watchUpdateFeeDetails() {
   yield takeEvery(UPDATE_FEE_DETAILS, updateFeeDetails);
 }
-
+function* watchUpdateMembershipStatusSaga() {
+  yield takeEvery(UPDATE_MEMBERSHIP_STATUS, updateMembershipStatusSaga);
+}
 export const homeSagas = [
   watchGetFeeDueDetailsSaga(),
   watchGetDateFilteredDataSaga(),
   watchUpdateFeeDetails(),
+  watchUpdateMembershipStatusSaga(),
 ];
