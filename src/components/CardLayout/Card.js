@@ -14,6 +14,10 @@ const Wrap = styled('div')`
     margin: 1.2rem 0;
     cursor: default;
   }
+  @media (max-width: 380px) {
+    min-height: 8.8rem;
+    align-items: center;
+  }
 `;
 const Section1 = styled('div')`
   display: flex;
@@ -21,7 +25,7 @@ const Section1 = styled('div')`
   height: 6.5rem;
   margin-right: 1.6rem;
   border: 1px solid ${WHITE};
-  @media (max-width: 360px) {
+  @media (max-width: 380px) {
     width: 5rem;
     height: 5rem;
   }
@@ -43,7 +47,7 @@ const LiWrap = styled('div')`
   display: flex;
   margin: 0.5rem 0;
 `;
-const Item = styled('span')`
+const Item = styled('p')`
   opacity: 0.56;
   font-size: 1.2rem;
   font-family: ${MontserratRegular};
@@ -110,7 +114,7 @@ function Card({
           {branch && <Item>{branch}</Item>}
         </LiWrap>
         <LiWrap>
-          <Item>{mobile}</Item>
+          <Item>{mobile || '-'}</Item>
           {mobile && mailId && (
             <Pipe
               className={css`
