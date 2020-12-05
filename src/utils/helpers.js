@@ -1,4 +1,5 @@
 import { monthNames } from '../constants';
+import validations from './validations';
 
 export const get = (from, selector, defaultVal) => {
   const value = selector
@@ -325,4 +326,14 @@ export const startDateLessThanOrEqualToEndDate = (filters) => {
     new Date(`${year2}-${month2}-${day2}`),
   );
   return fromDate <= toDate;
+};
+export const validateFields = ({ state, fields = [] }) => {
+  let newObj = {};
+  let isValid = true;
+  fields.map((field) => {
+    state[field].error = !validations.check(state[field]);
+    if (state[field].error) isValid = false;
+    newObj = { ...newObj, [field]: state[field] };
+  });
+  return { newState: newObj, isValid };
 };

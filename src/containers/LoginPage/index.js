@@ -8,7 +8,7 @@ import { DARK_BLUE, PRIMARY_COLOR, FITBOSS_LOGO, WHITE } from '../../constants';
 import Button from '../../components/Button';
 import LinkTag from '../../components/LinkTag';
 import { loginWithPassword } from './actions';
-import { validateLoginInputs } from '../../utils/helpers';
+import { validateFields, validateLoginInputs } from '../../utils/helpers';
 import { getAdminInfo } from '../App/actions';
 import { DASHBOARD_ROUTE } from '../../routes';
 import EllipsisLoader from '../../components/EllipsisLoader';
@@ -114,34 +114,6 @@ class LoginPage extends React.Component {
     });
   };
 
-  onLogin = () => {
-    const { username, password } = this.state;
-    const { isValid, output } = validateLoginInputs(this.state, [
-      'username',
-      'password',
-    ]);
-    if (isValid) {
-      this.showLoader();
-      this.props.dispatch(
-        loginWithPassword({
-          userName: username.value,
-          password: password.value,
-          successCallback: () => {
-            this.props.dispatch(getAdminInfo());
-            this.props.history.push(DASHBOARD_ROUTE);
-            const { updateActiveNavIndex } = this.props;
-            updateActiveNavIndex(0);
-            this.hideLoader();
-          },
-          failureCallback: () => {
-            this.hideLoader();
-          },
-        }),
-      );
-    } else {
-      this.setState(output);
-    }
-  };
   componentDidMount() {
     const root = document.getElementById('root');
     root.classList.add('stop-scroll');
@@ -165,6 +137,34 @@ class LoginPage extends React.Component {
       this.onLogin();
     }
   };
+  onLogin = () => {
+    const { username, password } = this.state;
+    const { newState, isValid } = validateFields({
+      state: this.state,
+      fields: ['username', 'password'],
+    });
+    if (isValid) {
+      this.showLoader();
+      this.props.dispatch(
+        loginWithPassword({
+          userName: username.value,
+          password: password.value,
+          successCallback: () => {
+            this.props.dispatch(getAdminInfo());
+            this.props.history.push(DASHBOARD_ROUTE);
+            const { updateActiveNavIndex } = this.props;
+            updateActiveNavIndex(0);
+            this.hideLoader();
+          },
+          failureCallback: () => {
+            this.hideLoader();
+          },
+        }),
+      );
+    } else {
+      this.setState(newState);
+    }
+  };
   render() {
     const { loginPage } = this.props;
     const { username, password, loaderState = false } = this.state;
@@ -186,6 +186,7 @@ class LoginPage extends React.Component {
                 showError={username.error}
                 errorText="Invalid Username"
                 onKeyDown={this.onNameEnter}
+                validateOnType={false}
               />
             </UsernameWrap>
             <PasswordWrap>
@@ -198,6 +199,7 @@ class LoginPage extends React.Component {
                 showError={password.error}
                 errorText="Invalid Password"
                 onKeyDown={this.onEnter}
+                validateOnType={false}
               />
             </PasswordWrap>
             {loaderState ? (

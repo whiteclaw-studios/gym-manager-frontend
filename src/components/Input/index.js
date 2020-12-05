@@ -45,6 +45,7 @@ export default class Input extends React.Component {
     if (onValueChange) {
       state.value = value;
       if (validateOnType) state.error = !validations.check(state);
+      else state.error = false;
       if (value.length > 0) state.dirty = true;
       onValueChange({
         [name]: state,
