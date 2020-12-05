@@ -155,7 +155,6 @@ export const filterLogic = ({ filters, dataSource = [], applyDateFilter }) => {
       }
       case 'plan': {
         const { planName } = filters[key];
-        console.log('filteredData', filteredData, planName);
         if (planName !== 'All') {
           filteredData = filteredData.filter(
             (member) => member.planName === planName,

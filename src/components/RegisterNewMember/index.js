@@ -209,6 +209,7 @@ export default class RegisterNewMember extends React.Component {
                   showError={memberId.error}
                   errorText="Invalid memberId"
                   readOnly={type !== 'REGISTER'}
+                  validateOnType={false}
                 />
               </InputWrap>
               <InputWrap>
@@ -221,6 +222,7 @@ export default class RegisterNewMember extends React.Component {
                   onValueChange={onValueChange}
                   showError={name.error}
                   errorText="Invalid name"
+                  validateOnType={false}
                 />
               </InputWrap>
               <InputWrap>
@@ -233,6 +235,7 @@ export default class RegisterNewMember extends React.Component {
                   onValueChange={onValueChange}
                   showError={fatherName.error}
                   errorText="Invalid Father's Name"
+                  validateOnType={false}
                 />
               </InputWrap>
               <InputWrap>
@@ -252,6 +255,7 @@ export default class RegisterNewMember extends React.Component {
                   activeItem={branch.selectedItemIndex}
                   onSelect={onSelectDropdown}
                   showError={branch.showError}
+                  disable={type === 'EDIT' && branch.selectedItemIndex >= 0}
                 />
               </InputWrap>
               <InputWrap>
@@ -282,6 +286,7 @@ export default class RegisterNewMember extends React.Component {
                   onValueChange={onValueChange}
                   showError={email.error}
                   errorText="Invalid email"
+                  validateOnType={false}
                 />
               </InputWrap>
               <InputWrap
@@ -307,6 +312,7 @@ export default class RegisterNewMember extends React.Component {
                   onValueChange={onValueChange}
                   showError={age.error}
                   errorText="Invalid age"
+                  validateOnType={false}
                 />
               </InputWrap>
               <InputWrap>
@@ -319,6 +325,7 @@ export default class RegisterNewMember extends React.Component {
                   onValueChange={onValueChange}
                   showError={mobile.error}
                   errorText="Invalid mobile number"
+                  validateOnType={false}
                 />
               </InputWrap>
 

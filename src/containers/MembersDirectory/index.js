@@ -40,6 +40,7 @@ import {
   constructBloodGrpFilters,
   get,
   scrollToTop,
+  validateFields,
 } from '../../utils/helpers';
 import ConfirmationPopup from '../../components/ConfirmationPopup';
 import RegisterNewMember from '../../components/RegisterNewMember/Loadable';
@@ -212,7 +213,7 @@ class MembersDirectory extends React.Component {
         value: '',
         error: false,
       },
-      images: [],
+      images: [{}],
       showEditScreen:
         this.props.history.location.pathname === REGISTER_MEMBER_ROUTE,
       showDeleteConfirmation: false,
@@ -617,11 +618,14 @@ class MembersDirectory extends React.Component {
     return 0;
   };
   onRegister = () => {
-    const { isError, state } = this.validateInputs();
-    console.log('validateINouts', isError, state);
-    this.setState(state);
+    const keys = ['name', 'memberId', 'mobile', 'age', 'fatherName', 'address'];
+    const { isValid, newState } = validateFields({
+      state: this.state,
+      fields: keys,
+    });
+    this.setState(newState);
     const isError2 = this.validateDropdownData();
-    if (isError || isError2) {
+    if (!isValid || isError2) {
       return;
     }
     const {
@@ -829,6 +833,7 @@ class MembersDirectory extends React.Component {
       this.setState({
         showEditScreen: false,
         showMemberProfile: true,
+        images: [{}],
       });
     }
   };
@@ -845,6 +850,7 @@ class MembersDirectory extends React.Component {
     } = this.props;
     const { totalPages, activePage } = paginationInfo;
     const { isLoading } = get(pageData, 'membersInfo', {});
+    console.log('MD page', this.state);
     const {
       showDeleteConfirmation,
       memberUniqueId,

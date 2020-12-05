@@ -86,7 +86,7 @@ export default class UploadImage extends React.Component {
     const fileName = get(images, '[0].imageFile.name', '');
     return (
       <Wrap>
-        {images.length === 1 ? (
+        {images.length === 1 && src ? (
           <Container>
             <Section1>
               <Preview>

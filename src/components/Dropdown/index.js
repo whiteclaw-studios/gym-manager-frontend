@@ -1,7 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { css } from 'emotion';
-import { PRIMARY_COLOR, RED, SECONDARY_BLACK, WHITE } from '../../constants';
+import { css, cx } from 'emotion';
+import {
+  GREY,
+  PRIMARY_COLOR,
+  RED,
+  SECONDARY_BLACK,
+  WHITE,
+} from '../../constants';
 import styled from 'react-emotion';
 import { MontserratRegular } from '../../utils/fonts';
 import { get } from '../../utils/helpers';
@@ -127,6 +133,7 @@ export default class DropDown extends React.Component {
       errorText = 'Select something',
       className = '',
       hideError = false,
+      disable = false,
     } = this.props;
     const { expand } = this.state;
     return (
@@ -137,15 +144,21 @@ export default class DropDown extends React.Component {
         innerRef={(wrapperRef) => (this.node = wrapperRef)}
       >
         <SelectedItem
-          className={
+          className={cx(
             expand
               ? css`
                   border-bottom-left-radius: 0rem !important;
                   border-bottom-right-radius: 0rem !important;
                 `
-              : ''
-          }
-          onClick={this.onExpand}
+              : '',
+            disable &&
+              css`
+                background: ${GREY};
+                color: ${SECONDARY_BLACK};
+                cursor: default;
+              `,
+          )}
+          onClick={disable ? () => {} : this.onExpand}
         >
           <Data>
             {activeItem < 0 ? (
@@ -155,7 +168,17 @@ export default class DropDown extends React.Component {
             )}
           </Data>
           <ArrowWrap>
-            <DownIcon onClick={this.onExpand} />
+            <DownIcon
+              onClick={this.onExpand}
+              className={
+                disable &&
+                css`
+                  background: ${GREY};
+                  color: ${SECONDARY_BLACK};
+                  cursor: default;
+                `
+              }
+            />
           </ArrowWrap>
         </SelectedItem>
         {!hideError && <Error>{showError ? errorText : ' '}</Error>}

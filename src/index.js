@@ -21,14 +21,8 @@ const preloadedState =
 // Allow the passed state to be garbage-collected
 // eslint-disable-next-line no-underscore-dangle
 delete window.__INITIAL_STATE__;
-const { NODE_ENV = 'development', apiUrls } = window;
-console.log(
-  'apiUrls in index',
-  window,
-  window.apiUrls,
-  window.hasOwnProperty('apiUrls'),
-  apiUrls,
-);
+const { NODE_ENV = 'development' } = window;
+
 NODE_ENV === 'prod' &&
   (() => {
     console.log = () => {};
