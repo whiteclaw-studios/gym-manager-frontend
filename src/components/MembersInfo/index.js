@@ -100,7 +100,7 @@ export default class MembersInfo extends React.Component {
       allowedBranchInfo,
       makeMemberInactive,
     } = this.props;
-    return data.map((member, index) => {
+    return [...data, {}].map((member, index) => {
       const {
         memberName: name,
         memberId: memberUniqueId,

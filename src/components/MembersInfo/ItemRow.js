@@ -86,32 +86,34 @@ function ItemRow({
   const [showDeleteConfirmation, setDeleteConfirmationPopup] = useState(false);
   const constructControls = () => {
     return (
-      <DropdownWrap>
-        <DropDown
-          name="hp-status"
-          placeholder="Choose option"
-          listItems={['Pay due', 'Make inactive']}
-          activeItem={-1}
-          hideError
-          onSelect={(index) => {
-            // setStatusIndex(index);
-            if (index === 0) {
-              openPaymentPopup({
-                name,
-                memberId,
-                memberUniqueId,
-                plan,
-                branchId,
-                planId,
-                branch,
-                due,
-              });
-            } else if (index === 1) {
-              updateMembershipStatus();
-            }
-          }}
-        />
-      </DropdownWrap>
+      due && (
+        <DropdownWrap>
+          <DropDown
+            name="hp-status"
+            placeholder="Choose option"
+            listItems={['Pay due', 'Make inactive']}
+            activeItem={-1}
+            hideError
+            onSelect={(index) => {
+              // setStatusIndex(index);
+              if (index === 0) {
+                openPaymentPopup({
+                  name,
+                  memberId,
+                  memberUniqueId,
+                  plan,
+                  branchId,
+                  planId,
+                  branch,
+                  due,
+                });
+              } else if (index === 1) {
+                updateMembershipStatus();
+              }
+            }}
+          />
+        </DropdownWrap>
+      )
     );
   };
   const updateMembershipStatus = () => {
@@ -152,15 +154,17 @@ function ItemRow({
             {name}
           </Item>
 
-          <Item
-            className={css`
-              @media (max-width: 992px) {
-                display: none;
-              }
-            `}
-          >
-            {memberId || '-'}
-          </Item>
+          {due && (
+            <Item
+              className={css`
+                @media (max-width: 992px) {
+                  display: none;
+                }
+              `}
+            >
+              {memberId || '-'}
+            </Item>
+          )}
 
           <div
             className={css`
@@ -171,36 +175,42 @@ function ItemRow({
               }
             `}
           >
-            <Plan
-              className={css`
-                @media (max-width: 992px) {
-                  display: flex;
-                }
-              `}
-            >
-              {plan || 'Dummy-plan'}
-            </Plan>
+            {due && (
+              <Plan
+                className={css`
+                  @media (max-width: 992px) {
+                    display: flex;
+                  }
+                `}
+              >
+                {plan}
+              </Plan>
+            )}
 
-            <Item
-              className={css`
-                max-width: 23rem;
-                @media (max-width: 992px) {
-                  display: flex;
-                }
-              `}
-            >
-              {branch}
-            </Item>
-            <Due
-              className={css`
-                @media (max-width: 992px) {
-                  display: flex;
-                }
-              `}
-            >
-              {RUPEE_SYMBOL}
-              {due || 0}
-            </Due>
+            {due && (
+              <Item
+                className={css`
+                  max-width: 23rem;
+                  @media (max-width: 992px) {
+                    display: flex;
+                  }
+                `}
+              >
+                {branch}
+              </Item>
+            )}
+            {due && (
+              <Due
+                className={css`
+                  @media (max-width: 992px) {
+                    display: flex;
+                  }
+                `}
+              >
+                {RUPEE_SYMBOL}
+                {due || 0}
+              </Due>
+            )}
             <Due
               className={css`
                 @media (max-width: 992px) {

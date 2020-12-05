@@ -70,10 +70,12 @@ const reducer = (preloadedState = null) => (
   switch (action.type) {
     case LOAD_FEE_DUE_DETAILS: {
       const { data, ...rest } = action.payload;
+      const applyDateFilter = get(state, 'applyDateFilter', false);
       const filteredData = applySearchAndFilterLogic({
         searchText: '',
         dataSource: data,
         filters: state.filters,
+        applyDateFilter,
       });
       return {
         ...state,
@@ -143,10 +145,13 @@ const reducer = (preloadedState = null) => (
         `memberFeesInfo.${sDate}-${eDate}.data`,
         [],
       );
+      const applyDateFilter = get(state, 'applyDateFilter', false);
+
       const filteredData = applySearchAndFilterLogic({
         searchText: '',
         dataSource,
         filters: state.filters,
+        applyDateFilter,
       });
       return {
         ...state,
@@ -160,12 +165,15 @@ const reducer = (preloadedState = null) => (
       const memberUniqueId = get(action, 'payload.memberUniqueId', '');
       let memberFeesInfo = get(state, 'memberFeesInfo.data', []);
       memberFeesInfo = memberFeesInfo.filter(
-        (member) => member.id !== memberUniqueId,
+        (member) => member.memberId !== memberUniqueId,
       );
+      const applyDateFilter = get(state, 'applyDateFilter', false);
+
       let filteredData = applySearchAndFilterLogic({
         searchText: '',
         dataSource: memberFeesInfo,
         filters: state.filters,
+        applyDateFilter,
       });
 
       return {

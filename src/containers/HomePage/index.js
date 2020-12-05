@@ -152,7 +152,6 @@ class HomePage extends React.Component {
     return `${day}-${month}-${year}`;
   };
   openPaymentPopup = (memberInfo) => {
-    console.log('memberInfo', memberInfo);
     this.setState({
       paymentPopupInfo: {
         memberInfo,
