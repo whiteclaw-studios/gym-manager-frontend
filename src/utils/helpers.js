@@ -120,7 +120,7 @@ export const searchLogic = ({ searchText = '', dataSource = [] }) => {
   return dataSource.filter((member) => {
     const { name = '', membershipId = '', mobileNumber = '' } = member;
     let isNameMatches =
-      name && name.toLowerCase().indexOf(searchText.toLowerCase()) === 0;
+      name && name.toLowerCase().includes(searchText.toLowerCase());
     let isMembershipIdMatches;
     let isMobileMatches;
     if (!isNameMatches)
