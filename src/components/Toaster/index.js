@@ -6,7 +6,7 @@
 import React from 'react';
 import styled, { css, cx } from 'react-emotion';
 import PropTypes from 'prop-types';
-import { GREEN, RED, WHITE } from '../../constants';
+import { GREEN, PRIMARY_COLOR, RED, WHITE } from '../../constants';
 import { MontserratLight } from '../../utils/fonts';
 
 /* eslint-disable indent */

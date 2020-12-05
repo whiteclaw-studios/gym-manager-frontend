@@ -103,7 +103,7 @@ export default class MembersInfo extends React.Component {
     return data.map((member, index) => {
       const {
         memberName: name,
-        id: memberUniqueId,
+        memberId: memberUniqueId,
         membershipId: memberId,
         planDetailsId: planId,
         photoS3Key: profilePic,

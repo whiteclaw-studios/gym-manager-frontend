@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled, { css, cx } from 'react-emotion';
 import {
   DISABLED_BUTTON,
-  GREEN,
+  PRIMARY_COLOR,
   SECONDARY_BLACK,
   WHITE,
 } from '../../constants';
@@ -11,8 +11,8 @@ import { throttle } from '../../utils/helpers';
 const Wrap = styled('button')`
   outline: none;
   width: 100%;
-  background: ${GREEN};
-  border: 1px solid ${GREEN};
+  background: ${PRIMARY_COLOR};
+  border: 1px solid ${PRIMARY_COLOR};
   padding: 1.2rem;
   color: ${WHITE};
   font-size: 1.4rem;
@@ -46,8 +46,8 @@ function Button({
         hoveredState
           ? css`
               background: ${WHITE};
-              color: ${GREEN};
-              border: 1px solid ${GREEN};
+              color: ${PRIMARY_COLOR};
+              border: 1px solid ${PRIMARY_COLOR};
               ${hoveredCss};
             `
           : '',

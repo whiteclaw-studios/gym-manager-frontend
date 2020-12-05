@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import downarrow from '../../images/downarrow.png';
 import { css } from 'emotion';
-import { GREEN, RED, SECONDARY_BLACK, WHITE } from '../../constants';
+import { PRIMARY_COLOR, RED, SECONDARY_BLACK, WHITE } from '../../constants';
 import styled from 'react-emotion';
 import { MontserratRegular } from '../../utils/fonts';
 import { get } from '../../utils/helpers';
@@ -104,7 +104,7 @@ export default class DropDown extends React.Component {
             activeItem === index &&
             css`
               background: #ffffff;
-              color: ${GREEN};
+              color: ${PRIMARY_COLOR};
             `
           }
           onClick={() => {

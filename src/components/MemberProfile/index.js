@@ -369,6 +369,7 @@ class MemberProfile extends React.Component {
                 showPaymentPopup: true,
               });
             }}
+            isAllowedToChange={isAllowedToChange}
           />
           <GridData
             showHistory

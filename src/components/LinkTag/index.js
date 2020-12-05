@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { GREEN } from '../../constants';
+import { PRIMARY_COLOR } from '../../constants';
 const Link = styled('a')`
-  color: ${GREEN};
+  color: ${PRIMARY_COLOR};
   text-decoration: underline;
   text-align: center;
   font-size: 1.2rem;

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { selectLoginPageState } from '../../selectors';
 import styled from 'react-emotion';
 import Input from '../../components/Input';
-import { DARK_BLUE, GREEN, FITBOSS_LOGO, WHITE } from '../../constants';
+import { DARK_BLUE, PRIMARY_COLOR, FITBOSS_LOGO, WHITE } from '../../constants';
 import Button from '../../components/Button';
 import LinkTag from '../../components/LinkTag';
 import { loginWithPassword } from './actions';
@@ -63,7 +63,7 @@ const LoaderWrap = styled('div')`
   width: 40rem;
   margin: 2.4rem 0;
   text-align: center;
-  border: 1px solid ${GREEN};
+  border: 1px solid ${PRIMARY_COLOR};
   > div {
     width: 64px;
     height: 44px;

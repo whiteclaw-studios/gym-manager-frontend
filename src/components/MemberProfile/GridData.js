@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { WHITE, GREY, RED, GREEN, RUPEE_SYMBOL } from '../../constants';
+import { WHITE, GREY, RED, PRIMARY_COLOR, RUPEE_SYMBOL } from '../../constants';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import { formatDate } from '../../utils/helpers';
 import Button from '../Button';
@@ -79,7 +79,7 @@ const LoaderWrap = styled('div')`
 const Noresults = styled('p')`
   font-size: 1.2rem;
   font-family: ${MontserratRegular};
-  color: ${GREEN};
+  color: ${PRIMARY_COLOR};
   min-height: 10rem;
   display: flex;
   justify-content: center;
@@ -103,6 +103,7 @@ function GridData({
   isError,
   isLoading,
   onPay,
+  isAllowedToChange,
 }) {
   return (
     <Wrap>
@@ -159,7 +160,11 @@ function GridData({
                     {txnAmount}
                   </Item>
                   <Item>{formattedDate}</Item>
-                  <Item>{!showHistory && <Pay onClick={onPay}>Pay</Pay>}</Item>
+                  <Item>
+                    {!showHistory && isAllowedToChange && (
+                      <Pay onClick={onPay}>Pay</Pay>
+                    )}
+                  </Item>
                 </ItemWrap>
               );
             })}

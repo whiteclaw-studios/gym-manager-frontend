@@ -82,7 +82,7 @@ function ItemRow({
   onDeleteMember = () => {},
 }) {
   const [expand, toggleState] = useState(false);
-  const [statusIndex, setStatusIndex] = useState(-1);
+  // const [statusIndex, setStatusIndex] = useState(-1);
   const [showDeleteConfirmation, setDeleteConfirmationPopup] = useState(false);
   const constructControls = () => {
     return (
@@ -91,10 +91,10 @@ function ItemRow({
           name="hp-status"
           placeholder="Choose option"
           listItems={['Pay due', 'Make inactive']}
-          activeItem={statusIndex}
+          activeItem={-1}
           hideError
-          onSelect={(index, name, otherInfo) => {
-            setStatusIndex(index);
+          onSelect={(index) => {
+            // setStatusIndex(index);
             if (index === 0) {
               openPaymentPopup({
                 name,

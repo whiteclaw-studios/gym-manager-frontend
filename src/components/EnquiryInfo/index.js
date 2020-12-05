@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { GREEN, PROFILE_PLACEHOLDER, SECONDARY_BLACK } from '../../constants';
+import {
+  PRIMARY_COLOR,
+  PROFILE_PLACEHOLDER,
+  SECONDARY_BLACK,
+} from '../../constants';
 import { MontserratBold, MontserratRegular } from '../../utils/fonts';
 import Modal from '../Modal';
 const Wrap = styled('div')`
@@ -14,7 +18,7 @@ const Name = styled('p')`
   font-size: 1.8rem;
   font-family: ${MontserratRegular};
   text-align: center;
-  color: ${GREEN};
+  color: ${PRIMARY_COLOR};
   margin: 1rem 0;
   @media (max-width: 992px) {
     font-size: 1.6rem;

@@ -8,7 +8,7 @@ import Search from '../../components/Search';
 import {
   BLOOD_GROUP_DATA,
   GENDER,
-  GREEN,
+  PRIMARY_COLOR,
   MEMBERS_DIRECTORY_LAYOUT,
   MEMBER_STATUS,
   SECONDARY_BLACK,
@@ -93,9 +93,10 @@ const RegisterNewMemberCTA = styled(Button)`
   font-size: 1.4rem;
   font-family: ${MontserratLight};
   justify-content: center;
+  width: 14rem;
   @media (max-width: 992px) {
     font-size: 1rem;
-    width: 20rem;
+    width: 18rem;
     padding: 0;
     margin: 0;
   }
@@ -118,6 +119,9 @@ const FilterWrap = styled('div')`
   display: flex;
   @media (max-width: 992px) {
     flex-direction: column;
+  }
+  @media (min-width: 993px) and (max-width: 1200px) {
+    flex-wrap: wrap;
   }
 `;
 const Filter = styled('div')`
@@ -143,7 +147,7 @@ const FilterDropdn = styled('div')`
   width: 27rem;
 `;
 const DesktopSearch = styled(Search)`
-  width: 27rem;
+  width: 35rem;
 `;
 class MembersDirectory extends React.Component {
   constructor(props) {
@@ -834,7 +838,6 @@ class MembersDirectory extends React.Component {
       branchDetails,
       filters,
       selectMemberFeeDetails,
-      isSuperAdmin,
     } = this.props;
     const { totalPages, activePage } = paginationInfo;
     const { isLoading } = get(pageData, 'membersInfo', {});
@@ -910,7 +913,7 @@ class MembersDirectory extends React.Component {
                 <RegisterNewMemberCTA
                   className={css`
                     @media (max-width: 992px) {
-                      color: ${GREEN};
+                      color: ${PRIMARY_COLOR};
                       border: none;
                       box-shadow: none;
                     }
@@ -958,7 +961,7 @@ class MembersDirectory extends React.Component {
               >
                 <DesktopSearch
                   onSearch={this.onSearch}
-                  placeholder="Search by Name, Membership ID , Mobile"
+                  placeholder="Search by Name, Membership ID, Mobile"
                 />
               </SearchWrap>
             </ButtonSearchWrap>
@@ -973,91 +976,91 @@ class MembersDirectory extends React.Component {
                 >
                   <Search
                     onSearch={this.onSearch}
-                    placeholder="Search by Name, Membership ID , Mobile"
+                    placeholder="Search by Name, Membership ID, Mobile"
                   />
                 </SearchWrap>
-                {isSuperAdmin && (
-                  <React.Fragment>
-                    <Filter>
-                      <Label>Branch</Label>
-                      <FilterDropdn>
-                        <DropDown
-                          name="md-branch-filter"
-                          listItems={branchFilters.map(
-                            (branch) => branch.branchName,
-                          )}
-                          otherInfo={branchFilters}
-                          activeItem={selectedBranchFilterIndex}
-                          onSelect={(index, name, otherInfo) => {
-                            this.props.dispatch(
-                              updateFilter({
-                                branch: {
-                                  ...otherInfo,
-                                  index,
-                                },
-                              }),
-                            );
-                          }}
-                        />
-                      </FilterDropdn>
-                    </Filter>
-                    <Filter>
-                      <Label>Plan</Label>
-                      <FilterDropdn
-                        className={css`
-                          max-width: 15rem;
-                          @media (max-width: 992px) {
-                            max-width: unset;
-                          }
-                        `}
-                      >
-                        <DropDown
-                          name="md-plan-filter"
-                          listItems={planFilters.map((plan) => plan.planName)}
-                          otherInfo={planFilters}
-                          activeItem={selectedPlanFilterIndex}
-                          onSelect={(index, name, otherInfo) => {
-                            this.props.dispatch(
-                              updateFilter({
-                                plan: {
-                                  ...otherInfo,
-                                  index,
-                                },
-                              }),
-                            );
-                          }}
-                        />
-                      </FilterDropdn>
-                    </Filter>
-                    <Filter>
-                      <Label>Blood group</Label>
-                      <FilterDropdn
-                        className={css`
-                          max-width: 15rem;
-                          @media (max-width: 992px) {
-                            max-width: unset;
-                          }
-                        `}
-                      >
-                        <DropDown
-                          name="md-bloodGroup-filter"
-                          listItems={bloodGroupFilters}
-                          activeItem={selectedBGFilterIndex}
-                          onSelect={(index, name, otherInfo) => {
-                            this.props.dispatch(
-                              updateFilter({
-                                bloodGroup: {
-                                  index,
-                                  name: bloodGroupFilters[index],
-                                },
-                              }),
-                            );
-                          }}
-                        />
-                      </FilterDropdn>
-                    </Filter>
-                  </React.Fragment>
-                )}
+
+                <React.Fragment>
+                  <Filter>
+                    <Label>Branch</Label>
+                    <FilterDropdn>
+                      <DropDown
+                        name="md-branch-filter"
+                        listItems={branchFilters.map(
+                          (branch) => branch.branchName,
+                        )}
+                        otherInfo={branchFilters}
+                        activeItem={selectedBranchFilterIndex}
+                        onSelect={(index, name, otherInfo) => {
+                          this.props.dispatch(
+                            updateFilter({
+                              branch: {
+                                ...otherInfo,
+                                index,
+                              },
+                            }),
+                          );
+                        }}
+                      />
+                    </FilterDropdn>
+                  </Filter>
+                  <Filter>
+                    <Label>Plan</Label>
+                    <FilterDropdn
+                      className={css`
+                        max-width: 15rem;
+                        @media (max-width: 992px) {
+                          max-width: unset;
+                        }
+                      `}
+                    >
+                      <DropDown
+                        name="md-plan-filter"
+                        listItems={planFilters.map((plan) => plan.planName)}
+                        otherInfo={planFilters}
+                        activeItem={selectedPlanFilterIndex}
+                        onSelect={(index, name, otherInfo) => {
+                          this.props.dispatch(
+                            updateFilter({
+                              plan: {
+                                ...otherInfo,
+                                index,
+                              },
+                            }),
+                          );
+                        }}
+                      />
+                    </FilterDropdn>
+                  </Filter>
+                  <Filter>
+                    <Label>Blood group</Label>
+                    <FilterDropdn
+                      className={css`
+                        max-width: 15rem;
+                        @media (max-width: 992px) {
+                          max-width: unset;
+                        }
+                      `}
+                    >
+                      <DropDown
+                        name="md-bloodGroup-filter"
+                        listItems={bloodGroupFilters}
+                        activeItem={selectedBGFilterIndex}
+                        onSelect={(index, name, otherInfo) => {
+                          this.props.dispatch(
+                            updateFilter({
+                              bloodGroup: {
+                                index,
+                                name: bloodGroupFilters[index],
+                              },
+                            }),
+                          );
+                        }}
+                      />
+                    </FilterDropdn>
+                  </Filter>
+                </React.Fragment>
+
                 <Filter>
                   <Label>Status</Label>
                   <FilterDropdn>

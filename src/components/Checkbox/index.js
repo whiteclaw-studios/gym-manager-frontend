@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'react-emotion';
-import { GREEN, WHITE } from '../../constants';
+import { PRIMARY_COLOR, WHITE } from '../../constants';
 const Wrap = styled('div')`
   .container {
     display: block;
@@ -28,17 +28,17 @@ const Wrap = styled('div')`
     background-color: #eee;
     width: 2rem;
     height: 2rem;
-    border: 1px solid ${GREEN};
+    border: 1px solid ${PRIMARY_COLOR};
   }
 
   /* On mouse-over, add a grey background color */
   .container:hover input ~ .checkmark {
-    border: 1px solid ${GREEN};
+    border: 1px solid ${PRIMARY_COLOR};
   }
 
   /* When the checkbox is checked, add a blue background */
   .container input:checked ~ .checkmark {
-    background-color: ${GREEN};
+    background-color: ${PRIMARY_COLOR};
   }
 
   /* Create the checkmark/indicator (hidden when not checked) */
@@ -65,7 +65,7 @@ const Wrap = styled('div')`
   }
 `;
 const Input = styled('input')`
-  outline: 1px solid ${GREEN};
+  outline: 1px solid ${PRIMARY_COLOR};
 `;
 function Checkbox({ onSelect = () => {}, className = '' }) {
   const [checked, setChecked] = useState(false);

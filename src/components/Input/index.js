@@ -40,11 +40,11 @@ const Section1 = styled('div')`
 export default class Input extends React.Component {
   onValueChange = (event) => {
     const { name, value } = event.target;
-    const { onValueChange } = this.props;
+    const { onValueChange, validateOnType = true } = this.props;
     const state = { ...this.props.state };
     if (onValueChange) {
       state.value = value;
-      state.error = !validations.check(state);
+      if (validateOnType) state.error = !validations.check(state);
       if (value.length > 0) state.dirty = true;
       onValueChange({
         [name]: state,

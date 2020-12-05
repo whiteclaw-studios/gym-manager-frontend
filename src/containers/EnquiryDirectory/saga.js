@@ -45,8 +45,16 @@ function* addEnquirySaga(params = {}) {
       );
       successCallback();
     } else {
-      failureCallback();
+      const { errorMessage = '' } = parsedResponse;
+      yield put(
+        displayToaster({
+          type: 'failure',
+          text: errorMessage,
+          timeout: 3000,
+        }),
+      );
       console.error('Error in adding enquiry', parsedResponse);
+      failureCallback();
     }
   } catch (err) {
     console.error('Caught in addEnquirySaga', err);

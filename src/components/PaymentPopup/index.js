@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { RUPEE_SYMBOL, SECONDARY_BLACK, WHITE } from '../../constants';
+import { GREEN, RUPEE_SYMBOL, SECONDARY_BLACK, WHITE } from '../../constants';
 import { MontserratBold, MontserratRegular } from '../../utils/fonts';
 import Button from '../Button';
 import Checkbox from '../Checkbox';
@@ -15,6 +15,7 @@ const Wrap = styled('div')`
 `;
 const Heading = styled('p')`
   font-size: 1.6rem;
+  font-family: ${MontserratRegular};
 `;
 const Controls = styled('div')`
   display: flex;
@@ -25,6 +26,7 @@ const MemberName = styled('p')`
   opacity: 0.6;
   margin-top: 1.2rem;
   font-size: 1.4rem;
+  font-family: ${MontserratBold};
 `;
 const Cancel = styled('span')`
   border: none;
@@ -51,8 +53,9 @@ const Amount = styled('p')`
   width: 100%;
   margin-bottom: 3.4rem;
   margin-left: 5rem;
-  font-family: ${MontserratRegular};
+  font-family: ${MontserratBold};
   font-size: 1.4rem;
+  color: ${GREEN};
 `;
 const PlanWrap = styled('div')`
   display: flex;
@@ -128,6 +131,7 @@ function PaymentPopup({
                 placeholder="DD/MM/YYYY"
                 showError={dueDate.error}
                 errorText="Invalid date"
+                validateOnType={false}
               />
             </InputWrap>
           </DateWrap>

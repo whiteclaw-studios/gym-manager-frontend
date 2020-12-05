@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'react-emotion';
-import { GREEN } from '../../constants';
+import { PRIMARY_COLOR } from '../../constants';
 
 const ellipsisAnimation1 = keyframes`
   0% {
@@ -38,7 +38,7 @@ const Container = styled('div')`
     width: 11px;
     height: 11px;
     border-radius: 50%;
-    background: ${GREEN};
+    background: ${PRIMARY_COLOR};
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
   }
   & div:nth-child(1) {

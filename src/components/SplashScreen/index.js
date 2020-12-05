@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
 import { FITBOSS_LOGO, WHITE } from '../../constants';
-import { GREEN } from '../../constants';
+import { PRIMARY_COLOR } from '../../constants';
 const Wrap = styled('div')`
   width: 100%;
   height: 100%;
@@ -16,7 +16,7 @@ const Wrap = styled('div')`
 `;
 // const Title = styled('h4')`
 //   font-size: 1.6rem;
-//   color: ${GREEN};
+//   color: ${PRIMARY_COLOR};
 // `;
 const LoaderWrap = styled('div')`
   color: #ffffff;
@@ -27,7 +27,7 @@ const LoaderWrap = styled('div')`
     align-items: center;
   }
   .loader > span {
-    background: ${GREEN};
+    background: ${PRIMARY_COLOR};
     border-radius: 50%;
     margin: 5rem 0.5rem;
     animation: bouncingLoader 0.6s infinite alternate;

@@ -4,7 +4,7 @@ import styled from 'react-emotion';
 import AddNewImage from './AddNewImage';
 import {
   ALLOW_IMAGES_TYPES,
-  GREEN,
+  PRIMARY_COLOR,
   PROFILE_PLACEHOLDER,
   SECONDARY_BLACK,
 } from '../../constants';
@@ -42,7 +42,7 @@ const Filename = styled('span')`
   width: 14rem;
 `;
 const Section2 = styled('span')`
-  color: ${GREEN};
+  color: ${PRIMARY_COLOR};
   text-align: right;
   margin-right: 0.5rem;
   font-family: ${MontserratLight};

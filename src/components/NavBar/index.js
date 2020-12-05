@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled, { css } from 'react-emotion';
 import {
-  GREEN,
+  PRIMARY_COLOR,
   LIGHT_GREEN,
   PROFILE_PLACEHOLDER,
   SECONDARY_BLACK,
@@ -14,7 +14,7 @@ const Wrap = styled('div')`
   position: fixed;
   top: 0;
   left: 0;
-  background: ${GREEN};
+  background: ${PRIMARY_COLOR};
   width: 6.4rem;
   height: 100%;
   display: flex;

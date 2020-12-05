@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
-import { GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
+import { PRIMARY_COLOR, SECONDARY_BLACK, WHITE } from '../../constants';
 import Tooltip from '../ToolTip';
 const Container = styled('div')`
   position: relative;
@@ -18,12 +18,12 @@ const Wrap = styled('div')`
 `;
 const Page = styled('span')`
   padding: 1rem 1.2rem;
-  border: 1px solid ${GREEN};
+  border: 1px solid ${PRIMARY_COLOR};
   color: ${SECONDARY_BLACK};
   cursor: pointer;
   &:hover {
     color: ${WHITE};
-    background: ${GREEN};
+    background: ${PRIMARY_COLOR};
   }
 `;
 const TooltipWrap = styled('div')`
@@ -61,7 +61,7 @@ export default class Pagination extends React.Component {
           idx + 1 === activePage
             ? css`
                 color: ${WHITE};
-                background: ${GREEN};
+                background: ${PRIMARY_COLOR};
               `
             : ''
         }

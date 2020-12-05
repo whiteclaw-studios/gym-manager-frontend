@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { selectHomePageState, selectHPDataSource } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo/Loadable';
 import PaymentPopup from '../../components/PaymentPopup';
-import { FEES_LAYOUT, FEE_DUE_DATE, GREEN, RED } from '../../constants';
+import { FEES_LAYOUT, FEE_DUE_DATE, PRIMARY_COLOR, RED } from '../../constants';
 import {
   applyDateFilter,
   getDateFilteredData,
@@ -26,6 +26,7 @@ import DropDown from '../../components/Dropdown';
 import { FilterIcon } from '../../components/SpriteIcon';
 import DatePicker from '../../components/DatePicker/Loadable';
 import Checkbox from '../../components/Checkbox';
+import validations from '../../utils/validations';
 
 const Wrapper = styled('div')`
   width: 100%;
@@ -79,7 +80,7 @@ const FilterDropdn = styled('div')`
   }
 `;
 const Note = styled('p')`
-  color: ${GREEN};
+  color: ${PRIMARY_COLOR};
   font-size: 1.4rem;
   margin: 0.5rem 0;
   @media (min-width: 993px) {
@@ -102,7 +103,7 @@ class HomePage extends React.Component {
         memberInfo: {},
       },
       dueDate: {
-        value: '',
+        value: this.setTodayDate(),
         type: 'dueDate',
         error: false,
         dirty: false,
@@ -135,9 +136,23 @@ class HomePage extends React.Component {
         open: false,
         memberInfo: {},
       },
+      dueDate: {
+        value: this.setTodayDate(),
+        type: 'dueDate',
+        error: false,
+        dirty: false,
+      },
     });
   };
+  setTodayDate = () => {
+    const date = new Date();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
   openPaymentPopup = (memberInfo) => {
+    console.log('memberInfo', memberInfo);
     this.setState({
       paymentPopupInfo: {
         memberInfo,
@@ -220,6 +235,7 @@ class HomePage extends React.Component {
       getPlanInfo = () => {},
       pageData,
       branchDetails,
+      isSuperAdmin,
     } = this.props;
     const {
       showFilters,
@@ -262,31 +278,33 @@ class HomePage extends React.Component {
         )}
         {(showFilters || !showFilterIconInMobile) && (
           <FilterWrap>
-            <Filter>
-              <Label>Branch</Label>
-              <FilterDropdn>
-                <DropDown
-                  name="hp-branch-filter"
-                  listItems={branchFilters.map((branch) => branch.branchName)}
-                  otherInfo={branchFilters}
-                  activeItem={selectedBranchFilterIndex}
-                  onSelect={(index, name, otherInfo) => {
-                    const { branchName, id } = otherInfo || {};
-                    this.props.dispatch(
-                      updateFilter({
-                        branch: {
-                          ...otherInfo,
-                          index,
-                          id,
-                          name: branchName,
-                        },
-                      }),
-                    );
-                  }}
-                  hideError
-                />
-              </FilterDropdn>
-            </Filter>
+            {isSuperAdmin && (
+              <Filter>
+                <Label>Branch</Label>
+                <FilterDropdn>
+                  <DropDown
+                    name="hp-branch-filter"
+                    listItems={branchFilters.map((branch) => branch.branchName)}
+                    otherInfo={branchFilters}
+                    activeItem={selectedBranchFilterIndex}
+                    onSelect={(index, name, otherInfo) => {
+                      const { branchName, id } = otherInfo || {};
+                      this.props.dispatch(
+                        updateFilter({
+                          branch: {
+                            ...otherInfo,
+                            index,
+                            id,
+                            name: branchName,
+                          },
+                        }),
+                      );
+                    }}
+                    hideError
+                  />
+                </FilterDropdn>
+              </Filter>
+            )}
             <Filter>
               <Label>Plan</Label>
               <FilterDropdn
@@ -555,6 +573,7 @@ class HomePage extends React.Component {
           onPay={() => {
             const { planId } = memberInfo;
             const { dueDate } = this.state;
+            dueDate.error = !validations.check(dueDate);
             if (dueDate.error || !dueDate.value) {
               this.setState({
                 dueDate: {

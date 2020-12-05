@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   BLOOD_GROUP_DATA,
   GENDER,
-  GREEN,
+  PRIMARY_COLOR,
   RED,
   RUPEE_SYMBOL,
   SECONDARY_BLACK,
@@ -114,7 +114,7 @@ const BackWrap = styled('div')`
   }
 `;
 const Note = styled('p')`
-  color: ${GREEN};
+  color: ${PRIMARY_COLOR};
   font-size: 1.4rem;
   padding: 1rem;
   font-family: ${MontserratRegular};
@@ -123,7 +123,7 @@ const Note = styled('p')`
   }
 `;
 const Splitup = styled('span')`
-  color: ${GREEN};
+  color: ${PRIMARY_COLOR};
 `;
 const Asterik = styled('span')`
   color: ${RED};

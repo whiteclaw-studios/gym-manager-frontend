@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'react-emotion';
 import PropTypes from 'prop-types';
-import { GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
+import { PRIMARY_COLOR, SECONDARY_BLACK, WHITE } from '../../constants';
 import Button, { InvertSecondaryButton } from '../Button';
 import DropDown from '../Dropdown/Loadable';
 import Input from '../Input';
@@ -98,7 +98,7 @@ const LoaderWrap = styled('div')`
   max-height: 4.4rem;
   display: flex;
   align-items: center;
-  border: 1px solid ${GREEN};
+  border: 1px solid ${PRIMARY_COLOR};
   margin-left: 2rem;
   width: 10rem;
   justify-content: center;

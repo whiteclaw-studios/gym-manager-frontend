@@ -1,5 +1,5 @@
 import { injectGlobal } from 'emotion';
-import { BG_COLOR, GREEN } from './src/constants';
+import { BG_COLOR } from './src/constants';
 import { MontserratRegular } from './src/utils/fonts';
 injectGlobal`
 html {

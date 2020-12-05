@@ -126,7 +126,7 @@ export const searchLogic = ({ searchText = '', dataSource = [] }) => {
     if (!isNameMatches)
       isMembershipIdMatches =
         membershipId &&
-        membershipId.toString().indexOf(searchText.toLowerCase()) === 0;
+        membershipId.toLowerCase().indexOf(searchText.toLowerCase()) === 0;
     if (!isNameMatches && !isMembershipIdMatches)
       isMobileMatches =
         mobileNumber &&

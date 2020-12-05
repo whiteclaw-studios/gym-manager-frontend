@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'react-emotion';
 import PropTypes from 'prop-types';
-import { BLUE, GREEN } from '../../constants';
+import { BLUE, PRIMARY_COLOR } from '../../constants';
 import { MontserratBold } from '../../utils/fonts';
 import { HamburgerIcon } from '../SpriteIcon';
 const Wrap = styled('div')`
@@ -16,7 +16,7 @@ const Wrap = styled('div')`
   width: 100%;
   z-index: 1;
   box-shadow: 0px 1px 4px #a9a9a9;
-  background: ${GREEN};
+  background: ${PRIMARY_COLOR};
   @media (max-width: 992px) {
     height: 4rem;
     display: flex;

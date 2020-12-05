@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'react-emotion';
-import { GREEN, RED, WHITE } from '../../constants';
+import { PRIMARY_COLOR, RED, SECONDARY_BLACK, WHITE } from '../../constants';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import Button from '../Button';
 import Modal from '../Modal';
@@ -30,23 +30,24 @@ const Controls = styled('div')`
   display: flex;
 `;
 const Yes = styled(Button)`
-  color: ${WHITE};
-  background: ${RED};
+  color: ${SECONDARY_BLACK};
   font-size: 1.2rem;
   width: 7rem;
   height: 3rem;
   padding: 0;
-  border: 1px solid ${RED};
+  background: none;
+  border: none;
+  box-shadow: none;
   :hover {
     background: none;
-    color: ${RED};
-    border: 1px solid ${RED};
+    color: ${SECONDARY_BLACK};
+    border: none;
   }
 `;
 const No = styled(Button)`
   color: ${WHITE};
-  border: 1px solid ${GREEN};
-  background: ${GREEN};
+  border: 1px solid ${PRIMARY_COLOR};
+  background: ${PRIMARY_COLOR};
   font-size: 1.2rem;
   width: 7rem;
   height: 3rem;
@@ -63,7 +64,7 @@ function Confirmation({
   noText = 'No',
 }) {
   return (
-    <Modal show={show} close={onNo} closeButton>
+    <Modal show={show} close={onYes} closeButton>
       <Wrap>
         <Title>{title}</Title>
         <Info>{infoText}</Info>
