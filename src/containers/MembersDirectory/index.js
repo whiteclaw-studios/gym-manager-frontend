@@ -403,6 +403,7 @@ class MembersDirectory extends React.Component {
     console.log('onSelect', index, elementName, this.state);
     let id = null;
     let name = null;
+    let value = null;
     if (elementName === 'branch') {
       const { branchDetails } = this.props;
       const reqdBranch = branchDetails[index];
@@ -416,6 +417,8 @@ class MembersDirectory extends React.Component {
 
       id = reqdPlan.id;
       name = reqdPlan.planName;
+    } else if (elementName === 'gender') {
+      value = GENDER[index];
     }
     this.setState({
       [elementName]: {
@@ -424,6 +427,7 @@ class MembersDirectory extends React.Component {
         showError: index < 0,
         ...(id && { id }),
         ...(name && { name }),
+        ...(value && { value }),
       },
       ...(elementName === 'branch' && {
         plan: {
