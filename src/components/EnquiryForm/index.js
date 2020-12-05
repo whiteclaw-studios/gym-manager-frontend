@@ -9,6 +9,7 @@ import { addEnquiry } from '../../containers/EnquiryDirectory/actions';
 import { ENQUIRY_DIRECTORY_ROUTE } from '../../routes';
 import { BackIcon } from '../SpriteIcon';
 import EllipsisLoader from '../EllipsisLoader';
+import { validateFields } from '../../utils/helpers';
 const Wrap = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -211,8 +212,11 @@ export default class EnquiryForm extends React.Component {
 
   onAddEnquiry = () => {
     const { name, mobile, email, branch } = this.state;
-    const { isError, state } = this.validateInputs();
-    this.setState(state);
+    const { newState, isValid } = validateFields({
+      state: this.state,
+      fields: ['name', 'mobile', 'email'],
+    });
+    this.setState(newState);
     if (branch.selectedItemIndex < 0) {
       this.setState({
         branch: {
@@ -221,7 +225,7 @@ export default class EnquiryForm extends React.Component {
         },
       });
     }
-    if (!isError) {
+    if (isValid) {
       if (branch.selectedItemIndex >= 0) {
         // submit data
         this.setState({
@@ -270,6 +274,7 @@ export default class EnquiryForm extends React.Component {
                   showError={name.error}
                   errorText="Invalid name"
                   onBlurHandler={this.onBlurHandler}
+                  validateOnType={false}
                 />
               </InputWrap>
 
@@ -282,6 +287,7 @@ export default class EnquiryForm extends React.Component {
                   showError={email.error}
                   errorText="Invalid email"
                   onBlurHandler={this.onBlurHandler}
+                  validateOnType={false}
                 />
               </InputWrap>
             </Column>
@@ -295,6 +301,7 @@ export default class EnquiryForm extends React.Component {
                   showError={mobile.error}
                   errorText="Invalid mobile number"
                   onBlurHandler={this.onBlurHandler}
+                  validateOnType={false}
                 />
               </InputWrap>
               <InputWrap>
