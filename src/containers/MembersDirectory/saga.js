@@ -93,10 +93,11 @@ function* addNewMember(params = {}) {
       successCallback();
     } else {
       console.error('Error in adding member', parsedResponse);
+      const { errorMessage = 'Something went wrong' } = parsedResponse;
       yield put(
         displayToaster({
           type: 'failure',
-          text: 'Something went wrong',
+          text: errorMessage,
           timeout: 2000,
         }),
       );

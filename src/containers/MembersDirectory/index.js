@@ -16,6 +16,7 @@ import {
 } from '../../constants';
 import { REGISTER_MEMBER_ROUTE } from '../../routes';
 import {
+  isSuperAdmin,
   selectDataSourceForMDPage,
   selectFiltersInMDPage,
   selectMDPage,
@@ -406,8 +407,10 @@ class MembersDirectory extends React.Component {
     let name = null;
     let value = null;
     if (elementName === 'branch') {
-      const { branchDetails } = this.props;
-      const reqdBranch = branchDetails[index];
+      const { allowedBranchInfo, branchDetails, isSuperAdmin } = this.props;
+      const reqdBranch = isSuperAdmin
+        ? branchDetails[index]
+        : [{ ...allowedBranchInfo }][index];
       id = reqdBranch.id;
       name = reqdBranch.branchName;
     } else if (elementName === 'plan') {
@@ -456,8 +459,14 @@ class MembersDirectory extends React.Component {
     return [];
   };
   getBranchNames = () => {
-    const { branchDetails } = this.props;
-    return branchDetails.map((branch) => branch.branchName);
+    const { branchDetails, allowedBranchInfo, isSuperAdmin } = this.props;
+    const { screenType } = this.state;
+    const info =
+      screenType === 'EDIT' || !isSuperAdmin
+        ? [{ ...allowedBranchInfo }]
+        : branchDetails;
+
+    return info.map((branch) => branch.branchName);
   };
   readFile = async (file) =>
     new Promise((resolve) => {
