@@ -135,7 +135,7 @@ export const searchLogic = ({ searchText = '', dataSource = [] }) => {
     return isNameMatches || isMembershipIdMatches || isMobileMatches;
   });
 };
-export const filterLogic = ({ filters, dataSource = [] }) => {
+export const filterLogic = ({ filters, dataSource = [], applyDateFilter }) => {
   if (!filters) return dataSource;
   if (!dataSource) return [];
   let filteredData = dataSource;
@@ -178,6 +178,7 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
       case 'feeDueDate': {
         const { name } = filters[key];
         const { day: tDay, month: tMonth, year: tYear } = getTodayDate();
+        if (applyDateFilter) break; // don't apply this filter
         if (name !== 'All') {
           filteredData = filteredData.filter((member) => {
             const { nextDue } = member;
@@ -216,6 +217,21 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
         break;
     }
   }
+  if (applyDateFilter) {
+    const { startDate, endDate } = filters;
+    const [day1, month1, year1] = startDate.selectedDate.split('/');
+    const [day2, month2, year2] = endDate.selectedDate.split('/');
+    const fromDate = new Date(`${year1}-${month1}-${day1}`).getTime();
+    const toDate = new Date(`${year2}-${month2}-${day2}`).getTime();
+    if (fromDate > toDate) return filteredData;
+    filteredData = filteredData.filter((member) => {
+      const { nextDue } = member;
+      const [dateFormat] = nextDue.split('T');
+      const [day, month, year] = dateFormat.split('-');
+      const dueDate = new Date(`${year}-${month}-${day}`).getTime();
+      return dueDate >= fromDate && dueDate <= toDate;
+    });
+  }
   return filteredData;
 };
 export const constructBranchFilters = (branchDetails) => {
@@ -253,12 +269,13 @@ export const applySearchAndFilterLogic = ({
   searchText,
   filters,
   dataSource,
+  applyDateFilter = false,
 }) => {
   const filteredData = searchLogic({
     searchText,
     dataSource,
   });
-  return filterLogic({ dataSource: filteredData, filters });
+  return filterLogic({ dataSource: filteredData, filters, applyDateFilter });
 };
 export const scrollToTop = () => {
   window.scrollTo(0, 9);
@@ -293,4 +310,19 @@ export const getTodayDate = () => {
     year,
     formattedDate: `${year}-${month}-${day}`,
   };
+};
+export const startDateLessThanOrEqualToEndDate = (filters) => {
+  const { startDate, endDate } = filters;
+  const [day1, month1, year1] = startDate.selectedDate.split('/');
+  const [day2, month2, year2] = endDate.selectedDate.split('/');
+  const fromDate = new Date(`${year1}-${month1}-${day1}`).getTime();
+  const toDate = new Date(`${year2}-${month2}-${day2}`).getTime();
+  console.log(
+    'startDateLessThanOrEqualToEndDate',
+    fromDate,
+    toDate,
+    new Date(`${year1}-${month1}-${day1}`),
+    new Date(`${year2}-${month2}-${day2}`),
+  );
+  return fromDate <= toDate;
 };

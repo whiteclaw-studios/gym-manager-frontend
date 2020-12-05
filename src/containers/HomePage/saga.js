@@ -1,17 +1,12 @@
 import { put, call, takeEvery } from 'redux-saga/effects';
 import { responseParser } from '../../utils/responseParser';
 import {
-  GET_DATE_FILTERED_DATA,
   GET_FEE_DUE_DETAILS,
   UPDATE_FEE_DETAILS,
   UPDATE_MEMBERSHIP_STATUS,
 } from './constants';
 import axiosWrapper from '../../utils/requestWrapper';
-import {
-  loadDateFilteredData,
-  loadFeeDueDetails,
-  updateMembershipStatusInStore,
-} from './actions';
+import { loadFeeDueDetails, updateMembershipStatusInStore } from './actions';
 import { getCookie } from '../../utils/helpers';
 import {
   displayToaster,
@@ -59,32 +54,7 @@ export function* getFeeDueDetailsSaga(params = {}) {
     console.error('Caught in homeSaga', err);
   }
 }
-function* getDateFilteredDataSaga(params = {}) {
-  try {
-    yield put(togglePageLoader(true));
-    const { startDate, endDate, sDate, eDate } = params;
-    const response = yield call(axiosWrapper, {
-      method: 'GET',
-      url: `${apiUrls.FEE_DUE_DETAILS_IN_RANGE}?from=${startDate}&to=${endDate}`,
-    });
-    const processResponse = responseParser(response);
-    if (!processResponse.isError) {
-      yield put(
-        loadDateFilteredData({
-          [`${sDate}-${eDate}`]: {
-            data: processResponse.data,
-            isLoaded: true,
-          },
-          data: processResponse.data,
-        }),
-      );
-    }
-  } catch (err) {
-    console.error('Caught in getDateFilteredDataSaga', err);
-  } finally {
-    yield put(togglePageLoader(false));
-  }
-}
+
 function* updateFeeDetails(params) {
   try {
     const {
@@ -174,9 +144,7 @@ function* updateMembershipStatusSaga(params) {
 function* watchGetFeeDueDetailsSaga() {
   yield takeEvery(GET_FEE_DUE_DETAILS, getFeeDueDetailsSaga);
 }
-function* watchGetDateFilteredDataSaga() {
-  yield takeEvery(GET_DATE_FILTERED_DATA, getDateFilteredDataSaga);
-}
+
 function* watchUpdateFeeDetails() {
   yield takeEvery(UPDATE_FEE_DETAILS, updateFeeDetails);
 }
@@ -185,7 +153,6 @@ function* watchUpdateMembershipStatusSaga() {
 }
 export const homeSagas = [
   watchGetFeeDueDetailsSaga(),
-  watchGetDateFilteredDataSaga(),
   watchUpdateFeeDetails(),
   watchUpdateMembershipStatusSaga(),
 ];

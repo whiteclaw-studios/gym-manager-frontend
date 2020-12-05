@@ -55,8 +55,7 @@ const Calendar = styled('div')`
   position: absolute;
   min-height: 100%;
   width: 100%;
-
-  z-index: 5;
+  z-index: 115;
   background: #ffffff;
   border-top: none;
   border: 1px solid #e2e2e2;
