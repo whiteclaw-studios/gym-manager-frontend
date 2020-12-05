@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import downarrow from '../../images/downarrow.png';
 import { css } from 'emotion';
 import { PRIMARY_COLOR, RED, SECONDARY_BLACK, WHITE } from '../../constants';
 import styled from 'react-emotion';

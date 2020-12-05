@@ -17,98 +17,96 @@ function SpriteIcon(props) {
   return <Icon {...props} />;
 }
 export const BackIcon = styled(SpriteIcon)`
-  background-position: -77px -122px;
+  background-position: -13px -14px;
   width: 18px;
   height: 16px;
 `;
 export const UploadIcon = styled(SpriteIcon)`
-  background-position: -78px -35px;
+  background-position: -58px -15px;
   width: 16px;
   height: 15px;
 `;
 export const ProfileIcon = styled(SpriteIcon)`
-  background-position: -77px -77px;
+  background-position: -57px -101px;
   width: 18px;
   height: 18px;
 `;
 export const HoverProfileIcon = css`
-  background-position: -121px -33px;
-  width: 18px;
-  height: 18px;
+  background-position: -13px -57px;
 `;
 export const DashboardIcon = styled(SpriteIcon)`
-  background-position: -165px -77px;
+  background-position: -145px -13px;
   width: 18px;
   height: 18px;
 `;
 export const HoverDashBoardIcon = css`
-  background-position: -165px -33px;
+  background-position: -57px -57px;
 `;
 export const EnquiryIcon = styled(SpriteIcon)`
-  background-position: -32px -165px;
+  background-position: -144px -101px;
   width: 19px;
   height: 18px;
 `;
 export const HoverEnquiryIcon = css`
-  background-position: -164px -121px;
+  background-position: -100px -101px;
 `;
 export const SearchIcon = styled(SpriteIcon)`
-  background-position: -33px -77px;
+  background-position: -13px -101px;
   width: 22px;
   height: 18px;
 `;
 export const HamburgerIcon = styled(SpriteIcon)`
-  background-position: -209px -33px;
+  background-position: -101px -13px;
   width: 18px;
   height: 17px;
 `;
 export const CloseIcon = styled(SpriteIcon)`
-  background-position: -121px -121px;
+  background-position: -101px -145px;
   width: 18px;
   height: 18px;
 `;
 export const CloseBlackIcon = styled(SpriteIcon)`
-  background-position: -273px -13px;
+  background-position: -101px -57px;
   width: 21px;
   height: 18px;
 `;
 export const LogoutIcon = styled(SpriteIcon)`
-  background-position: -23px -219px;
+  background-position: -145px -145px;
   width: 18px;
   height: 18px;
 `;
 export const FilterIcon = styled(SpriteIcon)`
-  background-position: -273px -189px;
+  background-position: -13px -189px;
   width: 18px;
   height: 19px;
 `;
 export const PlusIcon = styled(SpriteIcon)`
-  background-position: -33px -121px;
+  background-position: -145px -57px;
   width: 18px;
   height: 18px;
 `;
-export const GreenPlusIcon = styled(SpriteIcon)`
-  background-position: -273px -145px;
+export const OrangePlusIcon = styled(SpriteIcon)`
+  background-position: -189px -13px;
   width: 18px;
   height: 18px;
 `;
 export const EditIcon = styled(SpriteIcon)`
-  background-position: -13px -273px;
+  background-position: -189px -101px;
   width: 18px;
   height: 18px;
 `;
 export const PauseIcon = styled(SpriteIcon)`
-  background-position: -274px -101px;
+  background-position: -190px -57px;
   width: 16px;
   height: 18px;
 `;
 export const DownIcon = styled(SpriteIcon)`
-  background-position: -62px -279px;
+  background-position: -62px -195px;
   width: 8px;
   height: 6px;
 `;
 export const ResumeIcon = styled(SpriteIcon)`
-  background-position: -274px -57px;
+  background-position: -190px -145px;
   width: 16px;
   height: 18px;
 `;
