@@ -12,6 +12,7 @@ export const initialState = {
     config: '',
   },
   adminInfo: {
+    isLoading: true,
     isLoggedIn: false,
     infoLoaded: false, // used to show page loader
   },

@@ -1,12 +1,12 @@
 import {
   APPLY_DATE_FILTER,
-  GET_DATE_FILTERED_DATA,
   GET_FEE_DUE_DETAILS,
-  LOAD_DATE_FILTERED_DATA,
   LOAD_FEE_DUE_DETAILS,
   UPDATE_FEE_DETAILS,
   UPDATE_FILTER,
   UPDATE_SOURCE_DATA,
+  UPDATE_MEMBERSHIP_STATUS,
+  UPDATE_MEMBERSHIP_STATUS_IN_STORE,
 } from './constants';
 
 export function getFeeDueDetails() {
@@ -32,18 +32,6 @@ export function applyDateFilter(payload) {
     payload,
   };
 }
-export function getDateFilteredData(payload) {
-  return {
-    type: GET_DATE_FILTERED_DATA,
-    ...payload,
-  };
-}
-export function loadDateFilteredData(payload) {
-  return {
-    type: LOAD_DATE_FILTERED_DATA,
-    payload,
-  };
-}
 export function updateSourceData(payload) {
   return {
     type: UPDATE_SOURCE_DATA,
@@ -54,5 +42,17 @@ export function updateFeeDetails(payload) {
   return {
     type: UPDATE_FEE_DETAILS,
     ...payload,
+  };
+}
+export function updateMembershipStatus(payload) {
+  return {
+    type: UPDATE_MEMBERSHIP_STATUS,
+    ...payload,
+  };
+}
+export function updateMembershipStatusInStore(payload) {
+  return {
+    type: UPDATE_MEMBERSHIP_STATUS_IN_STORE,
+    payload,
   };
 }

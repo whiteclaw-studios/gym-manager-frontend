@@ -96,11 +96,9 @@ export default class MembersInfo extends React.Component {
       getBranchInfo,
       getPlanInfo,
       isAllowExpand = false,
-      hideMemberId = false,
       hidePlan = false,
-      onEditMember,
-      onDeleteMember,
       allowedBranchInfo,
+      makeMemberInactive,
     } = this.props;
     return data.map((member, index) => {
       const {
@@ -115,6 +113,8 @@ export default class MembersInfo extends React.Component {
         mobileNumber: mobile,
         mailId,
         id: uniqueId,
+        txnAmount: due,
+        nextDue: dueDate,
       } = member;
       const branchInfo = getBranchInfo(branchId);
       const planInfo = getPlanInfo(branchId, planId);
@@ -134,12 +134,15 @@ export default class MembersInfo extends React.Component {
           branchId={branchId}
           planId={planId}
           age={age}
+          due={due}
+          dueDate={dueDate}
           gender={gender}
           mobile={mobile}
           mailId={mailId}
           isAllowExpand={isAllowExpand}
           hidePlan={hidePlan}
           allowEdit={allowEdit}
+          makeMemberInactive={makeMemberInactive}
         />
       );
     });
@@ -195,6 +198,15 @@ export default class MembersInfo extends React.Component {
               Branch
             </HeadingItem>
             <HeadingItem>Due</HeadingItem>
+            <HeadingItem
+              className={css`
+                @media (min-width: 992px) and (max-width: 1100px) {
+                  display: none;
+                }
+              `}
+            >
+              Due date
+            </HeadingItem>
           </Info>
           <HeadingItem
             className={css`

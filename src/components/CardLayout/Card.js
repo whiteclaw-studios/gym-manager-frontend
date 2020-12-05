@@ -14,6 +14,10 @@ const Wrap = styled('div')`
     margin: 1.2rem 0;
     cursor: default;
   }
+  @media (max-width: 380px) {
+    min-height: 8.8rem;
+    align-items: center;
+  }
 `;
 const Section1 = styled('div')`
   display: flex;
@@ -21,6 +25,10 @@ const Section1 = styled('div')`
   height: 6.5rem;
   margin-right: 1.6rem;
   border: 1px solid ${WHITE};
+  @media (max-width: 380px) {
+    width: 5rem;
+    height: 5rem;
+  }
 `;
 const ProfilePic = styled('img')`
   width: 100%;
@@ -39,11 +47,14 @@ const LiWrap = styled('div')`
   display: flex;
   margin: 0.5rem 0;
 `;
-const Item = styled('span')`
+const Item = styled('p')`
   opacity: 0.56;
   font-size: 1.2rem;
   font-family: ${MontserratRegular};
   color: ${SECONDARY_BLACK};
+`;
+const Pipe = styled(Item)`
+  margin: 0 0.5rem;
 `;
 function Card({
   name,
@@ -99,13 +110,13 @@ function Card({
         <Name>{name}</Name>
         <LiWrap>
           <Item>{memberId} </Item>
-          {memberId && branch && <Item>|</Item>}
+          {memberId && branch && <Pipe>|</Pipe>}
           {branch && <Item>{branch}</Item>}
         </LiWrap>
         <LiWrap>
-          <Item>{mobile}</Item>
+          <Item>{mobile || '-'}</Item>
           {mobile && mailId && (
-            <Item
+            <Pipe
               className={css`
                 @media (max-width: 460px) {
                   display: none;
@@ -113,12 +124,12 @@ function Card({
               `}
             >
               |
-            </Item>
+            </Pipe>
           )}
           {mailId && (
             <Item
               className={css`
-                max-width: 10rem;
+                max-width: 7rem;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;

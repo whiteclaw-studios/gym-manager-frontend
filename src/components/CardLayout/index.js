@@ -94,7 +94,7 @@ export default class CardLayout extends React.Component {
       case MEMBERS_DIRECTORY_LAYOUT:
         return <NoResults>Members not found </NoResults>;
       case ENQUIRY_DIRECTORY_LAYOUT:
-        return <NoResults>Enquiry data not found </NoResults>;
+        return <NoResults>No Enquiries yet</NoResults>;
       default:
         return '';
     }

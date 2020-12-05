@@ -27,6 +27,7 @@ import {
   FilterIcon,
   HoverEnquiryIcon,
 } from '../../components/SpriteIcon';
+import EnquiryInfo from '../../components/EnquiryInfo';
 const Wrapper = styled('div')`
   width: 100%;
   padding: 0 6.4rem;
@@ -46,13 +47,22 @@ const ButtonSearchWrap = styled('div')`
   }
 `;
 const SearchWrap = styled('div')`
-  width: 27rem;
+  width: 100%;
   margin: 0.5rem 1rem;
   @media (max-width: 992px) {
     margin: 0;
-  } ;
+  }
+  @media (min-width: 993px) {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
 `;
-
+const DesktopSearch = styled(Search)`
+  @media (min-width: 993px) {
+    width: 27rem;
+  }
+`;
 const ButtonWrap = styled('div')`
   width: 27rem;
   margin: 0.5rem 1rem;
@@ -88,7 +98,7 @@ const PaginationWrap = styled('div')`
 
 const FilterWrap = styled('div')`
   display: flex;
-  @media (max-width: 640px) {
+  @media (max-width: 992px) {
     flex-direction: column;
   } ;
 `;
@@ -118,6 +128,13 @@ class EnquiryDirectory extends React.Component {
     this.state = {
       showFilterIconInMobile: isMobile,
       showFilters: !isMobile,
+      showEnquiryInfo: false,
+      enquiryInfo: {
+        name: '',
+        mobileNumber: '',
+        branchName: '',
+        mailId: '',
+      },
     };
   }
   onSearch = (searchText) => {
@@ -154,6 +171,25 @@ class EnquiryDirectory extends React.Component {
       });
     }
   };
+  onSelectMember = (data) => {
+    console.log('data', data);
+    const { name, branch: branchName, mailId, mobile: mobileNumber } =
+      data || {};
+    this.setState({
+      showEnquiryInfo: true,
+      enquiryInfo: {
+        name,
+        branchName,
+        mailId,
+        mobileNumber,
+      },
+    });
+  };
+  onCloseEnquiryInfo = () => {
+    this.setState({
+      showEnquiryInfo: false,
+    });
+  };
   render() {
     const {
       paginationInfo,
@@ -163,7 +199,12 @@ class EnquiryDirectory extends React.Component {
       branchDetails,
       filters,
     } = this.props;
-    const { showFilterIconInMobile, showFilters } = this.state;
+    const {
+      showFilterIconInMobile,
+      showFilters,
+      enquiryInfo,
+      showEnquiryInfo,
+    } = this.state;
     const { totalPages, activePage } = paginationInfo;
     const selectedBranchFilterIndex = get(filters, 'branch.index');
     const { isLoading } = get(pageData, 'enquiryInfo', {});
@@ -210,7 +251,10 @@ class EnquiryDirectory extends React.Component {
               }
             `}
           >
-            <Search onSearch={this.onSearch} placeholder="Search by name" />
+            <DesktopSearch
+              onSearch={this.onSearch}
+              placeholder="Search by Name"
+            />
           </SearchWrap>
         </ButtonSearchWrap>
         {(showFilters || !showFilterIconInMobile) && (
@@ -222,7 +266,7 @@ class EnquiryDirectory extends React.Component {
                 }
               `}
             >
-              <Search onSearch={this.onSearch} placeholder="Search by name" />
+              <Search onSearch={this.onSearch} placeholder="Search by Name" />
             </SearchWrap>
             <Filter>
               <Label>Branch</Label>
@@ -258,6 +302,8 @@ class EnquiryDirectory extends React.Component {
           hidePlan
           showEmail
           showMobile
+          isClickable
+          onSelectMember={this.onSelectMember}
         />
         <PaginationWrap>
           <Pagination
@@ -267,6 +313,11 @@ class EnquiryDirectory extends React.Component {
             name="enquiryDirectory"
           />
         </PaginationWrap>
+        <EnquiryInfo
+          show={showEnquiryInfo}
+          onClose={this.onCloseEnquiryInfo}
+          {...enquiryInfo}
+        />
       </Wrapper>
     );
   }

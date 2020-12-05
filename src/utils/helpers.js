@@ -118,22 +118,24 @@ export const searchLogic = ({ searchText = '', dataSource = [] }) => {
   if (!dataSource.length) return [];
   if (!searchText) return dataSource;
   return dataSource.filter((member) => {
-    const { name = '', membershipId = '', mobileNumber } = member;
+    const { name = '', membershipId = '', mobileNumber = '' } = member;
     let isNameMatches =
-      name.toLowerCase().indexOf(searchText.toLowerCase()) === 0;
+      name && name.toLowerCase().includes(searchText.toLowerCase());
     let isMembershipIdMatches;
     let isMobileMatches;
     if (!isNameMatches)
       isMembershipIdMatches =
+        membershipId &&
         membershipId.toString().indexOf(searchText.toLowerCase()) === 0;
     if (!isNameMatches && !isMembershipIdMatches)
       isMobileMatches =
+        mobileNumber &&
         mobileNumber.toString().indexOf(searchText.toLowerCase()) === 0;
 
     return isNameMatches || isMembershipIdMatches || isMobileMatches;
   });
 };
-export const filterLogic = ({ filters, dataSource = [] }) => {
+export const filterLogic = ({ filters, dataSource = [], applyDateFilter }) => {
   if (!filters) return dataSource;
   if (!dataSource) return [];
   let filteredData = dataSource;
@@ -151,10 +153,11 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
         break;
       }
       case 'plan': {
-        const { id, planName } = filters[key];
+        const { planName } = filters[key];
+        console.log('filteredData', filteredData, planName);
         if (planName !== 'All') {
           filteredData = filteredData.filter(
-            (member) => member.planDetailsId === id,
+            (member) => member.planName === planName,
           );
         }
         break;
@@ -170,35 +173,64 @@ export const filterLogic = ({ filters, dataSource = [] }) => {
             }
           });
         }
+        break;
       }
       case 'feeDueDate': {
         const { name } = filters[key];
-        const dateInfo = getTodayDate();
+        const { day: tDay, month: tMonth, year: tYear } = getTodayDate();
+        if (applyDateFilter) break; // don't apply this filter
         if (name !== 'All') {
           filteredData = filteredData.filter((member) => {
             const { nextDue } = member;
             const [dateFormat] = nextDue.split('T');
             const [day, month, year] = dateFormat.split('-');
-            const formattedDate = new Date(`${year}-${month}-${day}`);
-            console.log(
-              'due date filter logic',
-              name,
-              formattedDate,
-              dateInfo,
-              formattedDate.getTime() === dateInfo.date.getTime(),
-              formattedDate.getTime() < dateInfo.date.getTime(),
-            );
-            if (name === 'Today')
-              return formattedDate.getTime() === dateInfo.date.getTime();
-            else if (name === 'Past')
-              return formattedDate.getTime() < dateInfo.date.getTime();
+            const formattedDate = new Date(
+              `${year}-${month}-${day >= 10 ? day : `0${day}`}`,
+            ).getTime();
+            const formattedTDate = new Date(
+              `${tYear}-${tMonth}-${tDay}`,
+            ).getTime();
+            if (name === 'Today') return formattedDate === formattedTDate;
+            else if (name === 'Past') return formattedDate < formattedTDate;
+            else if (name === 'Future') return formattedDate > formattedTDate;
           });
           console.log('due date filter after logic', filteredData);
         }
+        break;
+      }
+      case 'bloodGroup': {
+        const { name } = filters[key];
+        if (name !== 'All') {
+          if (name === 'None') {
+            filteredData = filteredData.filter((member) => {
+              return !member.bloodGroup;
+            });
+          } else
+            filteredData = filteredData.filter((member) => {
+              if (member.bloodGroup)
+                return member.bloodGroup.toLowerCase() === name.toLowerCase();
+            });
+        }
+        break;
       }
       default:
         break;
     }
+  }
+  if (applyDateFilter) {
+    const { startDate, endDate } = filters;
+    const [day1, month1, year1] = startDate.selectedDate.split('/');
+    const [day2, month2, year2] = endDate.selectedDate.split('/');
+    const fromDate = new Date(`${year1}-${month1}-${day1}`).getTime();
+    const toDate = new Date(`${year2}-${month2}-${day2}`).getTime();
+    if (fromDate > toDate) return filteredData;
+    filteredData = filteredData.filter((member) => {
+      const { nextDue } = member;
+      const [dateFormat] = nextDue.split('T');
+      const [day, month, year] = dateFormat.split('-');
+      const dueDate = new Date(`${year}-${month}-${day}`).getTime();
+      return dueDate >= fromDate && dueDate <= toDate;
+    });
   }
   return filteredData;
 };
@@ -214,27 +246,36 @@ export const constructBranchFilters = (branchDetails) => {
   ];
   return branchInfo;
 };
-export const constructPlanFilters = (
-  branchDetails,
-  selectBranchFilterIndex,
-) => {
+export const constructPlanFilters = (branchDetails) => {
   if (!branchDetails) return [{ planName: 'All' }];
-  if (selectBranchFilterIndex === 0) return [{ planName: 'All' }];
+  let plans = new Set();
+  for (let i = 0; i < branchDetails.length; i += 1) {
+    const { planDetails } = branchDetails[i] || {};
+    for (let j = 0; j < planDetails.length; j += 1) {
+      plans.add(planDetails[j].planName);
+    }
+  }
+  const plansArray = [...plans];
   return [
     { planName: 'All' },
-    ...get(branchDetails, `[${selectBranchFilterIndex - 1}].planDetails`),
+    ...plansArray.map((planName) => ({ planName: planName })),
   ];
+};
+export const constructBloodGrpFilters = (bloodGroupData) => {
+  if (!bloodGroupData) return ['All', 'None'];
+  return ['All', 'None', ...bloodGroupData];
 };
 export const applySearchAndFilterLogic = ({
   searchText,
   filters,
   dataSource,
+  applyDateFilter = false,
 }) => {
   const filteredData = searchLogic({
     searchText,
     dataSource,
   });
-  return filterLogic({ dataSource: filteredData, filters });
+  return filterLogic({ dataSource: filteredData, filters, applyDateFilter });
 };
 export const scrollToTop = () => {
   window.scrollTo(0, 9);
@@ -269,4 +310,19 @@ export const getTodayDate = () => {
     year,
     formattedDate: `${year}-${month}-${day}`,
   };
+};
+export const startDateLessThanOrEqualToEndDate = (filters) => {
+  const { startDate, endDate } = filters;
+  const [day1, month1, year1] = startDate.selectedDate.split('/');
+  const [day2, month2, year2] = endDate.selectedDate.split('/');
+  const fromDate = new Date(`${year1}-${month1}-${day1}`).getTime();
+  const toDate = new Date(`${year2}-${month2}-${day2}`).getTime();
+  console.log(
+    'startDateLessThanOrEqualToEndDate',
+    fromDate,
+    toDate,
+    new Date(`${year1}-${month1}-${day1}`),
+    new Date(`${year2}-${month2}-${day2}`),
+  );
+  return fromDate <= toDate;
 };

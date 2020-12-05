@@ -17,6 +17,7 @@ import {
   selectAllowedBranchDetails,
   selectLogo,
   selectAppState,
+  isSuperAdmin,
 } from '../../selectors/';
 import SplashScreen from '../../components/SplashScreen';
 import { getAdminInfo } from './actions';
@@ -65,7 +66,7 @@ const menus = [
     hoverIconCss: HoverProfileIcon,
   },
   {
-    menu: 'Enquiry Details',
+    menu: 'Enquiry Directory',
     Icon: EnquiryIcon,
     url: '/enquiry-directory',
     hoverIconCss: HoverEnquiryIcon,
@@ -260,6 +261,8 @@ class App extends React.Component {
       allowedBranchInfo,
       logo,
       appState,
+      isSuperAdmin,
+      isLoggedIn,
     } = this.props;
     const {
       showInstallUI,
@@ -269,7 +272,12 @@ class App extends React.Component {
       navmenu = {},
       hasError,
     } = this.state;
-    const { pageLoaderState } = appState || {};
+    const firstName = get(appState, 'adminInfo.firstName', '');
+    const { pageLoaderState, adminInfo } = appState || {};
+    const { isLoading = false } = adminInfo;
+    const currentUrl = this.props.history.location.pathname;
+    const showSplashScreen =
+      !isLoggedIn && currentUrl === '/login' ? false : isLoading;
     return (
       <Wrap>
         {hasError ? (
@@ -288,7 +296,7 @@ class App extends React.Component {
               showNavBar={this.showNavBar}
               logo={logo}
             />
-            {!isAdminInfoLoaded ? (
+            {showSplashScreen ? (
               <SplashScreen />
             ) : (
               <ChildrenWrap>
@@ -301,6 +309,7 @@ class App extends React.Component {
                   getBranchInfo,
                   getPlanInfo,
                   allowedBranchInfo,
+                  isSuperAdmin,
                   updateActiveNavIndex: this.updateActiveNavIndex,
                 })}
               </ChildrenWrap>
@@ -317,6 +326,7 @@ class App extends React.Component {
                 logo={logo}
                 menus={menus}
                 footerMenus={footerMenus}
+                userName={firstName}
               />
             )}
             {mountToasterManager && (
@@ -343,6 +353,7 @@ const mapStateToProps = (state) => {
     getPlanInfo: getPlanInfo(state),
     allowedBranchInfo: selectAllowedBranchDetails(state),
     logo: selectLogo(state),
+    isSuperAdmin: isSuperAdmin(state),
   };
 };
 const mapDispatchToProps = (dispatch) => {

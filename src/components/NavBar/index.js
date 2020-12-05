@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import styled, { css } from 'react-emotion';
-import { GREEN, LIGHT_GREEN, SECONDARY_BLACK, WHITE } from '../../constants';
+import {
+  GREEN,
+  LIGHT_GREEN,
+  PROFILE_PLACEHOLDER,
+  SECONDARY_BLACK,
+  WHITE,
+} from '../../constants';
 import { MontserratLight, MontserratRegular } from '../../utils/fonts';
 import { deleteCookie } from '../../utils/helpers';
 import { CloseIcon } from '../SpriteIcon';
@@ -84,7 +90,26 @@ const Menu = styled('span')`
     }
   }
 `;
-
+const UserName = styled('p')`
+  font-size: 1.4rem;
+  padding: 0 1.2rem;
+  padding-left: 2.4rem;
+  position: relative;
+  top: 3.2rem;
+  color: ${WHITE};
+  font-family: ${MontserratRegular};
+  display: flex;
+  align-items: center;
+`;
+const ProfileIcon = styled('div')`
+  width: 2rem;
+  height: 2rem;
+  margin-right: 1rem;
+`;
+const ProfileImg = styled('img')`
+  width: 100%;
+  height: 100%;
+`;
 function NavBar({
   updateActiveNavIndex,
   activeIndex,
@@ -96,9 +121,9 @@ function NavBar({
   logo,
   menus,
   footerMenus,
+  userName,
 }) {
   const constructMenus = () => {
-    console.log('activeItem', activeIndex);
     return menus.map((item, index) => {
       const { menu, Icon, url, hoverIconCss } = item;
       return (
@@ -159,6 +184,15 @@ function NavBar({
           <CloseIcon onClick={() => hideNavBar()} />
         </Close>
       )}
+      {navbarState && userName && (
+        <UserName>
+          <ProfileIcon>
+            <ProfileImg src={PROFILE_PLACEHOLDER} />
+          </ProfileIcon>
+          {userName}
+        </UserName>
+      )}
+
       <MenusWrap>{constructMenus()}</MenusWrap>
       <Footer>
         {footerMenus.map((item, index) => {

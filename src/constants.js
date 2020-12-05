@@ -16,9 +16,18 @@ export const paginationConfigs = {
   perPage: 150,
 };
 export const GENDER = ['Male', 'Female', 'Others'];
-export const BLOOD_GROUP_DATA = ['O-', 'O+', 'AB-', 'AB+', 'B+'];
+export const BLOOD_GROUP_DATA = [
+  'O+VE',
+  'O-VE',
+  'AB+VE',
+  'AB-VE',
+  'B+VE',
+  'B-VE',
+  'A+VE',
+  'A-VE',
+];
 export const MEMBER_STATUS = ['All', 'Active', 'Inactive'];
-export const FEE_DUE_DATE = ['All', 'Today', 'Past'];
+export const FEE_DUE_DATE = ['All', 'Today', 'Past', 'Future'];
 export const ALLOW_IMAGES_TYPES = [
   'image/png',
   'image/jpeg',
@@ -27,18 +36,18 @@ export const ALLOW_IMAGES_TYPES = [
   'image/bmp',
 ];
 export const monthNames = [
-  { name: 'January', days: 31, shortName: 'JAN' },
-  { name: 'February', days: 28, shortName: 'FEB' },
-  { name: 'March', days: 31, shortName: 'MAR' },
-  { name: 'April', days: 30, shortName: 'APR' },
-  { name: 'May', days: 31, shortName: 'MAY' },
-  { name: 'June', days: 30, shortName: 'JUN' },
-  { name: 'July', days: 31, shortName: 'JUL' },
-  { name: 'August', days: 31, shortName: 'AUG' },
-  { name: 'September', days: 30, shortName: 'SEP' },
-  { name: 'October', days: 31, shortName: 'OCT' },
-  { name: 'November', days: 30, shortName: 'NOV' },
-  { name: 'December', days: 31, shortName: 'DEC' },
+  { name: 'January', days: 31, shortName: 'Jan' },
+  { name: 'February', days: 28, shortName: 'Feb' },
+  { name: 'March', days: 31, shortName: 'Mar' },
+  { name: 'April', days: 30, shortName: 'Apr' },
+  { name: 'May', days: 31, shortName: 'May' },
+  { name: 'June', days: 30, shortName: 'Jun' },
+  { name: 'July', days: 31, shortName: 'Jul' },
+  { name: 'August', days: 31, shortName: 'Aug' },
+  { name: 'September', days: 30, shortName: 'Sep' },
+  { name: 'October', days: 31, shortName: 'Oct' },
+  { name: 'November', days: 30, shortName: 'Nov' },
+  { name: 'December', days: 31, shortName: 'Dec' },
 ];
 
 export const RUPEE_SYMBOL = '₹';

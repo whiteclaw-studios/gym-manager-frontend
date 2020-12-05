@@ -5,17 +5,19 @@ import { connect } from 'react-redux';
 import { selectHomePageState, selectHPDataSource } from '../../selectors';
 import MembersInfo from '../../components/MembersInfo/Loadable';
 import PaymentPopup from '../../components/PaymentPopup';
-import { FEES_LAYOUT, FEE_DUE_DATE, RED } from '../../constants';
+import { FEES_LAYOUT, FEE_DUE_DATE, GREEN, RED } from '../../constants';
 import {
   applyDateFilter,
   getDateFilteredData,
   getFeeDueDetails,
   updateFeeDetails,
   updateFilter,
+  updateMembershipStatus,
   updateSourceData,
 } from './actions';
 import {
   constructBranchFilters,
+  constructPlanFilters,
   get,
   isGreaterThanOrEqualTo,
 } from '../../utils/helpers';
@@ -77,7 +79,7 @@ const FilterDropdn = styled('div')`
   }
 `;
 const Note = styled('p')`
-  color: ${RED};
+  color: ${GREEN};
   font-size: 1.4rem;
   margin: 0.5rem 0;
   @media (min-width: 993px) {
@@ -98,6 +100,12 @@ class HomePage extends React.Component {
       paymentPopupInfo: {
         open: false,
         memberInfo: {},
+      },
+      dueDate: {
+        value: '',
+        type: 'dueDate',
+        error: false,
+        dirty: false,
       },
     };
     this.props.showHeaderHandle(); // to show the header
@@ -194,93 +202,17 @@ class HomePage extends React.Component {
     if (index < 0) return 0;
     return entirePlanDetails[index].amount;
   };
-  componentDidUpdate(prevProps) {
-    const oldStartDate = get(
-      prevProps,
-      'pageData.filters.startDate.selectedDate',
-      '',
-    );
-    const oldEndDate = get(
-      prevProps,
-      'pageData.filters.endDate.selectedDate',
-      '',
-    );
-    const newStartDate = get(
-      this.props,
-      'pageData.filters.startDate.selectedDate',
-      '',
-    );
-    const newEndDate = get(
-      this.props,
-      'pageData.filters.endDate.selectedDate',
-      '',
-    );
-    const isDateFilterApplied1 = get(
-      prevProps,
-      'pageData.applyDateFilter',
-      false,
-    );
-    const isDateFilterApplied2 = get(
-      this.props,
-      'pageData.applyDateFilter',
-      false,
-    );
-    console.log(
-      'componentDidUpdate',
-      isDateFilterApplied1 !== isDateFilterApplied2 && isDateFilterApplied2,
-      isDateFilterApplied2 && oldStartDate !== newStartDate,
-      !isDateFilterApplied2 && oldEndDate !== newEndDate,
-    );
-    if (
-      (isDateFilterApplied1 !== isDateFilterApplied2 && isDateFilterApplied2) ||
-      (isDateFilterApplied2 && oldStartDate !== newStartDate) ||
-      (isDateFilterApplied2 && oldEndDate !== newEndDate)
-    ) {
-      const isValid = isGreaterThanOrEqualTo(newStartDate, newEndDate);
-      console.log('componentDidUpdate 2', isValid, newStartDate, newEndDate);
-      if (isValid) {
-        //check already data available for those dates
-        const alreadyDataAvailable = get(
-          this.props,
-          `pageData.memberFeesInfo.${newStartDate}-${newEndDate}.isLoaded`,
-          false,
-        );
-        console.log(
-          'componentDidUpdate 3',
-          alreadyDataAvailable,
-          get(this.props, 'pageData.memberFeesInfo'),
-          get(
-            this.props,
-            `pageData.memberFeesInfo.${newStartDate}-${newEndDate}`,
-          ),
-        );
 
-        if (!alreadyDataAvailable) {
-          const [day1, month1, year1] = newStartDate.split('/');
-          const formattedDate1 = `${day1}-${month1}-${year1}`;
-
-          const [day2, month2, year2] = newEndDate.split('/');
-          const formattedDate2 = `${day2}-${month2}-${year2}`;
-          this.props.dispatch(
-            getDateFilteredData({
-              startDate: formattedDate1,
-              endDate: formattedDate2,
-              sDate: newStartDate,
-              eDate: newEndDate,
-            }),
-          );
-        } else {
-          // already data available so load the data into UI
-          this.props.dispatch(
-            updateSourceData({
-              sDate: newStartDate,
-              eDate: newEndDate,
-            }),
-          );
-        }
-      }
-    }
-  }
+  constructRecordInfo = () => {
+    const { feeDueDetails } = this.props;
+    const totalRecords = feeDueDetails ? feeDueDetails.length : 0;
+    return totalRecords
+      ? `Showing ${1}-${totalRecords} out of ${totalRecords}`
+      : '';
+  };
+  makeMemberInactive = (data) => {
+    this.props.dispatch(updateMembershipStatus(data));
+  };
   render() {
     const {
       feeDueDetails = [],
@@ -293,19 +225,20 @@ class HomePage extends React.Component {
       showFilters,
       showFilterIconInMobile,
       paymentPopupInfo,
+      dueDate,
     } = this.state;
     const { memberInfo = {}, open } = paymentPopupInfo;
     const { isLoading } = get(pageData, 'memberFeesInfo', {});
-    const { filters } = pageData;
-    const branchFilters = constructBranchFilters(branchDetails);
-    const selectedBranchFilterIndex = get(filters, 'branch.index');
-    const selectedDueDateFilterIndex = get(filters, 'feeDueDate.index');
+    const { filters, isInvalidDates } = pageData;
 
+    const selectedBranchFilterIndex = get(filters, 'branch.index');
+    const selectedPlanFilterIndex = get(filters, 'plan.index');
+    const selectedDueDateFilterIndex = get(filters, 'feeDueDate.index');
     const selectedFromDate = get(filters, 'startDate.selectedDate', '');
     const selectedToDate = get(filters, 'endDate.selectedDate', '');
-
-    console.log('HomePage', pageData, isLoading, this.state);
-
+    const branchFilters = constructBranchFilters(branchDetails);
+    const planFilters = constructPlanFilters(branchDetails);
+    console.log('state', this.state);
     return (
       <Wrapper>
         {showFilterIconInMobile && (
@@ -355,6 +288,35 @@ class HomePage extends React.Component {
               </FilterDropdn>
             </Filter>
             <Filter>
+              <Label>Plan</Label>
+              <FilterDropdn
+                className={css`
+                  max-width: 15rem;
+                  @media (max-width: 992px) {
+                    max-width: unset;
+                  }
+                `}
+              >
+                <DropDown
+                  name="hp-plan-filter"
+                  listItems={planFilters.map((plan) => plan.planName)}
+                  otherInfo={planFilters}
+                  activeItem={selectedPlanFilterIndex}
+                  onSelect={(index, name, otherInfo) => {
+                    this.props.dispatch(
+                      updateFilter({
+                        plan: {
+                          ...otherInfo,
+                          index,
+                        },
+                      }),
+                    );
+                  }}
+                  hideError
+                />
+              </FilterDropdn>
+            </Filter>
+            <Filter>
               <Label>Due date</Label>
               <FilterDropdn>
                 <DropDown
@@ -375,112 +337,158 @@ class HomePage extends React.Component {
                 />
               </FilterDropdn>
             </Filter>
-            <div
-              className={css`
-                display: flex;
-                @media (max-width: 992px) {
-                  flex-direction: column;
-                }
-              `}
-            >
-              <Filter>
-                <Label>From</Label>
-                <FilterDropdn>
-                  <DatePicker
-                    selectedDate={selectedFromDate}
-                    dateChangeHandler={(selectedDate) => {
-                      this.props.dispatch(
-                        updateFilter({
-                          startDate: {
-                            ...filters.startDate,
-                            selectedDate,
-                          },
-                        }),
-                      );
-                    }}
-                    format="DD/MM/YYYY"
-                    placeholder="Select Date"
-                    validateStartYear={get(filters, `startDate.currentYear`, 0)}
-                    validateEndYear={
-                      get(filters, `startDate.currentYear`, 0) + 5
+            {selectedDueDateFilterIndex !== 1 && (
+              <div
+                className={css`
+                  display: flex;
+                  @media (max-width: 992px) {
+                    flex-direction: column;
+                  }
+                `}
+              >
+                <Filter>
+                  <Label>From</Label>
+                  <FilterDropdn>
+                    <DatePicker
+                      selectedDate={selectedFromDate}
+                      dateChangeHandler={(selectedDate) => {
+                        this.props.dispatch(
+                          updateFilter({
+                            startDate: {
+                              ...filters.startDate,
+                              selectedDate,
+                            },
+                          }),
+                        );
+                      }}
+                      format="DD/MM/YYYY"
+                      placeholder="Select Date"
+                      // validateStartYear={get(filters, `startDate.currentYear`, 0)}
+                      // validateEndYear={
+                      //   get(filters, `startDate.currentYear`, 0) + 5
+                      // }
+                      // validateStartDate={this.validStartDate()}
+                      // validateStartMonth={get(
+                      //   filters,
+                      //   `startDate.validStartMonth`,
+                      //   0,
+                      // )}
+                      disableMonthClick
+                      disableYearClick
+                      // validateMonthPanel
+                      validateEndMonth={11}
+                      nextYearHandle={(yearSelected) => {
+                        const { startDate } = filters;
+                        const { currentYear, currentMonth } = startDate || {};
+                        this.props.dispatch(
+                          updateFilter({
+                            startDate: {
+                              ...filters.startDate,
+                              validStartMonth:
+                                yearSelected > currentYear ? 0 : currentMonth,
+                            },
+                          }),
+                        );
+                        console.log('yearSelected', yearSelected);
+                      }}
+                    />
+                  </FilterDropdn>
+                </Filter>
+                <Filter>
+                  <Label>To</Label>
+                  <FilterDropdn>
+                    <DatePicker
+                      selectedDate={selectedToDate}
+                      dateChangeHandler={(selectedDate) => {
+                        this.props.dispatch(
+                          updateFilter({
+                            endDate: {
+                              ...filters.endDate,
+                              selectedDate,
+                            },
+                          }),
+                        );
+                      }}
+                      format="DD/MM/YYYY"
+                      placeholder="Select Date"
+                      // validateStartYear={get(filters, `endDate.currentYear`, 0)}
+                      // validateEndYear={get(filters, `endDate.currentYear`, 0) + 5}
+                      // validateStartDate={this.validStartDate()}
+                      // validateStartMonth={get(
+                      //   filters,
+                      //   `endDate.validStartMonth`,
+                      //   0,
+                      // )}
+                      disableMonthClick
+                      disableYearClick
+                      // validateMonthPanel
+                      validateEndMonth={11}
+                      nextYearHandle={(yearSelected) => {
+                        const { endDate } = filters;
+                        const { currentYear, currentMonth } = endDate || {};
+                        this.props.dispatch(
+                          updateFilter({
+                            endDate: {
+                              ...filters.endDate,
+                              validStartMonth:
+                                yearSelected > currentYear ? 0 : currentMonth,
+                            },
+                          }),
+                        );
+                      }}
+                    />
+                  </FilterDropdn>
+                </Filter>
+                <Filter
+                  className={css`
+                    @media (max-width: 992px) {
+                      display: none;
                     }
-                    validateStartDate={this.validStartDate()}
-                    validateStartMonth={get(
-                      filters,
-                      `startDate.validStartMonth`,
-                      0,
-                    )}
-                    validateEndMonth={11}
-                    nextYearHandle={(yearSelected) => {
-                      const { startDate } = filters;
-                      const { currentYear, currentMonth } = startDate || {};
+                  `}
+                >
+                  <Label
+                    className={css`
+                      width: auto;
+                    `}
+                  >
+                    Apply Date filter
+                  </Label>
+                  <Checkbox
+                    className={css`
+                      > label > span {
+                        top: -4px !important;
+                      }
+                    `}
+                    onSelect={(isChecked) => {
                       this.props.dispatch(
-                        updateFilter({
-                          startDate: {
-                            ...filters.startDate,
-                            validStartMonth:
-                              yearSelected > currentYear ? 0 : currentMonth,
-                          },
+                        applyDateFilter({
+                          isChecked,
                         }),
                       );
-                      console.log('yearSelected', yearSelected);
                     }}
                   />
-                </FilterDropdn>
-              </Filter>
-              <Filter>
-                <Label>To</Label>
-                <FilterDropdn>
-                  <DatePicker
-                    selectedDate={selectedToDate}
-                    dateChangeHandler={(selectedDate) => {
-                      this.props.dispatch(
-                        updateFilter({
-                          endDate: {
-                            ...filters.endDate,
-                            selectedDate,
-                          },
-                        }),
-                      );
-                    }}
-                    format="DD/MM/YYYY"
-                    placeholder="Select Date"
-                    validateStartYear={get(filters, `endDate.currentYear`, 0)}
-                    validateEndYear={get(filters, `endDate.currentYear`, 0) + 5}
-                    validateStartDate={this.validStartDate()}
-                    validateStartMonth={get(
-                      filters,
-                      `endDate.validStartMonth`,
-                      0,
-                    )}
-                    validateEndMonth={11}
-                    nextYearHandle={(yearSelected) => {
-                      const { endDate } = filters;
-                      const { currentYear, currentMonth } = endDate || {};
-                      this.props.dispatch(
-                        updateFilter({
-                          endDate: {
-                            ...filters.endDate,
-                            validStartMonth:
-                              yearSelected > currentYear ? 0 : currentMonth,
-                          },
-                        }),
-                      );
-                      console.log('yearSelected', yearSelected);
-                    }}
-                  />
-                </FilterDropdn>
-              </Filter>
+                </Filter>
+              </div>
+            )}
+          </FilterWrap>
+        )}
+
+        {selectedDueDateFilterIndex !== 1 &&
+          (showFilters || !showFilterIconInMobile) && (
+            <React.Fragment>
               <Filter
                 className={css`
-                  @media (max-width: 992px) {
+                  @media (min-width: 993px) {
                     display: none;
                   }
                 `}
               >
                 <Label
                   className={css`
-                    width: auto;
+                    @media (max-width: 992px) {
+                      width: auto;
+                      margin-right: 1rem;
+                    }
                   `}
                 >
                   Apply Date filter
@@ -500,51 +508,15 @@ class HomePage extends React.Component {
                   }}
                 />
               </Filter>
-            </div>
-          </FilterWrap>
-        )}
 
-        {(showFilters || !showFilterIconInMobile) && (
-          <React.Fragment>
-            <Filter
-              className={css`
-                @media (min-width: 993px) {
-                  display: none;
-                }
-              `}
-            >
-              <Label
-                className={css`
-                  @media (max-width: 992px) {
-                    width: auto;
-                    margin-right: 1rem;
-                  }
-                `}
-              >
-                Apply filter
-              </Label>
-              <Checkbox
-                className={css`
-                  > label > span {
-                    top: -4px !important;
-                  }
-                `}
-                onSelect={(isChecked) => {
-                  this.props.dispatch(
-                    applyDateFilter({
-                      isChecked,
-                    }),
-                  );
-                }}
-              />
-            </Filter>
-
-            <Note>
-              Date filter will be applied only when To date is greater than or
-              equal to from date
-            </Note>
-          </React.Fragment>
-        )}
+              {isInvalidDates && (
+                <Note>
+                  Date filter will be applied only when To date is greater than
+                  or equal to from date
+                </Note>
+              )}
+            </React.Fragment>
+          )}
 
         <MembersInfo
           openPaymentPopup={this.openPaymentPopup}
@@ -553,6 +525,8 @@ class HomePage extends React.Component {
           getBranchInfo={getBranchInfo}
           getPlanInfo={getPlanInfo}
           isLoading={isLoading}
+          recordInfo={this.constructRecordInfo()}
+          makeMemberInactive={this.makeMemberInactive}
         />
         <PaymentPopup
           name={memberInfo.name}
@@ -562,6 +536,12 @@ class HomePage extends React.Component {
           planId={memberInfo.planId}
           selectedPlan={this.getSelectedPlanIndex()}
           feeAmount={this.getFeeAmount()}
+          dueDate={dueDate}
+          onDueDateChange={(data) => {
+            this.setState({
+              ...data,
+            });
+          }}
           updatePlanIdWhilePayment={({ id }) => {
             this.setState({
               paymentPopupInfo: {
@@ -574,12 +554,23 @@ class HomePage extends React.Component {
           }}
           onPay={() => {
             const { planId } = memberInfo;
+            const { dueDate } = this.state;
+            if (dueDate.error || !dueDate.value) {
+              this.setState({
+                dueDate: {
+                  ...dueDate,
+                  error: true,
+                },
+              });
+              return;
+            }
             this.props.dispatch(
               updateFeeDetails({
                 currentPlan: {
                   id: planId,
                 },
                 memberUniqueId: memberInfo.memberUniqueId,
+                dueDate: dueDate.value,
                 successCallback: () => this.onClosePaymentPopup(),
                 failureCallback: () => this.onClosePaymentPopup(),
               }),

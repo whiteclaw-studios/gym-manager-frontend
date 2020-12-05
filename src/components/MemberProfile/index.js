@@ -151,6 +151,12 @@ class MemberProfile extends React.Component {
         amount: amount,
         name: planName,
       },
+      dueDate: {
+        value: '',
+        type: 'dueDate',
+        error: false,
+        dirty: false,
+      },
     };
   }
   findPlanIndex = () => {
@@ -169,8 +175,8 @@ class MemberProfile extends React.Component {
     if (getFeeDetails) getFeeDetails(memberUniqueId);
   }
   constructBoxes = () => {
-    const { branch, memberId, plan, memberUniqueId } = this.props;
-    const obj = { branch, memberId, plan };
+    const { branch, memberId, plan, memberUniqueId, bloodGroup } = this.props;
+    const obj = { branch, memberId, plan, bloodGroup };
     const keys = Object.keys(obj);
     return keys.map((key) => {
       return (
@@ -245,7 +251,7 @@ class MemberProfile extends React.Component {
     return isAllowedToChange;
   };
   render() {
-    const { showPaymentPopup, currentPlan } = this.state;
+    const { showPaymentPopup, currentPlan, dueDate } = this.state;
     const isAllowedToChange = this.findIsAllowedToChange();
     const {
       name,
@@ -383,11 +389,27 @@ class MemberProfile extends React.Component {
           selectedPlan={currentPlan.index}
           feeAmount={currentPlan.amount}
           updatePlanIdWhilePayment={this.updatePlanIdWhilePayment}
+          dueDate={dueDate}
+          onDueDateChange={(data) => {
+            this.setState({
+              ...data,
+            });
+          }}
           onPay={() => {
-            console.log('onPay called');
+            const { dueDate } = this.state;
+            if (dueDate.error || !dueDate.value) {
+              this.setState({
+                dueDate: {
+                  ...dueDate,
+                  error: true,
+                },
+              });
+              return;
+            }
             onPayFee({
               currentPlan,
               memberUniqueId,
+              dueDate: dueDate.value,
               successCallback: () => this.closePaymentPopup(),
               failureCallback: () => this.closePaymentPopup(),
             });

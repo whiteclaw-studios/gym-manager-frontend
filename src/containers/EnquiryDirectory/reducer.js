@@ -1,6 +1,7 @@
 import { paginationConfigs } from '../../constants';
 import { get, applySearchAndFilterLogic } from '../../utils/helpers';
 import {
+  ADD_ENQUIRY_TO_STORE,
   LOAD_ENQUIRY_DETAILS,
   LOAD_SEARCH_DATA,
   UPDATE_FILTER,
@@ -93,6 +94,35 @@ const reducer = (preloadedState = null) => (
           data: enquiryList,
           logicAppliedData: filteredData,
           ...rest,
+        },
+        pagination: {
+          ...state.pagination,
+          offset: 0,
+          limit: perPage,
+          activePage: 1,
+          totalPages: Math.ceil(enquiryList.length / perPage),
+        },
+      };
+    }
+    case ADD_ENQUIRY_TO_STORE: {
+      const { payload } = action;
+      const enquiryList = [
+        ...get(state, 'enquiryInfo.data', []),
+        { ...payload },
+      ];
+      const searchText = get(state, 'search.searchText', '');
+
+      const filteredData = applySearchAndFilterLogic({
+        searchText,
+        dataSource: enquiryList,
+        filters: state.filters,
+      });
+      return {
+        ...state,
+        enquiryInfo: {
+          ...state.enquiryInfo,
+          data: enquiryList,
+          logicAppliedData: filteredData,
         },
         pagination: {
           ...state.pagination,

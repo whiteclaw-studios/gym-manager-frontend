@@ -4,7 +4,11 @@ import { applySearchAndFilterLogic, getCookie } from '../../utils/helpers';
 import axiosWrapper from '../../utils/requestWrapper';
 import { responseParser } from '../../utils/responseParser';
 import { displayToaster, loadAdminInfo } from '../App/actions';
-import { loadEnquiryDetails, loadSearchData } from './actions';
+import {
+  loadEnquiryDetails,
+  loadSearchData,
+  addEnquiryToStore,
+} from './actions';
 import { ADD_ENQUIRY, GET_ENQUIRY_DETAILS, SEARCH_ENQUIRY } from './constants';
 function* addEnquirySaga(params = {}) {
   try {
@@ -29,6 +33,9 @@ function* addEnquirySaga(params = {}) {
 
     const parsedResponse = responseParser(response);
     if (!parsedResponse.isError) {
+      console.log('parseResponse', parsedResponse);
+      const { data = {} } = parsedResponse || {};
+      yield put(addEnquiryToStore(data));
       yield put(
         displayToaster({
           type: 'success',
