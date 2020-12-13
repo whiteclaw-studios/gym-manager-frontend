@@ -15,4 +15,6 @@ export const apiUrls = {
   FEE_DUE_DETAILS_URL: `${baseUrl}/fees_due_details`,
   UPDATE_FEE_DETAILS_URL: `${baseUrl}/update_fee_details`,
   FEE_DUE_DETAILS_IN_RANGE: `${baseUrl}/fees_due_details_in_range`,
+  PUBLIC_API_BRANCH_INFO_URL: `${baseUrl}/public/branch_details/`,
+  PUBLIC_API_REGISTER_MEMBER: `${baseUrl}/public/register_member`,
 };

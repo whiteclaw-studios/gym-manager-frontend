@@ -4,6 +4,7 @@ import { homeSagas } from '../containers/HomePage/saga';
 import { loginSagas } from '../containers/LoginPage/saga';
 import { enquiryDirectorySagas } from '../containers/EnquiryDirectory/saga';
 import { membersDirectorySagas } from '../containers/MembersDirectory/saga';
+import { userPublicPagesSagas } from '../containers/UserPublicPages/saga';
 export default function* rootSaga() {
   yield all([
     ...appSagas,
@@ -11,5 +12,6 @@ export default function* rootSaga() {
     ...loginSagas,
     ...enquiryDirectorySagas,
     ...membersDirectorySagas,
+    ...userPublicPagesSagas,
   ]);
 }

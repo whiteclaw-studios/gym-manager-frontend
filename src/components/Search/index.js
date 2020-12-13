@@ -48,7 +48,7 @@ export default class Search extends React.Component {
   render() {
     console.log('this.state -> search', this.state);
     const { isFocus } = this.state;
-    const { placeholder = 'Search', className } = this.props;
+    const { placeholder = 'Search', className, searchBarId } = this.props;
     return (
       <Wrap
         className={cx(
@@ -74,12 +74,12 @@ export default class Search extends React.Component {
       >
         <SearchIcon
           onClick={() => {
-            let element = document.getElementById('search-bar');
+            let element = document.getElementById(searchBarId);
             if (element) element.focus();
           }}
         />
         <SearchBar
-          id="search-bar"
+          id={searchBarId}
           type="text"
           placeholder={placeholder}
           onChange={this.onTyping}

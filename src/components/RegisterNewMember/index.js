@@ -136,9 +136,14 @@ export default class RegisterNewMember extends React.Component {
   getTotalAmount = () => {
     const { entirePlanDetails, plan, registerAmount, type } = this.props;
     if (type !== 'REGISTER') return 0;
+
     if (plan.selectedItemIndex >= 0) {
+      const newRegisterAmount =
+        entirePlanDetails[plan.selectedItemIndex].planName === 'Monthly'
+          ? parseInt(registerAmount, 10)
+          : 0;
       return (
-        parseInt(registerAmount, 10) +
+        newRegisterAmount +
         parseInt(entirePlanDetails[plan.selectedItemIndex].amount, 10)
       );
     }
@@ -148,11 +153,17 @@ export default class RegisterNewMember extends React.Component {
   getFeeSplitup = () => {
     const { entirePlanDetails, plan, registerAmount, type } = this.props;
     if (type !== 'REGISTER') return '';
+
     if (plan.selectedItemIndex >= 0) {
+      const newRegisterAmount =
+        entirePlanDetails[plan.selectedItemIndex].planName === 'Monthly'
+          ? parseInt(registerAmount, 10)
+          : 0;
+      if (!newRegisterAmount) return '';
       return (
         <Splitup>
           (Regtr.amount = {RUPEE_SYMBOL}
-          {parseInt(registerAmount, 10)}+ Fee amount = {RUPEE_SYMBOL}
+          {newRegisterAmount}+ Fee amount = {RUPEE_SYMBOL}
           {parseInt(entirePlanDetails[plan.selectedItemIndex].amount, 10)})
         </Splitup>
       );
@@ -184,14 +195,17 @@ export default class RegisterNewMember extends React.Component {
       onRegister,
       onEdit,
       onCancel,
+      hideBackButton = false,
     } = this.props;
     const feeAmount = this.getTotalAmount();
 
     return (
       <Wrap>
-        <BackWrap>
-          <BackIcon onClick={onCancel} />
-        </BackWrap>
+        {!hideBackButton && (
+          <BackWrap>
+            <BackIcon onClick={onCancel} />
+          </BackWrap>
+        )}
         <Content>
           <Title>
             {type === 'REGISTER' ? 'Register New Member' : 'Edit Details'}

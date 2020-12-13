@@ -981,6 +981,7 @@ class MembersDirectory extends React.Component {
                 <DesktopSearch
                   onSearch={this.onSearch}
                   placeholder="Search by Name, Membership ID, Mobile"
+                  searchBarId="members-desktop-search-bar"
                 />
               </SearchWrap>
             </ButtonSearchWrap>
@@ -996,6 +997,7 @@ class MembersDirectory extends React.Component {
                   <Search
                     onSearch={this.onSearch}
                     placeholder="Search by Name, Membership ID, Mobile"
+                    searchBarId="members-mobile-search-bar"
                   />
                 </SearchWrap>
 

@@ -91,6 +91,7 @@ const selectHPDataSource = (state) => {
   const hpData = selectHomePageState(state);
   return get(hpData, 'memberFeesInfo.logicAppliedData', {});
 };
+const selectUserPagesData = (state) => get(state, 'userPublicPages', '');
 export {
   selectAppState,
   selectHomePageState,
@@ -117,4 +118,5 @@ export {
   selectMemberFeeDetails,
   selectHPDataSource,
   isSuperAdmin,
+  selectUserPagesData,
 };

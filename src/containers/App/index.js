@@ -20,7 +20,7 @@ import {
   isSuperAdmin,
 } from '../../selectors/';
 import SplashScreen from '../../components/SplashScreen';
-import { getAdminInfo } from './actions';
+import { getAdminInfo, loadAdminInfo } from './actions';
 import { LOGIN_ROUTE } from '../../routes';
 import NavBar from '../../components/NavBar';
 import { get } from '../../utils/helpers';
@@ -149,7 +149,19 @@ class App extends React.Component {
   componentDidMount() {
     window.addEventListener('beforeinstallprompt', this.beforeInstallPrompt);
     window.addEventListener('appinstalled', this.appInstalled);
-    this.props.dispatch(getAdminInfo());
+    const url = get(this.props, 'history.location.pathname', '');
+    if (!url.includes('public')) {
+      // if url doesn't contains public page url ,then load admininfo
+      this.props.dispatch(getAdminInfo());
+    } else {
+      this.props.dispatch(
+        loadAdminInfo({
+          isLoggedIn: true,
+          infoLoaded: true,
+          isLoading: false,
+        }),
+      );
+    }
     this.mountElements();
     window.addEventListener('resize', this.hideHeaderInMobile);
   }

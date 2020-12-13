@@ -254,6 +254,7 @@ class EnquiryDirectory extends React.Component {
             <DesktopSearch
               onSearch={this.onSearch}
               placeholder="Search by Name"
+              searchBarId="enquiry-desktop-search-bar"
             />
           </SearchWrap>
         </ButtonSearchWrap>
@@ -266,7 +267,11 @@ class EnquiryDirectory extends React.Component {
                 }
               `}
             >
-              <Search onSearch={this.onSearch} placeholder="Search by Name" />
+              <Search
+                onSearch={this.onSearch}
+                placeholder="Search by Name"
+                searchBarId="enquiry-mobile-search-bar"
+              />
             </SearchWrap>
             <Filter>
               <Label>Branch</Label>
