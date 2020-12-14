@@ -91,6 +91,7 @@ function* addNewMember(params = {}) {
       headers: { 'Content-type': 'multipart/form-data' },
       url: apiUrls.PUBLIC_API_REGISTER_MEMBER,
       data: formData,
+      ignoreToken: true,
     });
 
     const parsedResponse = responseParser(response);
