@@ -191,6 +191,7 @@ function ItemRow({
               <Item
                 className={css`
                   max-width: 23rem;
+                  font-weight: bold;
                   @media (max-width: 992px) {
                     display: flex;
                   }
