@@ -21,7 +21,7 @@ export const ENQUIRY_DIRECTORY_ROUTE = '/enquiry-directory';
 export const REGISTER_MEMBER_ROUTE = '/register-member';
 export const ENQUIRY_FORM_ROUTE = '/enquiry-form';
 export const USER_PAGES_ROUTE = '/public';
-export const USER_NEW_REGISTER_ROUTE = '/public/new-register';
+export const USER_NEW_REGISTER_ROUTE = '/public/new_register';
 const routes = [
   {
     component: App,
