@@ -63,6 +63,8 @@ server.get('*', async (req, res) => {
   }
 });
 
-server.listen(config.port, () => {
-  console.log('Server listening on Port', config.port);
+var port = process.env.PORT || 3000;
+
+server.listen(port, () => {
+  console.log('Server listening on Port', port);
 });
