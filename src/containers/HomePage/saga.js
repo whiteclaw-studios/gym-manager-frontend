@@ -60,6 +60,7 @@ function* updateFeeDetails(params) {
     const {
       memberUniqueId,
       currentPlan,
+      dueDate,
       successCallback = () => {},
       failureCallback = () => {},
     } = params;
@@ -71,6 +72,7 @@ function* updateFeeDetails(params) {
       data: {
         memberId: memberUniqueId,
         planDetailsId: id,
+        paidDate: dueDate,
       },
     });
     const processResponse = responseParser(response);

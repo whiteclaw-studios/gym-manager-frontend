@@ -253,7 +253,7 @@ class HomePage extends React.Component {
     const selectedToDate = get(filters, 'endDate.selectedDate', '');
     const branchFilters = constructBranchFilters(branchDetails);
     const planFilters = constructPlanFilters(branchDetails);
-    console.log('state', this.state);
+    // console.log('state', this.state, this.props);
     return (
       <Wrapper>
         {showFilterIconInMobile && (
