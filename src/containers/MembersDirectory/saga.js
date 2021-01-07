@@ -338,7 +338,7 @@ function* updateFeeDetailsSaga(params) {
       url: `${apiUrls.UPDATE_FEE_DETAILS_URL}`,
       data: {
         memberId: memberUniqueId,
-        paidDate: dueDate,
+        paidDate,
         planDetailsId: id,
         paidDate,
       },
