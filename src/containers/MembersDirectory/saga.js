@@ -327,6 +327,7 @@ function* updateFeeDetailsSaga(params) {
     const {
       memberUniqueId,
       currentPlan,
+      paidDate = '',
       successCallback = () => {},
       failureCallback = () => {},
     } = params;
@@ -338,6 +339,7 @@ function* updateFeeDetailsSaga(params) {
       data: {
         memberId: memberUniqueId,
         planDetailsId: id,
+        paidDate,
       },
     });
     const processResponse = responseParser(response);

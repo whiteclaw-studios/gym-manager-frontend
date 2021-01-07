@@ -410,7 +410,7 @@ class MemberProfile extends React.Component {
             onPayFee({
               currentPlan,
               memberUniqueId,
-              dueDate: dueDate.value,
+              paidDate: dueDate.value,
               successCallback: () => this.closePaymentPopup(),
               failureCallback: () => this.closePaymentPopup(),
             });

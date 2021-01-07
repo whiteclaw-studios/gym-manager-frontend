@@ -800,6 +800,7 @@ class MembersDirectory extends React.Component {
   onPayFee = ({
     memberUniqueId,
     currentPlan,
+    paidDate = '',
     successCallback,
     failureCallback,
   }) => {
@@ -807,6 +808,7 @@ class MembersDirectory extends React.Component {
       updateFeeDetails({
         memberUniqueId,
         currentPlan,
+        paidDate,
         successCallback: () => {
           this.setState({
             plan: {

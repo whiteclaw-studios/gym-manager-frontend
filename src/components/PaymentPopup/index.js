@@ -128,7 +128,7 @@ function PaymentPopup({
                 state={dueDate}
                 name="dueDate"
                 onValueChange={onDueDateChange}
-                placeholder="DD/MM/YYYY"
+                placeholder="DD-MM-YYYY"
                 showError={dueDate.error}
                 errorText="Invalid date"
                 validateOnType={false}
