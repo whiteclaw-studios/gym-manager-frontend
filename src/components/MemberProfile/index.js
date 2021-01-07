@@ -152,13 +152,20 @@ class MemberProfile extends React.Component {
         name: planName,
       },
       dueDate: {
-        value: '',
+        value: this.setTodayDate(),
         type: 'dueDate',
         error: false,
         dirty: false,
       },
     };
   }
+  setTodayDate = () => {
+    const date = new Date();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
   findPlanIndex = () => {
     const { entirePlanDetails, planId } = this.props;
     let index = -1;
