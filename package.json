@@ -7,10 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "bundle": "webpack --mode=production -d",
     "clean": "rm -rf public/*",
-    "start": "npm run clean && npm run bundle && babel-node  server",
+    "start": "babel-node  server",
     "dev-bundle": "NODE_ENV=development webpack --mode=development -wd",
     "start:dev": "nodemon --exec NODE_ENV=development babel-node server",
-    "bundle-report": "webpack-bundle-analyzer --port 4200 public/stats.json"
+    "bundle-report": "webpack-bundle-analyzer --port 4200 public/stats.json",
+    "postinstall": "npm run clean && npm run bundle"
   },
   "repository": {
     "type": "git",
