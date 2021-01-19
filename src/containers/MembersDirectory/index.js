@@ -515,13 +515,12 @@ class MembersDirectory extends React.Component {
     };
   };
   validateDropdownData = () => {
-    const { branch, plan, gender, bloodGroup } = this.state;
+    const { branch, plan, gender } = this.state;
     let isError = false;
     if (
       branch.selectedItemIndex < 0 ||
       plan.selectedItemIndex < 0 ||
-      gender.selectedItemIndex < 0 ||
-      bloodGroup.selectedItemIndex < 0
+      gender.selectedItemIndex < 0
     ) {
       isError = true;
       this.setState({
@@ -536,10 +535,6 @@ class MembersDirectory extends React.Component {
         gender: {
           ...gender,
           showError: gender.selectedItemIndex < 0,
-        },
-        bloodGroup: {
-          ...bloodGroup,
-          showError: bloodGroup.selectedItemIndex < 0,
         },
       });
     }

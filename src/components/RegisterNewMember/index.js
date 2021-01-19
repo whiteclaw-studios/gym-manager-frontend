@@ -291,9 +291,7 @@ export default class RegisterNewMember extends React.Component {
                 />
               </InputWrap>
               <InputWrap>
-                <Label>
-                  Email {type === 'REGISTER' && <Asterik>*</Asterik>}
-                </Label>
+                <Label>Email</Label>
                 <EmailInput
                   state={email}
                   name="email"
@@ -344,9 +342,7 @@ export default class RegisterNewMember extends React.Component {
               </InputWrap>
 
               <InputWrap>
-                <Label>
-                  Blood group {type === 'REGISTER' && <Asterik>*</Asterik>}
-                </Label>
+                <Label>Blood group</Label>
                 <DropDown
                   className={css`
                     > div {
