@@ -62,6 +62,7 @@ function* addNewMember(params = {}) {
       age,
       gender,
       images,
+      joiningDate,
       bloodGroup,
       feeAmount,
       successCallback = () => {},
@@ -76,6 +77,7 @@ function* addNewMember(params = {}) {
       planDetailsId: planId,
       age,
       gender,
+      joiningDate,
       bloodGroup,
     };
     yield put(togglePageLoader(true));

@@ -42,6 +42,7 @@ function* addNewMember(params = {}) {
       images,
       bloodGroup,
       feeAmount,
+      joiningDate,
       successCallback = () => {},
     } = params;
     const fieldKeys = {
@@ -54,6 +55,7 @@ function* addNewMember(params = {}) {
       planDetailsId: planId,
       age,
       gender,
+      joiningDate,
       bloodGroup,
     };
     yield put(togglePageLoader(true));

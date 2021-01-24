@@ -70,6 +70,8 @@ const AgeInput = styled(CommonInput)``;
 
 const MobileInput = styled(CommonInput)``;
 const EmailInput = styled(CommonInput)``;
+const JoiningDateInput = styled(CommonInput)``;
+
 const Controls = styled('div')`
   display: flex;
   margin: 2.4rem 0 0;
@@ -179,6 +181,7 @@ export default class RegisterNewMember extends React.Component {
       fatherName,
       age,
       email,
+      joiningDate,
       mobile,
       plan,
       gender,
@@ -373,6 +376,18 @@ export default class RegisterNewMember extends React.Component {
                   activeItem={plan.selectedItemIndex}
                   onSelect={onSelectDropdown}
                   showError={plan.showError}
+                />
+              </InputWrap>
+              <InputWrap>
+                <Label>Joining date</Label>
+                <JoiningDateInput
+                  state={joiningDate}
+                  name="joiningDate"
+                  onValueChange={onValueChange}
+                  showError={joiningDate.error}
+                  errorText="Invalid date format"
+                  placeholder="DD-MM-YYYY"
+                  validateOnType={false}
                 />
               </InputWrap>
               <UploadImage images={images} chooseImage={chooseImage} />

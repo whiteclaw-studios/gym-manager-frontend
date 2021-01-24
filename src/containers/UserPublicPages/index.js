@@ -42,6 +42,12 @@ class UserPublicPages extends React.Component {
         error: false,
         type: 'age',
       },
+      joiningDate: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'dueDate',
+      },
       mobile: {
         value: '',
         dirty: false,
@@ -199,7 +205,15 @@ class UserPublicPages extends React.Component {
     return 0;
   };
   onRegister = () => {
-    const keys = ['name', 'memberId', 'mobile', 'age', 'fatherName', 'address'];
+    const keys = [
+      'name',
+      'memberId',
+      'mobile',
+      'age',
+      'fatherName',
+      'address',
+      'joiningDate',
+    ];
     const { isValid, newState } = validateFields({
       state: this.state,
       fields: keys,
@@ -221,6 +235,7 @@ class UserPublicPages extends React.Component {
       gender,
       bloodGroup,
       images,
+      joiningDate,
     } = this.state;
     const feeAmount = this.getTotalAmount();
     this.props.dispatch(
@@ -232,6 +247,7 @@ class UserPublicPages extends React.Component {
         age: age.value,
         gender: GENDER[gender.selectedItemIndex],
         planId: plan.id,
+        joiningDate: joiningDate.value,
         bloodGroup: BLOOD_GROUP_DATA[bloodGroup.selectedItemIndex],
         branchId: branch.id,
         fatherName: fatherName.value,

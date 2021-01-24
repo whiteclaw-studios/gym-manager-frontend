@@ -194,6 +194,12 @@ class MembersDirectory extends React.Component {
         error: false,
         type: 'email',
       },
+      joiningDate: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'dueDate',
+      },
       plan: {
         selectedItemIndex: -1,
         showError: false,
@@ -399,6 +405,7 @@ class MembersDirectory extends React.Component {
   };
 
   onValueChange = (data) => {
+    console.log('data', data);
     this.setState(data);
   };
   onSelectDropdown = (index, elementName) => {
@@ -622,7 +629,15 @@ class MembersDirectory extends React.Component {
     return 0;
   };
   onRegister = () => {
-    const keys = ['name', 'memberId', 'mobile', 'age', 'fatherName', 'address'];
+    const keys = [
+      'name',
+      'memberId',
+      'mobile',
+      'age',
+      'fatherName',
+      'address',
+      'joiningDate',
+    ];
     const { isValid, newState } = validateFields({
       state: this.state,
       fields: keys,
@@ -643,6 +658,7 @@ class MembersDirectory extends React.Component {
       plan,
       gender,
       bloodGroup,
+      joiningDate,
       images,
     } = this.state;
     const feeAmount = this.getTotalAmount();
@@ -653,6 +669,7 @@ class MembersDirectory extends React.Component {
         mobileNumber: mobile.value,
         mailId: email.value,
         age: age.value,
+        joiningDate: joiningDate.value,
         gender: GENDER[gender.selectedItemIndex],
         planId: plan.id,
         bloodGroup: BLOOD_GROUP_DATA[bloodGroup.selectedItemIndex],
@@ -871,6 +888,7 @@ class MembersDirectory extends React.Component {
       bloodGroup,
       address,
       age,
+      joiningDate,
       plan,
       branch,
       showFilters,
@@ -1137,6 +1155,7 @@ class MembersDirectory extends React.Component {
             gender={gender}
             fatherName={fatherName}
             email={email}
+            joiningDate={joiningDate}
             mobile={mobile}
             bloodGroup={bloodGroup}
             address={address}
