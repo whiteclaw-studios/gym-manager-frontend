@@ -91,6 +91,7 @@ function* addNewMember(params = {}) {
           id: planDetailsId,
           amount: feeAmount,
         },
+        paidDate: joiningDate,
       });
       successCallback();
     } else {
@@ -342,7 +343,6 @@ function* updateFeeDetailsSaga(params) {
         memberId: memberUniqueId,
         paidDate,
         planDetailsId: id,
-        paidDate,
       },
     });
     const processResponse = responseParser(response);
