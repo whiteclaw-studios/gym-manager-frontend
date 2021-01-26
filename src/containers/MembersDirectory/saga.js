@@ -72,7 +72,6 @@ function* addNewMember(params = {}) {
       url: apiUrls.MEMBERS_URL,
       data: formData,
     });
-
     const parsedResponse = responseParser(response);
     if (!parsedResponse.isError) {
       const { data } = parsedResponse;

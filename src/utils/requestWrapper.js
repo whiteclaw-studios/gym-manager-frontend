@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getCookie } from '../utils/helpers';
+import { get, getCookie } from '../utils/helpers';
 const axiosWrapper = (options) => {
   let configs = { ...options };
   const { ignoreToken = false } = options;
@@ -13,6 +13,8 @@ const axiosWrapper = (options) => {
 };
 const resInterceptor = axios.interceptors.response.use(
   (response) => {
+    console.log('inside response obj interceptor', response);
+
     if (!response) {
       return response;
     }
@@ -20,10 +22,10 @@ const resInterceptor = axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    let data;
-
+    let data = get(error, 'response.data', '');
+    console.log('inside response error interceptor', error, data);
     /* eslint-enable no-console */
-    return error;
+    return { error, data };
   },
 );
 export default axiosWrapper;

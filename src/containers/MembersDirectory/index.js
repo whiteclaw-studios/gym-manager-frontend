@@ -599,6 +599,12 @@ class MembersDirectory extends React.Component {
         selectedItemIndex: -1,
         showError: false,
       },
+      joiningDate: {
+        value: '',
+        dirty: false,
+        error: false,
+        type: 'dueDate',
+      },
       address: {
         value: '',
         error: false,
