@@ -261,7 +261,7 @@ class App extends React.Component {
     return { hasError: true };
   }
   componentDidCatch(error) {
-    console.error('App componentDidCatch', error);
+    console.error('App componentDidCatch ', error);
   }
   render() {
     const {
