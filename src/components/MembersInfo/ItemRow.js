@@ -158,7 +158,8 @@ function ItemRow({
             <Item
               className={css`
                 @media (max-width: 992px) {
-                  display: none;
+                  text-align: start;
+                  margin: 5px 0 3px;
                 }
               `}
             >
